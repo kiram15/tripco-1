@@ -5,8 +5,8 @@ EFSJ
 
 *Teamwork Questionnaire*
 1. Is it generally easier to reach you by text, email, vmail or something else?  What hours?
-  1. Text and email work best for me.
-  1. Before 10:30pm and after 7:00am
+    1. Text and email work best for me.
+    1. Before 10:30pm and after 7:00am
 1. What are your expectations about what your team will accomplish this semester?
   1. I expect us to complete the assignments thoroughly and on time. I’m not expecting us to go above and beyond the requirements but rather meet the class expectations
 1. What are your personal goals for improving your teamwork and communication skills this semester?
