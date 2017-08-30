@@ -9,12 +9,12 @@
          </properties>
 
          <modelVersion>4.0.0</modelVersion>
-         <groupId>edu.csu2017fa314.DTR02</groupId>
-         <artifactId>DTR02</artifactId>
+         <groupId>edu.csu2017fa314.T02</groupId>
+         <artifactId>T02</artifactId>
          <packaging>jar</packaging>
          <version>0.0.1-SNAPSHOT</version>
-         <name>DTR02</name>
-         <url>https://github.com/csu2017fa314/DTR-02/</url>
+         <name>T02</name>
+         <url>https://github.com/csu2017fa314/T02/</url>
          <build>
                   <plugins>
                            <plugin>
@@ -25,7 +25,7 @@
                                              <archive>
                                                       <manifest>
                                                                <addClasspath>true</addClasspath>
-                                                               <mainClass>edu.csu2017fa314.DTR02</mainClass>
+                                                               <mainClass>edu.csu2017fa314.T02</mainClass>
                                                       </manifest>
                                              </archive>
                                     </configuration>
