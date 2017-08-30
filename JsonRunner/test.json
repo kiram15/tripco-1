@@ -1,0 +1,25 @@
+[
+  {
+    "start": "start name 1",
+    "end": "end name 2",
+    "distance": 10000
+  },
+
+  {
+    "start": "start name 2",
+    "end": "end name 2",
+    "distance": 20000
+  },
+
+  {
+    "start": "start name 3",
+    "end": "end name 3",
+    "distance": 30000
+  },
+
+  {
+    "start": "start name 4",
+    "end": "end name 4",
+    "distance": 40000
+  }
+]
