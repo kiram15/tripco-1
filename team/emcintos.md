@@ -1,3 +1,4 @@
+Emerson McIntosh, ENFP
 1.	Reach me by text, any time of the day, other than between 11:00pm and 7:00am
 2.	I expect my team to do their work well and on time, and I expect us to accomplish all that is expected of us.
 3.	I hope to improve my skills as a team member contributing to a scrum team in an Agile environment. I also hope to be better at communicating my expectations to teams and team members
