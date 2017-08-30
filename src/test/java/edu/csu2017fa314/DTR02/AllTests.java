@@ -1,10 +1,9 @@
 package edu.csu2017fa314.DTR02;
+import edu.csu2017fa314.DTR01.Model.*;
+import edu.csu2017fa314.DTR01.View.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import junit.framework.JUnit4TestAdapter;
-
-import edu.csu2017fa314.DTR01.Model.*;
-import edu.csu2017fa314.DTR01.View.*;
 
 // This section declares all of the test classes in your program.
 @RunWith(Suite.class)
