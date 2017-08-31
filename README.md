@@ -7,7 +7,7 @@ T02 - NEKA
 
 Sprint Number | Model - Data | Model - Itinerary | View - Server | View - Client 
 ----------------- | -------------- | ------------------- | ---------------- | ---------------
-1 |  |  |  | 
+1 |  KIRA | AMBER | NICOLE | EMERSON
 2 |  |  |  | 
 3 |  |  |  | 
 4 |  |  |  | 
