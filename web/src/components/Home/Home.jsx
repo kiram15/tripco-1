@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone'
 
 class Home extends React.Component {
     render() {
-        let total = 0; //update the total here
+        let total = this.props.totalDist; //update the total here
         return <div className="home-container">
             <div className="inner">
 		<h2>T02 NEKA</h2>
