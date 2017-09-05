@@ -8,7 +8,8 @@ export default class App extends React.Component {
         super(props);
         this.state = {
             allPairs: [],
-            sysFile: []
+            sysFile: [],
+            total : 0
         }
     };
 
@@ -22,6 +23,7 @@ export default class App extends React.Component {
                 <Home
                     browseFile={this.browseFile.bind(this)}
                     pairs={ps}
+                    totalDist={this.state.total}
                 />
             </div>
         )
@@ -31,14 +33,17 @@ export default class App extends React.Component {
         console.log("Got file:", file);
         //For loop that goes through all pairs,
         let pairs = [];
+        let runTotal = 0;
         for (let i = 0; i < Object.values(file).length; i++) {
             let start = file[i].start; //get start from file i
             let end = file[i].end; //get end from file i
             let dist = file[i].distance;
+            runTotal = runTotal + dist;
             let p = { //create object with start, end, and dist variable
                 start: start,
                 end: end,
-                dist: dist
+                dist: dist,
+                total : runTotal
             };
             pairs.push(p); //add object to pairs array
             console.log("Pushing pair: ", p); //log to console
@@ -48,7 +53,8 @@ export default class App extends React.Component {
         // Anything component (i.e. pairs) referencing it will be re-rendered
         this.setState({
             allPairs: pairs,
-            sysFile: file
+            sysFile: file,
+            total : runTotal
         });
     }
 }
