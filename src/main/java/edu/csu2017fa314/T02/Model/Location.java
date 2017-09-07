@@ -3,11 +3,11 @@ public class Location {
     private String ID;
     private String name;
     private String city;
-    private double lat;
-    private double lon;
+    private String lat;
+    private String lon;
     private int    elevation;
 
-  public Location(String id, String Name, String City, double Lat, double Lon, int Elevation) {
+  public Location(String id, String Name, String City, String Lat, String Lon, int Elevation) {
       this.ID = id;
       this.name = Name;
       this.city = City;
@@ -20,11 +20,11 @@ public class Location {
 	  return this.ID;
   }
   
-  public double getLatitude() {
+  public String getLatitude() {
 	  return this.lat;
   }
   
-  public double getLongitude() {
+  public String getLongitude() {
 	  return this.lon;
   }
   
