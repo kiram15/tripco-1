@@ -61,6 +61,7 @@ public class Hub
                 String objectLongitude = newArray[columns.get("longitude")].trim();
                 int objectElevation = Integer.parseInt(newArray[columns.get("elevation")].trim());
                 
+
                 double doubleLat = latLonConvert(objectLatitude);
                 double doubleLon = latLonConvert(objectLongitude);
 
