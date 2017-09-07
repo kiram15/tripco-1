@@ -3,10 +3,11 @@ import Dropzone from 'react-dropzone'
 
 class Home extends React.Component {
     render() {
-        let total = 0; //update the total here
+        let total = this.props.totalDist; //update the total here
         return <div className="home-container">
             <div className="inner">
-                <h3>Itinerary</h3>
+		<h2>T02 NEKA</h2>
+                <h4>Itinerary</h4>
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
                 </Dropzone>
