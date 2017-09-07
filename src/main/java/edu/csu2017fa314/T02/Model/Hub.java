@@ -16,7 +16,7 @@ public class Hub{
     static ArrayList<Location> kLocations = new ArrayList<>();
     ArrayList<Distance> distances = new ArrayList<Distance>();
 
-    public ArrayList<Location> readFile(String fileName) {
+    public ArrayList<Distance> readFile(String fileName) {
         File file = new File(fileName);
         Scanner scnr;
         try {
@@ -72,11 +72,10 @@ public class Hub{
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        addDistance();
-        return finalLocations;
+        return addDistance();
     }
     
-    public void addDistance(){ //loops through the finalLocations array, calculating gcd between each possible two locations and adding these as distance objects(startID, endID, distance between them) to distances array
+    public ArrayList<Distance> addDistance(){ //loops through the finalLocations array, calculating gcd between each possible two locations and adding these as distance objects(startID, endID, distance between them) to distances array
         for(int start = 0; start < finalLocations.size(); start++){
             for(int end = start + 1; end < finalLocations.size(); end++){
                 String startID = (finalLocations.get(start)).getID();
@@ -86,6 +85,7 @@ public class Hub{
                 distances.add(d);
             }
         }
+        return distances;
     }
     public int greatCirDist(double lat1, double lon1, double lat2, double lon2){
         //set up basic variables
