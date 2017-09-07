@@ -4,7 +4,7 @@ import edu.csu2017fa314.T02.Model.Hub;
 import edu.csu2017fa314.T02.Model.Location;
 import java.util.ArrayList;
 
-public class TripCo {
+public class TestSprint1JSON {
 
    private String name = "";
 
