@@ -18,9 +18,10 @@ public class Hub {
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     static ArrayList<Location> kLocations = new ArrayList<Location>();
-    ArrayList<Distance> distances = new ArrayList<Distance>();
+    
   
     public ArrayList<Distance> readFile(String fileName) {
+	ArrayList<Distance> distances = new ArrayList<Distance>();
         File file = new File(fileName);
         Scanner scnr;
         try {
@@ -78,12 +79,13 @@ public class Hub {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return addDistance();
+        return addDistance(distances);
     }
     
-    public ArrayList<Distance> addDistance(){ //loops through the finalLocations array, calculating gcd between each possible two locations and adding these as distance objects(startID, endID, distance between them) to distances array
+    public ArrayList<Distance> addDistance(ArrayList<Distance> distances){ //loops through the finalLocations array, calculating gcd between each possible two locations and adding these as distance objects(startID, endID, distance between them) to distances array
         for(int start = 0; start < finalLocations.size(); start++){
-            for(int end = start + 1; end < finalLocations.size(); end++){
+	    int end = start + 1;
+	    if(end < finalLocations.size()){
                 String startID = (finalLocations.get(start)).getID();
                 String endID = (finalLocations.get(end)).getID();
                 int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
