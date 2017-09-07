@@ -43,8 +43,8 @@ public class Hub
                         case "longitude":
                             columns.put("longitude", i);
                             break;
-                        case "altitude":
-                            columns.put("altitude", i);
+                        case "elevation":
+                            columns.put("elevation", i);
                             break;
                     }
                 }
@@ -59,18 +59,71 @@ public class Hub
                 String objectCity = newArray[columns.get("city")].trim();
                 String objectLatitude = newArray[columns.get("latitude")].trim();
                 String objectLongitude = newArray[columns.get("longitude")].trim();
-                int objectAltitude = Integer.parseInt(newArray[columns.get("altitude")].trim());
+                int objectElevation = Integer.parseInt(newArray[columns.get("elevation")].trim());
+                
+                double doubleLat = LatLonConvert(objectLatitude);
+                double doubleLon = LatLonConvert(objectLongitude);
 
-                Location location = new Location(objectID, objectName, objectCity, objectLatitude,
-                        objectLongitude, objectAltitude);
+                Location location = new Location(objectID, objectName, objectCity, doubleLat,
+                        doubleLon, objectElevation);
 
                 finalLocations.add(location);
-
-
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return finalLocations;
     }
+    
+    public double latLonConvert(String s) {
+		String sCopy = s;
+		int end; String symbol;
+		double retVal;
+		ArrayList<Double> values = new ArrayList<>();
+		
+		//in the loops, uses symbol as stopping point, extracts number, adds to arrayList, 
+		//and cuts off remaining, then uses the formula to convert into degrees
+
+		if (s.contains("\"") && s.contains("'")) { // case for 106°49'43.24" W										
+			for (int i = 0; i < 3; i++) {
+				if (i == 0)      { symbol = "°"; }
+				else if (i == 1) { symbol = "'"; }
+				else             { symbol = "\""; }
+				end = sCopy.indexOf(symbol);
+				values.add(Double.parseDouble(sCopy.substring(0, end)));
+				sCopy = sCopy.substring(end + 1);
+			}
+			retVal = (values.get(0) + (values.get(1) / 60) + (values.get(2) / 3600));	
+			if (sCopy.equals("W") || sCopy.equals("S")) {
+				return (retVal*(-1)); 
+			}
+			else {
+				return retVal;
+			}
+		} 
+		else if (s.contains("'")) { // case for 106°49.24' W format
+			for (int i = 0; i < 2; i++) {
+				if (i == 0) { symbol = "°"; }
+				else        { symbol = "'"; }
+				end = sCopy.indexOf(symbol);
+				values.add(Double.parseDouble(sCopy.substring(0, end)));
+				sCopy = sCopy.substring(end + 1);
+			}
+			retVal = (values.get(0) + (values.get(1) / 60));
+			if (sCopy.equals("W") || sCopy.equals("S")) {
+				return (retVal*(-1)); 
+			}
+			else {
+				return retVal;
+			}
+			
+		} 
+		else if (s.contains("°")) { // case for 106.24° format
+			end = sCopy.indexOf("°");
+			return (Double.parseDouble(sCopy.substring(0, end)));
+		} 
+		else { // case for -106.24 format
+			return Double.parseDouble(s);
+		}
+	}
 }
