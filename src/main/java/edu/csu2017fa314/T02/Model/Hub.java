@@ -12,8 +12,8 @@ public class Hub
 {
     String[] infoArray;
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
-    ArrayList<Location> finalLocations = new ArrayList<>();
-    static ArrayList<Location> kLocations = new ArrayList<>();
+    ArrayList<Location> finalLocations = new ArrayList<Location>();
+    static ArrayList<Location> kLocations = new ArrayList<Location>();
 
     public ArrayList<Location> readFile(String fileName) {
         File file = new File(fileName);
@@ -61,8 +61,8 @@ public class Hub
                 String objectLongitude = newArray[columns.get("longitude")].trim();
                 int objectElevation = Integer.parseInt(newArray[columns.get("elevation")].trim());
                 
-                double doubleLat = LatLonConvert(objectLatitude);
-                double doubleLon = LatLonConvert(objectLongitude);
+                double doubleLat = latLonConvert(objectLatitude);
+                double doubleLon = latLonConvert(objectLongitude);
 
                 Location location = new Location(objectID, objectName, objectCity, doubleLat,
                         doubleLon, objectElevation);
