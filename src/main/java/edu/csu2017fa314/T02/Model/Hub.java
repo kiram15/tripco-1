@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import java.io.PrintWriter;
+import java.util.Collections;
+import java.io.IOException;
 
-
-public class Hub
-{
+public class Hub {
     String[] infoArray;
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
@@ -75,7 +78,7 @@ public class Hub
         }
         return finalLocations;
     }
-    
+   
     public double latLonConvert(String s) {
 		String sCopy = s;
 		int end; String symbol;
@@ -127,4 +130,30 @@ public class Hub
 			return Double.parseDouble(s);
 		}
 	}
+  
+  //method to write the JSON file
+    public void writeJSON(ArrayList<Distance> distance) {
+        //new JSONarray to add all the strings to
+        JSONArray array = new JSONArray();
+
+        //loop through all the distance objects in the distance array
+        for (Distance d : distance) {
+            JSONObject obj = new JSONObject();
+
+            obj.put("start", d.getStartID());
+            obj.put("end", d.getEndID());
+            obj.put("distance", d.getGcd());
+
+            array.add(obj);
+
+        }
+
+        try (PrintWriter write = new PrintWriter(new File("Itinerary.json"))) {
+            write.print(array.toJSONString());
+            write.close();
+        } catch (IOException e) {
+            System.out.print("Error: Cannot write to file" + e);
+        }
+    }
+
 }
