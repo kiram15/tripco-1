@@ -5,19 +5,31 @@ public class Location {
     private String city;
     private String lat;
     private String lon;
-    private int    altitude;
+    private int    elevation;
 
   public Location(String id, String Name, String City, String Lat, String Lon, int Elevation) {
-      ID = id;
-      name = Name;
-      city = City;
-      lat = Lat;
-      lon = Lon;
-      altitude = Elevation;
+      this.ID = id;
+      this.name = Name;
+      this.city = City;
+      this.lat = Lat;
+      this.lon = Lon;
+      this.elevation = Elevation;
+  }
+  
+  public String getID() {
+	  return this.ID;
+  }
+  
+  public String getLatitude() {
+	  return this.lat;
+  }
+  
+  public String getLongitude() {
+	  return this.lon;
   }
   
   public String toString() { 
 	    return "ID: '" + this.ID + "', Name: '" + this.name + "', City: '" + this.city + "'" +
-	    		"Lat: '" + this.lat + "', Lon: '" + this.lon + "', Altitude: '" + this.altitude + "'";
+	    		"Lat: '" + this.lat + "', Lon: '" + this.lon + "', Elevation: '" + this.elevation + "'";
 	} 
 }
