@@ -30,6 +30,6 @@ public class Location {
   
   public String toString() { 
 	    return "ID: '" + this.ID + "', Name: '" + this.name + "', City: '" + this.city + "'" +
-	    		"Lat: '" + this.lat + "', Lon: '" + this.lon + "', Elevation: '" + this.elevation + "'";
+	    		"Latitude: '" + this.lat + "', Longitude: '" + this.lon + "', Elevation: '" + this.elevation + "'";
 	} 
 }
