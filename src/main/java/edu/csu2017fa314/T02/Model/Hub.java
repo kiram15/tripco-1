@@ -37,20 +37,11 @@ public class Hub {
                         case "id":
                             columns.put("id", i);
                             break;
-                        case "name":
-                            columns.put("name", i);
-                            break;
-                        case "city":
-                            columns.put("city", i);
-                            break;
                         case "latitude":
                             columns.put("latitude", i);
                             break;
                         case "longitude":
                             columns.put("longitude", i);
-                            break;
-                        case "elevation":
-                            columns.put("elevation", i);
                             break;
                     }
                 }
@@ -61,18 +52,13 @@ public class Hub {
                 String[] newArray = brewery.split(","); //column names
 
                 String objectID = newArray[columns.get("id")].trim();
-                String objectName = newArray[columns.get("name")].trim();
-                String objectCity = newArray[columns.get("city")].trim();
                 String objectLatitude = newArray[columns.get("latitude")].trim();
                 String objectLongitude = newArray[columns.get("longitude")].trim();
-                int objectElevation = Integer.parseInt(newArray[columns.get("elevation")].trim());
-                
 
                 double doubleLat = latLonConvert(objectLatitude);
                 double doubleLon = latLonConvert(objectLongitude);
 
-                Location location = new Location(objectID, objectName, objectCity, doubleLat,
-                        doubleLon, objectElevation);
+                Location location = new Location(objectID, doubleLat, doubleLon);
 
                 finalLocations.add(location);
             }
@@ -210,4 +196,5 @@ public class Hub {
         }
     }
 
+}
 }
