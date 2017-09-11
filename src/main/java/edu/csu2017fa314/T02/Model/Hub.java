@@ -129,7 +129,7 @@ public class Hub {
         double B = (u2/1024)*(256 + (u2*(-128 + (u2*(74-(47*u2))))));
         double dTheta = B*sinTheta*(cos2ThetaM + ((0.25*B)*((cosTheta*(-1+(2*cos2ThetaM))) - ((B/6)*cos2ThetaM*(-3+(4*(Math.pow(sinTheta,2))))*(-3+(4*(Math.pow(cos2ThetaM,2))))))));
         double dist = b*A*(theta-dTheta);
-        int gcd = Math.round((int)dist);
+        int gcd = (int)Math.round(dist);
         return gcd;
     }
    
