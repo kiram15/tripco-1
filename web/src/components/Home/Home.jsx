@@ -7,7 +7,24 @@ class Home extends React.Component {
         return <div className="home-container">
             <div className="inner">
 		<h2>T02 NEKA</h2>
-                <h4>Itinerary</h4>
+                <h3>Itinerary</h3>
+                <h4>Select Preferences</h4>
+                <div>
+                  <input type="checkbox" id="IDCheck" name="preference" value="ID"></input>
+                  <label for="IDCheck">ID</label>
+                </div>
+                <div>
+                  <input type="checkbox" id="LatCheck" name="preference" value="Lat"></input>
+                  <label for="LatCheck">Latitude</label>
+                 </div>
+                 <div>
+                  <input type="checkbox" id="LonCheck" name="preference" value="Lon"></input>
+                  <label for="LonCheck">Longitude</label>
+                </div>
+                <div>
+                  <button type="submit">Submit</button>
+                </div>
+                <p></p>
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
                 </Dropzone>
