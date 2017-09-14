@@ -16,10 +16,10 @@ import java.io.IOException;
 public class Hub {
     String[] infoArray;
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
-    ArrayList<Location> finalLocations = new ArrayList<Location>();
-    static ArrayList<Location> kLocations = new ArrayList<Location>();
-    
-  
+    Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
+    ArrayList<Location> locations = new ArrayList<Location>();
+
+
     public ArrayList<Distance> readFile(String fileName) {
 	ArrayList<Distance> distances = new ArrayList<Distance>();
         File file = new File(fileName);
@@ -34,54 +34,77 @@ public class Hub {
                 for (int i = 0; i < infoArray.length; i++) {
                     String infoString = infoArray[i];
                     switch (infoString.trim()) { // associating column titles with column num, putting it in map
-                        case "id":
-                            columns.put("id", i);
+                        case "name":
+                            columns.put("name", i);
+                            reverseC.put(i, "name");
                             break;
                         case "latitude":
                             columns.put("latitude", i);
+                            reverseC.put(i, "latitude");
                             break;
                         case "longitude":
                             columns.put("longitude", i);
+                            reverseC.put(i, "longitude");
+                            break;
+                        default:
+                            columns.put(infoString.trim(), i);
+                            reverseC.put(i, infoString.trim());
                             break;
                     }
                 }
             }
             while (scnr.hasNextLine()) {
-                String brewery = scnr.nextLine();
-                brewery = brewery.toLowerCase();
-                String[] newArray = brewery.split(","); //column names
+                String place = scnr.nextLine();
+                place = place.toLowerCase();
+                String[] props = place.split(","); //column names
+                LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
 
-                String objectID = newArray[columns.get("id")].trim();
-                String objectLatitude = newArray[columns.get("latitude")].trim();
-                String objectLongitude = newArray[columns.get("longitude")].trim();
+                String objectName = "";
+                String objectLatitude = "";
+                String objectLongitude = "";
+                //populates necessary info into variables
+                for(int i = 0; i < props.length; ++i){
+                    if (i == columns.get("name")) {
+                        objectName = props[i].trim();
+                    }
+                    else if (i == columns.get("latitude")){
+                        objectLatitude = props[i].trim();
+                    }
+                    else if (i == columns.get("longitude")){
+                        objectLongitude = props[i].trim();
+                    }
+                    else {
+                        info.put(reverseC.get(i), props[i]);
+                    }
+                }
 
                 double doubleLat = latLonConvert(objectLatitude);
                 double doubleLon = latLonConvert(objectLongitude);
 
-                Location location = new Location(objectID, doubleLat, doubleLon);
+                Location location = new Location(objectName, doubleLat, doubleLon, info);
 
-                finalLocations.add(location);
+                locations.add(location);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return addDistance(distances);
     }
-    
-    public ArrayList<Distance> addDistance(ArrayList<Distance> distances){ //loops through the finalLocations array, calculating gcd between each possible two locations and adding these as distance objects(startID, endID, distance between them) to distances array
-        for(int start = 0; start < finalLocations.size(); start++){
+
+    public ArrayList<Distance> addDistance(ArrayList<Distance> distances){ //loops through the locations array, calculating gcd between each possible two locations and adding these as distance objects(startName, endName, distance between them) to distances array
+        for(int start = 0; start < locations.size(); start++){
 	    int end = start + 1;
-	    if(end < finalLocations.size()){
-                String startID = (finalLocations.get(start)).getID();
-                String endID = (finalLocations.get(end)).getID();
-                int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
-                Distance d = new Distance(startID, endID, dist);
+	    if(end < locations.size()){
+                String startName = (locations.get(start)).getName();
+                String endName = (locations.get(end)).getName();
+                int dist = greatCirDist((locations.get(start)).getLatitude(), (locations.get(start)).getLongitude(), (locations.get(end)).getLatitude(), (locations.get(end)).getLongitude());
+                Distance d = new Distance(startName, endName, dist);
                 distances.add(d);
             }
         }
         return distances;
     }
-  
+
     public int greatCirDist(double lat1, double lon1, double lat2, double lon2){
         double r = 3958.7613; //radius of earth in miles
         double phi1 = Math.toRadians(lat1);
@@ -95,17 +118,17 @@ public class Hub {
         int gcd = (int)Math.round(dist);
         return gcd;
     }
-   
+
     public double latLonConvert(String s) {
 		String sCopy = s;
 		int end; String symbol;
 		double retVal;
 		ArrayList<Double> values = new ArrayList<>();
-		
-		//in the loops, uses symbol as stopping point, extracts number, adds to arrayList, 
+
+		//in the loops, uses symbol as stopping point, extracts number, adds to arrayList,
 		//and cuts off remaining, then uses the formula to convert into degrees
 
-		if (s.contains("\"") && s.contains("'")) { // case for 106°49'43.24" W										
+		if (s.contains("\"") && s.contains("'")) { // case for 106°49'43.24" W
 			for (int i = 0; i < 3; i++) {
 				if (i == 0)      { symbol = "°"; }
 				else if (i == 1) { symbol = "'"; }
@@ -114,14 +137,14 @@ public class Hub {
 				values.add(Double.parseDouble(sCopy.substring(0, end)));
 				sCopy = sCopy.substring(end + 1);
 			}
-			retVal = (values.get(0) + (values.get(1) / 60) + (values.get(2) / 3600));	
+			retVal = (values.get(0) + (values.get(1) / 60) + (values.get(2) / 3600));
 			if (sCopy.equals("W") || sCopy.equals("S")) {
-				return (retVal*(-1)); 
+				return (retVal*(-1));
 			}
 			else {
 				return retVal;
 			}
-		} 
+		}
 		else if (s.contains("'")) { // case for 106°49.24' W format
 			for (int i = 0; i < 2; i++) {
 				if (i == 0) { symbol = "°"; }
@@ -132,22 +155,22 @@ public class Hub {
 			}
 			retVal = (values.get(0) + (values.get(1) / 60));
 			if (sCopy.equals("W") || sCopy.equals("S")) {
-				return (retVal*(-1)); 
+				return (retVal*(-1));
 			}
 			else {
 				return retVal;
 			}
-			
-		} 
+
+		}
 		else if (s.contains("°")) { // case for 106.24° format
 			end = sCopy.indexOf("°");
 			return (Double.parseDouble(sCopy.substring(0, end)));
-		} 
+		}
 		else { // case for -106.24 format
 			return Double.parseDouble(s);
 		}
 	}
-  
+
   //method to write the JSON file
     public void writeJSON(ArrayList<Distance> distance) {
         //new JSONarray to add all the strings to
@@ -157,8 +180,8 @@ public class Hub {
         for (Distance d : distance) {
             JSONObject obj = new JSONObject();
 
-            obj.put("start", d.getStartID());
-            obj.put("end", d.getEndID());
+            obj.put("start", d.getStartName());
+            obj.put("end", d.getEndName());
             obj.put("distance", d.getGcd());
 
             array.add(obj);
