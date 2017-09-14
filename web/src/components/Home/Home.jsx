@@ -12,10 +12,16 @@ class Home extends React.Component {
                     <button>Open JSON File</button>
                 </Dropzone>
                 <table className="pair-table">
+                    <tr>
+                        <td><h8><b> Start Name </b></h8></td>
+                        <td><h8><b> End Name </b></h8></td>
+                        <td><h8><b> Distance (mi) </b></h8></td>
+                        <td><h8><b> Total Distance (mi)</b></h8></td>
+                    </tr>
                     {this.props.pairs}
                     <tbody>
                         <tr>
-                            <td colSpan="2">Total:</td>
+                            <td colSpan="4">Total:</td>
                             <td>{total}</td>
                         </tr>
                     </tbody>
