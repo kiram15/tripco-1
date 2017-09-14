@@ -81,6 +81,7 @@ public class Hub {
         }
         return distances;
     }
+
   
     public int greatCirDist(double lat1, double lon1, double lat2, double lon2){
         double r = 3958.7613; //radius of earth in miles
@@ -171,6 +172,46 @@ public class Hub {
         } catch (IOException e) {
             System.out.print("Error: Cannot write to file" + e);
         }
+    }
+
+    //helper method to compute the shortest itinerary starting from the given Location
+    // param: Location l - starting Location for the itinerary
+    //return value - an ArrayList<Distance> that stores the shortest trip starting from l
+    public ArrayList<Distance> shortestTripFrom(Location l){
+        //array list to store the shortest itinerary
+        ArrayList<Distance> shortestIt = new ArrayList<Distance>();
+
+        //temp array list of the locations - allows us to remove as we visit
+        ArrayList<Location> tempLoc = finalLocations;
+
+        // stores the current city you are on in the trip
+        Location currentLocation = l;
+
+        while(!tempLoc.isEmpty()){
+            //remove the current location from tempLoc so it's not comparing to itself
+            tempLoc.remove(currentLocation);
+
+            //compare the current location to every other location and find the shortest distance between them
+            int shortestD = 2000000000;
+            Location closest = null;
+            for(int i = 0; i < tempLoc.size(); i++){
+                int dist = greatCirDist(currentLocation.getLatitude(), (currentLocation.getLongitude()), tempLoc.get(i).getLatitude(), tempLoc.get(i).getLongitude());
+
+                //if you find a shorter Distance:
+                if(dist < shortestD){
+                    shortestD = dist;
+                    closest = tempLoc.get(i);
+                }
+            }
+
+            //add a distance object for the shortest distance from current to closest
+            shortestIt.add(new Distance(currentLocation, closest, shortestD));
+
+            //adjust the current Location to be to the closest city
+            currentLocation = closest;
+        }
+
+        return shortestIt;
     }
 
 }
