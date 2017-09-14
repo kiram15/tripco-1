@@ -72,8 +72,8 @@ public class Hub {
         for(int start = 0; start < finalLocations.size(); start++){
 	    int end = start + 1;
 	    if(end < finalLocations.size()){
-                String startID = (finalLocations.get(start)).getID();
-                String endID = (finalLocations.get(end)).getID();
+                Location startID = finalLocations.get(start);
+                Location endID = finalLocations.get(end);
                 int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
                 Distance d = new Distance(startID, endID, dist);
                 distances.add(d);
