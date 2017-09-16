@@ -25,9 +25,9 @@
 
 ## Plan 
 
-User stories (epics) in the Sprint Backlog:  
+User stories (epics) in the Sprint Backlog:  6
 
-Total planned tasks / issues in the Sprint Backlog:  
+Total planned tasks / issues in the Sprint Backlog:  18
 
 ## Daily Scrums
 
