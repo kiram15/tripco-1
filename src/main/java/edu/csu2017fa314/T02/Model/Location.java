@@ -29,6 +29,11 @@ public class Location {
 	  return this.lon;
   }
 
+  //returns value associated with key in the info Map
+  public String getOtherInfo(String key){
+      return this.info.get(key);
+  }
+
   public String toString() {
 	    return "Name: '" + this.name + "', Latitude: '" + this.lat + "', Longitude: '" + this.lon;
 	}
