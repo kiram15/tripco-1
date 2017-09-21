@@ -1,22 +1,22 @@
 package edu.csu2017fa314.T02.Model;
 public class Distance{
-
-  private String startName;
-  private String endName;
+  
+  private Location startID;
+  private Location endID;
   private int gcd;
 
-  public Distance(String startName, String endName, int gcd){
-      this.startName = startName;
-      this.endName = endName;
+  public Distance(Location startID, Location endID, int gcd){
+      this.startID = startID;
+      this.endID = endID;
       this.gcd = gcd;
   }
 
-  public String getStartName(){
-      return this.startName;
+  public Location getStartID(){
+      return this.startID;
   }
 
-  public String getEndName(){
-      return this.endName;
+  public Location getEndID(){
+      return this.endID;
   }
 
   public int getGcd(){

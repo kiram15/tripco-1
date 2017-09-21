@@ -94,11 +94,12 @@ public class Hub {
     public ArrayList<Distance> addDistance(ArrayList<Distance> distances){ //loops through the locations array, calculating gcd between each possible two locations and adding these as distance objects(startName, endName, distance between them) to distances array
         for(int start = 0; start < locations.size(); start++){
 	    int end = start + 1;
-	    if(end < locations.size()){
-                String startName = (locations.get(start)).getName();
-                String endName = (locations.get(end)).getName();
-                int dist = greatCirDist((locations.get(start)).getLatitude(), (locations.get(start)).getLongitude(), (locations.get(end)).getLatitude(), (locations.get(end)).getLongitude());
-                Distance d = new Distance(startName, endName, dist);
+	    if(end < finalLocations.size()){
+                Location startID = finalLocations.get(start);
+                Location endID = finalLocations.get(end);
+                int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
+                Distance d = new Distance(startID, endID, dist);
+
                 distances.add(d);
             }
         }
