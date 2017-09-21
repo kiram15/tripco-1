@@ -90,8 +90,9 @@ public class Hub {
         double phi2 = Math.toRadians(lat2);
         double lam2 = Math.toRadians(lon2);
         double dLam = Math.abs(lam1 - lam2);
-        double dTheta = Math.atan(Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dLam)), 2) + Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dLam)), 2))
-                / (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dLam)));
+        double y = Math.sqrt(Math.pow((Math.cos(phi2)*Math.sin(dLam)),2)+Math.pow((Math.cos(phi1)*Math.sin(phi2)-Math.sin(phi1)*Math.cos(phi2)*Math.cos(dLam)),2));
+        double x = (Math.sin(phi1)*Math.sin(phi2)+Math.cos(phi1)*Math.cos(phi2)*Math.cos(dLam));
+        double dTheta  = Math.atan2(y,x);
         double dist = dTheta * r;
         int gcd = (int) Math.round(dist);
         return gcd;
