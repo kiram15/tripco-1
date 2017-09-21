@@ -34,6 +34,7 @@ Total planned tasks / issues in the Sprint Backlog:  18
 Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 :--- | :--- | :--- | :--- | :---
  9/18 | worked on some tests | Write tests for sprint one, look into svg map | Nicole has recruitment until wednesday, exam studying  | Not stressed, feeling decent
+ 9/21| finished changing ID to name, wrote JUnit tests, fixed master| starting on checkbox filters, psuedo code -> code on Shortest trip | midterm coming up | Feeling good so far
  | | | | 
  | | | | 
 
