@@ -85,7 +85,7 @@ public class Hub {
 
                 Location location = new Location(objectName, doubleLat, doubleLon, info);
 
-                locations.add(location);
+                finalLocations.add(location);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -187,8 +187,8 @@ public class Hub {
         for (Distance d : distance) {
             JSONObject obj = new JSONObject();
 
-            obj.put("start", d.getStartID().getID());
-            obj.put("end", d.getEndID().getID());
+            obj.put("start", d.getStartID().getName());
+            obj.put("end", d.getEndID().getName());
             obj.put("distance", d.getGcd());
 
             array.add(obj);
