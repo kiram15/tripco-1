@@ -16,8 +16,10 @@ import java.io.IOException;
 public class Hub {
     String[] infoArray;
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
+    Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     static ArrayList<Location> kLocations = new ArrayList<Location>();
+
 
 
     public ArrayList<Distance> readFile(String fileName) {
@@ -34,31 +36,54 @@ public class Hub {
                 for (int i = 0; i < infoArray.length; i++) {
                     String infoString = infoArray[i];
                     switch (infoString.trim()) { // associating column titles with column num, putting it in map
-                        case "id":
-                            columns.put("id", i);
+                        case "name":
+                            columns.put("name", i);
+                            reverseC.put(i, "name");
                             break;
                         case "latitude":
                             columns.put("latitude", i);
+                            reverseC.put(i, "latitude");
                             break;
                         case "longitude":
                             columns.put("longitude", i);
+                            reverseC.put(i, "longitude");
+                            break;
+                        default:
+                            columns.put(infoString.trim(), i);
+                            reverseC.put(i, infoString.trim());
                             break;
                     }
                 }
             }
             while (scnr.hasNextLine()) {
-                String brewery = scnr.nextLine();
-                brewery = brewery.toLowerCase();
-                String[] newArray = brewery.split(","); //column names
+                String place = scnr.nextLine();
+                place = place.toLowerCase();
+                String[] props = place.split(","); //column names
+                LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
 
-                String objectID = newArray[columns.get("id")].trim();
-                String objectLatitude = newArray[columns.get("latitude")].trim();
-                String objectLongitude = newArray[columns.get("longitude")].trim();
+                String objectName = "";
+                String objectLatitude = "";
+                String objectLongitude = "";
+                //populates necessary info into variables
+                for(int i = 0; i < props.length; ++i){
+                    if (i == columns.get("name")) {
+                        objectName = props[i].trim();
+                    }
+                    else if (i == columns.get("latitude")){
+                        objectLatitude = props[i].trim();
+                    }
+                    else if (i == columns.get("longitude")){
+                        objectLongitude = props[i].trim();
+                    }
+                    else {
+                        info.put(reverseC.get(i), props[i]);
+                    }
+                }
 
                 double doubleLat = latLonConvert(objectLatitude);
                 double doubleLon = latLonConvert(objectLongitude);
 
-                Location location = new Location(objectID, doubleLat, doubleLon);
+                Location location = new Location(objectName, doubleLat, doubleLon, info);
 
                 finalLocations.add(location);
             }
@@ -76,14 +101,15 @@ public class Hub {
                 Location endID = finalLocations.get(end);
                 int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
                 Distance d = new Distance(startID, endID, dist);
+
                 distances.add(d);
             }
         }
         return distances;
     }
 
-
     public int greatCirDist(double lat1, double lon1, double lat2, double lon2) {
+
         double r = 3958.7613; //radius of earth in miles
         double phi1 = Math.toRadians(lat1);
         double lam1 = Math.toRadians(lon1);
@@ -162,8 +188,8 @@ public class Hub {
         for (Distance d : distance) {
             JSONObject obj = new JSONObject();
 
-            obj.put("start", d.getStartID().getID());
-            obj.put("end", d.getEndID().getID());
+            obj.put("start", d.getStartID().getName());
+            obj.put("end", d.getEndID().getName());
             obj.put("distance", d.getGcd());
 
             array.add(obj);
