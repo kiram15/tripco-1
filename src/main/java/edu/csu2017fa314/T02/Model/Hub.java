@@ -18,10 +18,10 @@ public class Hub {
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     static ArrayList<Location> kLocations = new ArrayList<Location>();
-    
-  
+
+
     public ArrayList<Distance> readFile(String fileName) {
-	ArrayList<Distance> distances = new ArrayList<Distance>();
+        ArrayList<Distance> distances = new ArrayList<Distance>();
         File file = new File(fileName);
         Scanner scnr;
         try {
@@ -29,7 +29,7 @@ public class Hub {
             if (scnr.hasNextLine()) {
                 String s = scnr.nextLine();
                 s = s.toLowerCase();
-                String [] infoArray = s.split(",");
+                String[] infoArray = s.split(",");
 
                 for (int i = 0; i < infoArray.length; i++) {
                     String infoString = infoArray[i];
@@ -67,11 +67,11 @@ public class Hub {
         }
         return addDistance(distances);
     }
-    
-    public ArrayList<Distance> addDistance(ArrayList<Distance> distances){ //loops through the finalLocations array, calculating gcd between each possible two locations and adding these as distance objects(startID, endID, distance between them) to distances array
-        for(int start = 0; start < finalLocations.size(); start++){
-	    int end = start + 1;
-	    if(end < finalLocations.size()){
+
+    public ArrayList<Distance> addDistance(ArrayList<Distance> distances) { //loops through the finalLocations array, calculating gcd between each possible two locations and adding these as distance objects(startID, endID, distance between them) to distances array
+        for (int start = 0; start < finalLocations.size(); start++) {
+            int end = start + 1;
+            if (end < finalLocations.size()) {
                 Location startID = finalLocations.get(start);
                 Location endID = finalLocations.get(end);
                 int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
@@ -81,74 +81,78 @@ public class Hub {
         }
         return distances;
     }
-  
-    public int greatCirDist(double lat1, double lon1, double lat2, double lon2){
+
+
+    public int greatCirDist(double lat1, double lon1, double lat2, double lon2) {
         double r = 3958.7613; //radius of earth in miles
         double phi1 = Math.toRadians(lat1);
         double lam1 = Math.toRadians(lon1);
         double phi2 = Math.toRadians(lat2);
         double lam2 = Math.toRadians(lon2);
-        double dLam = Math.abs(lam1-lam2);
-        double dTheta = Math.atan(Math.sqrt(Math.pow((Math.cos(phi2)*Math.sin(dLam)),2)+Math.pow((Math.cos(phi1)*Math.sin(phi2)-Math.sin(phi1)*Math.cos(phi2)*Math.cos(dLam)),2))
-                                    / (Math.sin(phi1)*Math.sin(phi2)+Math.cos(phi1)*Math.cos(phi2)*Math.cos(dLam)));
-        double dist = dTheta*r;
-        int gcd = (int)Math.round(dist);
+        double dLam = Math.abs(lam1 - lam2);
+        double dTheta = Math.atan(Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dLam)), 2) + Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dLam)), 2))
+                / (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dLam)));
+        double dist = dTheta * r;
+        int gcd = (int) Math.round(dist);
         return gcd;
     }
-   
-    public double latLonConvert(String s) {
-		String sCopy = s;
-		int end; String symbol;
-		double retVal;
-		ArrayList<Double> values = new ArrayList<>();
-		
-		//in the loops, uses symbol as stopping point, extracts number, adds to arrayList, 
-		//and cuts off remaining, then uses the formula to convert into degrees
 
-		if (s.contains("\"") && s.contains("'")) { // case for 106°49'43.24" W										
-			for (int i = 0; i < 3; i++) {
-				if (i == 0)      { symbol = "°"; }
-				else if (i == 1) { symbol = "'"; }
-				else             { symbol = "\""; }
-				end = sCopy.indexOf(symbol);
-				values.add(Double.parseDouble(sCopy.substring(0, end)));
-				sCopy = sCopy.substring(end + 1);
-			}
-			retVal = (values.get(0) + (values.get(1) / 60) + (values.get(2) / 3600));	
-			if (sCopy.equals("W") || sCopy.equals("S")) {
-				return (retVal*(-1)); 
-			}
-			else {
-				return retVal;
-			}
-		} 
-		else if (s.contains("'")) { // case for 106°49.24' W format
-			for (int i = 0; i < 2; i++) {
-				if (i == 0) { symbol = "°"; }
-				else        { symbol = "'"; }
-				end = sCopy.indexOf(symbol);
-				values.add(Double.parseDouble(sCopy.substring(0, end)));
-				sCopy = sCopy.substring(end + 1);
-			}
-			retVal = (values.get(0) + (values.get(1) / 60));
-			if (sCopy.equals("W") || sCopy.equals("S")) {
-				return (retVal*(-1)); 
-			}
-			else {
-				return retVal;
-			}
-			
-		} 
-		else if (s.contains("°")) { // case for 106.24° format
-			end = sCopy.indexOf("°");
-			return (Double.parseDouble(sCopy.substring(0, end)));
-		} 
-		else { // case for -106.24 format
-			return Double.parseDouble(s);
-		}
-	}
-  
-  //method to write the JSON file
+    public double latLonConvert(String s) {
+        String sCopy = s;
+        int end;
+        String symbol;
+        double retVal;
+        ArrayList<Double> values = new ArrayList<>();
+
+        //in the loops, uses symbol as stopping point, extracts number, adds to arrayList,
+        //and cuts off remaining, then uses the formula to convert into degrees
+
+        if (s.contains("\"") && s.contains("'")) { // case for 106°49'43.24" W
+            for (int i = 0; i < 3; i++) {
+                if (i == 0) {
+                    symbol = "°";
+                } else if (i == 1) {
+                    symbol = "'";
+                } else {
+                    symbol = "\"";
+                }
+                end = sCopy.indexOf(symbol);
+                values.add(Double.parseDouble(sCopy.substring(0, end)));
+                sCopy = sCopy.substring(end + 1);
+            }
+            retVal = (values.get(0) + (values.get(1) / 60) + (values.get(2) / 3600));
+            if (sCopy.equals("W") || sCopy.equals("S")) {
+                return (retVal * (-1));
+            } else {
+                return retVal;
+            }
+        } else if (s.contains("'")) { // case for 106°49.24' W format
+            for (int i = 0; i < 2; i++) {
+                if (i == 0) {
+                    symbol = "°";
+                } else {
+                    symbol = "'";
+                }
+                end = sCopy.indexOf(symbol);
+                values.add(Double.parseDouble(sCopy.substring(0, end)));
+                sCopy = sCopy.substring(end + 1);
+            }
+            retVal = (values.get(0) + (values.get(1) / 60));
+            if (sCopy.equals("W") || sCopy.equals("S")) {
+                return (retVal * (-1));
+            } else {
+                return retVal;
+            }
+
+        } else if (s.contains("°")) { // case for 106.24° format
+            end = sCopy.indexOf("°");
+            return (Double.parseDouble(sCopy.substring(0, end)));
+        } else { // case for -106.24 format
+            return Double.parseDouble(s);
+        }
+    }
+
+    //method to write the JSON file
     public void writeJSON(ArrayList<Distance> distance) {
         //new JSONarray to add all the strings to
         JSONArray array = new JSONArray();
@@ -157,8 +161,8 @@ public class Hub {
         for (Distance d : distance) {
             JSONObject obj = new JSONObject();
 
-            obj.put("start", d.getStartID());
-            obj.put("end", d.getEndID());
+            obj.put("start", d.getStartID().getID());
+            obj.put("end", d.getEndID().getID());
             obj.put("distance", d.getGcd());
 
             array.add(obj);
@@ -171,6 +175,46 @@ public class Hub {
         } catch (IOException e) {
             System.out.print("Error: Cannot write to file" + e);
         }
+    }
+
+    //helper method to compute the shortest itinerary starting from the given Location
+    // param: Location l - starting Location for the itinerary
+    //return value - an ArrayList<Distance> that stores the shortest trip starting from l
+    public ArrayList<Distance> shortestTripFrom(Location l) {
+        //array list to store the shortest itinerary
+        ArrayList<Distance> shortestIt = new ArrayList<Distance>();
+
+        //temp array list of the locations - allows us to remove as we visit
+        ArrayList<Location> tempLoc = finalLocations;
+
+        // stores the current city you are on in the trip
+        Location currentLocation = l;
+
+        while (!tempLoc.isEmpty()) {
+            //remove the current location from tempLoc so it's not comparing to itself
+            tempLoc.remove(currentLocation);
+
+            //compare the current location to every other location and find the shortest distance between them
+            int shortestD = 2000000000;
+            Location closest = null;
+            for (int i = 0; i < tempLoc.size(); i++) {
+                int dist = greatCirDist(currentLocation.getLatitude(), (currentLocation.getLongitude()), tempLoc.get(i).getLatitude(), tempLoc.get(i).getLongitude());
+
+                //if you find a shorter Distance:
+                if (dist < shortestD) {
+                    shortestD = dist;
+                    closest = tempLoc.get(i);
+                }
+            }
+
+            //add a distance object for the shortest distance from current to closest
+            shortestIt.add(new Distance(currentLocation, closest, shortestD));
+
+            //adjust the current Location to be to the closest city
+            currentLocation = closest;
+        }
+
+        return shortestIt;
     }
 
 }
