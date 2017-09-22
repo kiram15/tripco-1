@@ -18,9 +18,6 @@ public class Hub {
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
-    static ArrayList<Location> kLocations = new ArrayList<Location>();
-
-
 
     public ArrayList<Distance> readFile(String fileName) {
         ArrayList<Distance> distances = new ArrayList<Distance>();
@@ -204,44 +201,99 @@ public class Hub {
         }
     }
 
-    //helper method to compute the shortest itinerary starting from the given Location
-    // param: Location l - starting Location for the itinerary
-    //return value - an ArrayList<Distance> that stores the shortest trip starting from l
-    public ArrayList<Distance> shortestTripFrom(Location l) {
-        //array list to store the shortest itinerary
-        ArrayList<Distance> shortestIt = new ArrayList<Distance>();
+    //returns an array list of Distances containing the itinerary for the shortest trip
+    // this is creating the ArrayList that will be passed to writeJSON
+    public ArrayList<Distance> shortestTrip(){
+        //Reference array list that holds all the gcds from all the cities
+        //write a helper method to calculate the gcd's for all of the cities
+        ArrayList<Distance> gcds = calcAllGcds();
 
-        //temp array list of the locations - allows us to remove as we visit
-        ArrayList<Location> tempLoc = finalLocations;
+        //keep track of the city that the shortest trip starts from
+        Location shortestTripStart = finalLocations.get(0);
+        //keep track of the shortest distance
+        int shortestTripDistance = 999999999;
 
-        // stores the current city you are on in the trip
-        Location currentLocation = l;
+        //for each location in the finalLocations array list: picking a starting city
+        for (location l : finalLocations){
+            //set the first city in the finalLocations array list to our current location
+            Location currentLocation = finalLocations.get(l);
+            //temp array list to keep track of the cities we have been to
+            ArrayList<Location> temp = finalLocations;
 
-        while (!tempLoc.isEmpty()) {
-            //remove the current location from tempLoc so it's not comparing to itself
-            tempLoc.remove(currentLocation);
+            int tripDistance = 0;
+            //while there are still more cities to travel to
+            while(!temp.isEmpty()){
+                //remove the currentLocation from the temp array list to signfiy that we have been there
+                temp.remove(currentLocation);
+                //TODO: grab the Distance object from the ArrayList !!!!!!!!!!!!!!!!
+                Distance d =
 
-            //compare the current location to every other location and find the shortest distance between them
-            int shortestD = 2000000000;
-            Location closest = null;
-            for (int i = 0; i < tempLoc.size(); i++) {
-                int dist = greatCirDist(currentLocation.getLatitude(), (currentLocation.getLongitude()), tempLoc.get(i).getLatitude(), tempLoc.get(i).getLongitude());
-
-                //if you find a shorter Distance:
-                if (dist < shortestD) {
-                    shortestD = dist;
-                    closest = tempLoc.get(i);
-                }
+                // add the gcd to the overall trip distance
+                tripDistance += d.getGcd();
+                //reassign the currentLocation to the end city
+                currentLocation = d.getEndID();
             }
 
-            //add a distance object for the shortest distance from current to closest
-            shortestIt.add(new Distance(currentLocation, closest, shortestD));
+            //TODO: add the distance back to the original city
 
-            //adjust the current Location to be to the closest city
-            currentLocation = closest;
+
+            //compare the final distance to the stored shortest distance
+            if(tripDistance < shortestTripDistance){
+                //if the trip was shorter then store distance and starting city
+                shortestTripDistance = gcd;
+                shortestTripStart = l;
+            }
         }
 
-        return shortestIt;
+
+        //recalulate the shortest trip for than one particular city
+        //store in an ArrayList<Distance> to be returned
+        ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
+
+        ArrayList<Location> temp = finalLocations;
+        Location finalL = shortestTripStart;
+
+        //while there are still more cities to travel to
+        while(!temp.isEmpty()){
+            //remove the currentLocation from the temp array list to signfiy that we have been there
+            temp.remove(finalL);
+
+            //TODO: grab the Distance object from gcds !!!!!!!!!!!!!!!!!!
+            Distance finalD = gcds.get()
+
+            //add the distance object to the shortestItinerary array list
+            shortestItinerary.add(finalD);
+
+            //reassign the currentLocation to the end city
+            finalL = finalD.getEndID();
+        }
+
+        //TODO: ADD FROM THE LAST CITY BACK TO THE START CITY
+
+
+        return shortestItinerary;
+    }
+
+    //will return an array list with each city listed once, with the shortest city as its end
+    private ArrayList<Distance> calcAllGcds(){
+        ArrayList<Distance> gcds = new ArrayList<Distance>();
+
+        //for every location, calculate the GCD to every other location
+        for(int i = 0; i < finalLocations.size(); i++){
+            for(int j = 0; j < finalLocations.size(); j++){
+                //do a check to make sure they are not the same index (aka the same location)
+                if(i == j) continue;
+
+                Location startID = finalLocations.get(i);
+                Location endID = finalLocations.get(j);
+                int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
+                Distance d = new Distance(startID, endID, dist);
+
+
+            }
+        }
+
+        return gcds;
     }
 
 }

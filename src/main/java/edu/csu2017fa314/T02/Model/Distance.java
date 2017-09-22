@@ -23,4 +23,22 @@ public class Distance{
       return this.gcd;
   }
 
+  @Override
+  public boolean equals(Object o){
+      if(!(o instanceof Distance)){
+          return false;
+      }
+
+      Distance other = (Distance) o;
+      String startName = startID.getName();
+      String endName = endID.getName();
+      String otherStartName = other.startID.getName();
+      String otherEndName = other.endID.getName();
+
+      if(startName.equals(otherStartName) && endName.equals(otherEndName)){
+          return true;
+      }
+      else return false;
+  }
+
 }
