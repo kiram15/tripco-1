@@ -12,13 +12,13 @@ import org.json.simple.JSONArray;
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.io.IOException;
+import java.util.Set;
 
 public class Hub {
     String[] infoArray;
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
-    static ArrayList<Location> kLocations = new ArrayList<Location>();
 
 
 
@@ -187,10 +187,31 @@ public class Hub {
         //loop through all the distance objects in the distance array
         for (Distance d : distance) {
             JSONObject obj = new JSONObject();
+            JSONObject startObj = new JSONObject();
+            JSONObject endObj = new JSONObject();
+
+            Set<String> startKeys = d.getStartID().getInfoMap().keySet();
+            //startObj.put("start", d.getStartID().getName());
+            startObj.put("latitude", d.getStartID().getLatitude());
+            startObj.put("longitude", d.getStartID().getLongitude());
+            for(String s : startKeys){
+                startObj.put(s, d.getStartID().getInfoMap().get(s));
+            }
+
+            Set<String> endKeys = d.getEndID().getInfoMap().keySet();
+            //endObj.put("end", d.getEndID().getName());
+            endObj.put("latitude", d.getStartID().getLatitude());
+            endObj.put("longitude", d.getStartID().getLongitude());
+            for(String s : endKeys){
+                endObj.put(s, d.getEndID().getInfoMap().get(s));
+            }
 
             obj.put("start", d.getStartID().getName());
             obj.put("end", d.getEndID().getName());
             obj.put("distance", d.getGcd());
+            obj.put("startInfo", startObj);
+            obj.put("endInfo", endObj);
+
 
             array.add(obj);
 

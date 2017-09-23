@@ -39,11 +39,13 @@ export default class App extends React.Component {
             let end = file[i].end; //get end from file i
             let dist = file[i].distance;
             runTotal = runTotal + dist;
+            //let test = file[i].startInfo.elevation; <-- this accesses the nested info
             let p = { //create object with start, end, and dist variable
                 start: start,
                 end: end,
                 dist: dist,
-                total : runTotal
+                total : runTotal,
+                //test : test
             };
             pairs.push(p); //add object to pairs array
             console.log("Pushing pair: ", p); //log to console
