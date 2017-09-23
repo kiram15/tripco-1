@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-let Pair = ({start, end, dist, total, test}) => <tbody
+let Pair = ({start, end, dist, total}) => <tbody
     className="pair">
     <tr>
         <td>
@@ -13,9 +13,6 @@ let Pair = ({start, end, dist, total, test}) => <tbody
         </td>
         <td>
             <h7><center>{total}</center></h7>
-        </td>
-        <td>
-            <h7><center>{test}</center></h7>
         </td>
     </tr>
 </tbody>;
