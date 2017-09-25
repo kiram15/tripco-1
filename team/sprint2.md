@@ -35,7 +35,7 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 :--- | :--- | :--- | :--- | :---
  9/18 | worked on some tests | Write tests for sprint one, look into svg map | Nicole has recruitment until wednesday, exam studying  | Not stressed, feeling decent
  9/21| finished changing ID to name, wrote JUnit tests, fixed master| starting on checkbox filters, psuedo code -> code on Shortest trip | midterm coming up | Feeling good so far
- | | | | 
+ 9/25|Kira/Emerson did a lot of research on the popup/checkboxes but didn't make an progress, added SVG rectangle | redo loops in nearest neighbors, write JUnit tests | Kira is leaving for New Orleans Thursday | feeling a little stressed, but focused
  | | | | 
 
 ## Review
