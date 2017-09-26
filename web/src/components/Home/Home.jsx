@@ -24,6 +24,17 @@ class Home extends React.Component {
                 <div>
                   <button type="submit">Submit</button>
                 </div>
+
+		<div>
+		<svg width="640" height="480" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ 		<!-- Created with SVG-edit - http://svg-edit.googlecode.com/ -->
+ 		<g>
+  		<title>Layer 1</title>
+  		<rect stroke="#000000" id="svg_1" height="138" width="193" y="250" x="350" stroke-width="5" fill="#ffffff"/>
+ 		</g>
+		</svg> 
+		</div>
+
                 <p></p>
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
