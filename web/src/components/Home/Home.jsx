@@ -26,7 +26,7 @@ class Home extends React.Component {
                 </div>
 
 		<div id = "svgCOrectangle">
-		  <svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" width="640" height="480">
+		  <svg xmlns="http://www.w3.org/2000/svg" width="640" height="480">
 		  </svg> 
 		</div>
 
