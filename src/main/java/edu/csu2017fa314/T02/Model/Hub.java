@@ -12,6 +12,9 @@ import org.json.simple.JSONArray;
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Collections;
 
 public class Hub {
     String[] infoArray;
@@ -62,17 +65,14 @@ public class Hub {
                 String objectLatitude = "";
                 String objectLongitude = "";
                 //populates necessary info into variables
-                for(int i = 0; i < props.length; ++i){
+                for (int i = 0; i < props.length; ++i) {
                     if (i == columns.get("name")) {
                         objectName = props[i].trim();
-                    }
-                    else if (i == columns.get("latitude")){
+                    } else if (i == columns.get("latitude")) {
                         objectLatitude = props[i].trim();
-                    }
-                    else if (i == columns.get("longitude")){
+                    } else if (i == columns.get("longitude")) {
                         objectLongitude = props[i].trim();
-                    }
-                    else {
+                    } else {
                         info.put(reverseC.get(i), props[i]);
                     }
                 }
@@ -87,7 +87,8 @@ public class Hub {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return addDistance(distances);
+        //return addDistance(distances);
+        return shortestTrip();
     }
 
     public ArrayList<Distance> addDistance(ArrayList<Distance> distances) { //loops through the finalLocations array, calculating gcd between each possible two locations and adding these as distance objects(startID, endID, distance between them) to distances array
@@ -113,9 +114,9 @@ public class Hub {
         double phi2 = Math.toRadians(lat2);
         double lam2 = Math.toRadians(lon2);
         double dLam = Math.abs(lam1 - lam2);
-        double y = Math.sqrt(Math.pow((Math.cos(phi2)*Math.sin(dLam)),2)+Math.pow((Math.cos(phi1)*Math.sin(phi2)-Math.sin(phi1)*Math.cos(phi2)*Math.cos(dLam)),2));
-        double x = (Math.sin(phi1)*Math.sin(phi2)+Math.cos(phi1)*Math.cos(phi2)*Math.cos(dLam));
-        double dTheta  = Math.atan2(y,x);
+        double y = Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dLam)), 2) + Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dLam)), 2));
+        double x = (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dLam));
+        double dTheta = Math.atan2(y, x);
         double dist = dTheta * r;
         int gcd = (int) Math.round(dist);
         return gcd;
@@ -201,12 +202,10 @@ public class Hub {
         }
     }
 
-    //returns an array list of Distances containing the itinerary for the shortest trip
-    // this is creating the ArrayList that will be passed to writeJSON
-    public ArrayList<Distance> shortestTrip(){
+    public ArrayList<Distance> shortestTrip() {
         //Reference array list that holds all the gcds from all the cities
-        //write a helper method to calculate the gcd's for all of the cities
-        ArrayList<Distance> gcds = calcAllGcds();
+        //helper method to calculate the gcd's for all of the cities
+        HashMap<Location,ArrayList<Distance>> gcds = calcAllGcds();
 
         //keep track of the city that the shortest trip starts from
         Location shortestTripStart = finalLocations.get(0);
@@ -214,83 +213,105 @@ public class Hub {
         int shortestTripDistance = 999999999;
 
         //for each location in the finalLocations array list: picking a starting city
-        for (location l : finalLocations){
+        for (Location l : finalLocations) {
             //set the first city in the finalLocations array list to our current location
-            Location currentLocation = finalLocations.get(l);
+            Location currentLocation = l;
             //temp array list to keep track of the cities we have been to
-            ArrayList<Location> temp = finalLocations;
-
+            ArrayList<Location> traveledTo = new ArrayList<Location>();
+            traveledTo.add(currentLocation);
             int tripDistance = 0;
-            //while there are still more cities to travel to
-            while(!temp.isEmpty()){
-                //remove the currentLocation from the temp array list to signfiy that we have been there
-                temp.remove(currentLocation);
-                //TODO: grab the Distance object from the ArrayList !!!!!!!!!!!!!!!!
-                Distance d =
 
-                // add the gcd to the overall trip distance
-                tripDistance += d.getGcd();
-                //reassign the currentLocation to the end city
-                currentLocation = d.getEndID();
+            //while there are still more cities to travel to
+            while (traveledTo.size() < finalLocations.size()) {
+                //grab the Distance object from the ArrayList
+                ArrayList<Distance> distances = gcds.get(currentLocation);
+                for(int i = 0; i < distances.size(); i++){
+                    Distance d = distances.get(i);
+                    if(!traveledTo.contains(d.getEndID())){
+                        // add the gcd to the overall trip distance
+                        tripDistance += d.getGcd();
+                        //reassign the currentLocation to the end city
+                        currentLocation = d.getEndID();
+                        traveledTo.add(currentLocation);
+                        break;
+                    }
+                }
             }
 
-            //TODO: add the distance back to the original city
+            //add the distance back to the original city
+            //look up current location in the hashmap
+            ArrayList<Distance> backAround = gcds.get(currentLocation);
+
+            //grab the distance from the current city to l
+            //PROBLEM: in temp, currentLocation and L are the same
+            Distance temp = new Distance(currentLocation, l, 5000);
+            tripDistance += backAround.get(backAround.indexOf(temp)).getGcd();
 
 
             //compare the final distance to the stored shortest distance
-            if(tripDistance < shortestTripDistance){
+            if (tripDistance < shortestTripDistance) {
                 //if the trip was shorter then store distance and starting city
-                shortestTripDistance = gcd;
+                shortestTripDistance = tripDistance;
                 shortestTripStart = l;
             }
         }
 
+        //recalulate the shortest trip for than one particular city:
 
-        //recalulate the shortest trip for than one particular city
         //store in an ArrayList<Distance> to be returned
-        ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
+        ArrayList<Distance> shortestIt = new ArrayList<Distance>();
+        //start final trip at the predetermined shortest trip start
+        Location currentLocation = shortestTripStart;
 
-        ArrayList<Location> temp = finalLocations;
-        Location finalL = shortestTripStart;
-
+        ArrayList<Location> traveledToFinal = new ArrayList<Location>();
+        traveledToFinal.add(currentLocation);
         //while there are still more cities to travel to
-        while(!temp.isEmpty()){
-            //remove the currentLocation from the temp array list to signfiy that we have been there
-            temp.remove(finalL);
-
-            //TODO: grab the Distance object from gcds !!!!!!!!!!!!!!!!!!
-            Distance finalD = gcds.get()
-
-            //add the distance object to the shortestItinerary array list
-            shortestItinerary.add(finalD);
-
-            //reassign the currentLocation to the end city
-            finalL = finalD.getEndID();
+        while (traveledToFinal.size() < finalLocations.size()) {
+            //grab the Distance object from the ArrayList
+            ArrayList<Distance> distances = gcds.get(currentLocation);
+            for(int i = 0; i < distances.size(); i++){
+                Distance d = distances.get(i);
+                if(!traveledToFinal.contains(d.getEndID())){
+                    shortestIt.add(d);
+                    //reassign the currentLocation to the end city
+                    currentLocation = d.getEndID();
+                    traveledToFinal.add(currentLocation);
+                    break;
+                }
+            }
         }
 
-        //TODO: ADD FROM THE LAST CITY BACK TO THE START CITY
+        //add the distance back to the original city
+        //look up current location in the hashmap
+        ArrayList<Distance> backAround = gcds.get(currentLocation);
+        //grab the distance from the current city to l
+        Distance temp = new Distance(currentLocation, shortestTripStart, -1);
+        shortestIt.add(temp);
 
-
-        return shortestItinerary;
+        return shortestIt;
     }
 
     //will return an array list with each city listed once, with the shortest city as its end
-    private ArrayList<Distance> calcAllGcds(){
-        ArrayList<Distance> gcds = new ArrayList<Distance>();
+    private HashMap<Location,ArrayList<Distance>> calcAllGcds() {
+        HashMap<Location,ArrayList<Distance>> gcds = new HashMap<Location,ArrayList<Distance>>();
 
         //for every location, calculate the GCD to every other location
-        for(int i = 0; i < finalLocations.size(); i++){
-            for(int j = 0; j < finalLocations.size(); j++){
+        for (int i = 0; i < finalLocations.size(); i++) {
+            //allocate array list for given location in hashmap
+            gcds.put(finalLocations.get(i), new ArrayList<Distance>());
+
+            for (int j = 0; j < finalLocations.size(); j++) {
                 //do a check to make sure they are not the same index (aka the same location)
-                if(i == j) continue;
+                if (i == j) continue;
 
                 Location startID = finalLocations.get(i);
                 Location endID = finalLocations.get(j);
-                int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
+                int dist = greatCirDist((finalLocations.get(i)).getLatitude(), (finalLocations.get(i)).getLongitude(), (finalLocations.get(j)).getLatitude(), (finalLocations.get(j)).getLongitude());
                 Distance d = new Distance(startID, endID, dist);
-
+                gcds.get(finalLocations.get(i)).add(d);
 
             }
+            Collections.sort(gcds.get(finalLocations.get(i)));
         }
 
         return gcds;

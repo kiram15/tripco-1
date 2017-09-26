@@ -1,5 +1,5 @@
 package edu.csu2017fa314.T02.Model;
-public class Distance{
+public class Distance implements Comparable<Distance>{
   
   private Location startID;
   private Location endID;
@@ -40,5 +40,14 @@ public class Distance{
       }
       else return false;
   }
+
+    @Override
+    public int compareTo(Distance other) {
+        return this.gcd - other.gcd;
+    }
+
+    public String toString(){
+      return ("StartID: " + startID.toString() + ", EndID: " + endID.toString() + ", GCD: " + gcd);
+    }
 
 }
