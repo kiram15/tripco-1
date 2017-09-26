@@ -2,14 +2,14 @@ import React from 'react';
 import Home from './Home/Home.jsx';
 import Pair from './Home/Pair/Pair.jsx';
 
-
 export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             allPairs: [],
             sysFile: [],
-            total : 0
+            total : 0,
+            setInfo : []
         }
     };
 
@@ -33,7 +33,9 @@ export default class App extends React.Component {
         console.log("Got file:", file);
         //For loop that goes through all pairs,
         let pairs = [];
+        let info = [];
         let runTotal = 0;
+        info = Object.keys(file[1].startInfo);
         for (let i = 0; i < Object.values(file).length; i++) {
             let start = file[i].start; //get start from file i
             let end = file[i].end; //get end from file i
@@ -48,13 +50,14 @@ export default class App extends React.Component {
             pairs.push(p); //add object to pairs array
             console.log("Pushing pair: ", p); //log to console
         }
+        console.log("Info: ", info);
 
         //Here we will update the state of app.
-        // Anything component (i.e. pairs) referencing it will be re-rendered
         this.setState({
             allPairs: pairs,
             sysFile: file,
-            total : runTotal
+            total : runTotal,
+            setInfo : info
         });
     }
 }
