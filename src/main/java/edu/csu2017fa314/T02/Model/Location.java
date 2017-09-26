@@ -38,6 +38,14 @@ public class Location {
       return this.info.get(key);
   }
 
+  public void setLon(double lon){
+      this.lon = lon;
+  }
+
+  public void setLat(double lat){
+      this.lat = lat;
+  }
+
   public String toString() {
 	    return "Name: '" + this.name + "', Latitude: '" + this.lat + "', Longitude: '" + this.lon;
 	}

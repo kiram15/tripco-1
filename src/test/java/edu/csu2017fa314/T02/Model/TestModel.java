@@ -10,12 +10,16 @@ public class TestModel
 {
     private Model m;
     private Hub h;
+    //private Distance d;
+    private Location L1, L2, L3, L4;
 
     @Before
     public void setUp() throws Exception
     {
         m = new Model();
         h = new Hub();
+        L1 = new Location("test", 37, -102, null);
+        L2 = new Location("test2", 41, -109, null);
     }
 
     @Test
@@ -26,28 +30,44 @@ public class TestModel
 
     @Test
     public void testDiagonalGCD(){
-        assertEquals(466, h.greatCirDist(37, -102, 41, -109));
-        assertEquals(466, h.greatCirDist(41, -109, 37, -102));
+        Distance d = new Distance(L1, L2);
+        assertEquals(466, d.computeGCD(L1, L2));
+        L1.setLat(41);
+        L2.setLat(37);
+        Distance d2 = new Distance(L1, L2);
+        assertEquals(466, d.computeGCD(L1, L2));
     }
 
     @Test
     public void testSameLonGCD(){
-        assertEquals(276, h.greatCirDist(37, -102, 41, -102));
+        L2.setLat(41);
+        L2.setLon(-102);
+        L1.setLat(37);
+        L1.setLon(-102);
+        Distance d = new Distance(L1, L2);
+        assertEquals(276, d.computeGCD(L1, L2));
     }
 
     @Test
     public void testSameLatGCD(){
-        assertEquals(386, h.greatCirDist(37, -102, 37, -109));
+        L1.setLat(37);
+        L2.setLat(37);
+        L1.setLon(-102);
+        L2.setLon(-109);
+        Distance d = new Distance(L1, L2);
+        assertEquals(386, d.computeGCD(L1, L2));
     }
 
     @Test
     public void testSameLocationGCD(){
-        assertEquals(0, h.greatCirDist(37, -102, 37, -102));
+        Distance d = new Distance(L1, L1);
+        assertEquals(0, d.computeGCD(L1, L1));
     }
 
     @Test
     public void testReverseGCD(){
-        assertEquals(h.greatCirDist(37, -102, 41, -109), h.greatCirDist(41, -109, 37, -102));
+        Distance d = new Distance(L1, L2);
+        assertEquals(d.computeGCD(L1, L2), d.computeGCD(L2, L1));
     }
 
 }

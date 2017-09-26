@@ -99,29 +99,13 @@ public class Hub {
             if (end < finalLocations.size()) {
                 Location startID = finalLocations.get(start);
                 Location endID = finalLocations.get(end);
-                int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
-                Distance d = new Distance(startID, endID, dist);
+                //int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
+                Distance d = new Distance(startID, endID);
 
                 distances.add(d);
             }
         }
         return distances;
-    }
-
-    public int greatCirDist(double lat1, double lon1, double lat2, double lon2) {
-
-        double r = 3958.7613; //radius of earth in miles
-        double phi1 = Math.toRadians(lat1);
-        double lam1 = Math.toRadians(lon1);
-        double phi2 = Math.toRadians(lat2);
-        double lam2 = Math.toRadians(lon2);
-        double dLam = Math.abs(lam1 - lam2);
-        double y = Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dLam)), 2) + Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dLam)), 2));
-        double x = (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dLam));
-        double dTheta = Math.atan2(y, x);
-        double dist = dTheta * r;
-        int gcd = (int) Math.round(dist);
-        return gcd;
     }
 
     public double latLonConvert(String s) {
@@ -263,11 +247,12 @@ public class Hub {
 
             //add the distance back to the original city
             //look up current location in the hashmap
+            //what is the point of this????
             ArrayList<Distance> backAround = gcds.get(currentLocation);
 
             //grab the distance from the current city to l
             //PROBLEM: in temp, currentLocation and L are the same
-            Distance temp = new Distance(currentLocation, l, 5000);
+            Distance temp = new Distance(currentLocation, l);
             tripDistance += backAround.get(backAround.indexOf(temp)).getGcd();
 
 
@@ -308,7 +293,7 @@ public class Hub {
         //look up current location in the hashmap
         ArrayList<Distance> backAround = gcds.get(currentLocation);
         //grab the distance from the current city to l
-        Distance temp = new Distance(currentLocation, shortestTripStart, -1);
+        Distance temp = new Distance(currentLocation, shortestTripStart);
         shortestIt.add(temp);
 
         return shortestIt;
@@ -329,8 +314,8 @@ public class Hub {
 
                 Location startID = finalLocations.get(i);
                 Location endID = finalLocations.get(j);
-                int dist = greatCirDist((finalLocations.get(i)).getLatitude(), (finalLocations.get(i)).getLongitude(), (finalLocations.get(j)).getLatitude(), (finalLocations.get(j)).getLongitude());
-                Distance d = new Distance(startID, endID, dist);
+                //int dist = greatCirDist((finalLocations.get(i)).getLatitude(), (finalLocations.get(i)).getLongitude(), (finalLocations.get(j)).getLatitude(), (finalLocations.get(j)).getLongitude());
+                Distance d = new Distance(startID, endID);
                 gcds.get(finalLocations.get(i)).add(d);
 
             }
