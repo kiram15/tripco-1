@@ -24,9 +24,6 @@ class Home extends React.Component {
                 <div>
                   <button type="submit">Submit</button>
                 </div>
-                <div>
-                  <button type="Show Trip">ShowTrip</button>
-                </div>
                 <p></p>
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
