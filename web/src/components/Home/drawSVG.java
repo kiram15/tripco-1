@@ -29,14 +29,14 @@ public class drawSVG {
                 "</svg>");
 
         //draw lines from start to end locations
-        for(l : finalLocations){ //needs to be adjusted to loop through and get each start --> end pair
+        for(d : shortestItinerary){ //needs to be adjusted to loop through and get each start --> end pair
             unitHeight = 195.7706; //COmap height/4
             unitWidth = 152.3724714; //COmap width/7
 
-            startLat = l.getLat();
-            startLon = l.getLon();
-            endLat = l.getLat();
-            endLon = l.getLon();
+            startLat = d.getStartID().getLatitude();
+            startLon = d.getStartID().getLongitude();
+            endLat = d.getEndID().getLatitude();
+            endLon = d.getEndID().getLongitude();
 
             x1 = (startLon + 109) * unitHeight) + 38;
             y1 = (startLat - 41) * unitWidth) + 38;
