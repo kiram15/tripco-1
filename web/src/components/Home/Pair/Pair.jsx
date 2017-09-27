@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 let Pair = ({start, end, dist, total}) => <tbody
     className="pair">
     <tr>

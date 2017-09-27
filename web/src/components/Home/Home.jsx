@@ -1,33 +1,48 @@
 import React, {Component} from 'react';
 import Dropzone from 'react-dropzone'
+import Select from 'react-select'
 
 class Home extends React.Component {
+    logChange(val) {
+        console.log("Selected: " + val);
+    }
     render() {
+        //LOOP THROUGH
+        var options = [];
+        for (var i = 0; i < (this.props.columns.length); i++) {
+            var ob = new Object();
+            ob.value=this.props.columns[i];
+            ob.label=this.props.columns[i];
+            options.push(ob);
+        }
+
         let total = this.props.totalDist; //update the total here
         return <div className="home-container">
             <div className="inner">
-		<h2>T02 NEKA</h2>
+
+      <h2>T02 NEKA</h2>
                 <h3>Itinerary</h3>
-                <h4>Select Preferences</h4>
-                <div>
-                  <input type="checkbox" id="IDCheck" name="preference" value="ID"></input>
-                  <label for="IDCheck">ID</label>
-                </div>
-                <div>
-                  <input type="checkbox" id="LatCheck" name="preference" value="Lat"></input>
-                  <label for="LatCheck">Latitude</label>
-                 </div>
-                 <div>
-                  <input type="checkbox" id="LonCheck" name="preference" value="Lon"></input>
-                  <label for="LonCheck">Longitude</label>
-                </div>
-                <div>
-                  <button type="submit">Submit</button>
-                </div>
                 <p></p>
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
                 </Dropzone>
+                <p></p>
+
+                <div className = "select-value">
+                    <h4 className="section-heading">Choose Preferences</h4>
+                    <Select
+                        name="form-field-name"
+                        options={options}
+                        onChange={this.logChange}
+                        simpleValue = {true}
+                        closeOnSelect = {false}
+                        multi={true}
+                        searchable = {false}
+                        backspaceToRemoveMethod=""
+                    />
+                </div>
+
+                <p></p>
                 <table className="pair-table">
                     <tr>
                         <td><h8><b> Start Name </b></h8></td>
