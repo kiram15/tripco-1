@@ -29,7 +29,7 @@ class Home extends React.Component {
 		  <svg xmlns="http://www.w3.org/2000/svg" width="640" height="480">
  		    <g>
   		      <title>Layer 1</title>
-  		      <rect stroke="#000000" id="svg_1" height="783.0824" width="1066.6073" y="250" x="350" stroke-width="5" fill="#ffffff"/>
+  		      <rect stroke="#000000" id="svg_1" height="783.0824" width="1066.6073" y="25" x="35" stroke-width="5" fill="#ffffff"/>
 		    </g>
 		  </svg> 
 		</div>
