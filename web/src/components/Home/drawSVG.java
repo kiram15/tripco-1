@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class drawSVG {
     public static void main(String args[]) {
+
         //create printWriter to CoMapTripCo svg
         File file = new File("CoMapTripCo.svg");
         file.getParentFile().mkdirs();
@@ -20,6 +21,7 @@ public class drawSVG {
                 pw.println(line);
             }
         }
+
         //draw borders
         pw.println("<svg width=\"1066.6073\" height=\"783.0824000000003\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\">\n" +
                 " <g>\n" +
