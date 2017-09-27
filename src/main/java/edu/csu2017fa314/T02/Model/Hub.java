@@ -23,6 +23,7 @@ public class Hub {
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
+    ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
     public ArrayList<Distance> readFile(String fileName) {
         ArrayList<Distance> distances = new ArrayList<Distance>();
@@ -295,6 +296,8 @@ public class Hub {
         //grab the distance from the current city to l
         Distance temp = new Distance(currentLocation, shortestTripStart);
         shortestIt.add(temp);
+
+        shortestItinerary = shortestIt;
 
         return shortestIt;
     }
