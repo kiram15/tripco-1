@@ -1,5 +1,11 @@
 import jdk.internal.util.xml.impl.Input;
 import java.io.*;
+import edu.csu2017cs314.T02;
+import edu.csu2017cs314.T02.Model.Distance;
+import edu.csu2017cs314.T02.Model.Location;
+import edu.csu2017cs314.T02.Model.Hub;
+import java.util.ArrayList;
+
 
 public class drawSVG {
     public static void main(String args[]) {
@@ -26,10 +32,12 @@ public class drawSVG {
         for(l : finalLocations){ //needs to be adjusted to loop through and get each start --> end pair
             unitHeight = 195.7706; //COmap height/4
             unitWidth = 152.3724714; //COmap width/7
+
             startLat = l.getLat();
             startLon = l.getLon();
             endLat = l.getLat();
             endLon = l.getLon();
+
             x1 = (startLon + 109) * unitHeight) + 38;
             y1 = (startLat - 41) * unitWidth) + 38;
             x2 = (endLon + 109) * unitHeight) + 38;
