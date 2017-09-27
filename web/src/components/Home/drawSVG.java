@@ -14,7 +14,8 @@ public class drawSVG {
         File file = new File("CoMapTripCo.svg");
         file.getParentFile().mkdirs();
         PrintWriter pw = new PrintWriter(file);
-        //copy COmap svg into CoMapTripCo svg
+
+        copy COmap svg into CoMapTripCo svg
         try(BufferedReader br = new BufferedReader(new FileReader("COmap.svg"))){
             String line;
             while ((line = br.readLine()) != null){
@@ -26,7 +27,7 @@ public class drawSVG {
         pw.println("<svg width=\"1066.6073\" height=\"783.0824000000003\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\">\n" +
                 " <g>\n" +
                 "  <title>Layer 1</title>\n" +
-                "  <rect id=\"svg_1\" height=\"793.0824\" width=\"1076.6073\" y=\"265.9176\" x=\"235.3927\" stroke-linecap=\"null\" stroke-linejoin=\"null\" stroke-dasharray=\"null\" stroke-width=\"3\" stroke=\"#000000\" fill=\"none\"/>\n" +
+                "  <rect id=\"svg_1\" height=\"793.0824\" width=\"1076.6073\" y=\"-5\" x=\"-5\" stroke-linecap=\"null\" stroke-linejoin=\"null\" stroke-dasharray=\"null\" stroke-width=\"3\" stroke=\"#000000\" fill=\"none\"/>\n" +
                 " </g>\n" +
                 "</svg>");
 
