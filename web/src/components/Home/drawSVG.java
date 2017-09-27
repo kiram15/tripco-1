@@ -5,6 +5,7 @@ import edu.csu2017cs314.T02.Model.Distance;
 import edu.csu2017cs314.T02.Model.Location;
 import edu.csu2017cs314.T02.Model.Hub;
 import java.util.ArrayList;
+import java.util.LinkedList
 
 
 public class drawSVG {
@@ -15,29 +16,29 @@ public class drawSVG {
         file.getParentFile().mkdirs();
         PrintWriter pw = new PrintWriter(file);
 
-        copy COmap svg into CoMapTripCo svg
+        //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
+        int stripLines = 2;
+        LinkedList<String> ll = new LinkedList<String> ();
         try(BufferedReader br = new BufferedReader(new FileReader("COmap.svg"))){
             String line;
             while ((line = br.readLine()) != null){
-                pw.println(line);
+                ll.addLast(line);
+                if (ll.size () > stripLines) {
+                    pw.println(lli.removeFirst());
+                }
             }
         }
 
         //draw borders
-        pw.println("<svg width=\"1066.6073\" height=\"783.0824000000003\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\">\n" +
-                " <g>\n" +
-                "  <title>Layer 1</title>\n" +
-                "  <rect id=\"svg_1\" height=\"793.0824\" width=\"1076.6073\" y=\"-5\" x=\"-5\" stroke-linecap=\"null\" stroke-linejoin=\"null\" stroke-dasharray=\"null\" stroke-width=\"3\" stroke=\"#000000\" fill=\"none\"/>\n" +
-                " </g>\n" +
-                "</svg>");
+        pw.println("  <rect fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x=\"-5\" y=\"-5\" width=\"1076.6073\" height=\"793.0824\" id=\"svg_2\"/>");
 
+        //draw lines from start to end locations
         double originStartLat = 0.0;
         double originStartLon = 0.0;
         double finalEndLat = 0.0;
         double finalEndLon = 0.0;
         bool first = false;
-        //draw lines from start to end locations
-        for(d : shortestItinerary){ //needs to be adjusted to loop through and get each start --> end pair
+        for(d : shortestItinerary){
             unitHeight = 195.7706; //COmap height/4
             unitWidth = 152.3724714; //COmap width/7
             if(!first){
@@ -57,12 +58,7 @@ public class drawSVG {
             y1 = (startLat - 41) * unitWidth) + 38;
             x2 = (endLon + 109) * unitHeight) + 38;
             y2 = (endLat - 41) * unitWidth) + 38;
-            pw.println("<svg width=\"1066.6073\" height=\"783.0824000000003\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\">\n" +
-                    " <g>\n" +
-                    "  <title>Layer 1</title>\n" +
-                    "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>\n" +
-                    " </g>\n" +
-                    "</svg>");
+            pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>");
         }
 
         //draw last line connected end point with start
@@ -71,14 +67,11 @@ public class drawSVG {
         endX2 = (originStartLon + 109) * unitHeight) + 38;
         endY2 = (originStartLat - 41) * unitWidth) + 38;
 
-        pw.println("<svg width=\"1066.6073\" height=\"783.0824000000003\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\">\n" +
-                " <g>\n" +
-                "  <title>Layer 1</title>\n" +
-                "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>\n" +
-                " </g>\n" +
-                "</svg>");
+        pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>");
 
+        pw.println(" </g>\n" + "</svg>");
 
+        pw.close();
     }
 
 
