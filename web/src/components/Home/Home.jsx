@@ -3,11 +3,19 @@ import Dropzone from 'react-dropzone'
 import Select from 'react-select'
 
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            allPairs: [],
+            sysFile: [],
+            total : 0,
+            setInfo : []
+        }
+    };
     logChange(val) {
         console.log("Selected: " + val);
     }
     render() {
-        //LOOP THROUGH
         var options = [];
         for (var i = 0; i < (this.props.columns.length); i++) {
             var ob = new Object();
@@ -28,8 +36,8 @@ class Home extends React.Component {
                 </Dropzone>
                 <p></p>
 
+                <h3 className="section-heading">Choose Preferences</h3>
                 <div className = "select-value">
-                    <h4 className="section-heading">Choose Preferences</h4>
                     <Select
                         name="form-field-name"
                         options={options}
