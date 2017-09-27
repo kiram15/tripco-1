@@ -34,9 +34,9 @@ class Home extends React.Component {
 		  </svg> 
 		</div>
 
+		<div>
+		</div>
                 <p></p>
-		<p></p>
-		<p></p>
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
                 </Dropzone>
