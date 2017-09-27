@@ -29,13 +29,11 @@ class Home extends React.Component {
 		  <svg xmlns="http://www.w3.org/2000/svg" width="640" height="480">
  		    <g>
   		      <title>Layer 1</title>
-  		      <rect stroke="#000000" id="svg_1" height="783.0824" width="1066.6073" y="25" x="25" stroke-width="5" fill="#ffffff"/>
+  		      <rect stroke="#000000" id="svg_1" height="391.5412" width="533.30365" y="25" x="25" stroke-width="5" fill="#ffffff"/>
 		    </g>
 		  </svg> 
 		</div>
 
-		<div>
-		</div>
                 <p></p>
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
