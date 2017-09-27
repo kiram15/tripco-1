@@ -1,12 +1,7 @@
 import jdk.internal.util.xml.impl.Input;
-
 import java.io.*;
 
 public class drawSVG {
-
-
-
-
     public static void main(String args[]) {
         //create printWriter to CoMapTripCo svg
         File file = new File("CoMapTripCo.svg");
@@ -20,6 +15,8 @@ public class drawSVG {
             }
         }
         for(l : finalLocations){ //needs to be adjusted to loop through and get each start --> end pair
+            unitHeight = 195.7706; //COmap height/4
+            unitWidth = 152.3724714; //COmap width/7
             startLat = l.getLat();
             startLon = l.getLon();
             endLat = l.getLat();
