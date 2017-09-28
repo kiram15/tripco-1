@@ -340,7 +340,7 @@ public class Hub {
             //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
             int stripLines = 2;
             LinkedList<String> ll = new LinkedList<String> ();
-            BufferedReader br = new BufferedReader(new FileReader(COmap)));
+            BufferedReader br = new BufferedReader(new FileReader(COmap));
                 String line;
                 while ((line = br.readLine()) != null){
                     ll.addLast(line);
