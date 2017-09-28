@@ -358,16 +358,32 @@ public class Hub {
                 double endLat = d.getEndID().getLatitude();
                 double endLon = d.getEndID().getLongitude();
 
+                //absVal of lat/lons
+                startLat = Math.abs(startLat);
+                startLon = Math.abs(startLon);
+                endLat = Math.abs(endLat);
+                endLon = Math.abs(endLon);
+
                 finalEndLat = d.getEndID().getLatitude();
                 finalEndLon = d.getEndID().getLongitude();
 
                 double x1 = ((109 - startLon) * unitWidth) + 10;
+                System.out.println("x1 startLon: " + startLon);
+                System.out.println("x1: " + x1);
                 double y1 = ((41 - startLat) * unitHeight) + 10;
                 double x2 = ((109 - endLon) * unitWidth) + 10;
+                System.out.println("x2 endLon: " + endLon);
+                System.out.println("x2: " + x2);
                 double y2 = ((41 - endLat) * unitHeight) + 10;
                 pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>");
                 pw.flush();
             }
+
+            //absVal of lat/lons
+            finalEndLat = Math.abs(finalEndLat);
+            finalEndLon = Math.abs(finalEndLon);
+            originStartLat = Math.abs(originStartLat);
+            originStartLon = Math.abs(originStartLon);
 
             //draw last line connected end point with start
             double endX1 = ((109 - finalEndLon) * unitWidth) + 10;
