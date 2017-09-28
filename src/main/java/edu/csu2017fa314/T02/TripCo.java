@@ -32,7 +32,9 @@ public class TripCo {
 
       //call the method to read the csv file from command line/compute distances
       //method will return the array list to be passed to the writeJSON method
-      ArrayList<Distance> distances = h.readFile(args[0]);
+      h.readFile(args[0]);
+
+      ArrayList<Distance> distances = h.shortestTrip();
 
       //call method to write the JSON file
       h.writeJSON(distances);

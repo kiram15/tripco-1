@@ -48,5 +48,7 @@ public class Location {
 
   public String toString() {
 	    return "Name: '" + this.name + "', Latitude: '" + this.lat + "', Longitude: '" + this.lon;
-	}
+  }
+
+
 }
