@@ -310,33 +310,28 @@ public class Hub {
 
     public void drawSVG(String COmap) throws FileNotFoundException{
         //create printWriter to CoMapTripCo svg
-
         try {
             PrintWriter pw = new PrintWriter(new File("COmapTripCo.svg"));
             //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
-//            LinkedList<String> ll = new LinkedList<String> ();
-//            try{
-//                Scanner br = new Scanner(new File(COmap));
-//                String line;
-//                while(br.hasNext()) {
-//                    line = br.nextLine();
-//                    ll.addLast(line);
-//                }
-//                for(int i = 0; i < (ll.size()-3); i++) {
-//                    pw.println(ll.removeFirst());
-//                }
-//                br.close();
-//            }catch(IOException e){
-//                System.out.println("ERROR: FAILED");
-//                System.exit(0);
-//            }
+            LinkedList<String> ll = new LinkedList<String>();
+            try{
+                Scanner br = new Scanner(new File(COmap));
+                String line;
+                while(br.hasNext()) {
+                    line = br.nextLine();
+                    ll.addLast(line);
+                }
+                for(int i = 0; i < (ll.size()-3); i++){
+                    pw.println(ll.get(i));
+                    pw.flush();
+                }
+                br.close();
+            }catch(IOException e){
+                System.out.println("ERROR: FAILED");
+                System.exit(0);
+            }
 
-            pw.println("<svg width=\"1066.6073\" height=\"783.0824\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\">");
-            pw.println(" <title>Layer 1</title>");
-            pw.println("<g>");
-
-            //draw borders
-            pw.println("  <rect fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x=\"10\" y=\"10\" width=\"799.955475\" height=\"587.3118\" id=\"svg_2\"/>");
+            pw.println("</g>");
 
             //draw lines from start to end locations
             double originStartLat = 0.0;
@@ -344,8 +339,8 @@ public class Hub {
             double finalEndLat = 0.0;
             double finalEndLon = 0.0;
             boolean first = false;
-            double unitHeight = 146.82795; //COmap height/4
-            double unitWidth = 114.279354; //COmap width/7
+            double unitHeight = 176.7706; //COmap height-(38*2)/4
+            double unitWidth = 141.515329; //COmap width-(38*2)/7
 
             for(Distance d : shortestItinerary){
                 if(!first){
@@ -367,10 +362,10 @@ public class Hub {
                 finalEndLat = d.getEndID().getLatitude();
                 finalEndLon = d.getEndID().getLongitude();
 
-                double x1 = ((109 - startLon) * unitWidth) + 10;
-                double y1 = ((41 - startLat) * unitHeight) + 10;
-                double x2 = ((109 - endLon) * unitWidth) + 10;
-                double y2 = ((41 - endLat) * unitHeight) + 10;
+                double x1 = ((109 - startLon) * unitWidth) + 38;
+                double y1 = ((41 - startLat) * unitHeight) + 38;
+                double x2 = ((109 - endLon) * unitWidth) + 38;
+                double y2 = ((41 - endLat) * unitHeight) + 38;
                 pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>");
                 pw.flush();
             }
@@ -382,15 +377,15 @@ public class Hub {
             originStartLon = Math.abs(originStartLon);
 
             //draw last line connected end point with start
-            double endX1 = ((109 - finalEndLon) * unitWidth) + 10;
-            double endY1 = ((41 - finalEndLat) * unitHeight) + 10;
-            double endX2 = ((109 - originStartLon) * unitWidth) + 10;
-            double endY2 = ((41 - originStartLat) * unitHeight) + 10;
+            double endX1 = ((109 - finalEndLon) * unitWidth) + 38;
+            double endY1 = ((41 - finalEndLat) * unitHeight) + 38;
+            double endX2 = ((109 - originStartLon) * unitWidth) + 38;
+            double endY2 = ((41 - originStartLat) * unitHeight) + 38;
             pw.flush();
 
             pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>");
-
-            pw.println(" </g>\n" + "</svg>");
+            
+            pw.println("</svg>");
 
             pw.close();
 
