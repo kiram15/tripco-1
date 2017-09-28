@@ -12,8 +12,15 @@ class Home extends React.Component {
     logChange(val) {
         if (this.state.selColumns.indexOf(val) == -1) {
             this.state.selColumns.push(val);
+            console.log("Selected: ", this.state.selColumns);
         }
-        console.log("Selected: " + this.state.selColumns);
+        else {
+            var inVal = this.state.selColumns.indexOf(val);
+            this.state.selColumns.splice(inVal, 1);
+            console.log("DeSelected: ", val);
+            console.log("Selections now: ", this.state.selColumns);
+        }
+
     }
     render() {
         var options = [];
