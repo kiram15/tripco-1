@@ -3,6 +3,7 @@ import edu.csu2017fa314.T02.Model.Distance;
 import edu.csu2017fa314.T02.Model.Hub;
 import edu.csu2017fa314.T02.Model.Location;
 import java.util.ArrayList;
+import java.io.IOException;
 
 public class TripCo {
 
@@ -36,8 +37,17 @@ public class TripCo {
 
       ArrayList<Distance> distances = h.shortestTrip();
 
+
       //call method to write the JSON file
       h.writeJSON(distances);
       //will now have a JSON file in root directory called Itinerary.json that can be uploaded to the web app
+
+      try {
+         //test drawsvg method
+         h.drawSVG(args[1]);
+      } catch (IOException e){
+         System.exit(0);
+      }
+
    }
 }
