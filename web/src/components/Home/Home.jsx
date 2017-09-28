@@ -6,14 +6,14 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            allPairs: [],
-            sysFile: [],
-            total : 0,
-            setInfo : []
+            selColumns : []
         }
-    };
+    }
     logChange(val) {
-        console.log("Selected: " + val);
+        if (this.state.selColumns.indexOf(val) == -1) {
+            this.state.selColumns.push(val);
+        }
+        console.log("Selected: " + this.state.selColumns);
     }
     render() {
         var options = [];
@@ -41,7 +41,7 @@ class Home extends React.Component {
                     <Select
                         name="form-field-name"
                         options={options}
-                        onChange={this.logChange}
+                        onChange={this.logChange.bind(this)}
                         simpleValue = {true}
                         closeOnSelect = {false}
                         multi={true}
