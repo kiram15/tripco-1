@@ -308,28 +308,35 @@ public class Hub {
         return gcds;
     }
 
-    private void drawSVG(String COmap) throws FileNotFoundException{
+    public void drawSVG(String COmap) throws FileNotFoundException{
         //create printWriter to CoMapTripCo svg
-        File file = new File("CoMapTripCo.svg");
-        file.getParentFile().mkdirs();
+
         try {
-            PrintWriter pw = new PrintWriter(file);
+            PrintWriter pw = new PrintWriter(new File("COmapTripCo.svg"));
             //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
-            int stripLines = 2;
-            LinkedList<String> ll = new LinkedList<String> ();
-            try{
-            BufferedReader br = new BufferedReader(new FileReader(COmap));
-                String line;
-                while((line = br.readLine()) != null){
-                    ll.addLast(line);
-                    if (ll.size() > stripLines){
-                        pw.println(ll.removeFirst());
-                    }
-                }
-            }catch(IOException e){}
+//            LinkedList<String> ll = new LinkedList<String> ();
+//            try{
+//                Scanner br = new Scanner(new File(COmap));
+//                String line;
+//                while(br.hasNext()) {
+//                    line = br.nextLine();
+//                    ll.addLast(line);
+//                }
+//                for(int i = 0; i < (ll.size()-3); i++) {
+//                    pw.println(ll.removeFirst());
+//                }
+//                br.close();
+//            }catch(IOException e){
+//                System.out.println("ERROR: FAILED");
+//                System.exit(0);
+//            }
+
+            pw.println("<svg width=\"1066.6073\" height=\"783.0824\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\">");
+            pw.println(" <title>Layer 1</title>");
+            pw.println("<g>");
 
             //draw borders
-            pw.println("  <rect fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x=\"-5\" y=\"-5\" width=\"1076.6073\" height=\"793.0824\" id=\"svg_2\"/>");
+            pw.println("  <rect fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x=\"0\" y=\"0\" width=\"533.30365\" height=\"391.5412\" id=\"svg_2\"/>");
 
             //draw lines from start to end locations
             double originStartLat = 0.0;
@@ -371,8 +378,12 @@ public class Hub {
 
             pw.println(" </g>\n" + "</svg>");
 
+            pw.close();
 
-        }catch(FileNotFoundException e){}
+        }catch(FileNotFoundException e){
+            System.out.println("Error: File not found");
+            System.exit(0);
+        }
 
     }
 

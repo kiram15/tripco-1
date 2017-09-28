@@ -57,7 +57,7 @@ class Home extends React.Component {
                     </tbody>
                 </table>
                 <p></p>
-                <Dropzone className="dropzone-style" onDrop={this.dropSVG.bind(this)}>
+                <Dropzone className="dropzone" onDrop={this.dropSVG.bind(this)}>
                     <button>Open SVG Image</button>
                 </Dropzone>
                 {displaySVG}
