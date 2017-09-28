@@ -38,7 +38,7 @@ public class drawSVG {
         double finalEndLat = 0.0;
         double finalEndLon = 0.0;
         bool first = false;
-        for(d : shortestItinerary){
+        for(Distance d : shortestItinerary){
             unitHeight = 195.7706; //COmap height/4
             unitWidth = 152.3724714; //COmap width/7
             if(!first){
