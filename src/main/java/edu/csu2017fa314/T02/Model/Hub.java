@@ -340,14 +340,16 @@ public class Hub {
             //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
             int stripLines = 2;
             LinkedList<String> ll = new LinkedList<String> ();
+            try{
             BufferedReader br = new BufferedReader(new FileReader(COmap));
                 String line;
-                while ((line = br.readLine()) != null){
+                while((line = br.readLine()) != null){
                     ll.addLast(line);
-                    if (ll.size () > stripLines){
+                    if (ll.size() > stripLines){
                         pw.println(ll.removeFirst());
                     }
                 }
+            }catch(IOException e){}
 
             //draw borders
             pw.println("  <rect fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x=\"-5\" y=\"-5\" width=\"1076.6073\" height=\"793.0824\" id=\"svg_2\"/>");
