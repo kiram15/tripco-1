@@ -331,11 +331,14 @@ public class Hub {
         return gcds;
     }
 
-    private void drawSVG(String COmap){
+    private void drawSVG(String COmap) throws FileNotFoundException{
         //create printWriter to CoMapTripCo svg
         File file = new File("CoMapTripCo.svg");
         file.getParentFile().mkdirs();
-        PrintWriter pw = new PrintWriter(file);
+        try {
+            PrintWriter pw = new PrintWriter(file);
+        }catch(FileNotFoundException e){
+        }
 
         //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
         int stripLines = 2;
@@ -348,7 +351,7 @@ public class Hub {
                     pw.println(ll.removeFirst());
                 }
             }
-        }
+        }catch(FileNotFoundException e){}
 
         //draw borders
         pw.println("  <rect fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x=\"-5\" y=\"-5\" width=\"1076.6073\" height=\"793.0824\" id=\"svg_2\"/>");
@@ -392,8 +395,6 @@ public class Hub {
         pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>");
 
         pw.println(" </g>\n" + "</svg>");
-
-        pw.close();
     }
 
 }
