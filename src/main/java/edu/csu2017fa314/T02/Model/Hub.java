@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
 import java.util.Set;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 
 public class Hub {
@@ -343,7 +345,7 @@ public class Hub {
             while ((line = br.readLine()) != null){
                 ll.addLast(line);
                 if (ll.size () > stripLines){
-                    pw.println(lli.removeFirst());
+                    pw.println(ll.removeFirst());
                 }
             }
         }
@@ -357,9 +359,10 @@ public class Hub {
         double finalEndLat = 0.0;
         double finalEndLon = 0.0;
         boolean first = false;
+        double unitHeight = 195.7706; //COmap height/4
+        double unitWidth = 152.3724714; //COmap width/7
+
         for(Distance d : shortestItinerary){
-            double unitHeight = 195.7706; //COmap height/4
-            double unitWidth = 152.3724714; //COmap width/7
             if(!first){
                 originStartLat = d.getStartID().getLatitude();
                 originStartLon = d.getStartID().getLongitude();

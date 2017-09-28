@@ -5,11 +5,14 @@ import edu.csu2017cs314.T02.Model.Distance;
 import edu.csu2017cs314.T02.Model.Location;
 import edu.csu2017cs314.T02.Model.Hub;
 import java.util.ArrayList;
-import java.util.LinkedList
+import java.util.LinkedList;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 
 public class drawSVG {
     public static void main(String args[]) {
+
         //create printWriter to CoMapTripCo svg
         File file = new File("CoMapTripCo.svg");
         file.getParentFile().mkdirs();
@@ -23,7 +26,7 @@ public class drawSVG {
             while ((line = br.readLine()) != null){
                 ll.addLast(line);
                 if (ll.size () > stripLines){
-                    pw.println(lli.removeFirst());
+                    pw.println(ll.removeFirst());
                 }
             }
         }
@@ -37,9 +40,10 @@ public class drawSVG {
         double finalEndLat = 0.0;
         double finalEndLon = 0.0;
         boolean first = false;
+        double unitHeight = 195.7706; //COmap height/4
+        double unitWidth = 152.3724714; //COmap width/7
+
         for(Distance d : shortestItinerary){
-            double unitHeight = 195.7706; //COmap height/4
-            double unitWidth = 152.3724714; //COmap width/7
             if(!first){
                 originStartLat = d.getStartID().getLatitude();
                 originStartLon = d.getStartID().getLongitude();
