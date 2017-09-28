@@ -28,7 +28,7 @@ public class Hub {
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
-    public ArrayList<Distance> readFile(String fileName) {
+    public void readFile(String fileName) {
         ArrayList<Distance> distances = new ArrayList<Distance>();
         File file = new File(fileName);
         Scanner scnr;
@@ -93,23 +93,6 @@ public class Hub {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        //return addDistance(distances);
-        return shortestTrip();
-    }
-
-    public ArrayList<Distance> addDistance(ArrayList<Distance> distances) { //loops through the finalLocations array, calculating gcd between each possible two locations and adding these as distance objects(startID, endID, distance between them) to distances array
-        for (int start = 0; start < finalLocations.size(); start++) {
-            int end = start + 1;
-            if (end < finalLocations.size()) {
-                Location startID = finalLocations.get(start);
-                Location endID = finalLocations.get(end);
-                //int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
-                Distance d = new Distance(startID, endID);
-
-                distances.add(d);
-            }
-        }
-        return distances;
     }
 
     public double latLonConvert(String s) {
@@ -251,14 +234,11 @@ public class Hub {
 
             //add the distance back to the original city
             //look up current location in the hashmap
-            //what is the point of this????
             ArrayList<Distance> backAround = gcds.get(currentLocation);
 
             //grab the distance from the current city to l
-            //PROBLEM: in temp, currentLocation and L are the same
             Distance temp = new Distance(currentLocation, l);
             tripDistance += backAround.get(backAround.indexOf(temp)).getGcd();
-
 
             //compare the final distance to the stored shortest distance
             if (tripDistance < shortestTripDistance) {
@@ -269,7 +249,6 @@ public class Hub {
         }
 
         //recalulate the shortest trip for than one particular city:
-
         //store in an ArrayList<Distance> to be returned
         ArrayList<Distance> shortestIt = new ArrayList<Distance>();
         //start final trip at the predetermined shortest trip start
@@ -295,11 +274,10 @@ public class Hub {
 
         //add the distance back to the original city
         //look up current location in the hashmap
-        ArrayList<Distance> backAround = gcds.get(currentLocation);
+
         //grab the distance from the current city to l
         Distance temp = new Distance(currentLocation, shortestTripStart);
         shortestIt.add(temp);
-
         shortestItinerary = shortestIt;
 
         return shortestIt;
@@ -320,7 +298,6 @@ public class Hub {
 
                 Location startID = finalLocations.get(i);
                 Location endID = finalLocations.get(j);
-                //int dist = greatCirDist((finalLocations.get(i)).getLatitude(), (finalLocations.get(i)).getLongitude(), (finalLocations.get(j)).getLatitude(), (finalLocations.get(j)).getLongitude());
                 Distance d = new Distance(startID, endID);
                 gcds.get(finalLocations.get(i)).add(d);
 
