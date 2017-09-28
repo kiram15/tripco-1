@@ -354,19 +354,14 @@ public class Hub {
                     first = true;
                 }
                 double startLat = d.getStartID().getLatitude();
-                System.out.println("startLat: " + startLat);
                 double startLon = d.getStartID().getLongitude();
-                System.out.println("startLon: " + startLon);
                 double endLat = d.getEndID().getLatitude();
-                System.out.println("endLat: " + endLat);
                 double endLon = d.getEndID().getLongitude();
-                System.out.println("endLon: " + endLon);
 
                 finalEndLat = d.getEndID().getLatitude();
                 finalEndLon = d.getEndID().getLongitude();
 
                 double x1 = ((109 - startLon) * unitWidth) + 10;
-                System.out.println("JAVA x1: " + x1);
                 double y1 = ((41 - startLat) * unitHeight) + 10;
                 double x2 = ((109 - endLon) * unitWidth) + 10;
                 double y2 = ((41 - endLat) * unitHeight) + 10;
