@@ -41,18 +41,26 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 ## Review
 
 #### Completed user stories (epics) in Sprint Backlog 
-* 
+* Basic map with itinerary
+* Shortest Trip
+* Optional Map Background
 
-Completed *0* tasks / issues associated with these user stories.
+Completed *24* tasks / issues associated with these user stories.
 
 #### Incomplete user stories / epics in Sprint Backlog 
-* 
+* Useful information in itinerary
+* Optional Fast Response
+* Optional Refactor
 
 #### What went well
-* 
+* Calculating the shortest trip
+* Creating/Displaying the map of the trip on the webpage
+* Dynmaically reading in the data from the CSV file
 
 #### Problems encountered and resolutions
-* 
+* Too many loops in shortest path - used a sorted has table to minimize time
+* Scaling lat/long to x/y coordinates on the Colorado Map - regularly flushed the print writer
+* Technology - documentation posted by professor
 
 ## Retrospective
 
