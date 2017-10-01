@@ -69,4 +69,4 @@ Topic | Teamwork | Process | Tools
 What we did we change this time | Looked out for each other, relayed info from piazza to team members | Had in depth SCRUMs and updated each other on our progress | Added JUnit tests for current and past Sprints
 What we did well | Supporting each other and communicating | Getting a second opinion to fix bugs/improve code design | GitHub procedure, quickly picked up on technologies we've never used before
 What we need to work on | Active listening to teammates during meetings, don't just focus on our own work | Get started earlier, figure out scope of work within the first couple of days | Need to do indept react/Javascript tutorials
-What we will change next time | Make sure we are checking in with our teammates throughout the sprint to see if they need help | Add an extra weekly meeting on Sundays | Focus more on Test-Driven Development using JUnit test
+What we will change next time | Make sure we are checking in with our teammates throughout the sprint to see if they need help | Add an extra weekly meeting on Sundays | Focused more on Test-Driven Development using JUnit test
