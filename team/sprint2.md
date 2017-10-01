@@ -66,7 +66,7 @@ Completed *24* tasks / issues associated with these user stories.
 
 Topic | Teamwork | Process | Tools
 :--- | :--- | :--- | :---
-What we will change this time |  |  | 
-What we did well |  |  | 
-What we need to work on |  |  |
-What we will change next time |  |  | 
+What we will changed this time |  |  | 
+What we did well | Supporting each other and communicating | Getting a second opinion to fix bugs/improve code design | GitHub procedure, quickly picked up on technologies we've never used before
+What we need to work on | Active listening to teammates during meetings, don't just focus on our own work | Get started earlier, figure out scope of work within the first couple of days | Need to do indept react/Javascript tutorials
+What we will change next time | Make sure we are checking in with our teammates throughout the sprint to see if they need help | Add an extra weekly meeting on Sundays | Focus more on Test-Driven Development using JUnit test
