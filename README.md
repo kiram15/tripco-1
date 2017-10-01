@@ -9,6 +9,6 @@ Sprint Number | Model - Data | Model - Itinerary | View - Server | View - Client
 ----------------- | -------------- | ------------------- | ---------------- | ---------------
 1 |  KIRA | AMBER | NICOLE | EMERSON
 2 | EMERSON | NICOLE | AMBER | KIRA
-3 |  |  |  | 
+3 | AMBER | KIRA | EMERSON | NICOLE
 4 |  |  |  | 
 5 |  |  |  | 
