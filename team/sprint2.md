@@ -41,24 +41,32 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 ## Review
 
 #### Completed user stories (epics) in Sprint Backlog 
-* 
+* Basic map with itinerary
+* Shortest Trip
+* Optional Map Background
 
-Completed *0* tasks / issues associated with these user stories.
+Completed *24* tasks / issues associated with these user stories.
 
 #### Incomplete user stories / epics in Sprint Backlog 
-* 
+* Useful information in itinerary
+* Optional Fast Response
+* Optional Refactor
 
 #### What went well
-* 
+* Calculating the shortest trip
+* Creating/Displaying the map of the trip on the webpage
+* Dynmaically reading in the data from the CSV file
 
 #### Problems encountered and resolutions
-* 
+* Too many loops in shortest path - used a sorted has table to minimize time
+* Scaling lat/long to x/y coordinates on the Colorado Map - regularly flushed the print writer
+* Technology - documentation posted by professor
 
 ## Retrospective
 
 Topic | Teamwork | Process | Tools
 :--- | :--- | :--- | :---
-What we will change this time |  |  | 
-What we did well |  |  | 
-What we need to work on |  |  |
-What we will change next time |  |  | 
+What we did we change this time | Looked out for each other, relayed info from piazza to team members | Had in depth SCRUMs and updated each other on our progress | Added JUnit tests for current and past Sprints
+What we did well | Supporting each other and communicating | Getting a second opinion to fix bugs/improve code design | GitHub procedure, quickly picked up on technologies we've never used before
+What we need to work on | Active listening to teammates during meetings, don't just focus on our own work | Get started earlier, figure out scope of work within the first couple of days | Need to do indept react/Javascript tutorials
+What we will change next time | Make sure we are checking in with our teammates throughout the sprint to see if they need help | Add an extra weekly meeting on Sundays | Focused more on Test-Driven Development using JUnit test
