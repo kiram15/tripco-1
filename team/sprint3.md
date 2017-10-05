@@ -12,7 +12,6 @@
 * Version in pom.xml should be `<version>3.0.0</version>`.
 * Unit tests for all new features and public methods at a minimum.
 * Clean continuous integration build/test on master branch.
-* 
 
 ## Policies
 
