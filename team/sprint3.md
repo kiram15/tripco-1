@@ -41,9 +41,9 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 
 #### Completed user stories (epics) in Sprint Backlog 
 * *#69:
-* *#72*
+* *#72:
 * *#168:
-* *#169*
+* *#169:
 
 Completed *0* tasks / issues associated with these user stories.
 
