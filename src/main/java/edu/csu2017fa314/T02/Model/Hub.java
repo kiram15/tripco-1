@@ -28,71 +28,58 @@ public class Hub {
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
-    public void readFile(String fileName) {
-        ArrayList<Distance> distances = new ArrayList<Distance>();
-        File file = new File(fileName);
-        Scanner scnr;
-        try {
-            scnr = new Scanner(file);
-            if (scnr.hasNextLine()) {
-                String s = scnr.nextLine();
-                s = s.toLowerCase();
-                String[] infoArray = s.split(",");
-
-                for (int i = 0; i < infoArray.length; i++) {
-                    String infoString = infoArray[i];
-                    switch (infoString.trim()) { // associating column titles with column num, putting it in map
-                        case "name":
-                            columns.put("name", i);
-                            reverseC.put(i, "name");
-                            break;
-                        case "latitude":
-                            columns.put("latitude", i);
-                            reverseC.put(i, "latitude");
-                            break;
-                        case "longitude":
-                            columns.put("longitude", i);
-                            reverseC.put(i, "longitude");
-                            break;
-                        default:
-                            columns.put(infoString.trim(), i);
-                            reverseC.put(i, infoString.trim());
-                            break;
-                    }
-                }
+    public void storeColumnHeaders(String firstLine){
+        String s = firstLine.toLowerCase();
+        String[] infoArray = s.split(",");
+        for (int i = 0; i < infoArray.length; i++) {
+            String infoString = infoArray[i];
+            switch (infoString.trim()) { // associating column titles with column num, putting it in map
+                case "name":
+                    columns.put("name", i);
+                    reverseC.put(i, "name");
+                    break;
+                case "latitude":
+                    columns.put("latitude", i);
+                    reverseC.put(i, "latitude");
+                    break;
+                case "longitude":
+                    columns.put("longitude", i);
+                    reverseC.put(i, "longitude");
+                    break;
+                default:
+                    columns.put(infoString.trim(), i);
+                    reverseC.put(i, infoString.trim());
+                    break;
             }
-            while (scnr.hasNextLine()) {
-                String place = scnr.nextLine();
-                place = place.toLowerCase();
-                String[] props = place.split(","); //column names
-                LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
-
-                String objectName = "";
-                String objectLatitude = "";
-                String objectLongitude = "";
-                //populates necessary info into variables
-                for (int i = 0; i < props.length; ++i) {
-                    if (i == columns.get("name")) {
-                        objectName = props[i].trim();
-                    } else if (i == columns.get("latitude")) {
-                        objectLatitude = props[i].trim();
-                    } else if (i == columns.get("longitude")) {
-                        objectLongitude = props[i].trim();
-                    } else {
-                        info.put(reverseC.get(i), props[i]);
-                    }
-                }
-
-                double doubleLat = latLonConvert(objectLatitude);
-                double doubleLon = latLonConvert(objectLongitude);
-
-                Location location = new Location(objectName, doubleLat, doubleLon, info);
-
-                finalLocations.add(location);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         }
+    }
+
+    public void parseRows(String row){
+        String row = row.toLowerCase();
+        String[] props = row.split(","); //column names
+        LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
+        String objectName = "";
+        String objectLatitude = "";
+        String objectLongitude = "";
+        //populates necessary info into variables
+        for (int i = 0; i < props.length; ++i) {
+            if (i == columns.get("name")) {
+                objectName = props[i].trim();
+            } else if (i == columns.get("latitude")) {
+                objectLatitude = props[i].trim();
+            } else if (i == columns.get("longitude")) {
+                objectLongitude = props[i].trim();
+            } else {
+                info.put(reverseC.get(i), props[i]);
+            }
+        }
+
+        double doubleLat = latLonConvert(objectLatitude);
+        double doubleLon = latLonConvert(objectLongitude);
+
+        Location location = new Location(objectName, doubleLat, doubleLon, info);
+
+        finalLocations.add(location);
     }
 
     public double latLonConvert(String s) {
