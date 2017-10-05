@@ -40,22 +40,21 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 ## Review
 
 #### Completed user stories (epics) in Sprint Backlog 
-* *#8:  comments*
-* *#9*
-* *#10:  comments*
-* *#12*
-* *#11*
+* *#69:
+* *#72*
+* *#168:
+* *#169*
 
-Completed *99* tasks / issues associated with these user stories.
+Completed *0* tasks / issues associated with these user stories.
 
 #### Incomplete user stories / epics in Sprint Backlog 
-* *#14*: *Explanation...*
+* 
 
 #### What went well
-* *something*
+* 
 
 #### Problems encountered and resolutions
-* *something*
+* 
 
 ## Retrospective
 
