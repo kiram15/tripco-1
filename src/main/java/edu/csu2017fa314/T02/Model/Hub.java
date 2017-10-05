@@ -3,6 +3,7 @@ package edu.csu2017fa314.T02.Model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -16,6 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
 import java.util.Set;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 
 public class Hub {
@@ -23,8 +26,9 @@ public class Hub {
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
+    ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
-    public ArrayList<Distance> readFile(String fileName) {
+    public void readFile(String fileName) {
         ArrayList<Distance> distances = new ArrayList<Distance>();
         File file = new File(fileName);
         Scanner scnr;
@@ -89,39 +93,6 @@ public class Hub {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        //return addDistance(distances);
-        return shortestTrip();
-    }
-
-    public ArrayList<Distance> addDistance(ArrayList<Distance> distances) { //loops through the finalLocations array, calculating gcd between each possible two locations and adding these as distance objects(startID, endID, distance between them) to distances array
-        for (int start = 0; start < finalLocations.size(); start++) {
-            int end = start + 1;
-            if (end < finalLocations.size()) {
-                Location startID = finalLocations.get(start);
-                Location endID = finalLocations.get(end);
-                int dist = greatCirDist((finalLocations.get(start)).getLatitude(), (finalLocations.get(start)).getLongitude(), (finalLocations.get(end)).getLatitude(), (finalLocations.get(end)).getLongitude());
-                Distance d = new Distance(startID, endID, dist);
-
-                distances.add(d);
-            }
-        }
-        return distances;
-    }
-
-    public int greatCirDist(double lat1, double lon1, double lat2, double lon2) {
-
-        double r = 3958.7613; //radius of earth in miles
-        double phi1 = Math.toRadians(lat1);
-        double lam1 = Math.toRadians(lon1);
-        double phi2 = Math.toRadians(lat2);
-        double lam2 = Math.toRadians(lon2);
-        double dLam = Math.abs(lam1 - lam2);
-        double y = Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dLam)), 2) + Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dLam)), 2));
-        double x = (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dLam));
-        double dTheta = Math.atan2(y, x);
-        double dist = dTheta * r;
-        int gcd = (int) Math.round(dist);
-        return gcd;
     }
 
     public double latLonConvert(String s) {
@@ -266,10 +237,8 @@ public class Hub {
             ArrayList<Distance> backAround = gcds.get(currentLocation);
 
             //grab the distance from the current city to l
-            //PROBLEM: in temp, currentLocation and L are the same
-            Distance temp = new Distance(currentLocation, l, 5000);
+            Distance temp = new Distance(currentLocation, l);
             tripDistance += backAround.get(backAround.indexOf(temp)).getGcd();
-
 
             //compare the final distance to the stored shortest distance
             if (tripDistance < shortestTripDistance) {
@@ -280,7 +249,6 @@ public class Hub {
         }
 
         //recalulate the shortest trip for than one particular city:
-
         //store in an ArrayList<Distance> to be returned
         ArrayList<Distance> shortestIt = new ArrayList<Distance>();
         //start final trip at the predetermined shortest trip start
@@ -306,10 +274,11 @@ public class Hub {
 
         //add the distance back to the original city
         //look up current location in the hashmap
-        ArrayList<Distance> backAround = gcds.get(currentLocation);
+
         //grab the distance from the current city to l
-        Distance temp = new Distance(currentLocation, shortestTripStart, -1);
+        Distance temp = new Distance(currentLocation, shortestTripStart);
         shortestIt.add(temp);
+        shortestItinerary = shortestIt;
 
         return shortestIt;
     }
@@ -329,8 +298,7 @@ public class Hub {
 
                 Location startID = finalLocations.get(i);
                 Location endID = finalLocations.get(j);
-                int dist = greatCirDist((finalLocations.get(i)).getLatitude(), (finalLocations.get(i)).getLongitude(), (finalLocations.get(j)).getLatitude(), (finalLocations.get(j)).getLongitude());
-                Distance d = new Distance(startID, endID, dist);
+                Distance d = new Distance(startID, endID);
                 gcds.get(finalLocations.get(i)).add(d);
 
             }
@@ -338,6 +306,94 @@ public class Hub {
         }
 
         return gcds;
+    }
+
+    public void drawSVG(String COmap) throws FileNotFoundException{
+        //create printWriter to CoMapTripCo svg
+        try {
+            PrintWriter pw = new PrintWriter(new File("COmapTripCo.svg"));
+            //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
+            LinkedList<String> ll = new LinkedList<String>();
+            try{
+                Scanner br = new Scanner(new File(COmap));
+                String line;
+                while(br.hasNext()) {
+                    line = br.nextLine();
+                    ll.addLast(line);
+                }
+                for(int i = 0; i < (ll.size()-3); i++){
+                    pw.println(ll.get(i));
+                    pw.flush();
+                }
+                br.close();
+            }catch(IOException e){
+                System.out.println("ERROR: FAILED");
+                System.exit(0);
+            }
+
+            pw.println("</g>");
+
+            //draw lines from start to end locations
+            double originStartLat = 0.0;
+            double originStartLon = 0.0;
+            double finalEndLat = 0.0;
+            double finalEndLon = 0.0;
+            boolean first = false;
+            double unitHeight = 176.7706; //COmap height-(38*2)/4
+            double unitWidth = 141.515329; //COmap width-(38*2)/7
+
+            for(Distance d : shortestItinerary){
+                if(!first){
+                    originStartLat = d.getStartID().getLatitude();
+                    originStartLon = d.getStartID().getLongitude();
+                    first = true;
+                }
+                double startLat = d.getStartID().getLatitude();
+                double startLon = d.getStartID().getLongitude();
+                double endLat = d.getEndID().getLatitude();
+                double endLon = d.getEndID().getLongitude();
+
+                //absVal of lat/lons
+                startLat = Math.abs(startLat);
+                startLon = Math.abs(startLon);
+                endLat = Math.abs(endLat);
+                endLon = Math.abs(endLon);
+
+                finalEndLat = d.getEndID().getLatitude();
+                finalEndLon = d.getEndID().getLongitude();
+
+                double x1 = ((109 - startLon) * unitWidth) + 38;
+                double y1 = ((41 - startLat) * unitHeight) + 38;
+                double x2 = ((109 - endLon) * unitWidth) + 38;
+                double y2 = ((41 - endLat) * unitHeight) + 38;
+                pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>");
+                pw.flush();
+            }
+
+            //absVal of lat/lons
+            finalEndLat = Math.abs(finalEndLat);
+            finalEndLon = Math.abs(finalEndLon);
+            originStartLat = Math.abs(originStartLat);
+            originStartLon = Math.abs(originStartLon);
+
+            //draw last line connected end point with start
+            double endX1 = ((109 - finalEndLon) * unitWidth) + 38;
+            double endY1 = ((41 - finalEndLat) * unitHeight) + 38;
+            double endX2 = ((109 - originStartLon) * unitWidth) + 38;
+            double endY2 = ((41 - originStartLat) * unitHeight) + 38;
+            pw.flush();
+
+            pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>");
+            
+            pw.println("</svg>");
+
+            pw.close();
+
+        }catch(FileNotFoundException e){
+            System.out.println("Error: File not found");
+            System.exit(0);
+        }
+
     }
 
 }
