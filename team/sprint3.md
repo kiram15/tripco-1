@@ -36,7 +36,7 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 :--- | :--- | :--- | :--- | :---
 *Oct 4* | #142, #92 | #179 | Nicole is gone until Sat, Emerson is out of town on Fri | Moderate 
 *Oct 5* | #179 | #94, #180| Nicole and Emerson being gone | Moderate
- | | | | 
+*Oct 8* | No issues accomplished yet, just research for understanding of new parts| #170, #180 | Everyone getting caught up| Moderely Low, but we still have time
 
 ## Review
 
