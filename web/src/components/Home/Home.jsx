@@ -1,21 +1,27 @@
-import React, {Component} from 'react'
-import Dropzone from 'react-dropzone';
+import React, {Component} from 'react';
+import Dropzone from 'react-dropzone'
 import Select from 'react-select'
 
 class Home extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
-          svgImage: ''
-          selColumns : []
+            selColumns : []
         }
-      }
+    }
     logChange(val) {
         if (this.state.selColumns.indexOf(val) == -1) {
             this.state.selColumns.push(val);
+            console.log("Selected: ", this.state.selColumns);
         }
-        console.log("Selected: " + this.state.selColumns);
+        else {
+            var inVal = this.state.selColumns.indexOf(val);
+            this.state.selColumns.splice(inVal, 1);
+            console.log("DeSelected: ", val);
+            console.log("Selections now: ", this.state.selColumns);
+        }
+
+
     }
 
     render() {
@@ -28,11 +34,8 @@ class Home extends React.Component {
         }
 
         let total = this.props.totalDist; //update the total here
-        let displaySVG = null;
-            if(this.state.svgImage){
-                displaySVG = (<div className="svgImage"><img src={this.state.svgImage} width="70%"/></div>);
-            }
-
+        //let startInfo = this.props.startEndInfo(this.props.selColumns, this.props.startInfo);
+        //let endInfo = this.props.startEndInfo(this.props.selColumns, this.props.endInfo);
         return <div className="home-container">
             <div className="inner">
 
@@ -74,11 +77,6 @@ class Home extends React.Component {
                         </tr>
                     </tbody>
                 </table>
-                <p></p>
-                <Dropzone className="dropzone" onDrop={this.dropSVG.bind(this)}>
-                    <button>Open SVG Image</button>
-                </Dropzone>
-                {displaySVG}
             </div>
         </div>
     }
@@ -100,17 +98,6 @@ class Home extends React.Component {
             fr.readAsText(file);
         });
     }
-
-    dropSVG(acceptedFiles) {
-        console.log("Accepting SVG drop");
-        acceptedFiles.forEach(file => {
-        console.log("Filename:", file.name, "File:", file);
-        let fr = new FileReader();
-        fr.onload = () => this.setState({ svgImage: fr.result })
-        (file).bind(this);
-        fr.readAsDataURL(file);
-        });
-     }
 }
 
 export default Home
