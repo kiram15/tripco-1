@@ -19,7 +19,11 @@ import java.util.Collections;
 import java.util.Set;
 import java.io.BufferedReader;
 import java.io.FileReader;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 public class Hub {
     String[] infoArray;
@@ -28,9 +32,47 @@ public class Hub {
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
+    public void searchDatabase(String searchingFor, String username, String password){
+        String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
+        String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
+        try { // connect to the database
+            Class.forName(myDriver);
+            Connection conn = DriverManager.getConnection(myUrl, username, password);
+            try { // create a statement
+                Statement st = conn.createStatement();
+                try { // submit a query
+                    String query = "SELECT * FROM airports LIMIT 10";
+                    ResultSet rs = st.executeQuery(query);
+                    try { // iterate through the query results and print selected columns
+                        while (rs.next()) {
+                            String id = rs.getString("id");
+                            String name = rs.getString("name");
+                            System.out.printf("%s,%s\n", id, name);
+                        }
+                    } finally { rs.close(); }
+                } finally { st.close(); }
+            } finally { conn.close(); }
+        } catch (Exception e) { // catches all exceptions in the nested try's
+            System.err.printf("Exception: ");
+            System.err.println(e.getMessage());
+        }
+
+
+    //where name is like searchingFor
+
+
+
+        /*String firstLine = //get first line from database of column headers
+        storeColumnHeaders(firstLine);
+        //go into database & look for matches (queries)
+        //if you find a match
+        String row = //get row that has the match in it
+        parseRow(row);*/
+    }
+
     public void storeColumnHeaders(String firstLine){
         String s = firstLine.toLowerCase();
-        String[] infoArray = s.split(",");
+        String[] infoArray = s.split("|"); // <-- split at pipe for SQL database table
         for (int i = 0; i < infoArray.length; i++) {
             String infoString = infoArray[i];
             switch (infoString.trim()) { // associating column titles with column num, putting it in map
@@ -54,9 +96,9 @@ public class Hub {
         }
     }
 
-    public void parseRows(String row){
+    public void parseRow(String row){
         String row = row.toLowerCase();
-        String[] props = row.split(","); //column names
+        String[] props = row.split("|"); //column names <-- need to change bc no longer comma separated
         LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
         String objectName = "";
         String objectLatitude = "";
@@ -73,7 +115,7 @@ public class Hub {
                 info.put(reverseC.get(i), props[i]);
             }
         }
-
+        
         double doubleLat = latLonConvert(objectLatitude);
         double doubleLon = latLonConvert(objectLongitude);
 
@@ -88,10 +130,8 @@ public class Hub {
         String symbol;
         double retVal;
         ArrayList<Double> values = new ArrayList<>();
-
         //in the loops, uses symbol as stopping point, extracts number, adds to arrayList,
         //and cuts off remaining, then uses the formula to convert into degrees
-
         if (s.contains("\"") && s.contains("'")) { // case for 106°49'43.24" W
             for (int i = 0; i < 3; i++) {
                 if (i == 0) {
