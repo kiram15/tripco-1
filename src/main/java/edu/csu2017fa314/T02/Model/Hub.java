@@ -32,7 +32,7 @@ public class Hub {
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
-    public void searchDatabase(String searchingFor, String username, String password){
+    public void searchDatabase(String username, String password, String tblName, String searchingFor){
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
         try { // connect to the database
@@ -41,14 +41,18 @@ public class Hub {
             try { // create a statement
                 Statement st = conn.createStatement();
                 try { // submit a query
-                    String query = "SELECT * FROM airports LIMIT 10";
+                    String query = "SELECT * FROM " + tblName + " ORDER BY ROWID ASC LIMIT 1";
                     ResultSet rs = st.executeQuery(query);
                     try { // iterate through the query results and print selected columns
-                        while (rs.next()) {
-                            String id = rs.getString("id");
-                            String name = rs.getString("name");
-                            System.out.printf("%s,%s\n", id, name);
+                        int index = 1;
+                        String firstLine;
+                        while (rs.next()){
+                            String header = rs.getString(index);
+                            header = header + ",";
+                            firstLine += header;
+                            ++index;
                         }
+                        storeColumnHeaders(firstLine);
                     } finally { rs.close(); }
                 } finally { st.close(); }
             } finally { conn.close(); }
@@ -72,7 +76,7 @@ public class Hub {
 
     public void storeColumnHeaders(String firstLine){
         String s = firstLine.toLowerCase();
-        String[] infoArray = s.split("|"); // <-- split at pipe for SQL database table
+        String[] infoArray = s.split(","); // <-- split at pipe for SQL database table
         for (int i = 0; i < infoArray.length; i++) {
             String infoString = infoArray[i];
             switch (infoString.trim()) { // associating column titles with column num, putting it in map
@@ -115,7 +119,7 @@ public class Hub {
                 info.put(reverseC.get(i), props[i]);
             }
         }
-        
+
         double doubleLat = latLonConvert(objectLatitude);
         double doubleLon = latLonConvert(objectLongitude);
 
