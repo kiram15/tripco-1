@@ -23,9 +23,9 @@ export default class App extends React.Component {
             <div className="app-container">
                 <Home
                     browseFile={this.browseFile.bind(this)}
-                    selectColumns={this.selectColumns.bind(this)}
+                    getColumns={this.getColumns.bind(this)}
                     startEndInfo={this.startEndInfo.bind(this)}
-                    columnsSelected={this.columnsSelected.bind(this)}
+                    getColsFromHome={this.getColsFromHome.bind(this)}
                     pairs={ps}
                     totalDist={this.state.total}
                     columns = {this.state.setInfo}
@@ -34,17 +34,14 @@ export default class App extends React.Component {
         )
     }
 
-    async columnsSelected(selColumns) {
-        console.log("LOOK HERE");
-        console.log(selColumns);
+    async getColsFromHome(selColumns) {
         this.setState = {
                selectedColumns: selColumns
         }
-        console.log("AND HERE");
-        console.log(selectedColumns);
     }
 
-
+    //startEndInfo goes through the list of all the possible
+    //information and filters it based on the user's selected columns
     startEndInfo(file) {
         var finalStr = "";
         file = file.replace(/["{}]/g, "")
@@ -53,12 +50,11 @@ export default class App extends React.Component {
         for (var i = 0; i < info.length; i++) {
             info[i] = info[i].trim();
         }
-        //console.log(selectedColumns);
-
+//        CODE FOR WHEN WE GET COLUMNS FROM HOME TO WORK
 //        for (var i = 0; i < info.length; i++) {
 //            for (var j = 0; j < (selectedColumns.length); j++) {
 //                var colName = info[i].substring(0, info[i].indexOf(":"));
-//                if (colName.equals(selectedColumns[j])) {
+//                if (colName == selectedColumns[j]) {
 //                    finalStr += info[i] + "\n";
 //                }
 //            }
@@ -66,7 +62,7 @@ export default class App extends React.Component {
         for (var i = 0; i < info.length; i++) {
             for (var j = 0; j < (columnNames.length); j++) {
                 var colName = info[i].substring(0, info[i].indexOf(":"));
-                if (colName ==columnNames[j]) {
+                if (colName == columnNames[j]) {
                     finalStr += info[i] + "\n";
                 }
             }
@@ -75,7 +71,8 @@ export default class App extends React.Component {
         return finalStr;
     }
 
-    async selectColumns(file) {
+    //get all the columns options from file
+    async getColumns(file) {
         console.log("Got File:", file);
         console.log(file[0].startInfo);
         var options = Object.keys(file[0].startInfo);
@@ -90,7 +87,7 @@ export default class App extends React.Component {
         //For loop that goes through all pairs,
         let pairs = [];
         let runTotal = 0;
-        this.selectColumns(file);
+        this.getColumns(file);
         for (let i = 0; i < Object.values (file).length; i++) {
             let start = file[i].start; //get start from file i
             let end = file[i].end; //get end from file i

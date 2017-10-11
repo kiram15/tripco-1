@@ -20,7 +20,7 @@ class Home extends React.Component {
             console.log("DeSelected: ", val);
             console.log("Selections now: ", this.state.selColumns);
         }
-        this.props.columnsSelected(this.state.selColumns);
+        this.props.getColsFromHome(this.state.selColumns);
     }
 
     render() {

@@ -4,12 +4,12 @@ let Pair = ({start, end, dist, total, startInfo, endInfo}) => <tbody
     className="pair">
     <tr>
         <td>
-            <h5>{start}</h5>
+            <h4>{start}</h4>
             <p></p>
             <h7>{startInfo}</h7>
         </td>
         <td>
-            <h5>{end}</h5>
+            <h4>{end}</h4 s>
             <p></p>
             <h7>{endInfo}</h7>
         </td>
