@@ -9,7 +9,7 @@ class Home extends React.Component {
             selColumns : []
         }
     }
-    logChange(val) {
+    onClick(val) {
         if (this.state.selColumns.indexOf(val) == -1) {
             this.state.selColumns.push(val);
             console.log("Selected: ", this.state.selColumns);
@@ -20,8 +20,7 @@ class Home extends React.Component {
             console.log("DeSelected: ", val);
             console.log("Selections now: ", this.state.selColumns);
         }
-
-
+        this.props.columnsSelected(this.state.selColumns);
     }
 
     render() {
@@ -34,8 +33,6 @@ class Home extends React.Component {
         }
 
         let total = this.props.totalDist; //update the total here
-        //let startInfo = this.props.startEndInfo(this.props.selColumns, this.props.startInfo);
-        //let endInfo = this.props.startEndInfo(this.props.selColumns, this.props.endInfo);
         return <div className="home-container">
             <div className="inner">
 
@@ -52,7 +49,7 @@ class Home extends React.Component {
                     <Select
                         name="form-field-name"
                         options={options}
-                        onChange={this.logChange.bind(this)}
+                        onChange={this.onClick.bind(this)}
                         simpleValue = {true}
                         closeOnSelect = {false}
                         multi={true}

@@ -9,7 +9,8 @@ export default class App extends React.Component {
             allPairs: [],
             sysFile: [],
             total : 0,
-            setInfo : []
+            setInfo : [],
+            selectedColumns : []
         }
     };
 
@@ -23,7 +24,8 @@ export default class App extends React.Component {
                 <Home
                     browseFile={this.browseFile.bind(this)}
                     selectColumns={this.selectColumns.bind(this)}
-                    //startEndInfo={this.startEndInfo.bind(this)}
+                    startEndInfo={this.startEndInfo.bind(this)}
+                    columnsSelected={this.columnsSelected.bind(this)}
                     pairs={ps}
                     totalDist={this.state.total}
                     columns = {this.state.setInfo}
@@ -32,24 +34,46 @@ export default class App extends React.Component {
         )
     }
 
-//    async startEndInfo(selColumns, file) {
-//        var info = file.split(",").trim;
-//        finalStr = "";
-//        for (var k = 0; k < info.length; k++) {
-//        	info[i].trim();
-//        }
+    async columnsSelected(selColumns) {
+        console.log("LOOK HERE");
+        console.log(selColumns);
+        this.setState = {
+               selectedColumns: selColumns
+        }
+        console.log("AND HERE");
+        console.log(selectedColumns);
+    }
+
+
+    startEndInfo(file) {
+        var finalStr = "";
+        file = file.replace(/["{}]/g, "")
+        var columnNames = ["latitude", "city"];
+        var info = file.split(',');
+        for (var i = 0; i < info.length; i++) {
+            info[i] = info[i].trim();
+        }
+        //console.log(selectedColumns);
+
 //        for (var i = 0; i < info.length; i++) {
-//            for (var j = 0; j < (selColumns.length); j++) {
+//            for (var j = 0; j < (selectedColumns.length); j++) {
 //                var colName = info[i].substring(0, info[i].indexOf(":"));
-//                if (colName.equals(selColumns[j])) {
+//                if (colName.equals(selectedColumns[j])) {
 //                    finalStr += info[i] + "\n";
 //                }
 //            }
 //        }
-//        console.log("LOOK HERE");
-//        console.log(finalStr);
-//        return finalStr;
-//    }
+        for (var i = 0; i < info.length; i++) {
+            for (var j = 0; j < (columnNames.length); j++) {
+                var colName = info[i].substring(0, info[i].indexOf(":"));
+                if (colName ==columnNames[j]) {
+                    finalStr += info[i] + "\n";
+                }
+            }
+        }
+
+        return finalStr;
+    }
 
     async selectColumns(file) {
         console.log("Got File:", file);
@@ -59,7 +83,6 @@ export default class App extends React.Component {
         this.setState({
             setInfo: options
         })
-        console.log(this.props.setInfo)
     }
 
     async browseFile(file) {
@@ -74,22 +97,18 @@ export default class App extends React.Component {
             let dist = file[i].distance;
             runTotal = runTotal + dist;
 
-//            console.log("TESTING");
-//            console.log(file[1].startInfo);
-//            for (var i = 0; i < this.props.setInfo.length; i++){
-//                var col = this.props.setInfo[i];
-//                console.log(col + ": " + file[1].startInfo.col);
-//            }
+            var updatedStart = JSON.stringify(file[i].startInfo);
+            updatedStart = String(this.startEndInfo(updatedStart));
+            var updatedEnd = JSON.stringify(file[i].endInfo);
+            updatedEnd = String(this.startEndInfo(updatedEnd));
 
-            var updatedStart = file[i].startInfo.toString();
-            var updatedEnd = file[i].endInfo.toString();
             let p = { //create object with start, end, and dist variable
                 start: start,
                 end: end,
                 dist: dist,
                 total : runTotal,
-                startInfo : "",
-                endInfo : ""
+                startInfo : updatedStart,
+                endInfo : updatedEnd
             };
             pairs.push(p); //add object to pairs array
             console.log("Pushing pair: ", p); //log to console
