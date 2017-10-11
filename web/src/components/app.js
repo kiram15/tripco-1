@@ -10,7 +10,7 @@ export default class App extends React.Component {
             sysFile: [],
             total : 0,
             setInfo : [],
-            selectedColumns : []
+            selColumns : []
         }
     };
 
@@ -25,7 +25,8 @@ export default class App extends React.Component {
                     browseFile={this.browseFile.bind(this)}
                     selectColumns={this.selectColumns.bind(this)}
                     startEndInfo={this.startEndInfo.bind(this)}
-                    columnsSelected={this.columnsSelected.bind(this)}
+
+                    onClick={this.onClick.bind(this)}
                     pairs={ps}
                     totalDist={this.state.total}
                     columns = {this.state.setInfo}
@@ -34,21 +35,44 @@ export default class App extends React.Component {
         )
     }
 
-    async columnsSelected(selColumns) {
-        console.log("LOOK HERE");
-        console.log(selColumns);
-        this.setState = {
-               selectedColumns: selColumns
+    onClick(val) {
+        if (this.state.selColumns.indexOf(val) == -1) {
+            this.state.selColumns.push(val);
+            console.log("Selected: ", this.state.selColumns);
+            this.browseFile(this.state.sysFile);
         }
-        console.log("AND HERE");
-        console.log(selectedColumns);
+        else {
+            var inVal = this.state.selColumns.indexOf(val);
+            this.state.selColumns.splice(inVal, 1);
+            console.log("DeSelected: ", val);
+            console.log("Selections now: ", this.state.selColumns);
+            this.browseFile(this.state.sysFile);
+        }
+        //console.log("CALLING columnsSelected");
+        //this.props.columnsSelected(this.state.selColumns);
     }
+
+    // async columnsSelected(selColumns) {
+    //     console.log("LOOK HERE");
+    //     console.log(selColumns);
+    //     // let sC = selColumns;
+    //     // console.log("HI", sC);
+    //     this.setState ({
+    //            selectedColumns : selColumns
+    //     });
+    //     //console.log("ur mom", selColumns);
+    //     console.log("AND HERE");
+    //     console.log(this.selectedColumns);
+    //     //return selColumns;
+    // }
 
 
     startEndInfo(file) {
         var finalStr = "";
+        console.log("In startEndInfo");
         file = file.replace(/["{}]/g, "")
-        var columnNames = ["latitude", "city"];
+        var columnNames = this.state.selColumns;
+        //var columnNames =
         var info = file.split(',');
         for (var i = 0; i < info.length; i++) {
             info[i] = info[i].trim();
@@ -82,7 +106,7 @@ export default class App extends React.Component {
         console.log("Options: ", options);
         this.setState({
             setInfo: options
-        })
+        });
     }
 
     async browseFile(file) {
