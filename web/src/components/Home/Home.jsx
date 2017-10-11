@@ -5,24 +5,9 @@ import Select from 'react-select'
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        // this.state = {
-        //     selColumns : []
-        // }
+
     }
-    // onClick(val) {
-    //     if (this.state.selColumns.indexOf(val) == -1) {
-    //         this.state.selColumns.push(val);
-    //         console.log("Selected: ", this.state.selColumns);
-    //     }
-    //     else {
-    //         var inVal = this.state.selColumns.indexOf(val);
-    //         this.state.selColumns.splice(inVal, 1);
-    //         console.log("DeSelected: ", val);
-    //         console.log("Selections now: ", this.state.selColumns);
-    //     }
-    //     //console.log("CALLING columnsSelected");
-    //     this.props.columnsSelected(this.state.selColumns);
-    // }
+
 
     render() {
         var options = [];
@@ -32,7 +17,7 @@ class Home extends React.Component {
             ob.label=this.props.columns[i];
             options.push(ob);
         }
-        //onChange={this.onClick.bind(this)} put this in the gap if it don't work
+        
 
         let total = this.props.totalDist; //update the total here
         return <div className="home-container">

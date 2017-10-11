@@ -48,23 +48,8 @@ export default class App extends React.Component {
             console.log("Selections now: ", this.state.selColumns);
             this.browseFile(this.state.sysFile);
         }
-        //console.log("CALLING columnsSelected");
-        //this.props.columnsSelected(this.state.selColumns);
-    }
 
-    // async columnsSelected(selColumns) {
-    //     console.log("LOOK HERE");
-    //     console.log(selColumns);
-    //     // let sC = selColumns;
-    //     // console.log("HI", sC);
-    //     this.setState ({
-    //            selectedColumns : selColumns
-    //     });
-    //     //console.log("ur mom", selColumns);
-    //     console.log("AND HERE");
-    //     console.log(this.selectedColumns);
-    //     //return selColumns;
-    // }
+    }
 
 
     startEndInfo(file) {
