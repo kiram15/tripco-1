@@ -32,7 +32,8 @@ public class Hub {
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
-    public void searchDatabase(String username, String password, String tblName, String searchingFor){
+    
+    public void searchDatabase(String username, String password, String searchingFor){
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
         try { // connect to the database
@@ -40,21 +41,39 @@ public class Hub {
             Connection conn = DriverManager.getConnection(myUrl, username, password);
             try { // create a statement
                 Statement st = conn.createStatement();
-                try { // submit a query
-                    String query = "SELECT * FROM " + tblName + " ORDER BY ROWID ASC LIMIT 1";
-                    ResultSet rs = st.executeQuery(query);
-                    try { // iterate through the query results and print selected columns
-                        int index = 1;
-                        String firstLine;
-                        while (rs.next()){
-                            String header = rs.getString(index);
-                            header = header + ",";
-                            firstLine += header;
-                            ++index;
+                try { // submit a query to get column headers
+                    String q1 = "select column_name from information_schema.columns where table_name='airports';";
+                    ResultSet rs1 = st.executeQuery(q1);
+                    try { // iterate through the query results and give string of column headers to storeColumnHeaders
+                        String headers = "";
+                        while (rs1.next()){
+                            String h = rs1.getString(1);
+                            h = h + ",";
+                            headers += h;
                         }
-                        storeColumnHeaders(firstLine);
+                        storeColumnHeaders(headers);
                     } finally { rs.close(); }
                 } finally { st.close(); }
+
+                try{ //search for searchingFor string in all columns
+                    String q2 = "select * from airports where name like '%" +searchingFor+ "%' or type like '%" +searchingFor+ "%' or id like '%" +searchingFor+ "%' or latitude like '%" +searchingFor+ "%' or longitude like '%" +searchingFor+ "%' or municipality like '%" +searchingFor+ "%' or elevation like '%" +searchingFor+ "%' or home_link like '%" +searchingFor+ "%' or wikipedia_link like '%" +searchingFor+ "%' order by name;";
+                    ResultSet rs2 = st.executeQuery(q2);
+                    try{ //parse matched rows
+                        count = 0;
+                        String matchedRow = "";
+                        while(rs2.next() && count <= 24){ //for each row
+                            for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
+                                String rowCol = rs2.getString(i);
+                                rowCol = rowCol + ",";
+                                matchedRow += rowCol;
+                            }
+                            parseRow(matchedRow);
+                            ++count;
+                        }
+                    } finally { rs.close(); }
+                } finally{ st.close(); }
+
+
             } finally { conn.close(); }
         } catch (Exception e) { // catches all exceptions in the nested try's
             System.err.printf("Exception: ");
@@ -64,6 +83,14 @@ public class Hub {
 
     //where name is like searchingFor
 
+
+        //get count of how many matches there were (x)
+        //return a set amount LIMIT 30 of x
+
+        //write JSON
+        //1. query you ran
+        //2. # of things you got back
+        //3. actual data rows
 
 
         /*String firstLine = //get first line from database of column headers
@@ -76,7 +103,7 @@ public class Hub {
 
     public void storeColumnHeaders(String firstLine){
         String s = firstLine.toLowerCase();
-        String[] infoArray = s.split(","); // <-- split at pipe for SQL database table
+        String[] infoArray = s.split(",");
         for (int i = 0; i < infoArray.length; i++) {
             String infoString = infoArray[i];
             switch (infoString.trim()) { // associating column titles with column num, putting it in map
@@ -102,7 +129,7 @@ public class Hub {
 
     public void parseRow(String row){
         String row = row.toLowerCase();
-        String[] props = row.split("|"); //column names <-- need to change bc no longer comma separated
+        String[] props = row.split(",");
         LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
         String objectName = "";
         String objectLatitude = "";
