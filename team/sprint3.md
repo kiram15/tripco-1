@@ -38,6 +38,7 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 *Oct 5* | #179 | #94, #180| Nicole and Emerson being gone | Moderate
 *Oct 8* | No issues accomplished yet, just research for understanding of new parts| #170, #180 | Everyone getting caught up| Moderely Low, but we still have time
 *Oct 11* | #94 #101 #69 | #180, #171, #174| Midterms; In a slump | Moderate
+*Oct 12* | #180 #170 #181 #174 | #171 #177 #188 #173 | Family in town | Moderate
 
 ## Review
 
