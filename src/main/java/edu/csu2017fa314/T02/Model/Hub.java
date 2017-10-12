@@ -32,7 +32,7 @@ public class Hub {
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
-    
+
     public void searchDatabase(String username, String password, String searchingFor){
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
@@ -80,25 +80,11 @@ public class Hub {
             System.err.println(e.getMessage());
         }
 
-
-    //where name is like searchingFor
-
-
-        //get count of how many matches there were (x)
-        //return a set amount LIMIT 30 of x
-
         //write JSON
         //1. query you ran
         //2. # of things you got back
         //3. actual data rows
 
-
-        /*String firstLine = //get first line from database of column headers
-        storeColumnHeaders(firstLine);
-        //go into database & look for matches (queries)
-        //if you find a match
-        String row = //get row that has the match in it
-        parseRow(row);*/
     }
 
     public void storeColumnHeaders(String firstLine){
