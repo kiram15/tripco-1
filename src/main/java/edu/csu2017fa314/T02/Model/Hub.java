@@ -59,7 +59,7 @@ public class Hub {
                     String q2 = "select * from airports where name like '%" +searchingFor+ "%' or type like '%" +searchingFor+ "%' or id like '%" +searchingFor+ "%' or latitude like '%" +searchingFor+ "%' or longitude like '%" +searchingFor+ "%' or municipality like '%" +searchingFor+ "%' or elevation like '%" +searchingFor+ "%' or home_link like '%" +searchingFor+ "%' or wikipedia_link like '%" +searchingFor+ "%' order by name;";
                     ResultSet rs2 = st.executeQuery(q2);
                     try{ //parse matched rows
-                        count = 0;
+                        int count = 0;
                         String matchedRow = "";
                         while(rs2.next() && count <= 24){ //for each row
                             for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
