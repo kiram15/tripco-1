@@ -33,7 +33,8 @@ public class Hub {
     ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
 
-    public void searchDatabase(String username, String password, String searchingFor){
+    public void searchDatabase(String username, String password){
+        String searchingFor = //call server method that returns the search string;
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
         try { // connect to the database
