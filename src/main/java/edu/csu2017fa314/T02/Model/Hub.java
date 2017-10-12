@@ -114,7 +114,7 @@ public class Hub {
     }
 
     public void parseRow(String row){
-        String row = row.toLowerCase();
+        row = row.toLowerCase();
         String[] props = row.split(",");
         LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
         String objectName = "";
