@@ -1,18 +1,23 @@
 import React, {Component} from 'react';
-let Pair = ({start, end, dist, total}) => <tbody
+
+let Pair = ({start, end, dist, total, startInfo, endInfo}) => <tbody
     className="pair">
     <tr>
         <td>
-            <h7><center>{start}</center></h7>
+            <h4>{start}</h4>
+            <p></p>
+            <h7>{startInfo}</h7>
         </td>
         <td>
-            <h7><center>{end}</center></h7>
+            <h4>{end}</h4>
+            <p></p>
+            <h7>{endInfo}</h7>
         </td>
         <td>
-            <h7><center>{dist}</center></h7>
+            <h7>{dist}</h7>
         </td>
         <td>
-            <h7><center>{total}</center></h7>
+            <h7>{total}</h7>
         </td>
     </tr>
 </tbody>;

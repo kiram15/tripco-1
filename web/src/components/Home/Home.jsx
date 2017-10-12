@@ -1,31 +1,51 @@
-import React, {Component} from 'react'
-import Dropzone from 'react-dropzone';
+import React, {Component} from 'react';
+import Dropzone from 'react-dropzone'
+import Select from 'react-select'
 
 class Home extends React.Component {
-
     constructor(props) {
         super(props);
-        this.state = {
-          svgImage: ''
-        };
-      }
+
+    }
+
 
     render() {
-        let total = this.props.totalDist; //update the total here
-        let displaySVG = null;
-            if(this.state.svgImage){
-                displaySVG = (<div className="svgImage"><img src={this.state.svgImage} width="70%"/></div>);
-            }
+        var options = [];
+        for (var i = 0; i < (this.props.columns.length); i++) {
+            var ob = new Object();
+            ob.value=this.props.columns[i];
+            ob.label=this.props.columns[i];
+            options.push(ob);
+        }
+        
 
+        let total = this.props.totalDist; //update the total here
         return <div className="home-container">
             <div className="inner">
-		<h2>T02 NEKA</h2>
+
+      <h2>T02 NEKA</h2>
                 <h3>Itinerary</h3>
-                
                 <p></p>
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
                 </Dropzone>
+                <p></p>
+
+                <h3 className="section-heading">Choose Preferences</h3>
+                <div className = "select-value">
+                    <Select
+                        name="form-field-name"
+                        options={options}
+                        onChange={this.props.onClick}
+                        simpleValue = {true}
+                        closeOnSelect = {false}
+                        multi={true}
+                        searchable = {false}
+                        backspaceToRemoveMethod=""
+                    />
+                </div>
+
+                <p></p>
                 <table className="pair-table">
                     <tr>
                         <td><h8><b> Start Name </b></h8></td>
@@ -41,11 +61,6 @@ class Home extends React.Component {
                         </tr>
                     </tbody>
                 </table>
-                <p></p>
-                <Dropzone className="dropzone" onDrop={this.dropSVG.bind(this)}>
-                    <button>Open SVG Image</button>
-                </Dropzone>
-                {displaySVG}
             </div>
         </div>
     }
@@ -67,17 +82,6 @@ class Home extends React.Component {
             fr.readAsText(file);
         });
     }
-
-    dropSVG(acceptedFiles) {
-        console.log("Accepting SVG drop");
-        acceptedFiles.forEach(file => {
-        console.log("Filename:", file.name, "File:", file);
-        let fr = new FileReader();
-        fr.onload = () => this.setState({ svgImage: fr.result })
-        (file).bind(this);
-        fr.readAsDataURL(file);
-        });
-     }
 }
 
 export default Home

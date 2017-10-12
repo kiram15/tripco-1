@@ -13,4 +13,23 @@
   .dropzone-style {
     padding-bottom: 10px;
   }
+
+  .select-value{
+    border: 1px solid darkgrey!important;
+    width: 35%;
+    border-radius: 4px;
+    display: table;
+    cursor: pointer;
+  }
+
+  .select-value:hover {
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+    background: #ebf5ff;
+  }
+
+  .select-value.selected {
+    content: '✓';
+    border: solid 1	px blue;
+  }
+
 }
