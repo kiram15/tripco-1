@@ -1,13 +1,14 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import Dropzone from 'react-dropzone'
-import Select from 'react-select'
+import Select from 'react-select';
 
 class Home extends React.Component {
     constructor(props) {
-        super(props);
-
+       super(props);
+       this.state = {
+           svgImage: ''
+       };
     }
-
 
     render() {
         var options = [];
@@ -20,6 +21,11 @@ class Home extends React.Component {
         
 
         let total = this.props.totalDist; //update the total here
+        let displaySVG = null;
+        if(this.state.svgImage){
+            displaySVG = (<div className="svgImage"><img src={this.state.svgImage} width="70%"/></div>);
+        }
+
         return <div className="home-container">
             <div className="inner">
 
@@ -61,6 +67,11 @@ class Home extends React.Component {
                         </tr>
                     </tbody>
                 </table>
+                <p></p>
+                 <Dropzone className="dropzone-style" onDrop={this.dropSVG.bind(this)}>
+                    <button>Open SVG Image</button>
+                 </Dropzone>
+                 {displaySVG}
             </div>
         </div>
     }
@@ -82,6 +93,17 @@ class Home extends React.Component {
             fr.readAsText(file);
         });
     }
+
+    dropSVG(acceptedFiles) {
+        console.log("Accepting SVG drop");
+        acceptedFiles.forEach(file => {
+            console.log("Filename:", file.name, "File:", file);
+            let fr = new FileReader();
+            fr.onload = () => this.setState({ svgImage: fr.result })
+            (file).bind(this);
+            fr.readAsDataURL(file);
+        });
+     }
 }
 
 export default Home
