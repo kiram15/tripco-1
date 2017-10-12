@@ -52,6 +52,7 @@ export default class App extends React.Component {
     }
 
 
+
     startEndInfo(file) {
         var finalStr = "";
         console.log("In startEndInfo");
@@ -85,8 +86,8 @@ export default class App extends React.Component {
     }
 
     async selectColumns(file) {
-        console.log("Got File:", file);
-        console.log(file[0].startInfo);
+        //console.log("Got File:", file);
+        //console.log(file[0].startInfo);
         var options = Object.keys(file[0].startInfo);
         console.log("Options: ", options);
         this.setState({
