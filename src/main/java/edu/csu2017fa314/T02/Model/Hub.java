@@ -52,8 +52,8 @@ public class Hub {
                             headers += h;
                         }
                         storeColumnHeaders(headers);
-                    } finally { rs.close(); }
-                } finally { st.close(); }
+                    } finally { rs1.close(); }
+                } finally {}
 
                 try{ //search for searchingFor string in all columns
                     String q2 = "select * from airports where name like '%" +searchingFor+ "%' or type like '%" +searchingFor+ "%' or id like '%" +searchingFor+ "%' or latitude like '%" +searchingFor+ "%' or longitude like '%" +searchingFor+ "%' or municipality like '%" +searchingFor+ "%' or elevation like '%" +searchingFor+ "%' or home_link like '%" +searchingFor+ "%' or wikipedia_link like '%" +searchingFor+ "%' order by name;";
@@ -70,7 +70,7 @@ public class Hub {
                             parseRow(matchedRow);
                             ++count;
                         }
-                    } finally { rs.close(); }
+                    } finally { rs2.close(); }
                 } finally{ st.close(); }
 
 
