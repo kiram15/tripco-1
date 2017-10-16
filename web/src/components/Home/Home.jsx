@@ -33,16 +33,14 @@ render() {
             <h3>Itinerary</h3>
             <p></p>
             <div className="app-container">
-                <input className="search-button" type="text" id="txtSearch" placeholder="Type what you're searching for here"
-                    onSubmit={fetch(document.getElementById("txtSearch"))} autoFocus/>
-                <button>Submit</button>
-                <br/>
-                <h1>
-                    {/* In the constructor, this.state.serverReturned.svg is not assigned a value. This means the image
-                    will only display once the serverReturned state variable is set to the received json in line 73*/}
-                    <img width="75%" src={this.props.serverReturned.svg}/>
-                </h1>
-
+                <form id="SearchBar" onSubmit={this.props.fetch}>
+                     <input className="search-button"
+                            type="text"
+                            id="txtSearch"
+                            placeholder="What are you searching for?"
+                     />
+                     <button type="submit">Submit</button>
+                </form>
             </div>
             <p></p>
             <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>

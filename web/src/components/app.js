@@ -12,7 +12,7 @@ export default class App extends React.Component {
             setInfo : [],
             selColumns : [],
             //NEW:
-            serverReturned: null
+            serverReturned: " "
     }
 };
 
@@ -24,7 +24,8 @@ render() {
     let svg;
        if (this.state.serverReturned) { // if this.state.serverReturned is not null
             // set the local variable svg to this.state.serverReturned.svg
-            svg = this.state.serverReturned.svg;
+            //svg = this.state.serverReturned.svg;
+            svg = " "
        }
 
     return (
@@ -39,6 +40,8 @@ render() {
                 pairs={ps}
                 totalDist={this.state.total}
                 columns = {this.state.setInfo}
+
+                fetch={this.fetch.bind(this)}
             />
         </div>
 
@@ -61,6 +64,9 @@ render() {
         }
 
     }
+
+
+
 
 startEndInfo(file) {
     var finalStr = "";
@@ -131,8 +137,30 @@ async browseFile(file) {
 }
 
     // This function sends `input` the server and updates the state with whatever is returned
-    async fetch(input) {
-        console.log("Fetching...", input);
-    }
+    async fetch(input){
+        input.preventDefault();
+        console.log("Fetching... ", input);
+
+        let search = input;
+
+        try{
+            let jsonRet = await fetch(`http;//localhost:4567/testing`,
+            {
+                 method: "POST",
+                 body: JSON.stringify(input)
+            });
+
+            let ret = await jsonRet.json();
+            console.log("Got back: ", JSON.parse(ret));
+
+            this.setState({
+                serverReturned: JSON.parse(ret)
+            });
+
+            }catch(e) {
+                console.error("Error talking to server");
+                console.error(e);
+            }
+        }
 
 }
