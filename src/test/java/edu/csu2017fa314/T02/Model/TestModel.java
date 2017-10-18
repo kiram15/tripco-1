@@ -100,17 +100,17 @@ public class TestModel
     }
   
     // ------------------- Test Shorter Trip -------------------
-  
-    @Test
-    public void testShorterTrip(){
-        //tests shorterTrip by making a call to readFile which then calls the shorter trip method
-        //method should return an ArrayList<Distance> that contains the itinerary for the shortest trip
-        //given the smaller_test.csv file I'm passing it, it should return the following array list:
-        Hub h0 = new Hub();
-        h0.readFile("smaller_test.csv");
-        assertEquals(fillShortTrip(), h0.shortestTrip());
-
-    }
+//
+//    @Test
+//    public void testShorterTrip(){
+//        //tests shorterTrip by making a call to readFile which then calls the shorter trip method
+//        //method should return an ArrayList<Distance> that contains the itinerary for the shortest trip
+//        //given the smaller_test.csv file I'm passing it, it should return the following array list:
+//        Hub h0 = new Hub();
+//        h0.readFile("smaller_test.csv");
+//        assertEquals(fillShortTrip(), h0.shortestTrip());
+//
+//    }
 
     private ArrayList<Distance> fillShortTrip(){
         Location st0 = new Location("two22 brew", h.latLonConvert("39°38'07\" N"), h.latLonConvert("104°45'32\" W"), null);
