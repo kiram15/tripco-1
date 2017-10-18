@@ -100,7 +100,7 @@ public class TestModel
     }
   
     // ------------------- Test Shorter Trip -------------------
-//
+////
 //    @Test
 //    public void testShorterTrip(){
 //        //tests shorterTrip by making a call to readFile which then calls the shorter trip method
