@@ -39,7 +39,8 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 *Oct 8* | No issues accomplished yet, just research for understanding of new parts| #170, #180 | Everyone getting caught up| Moderely Low, but we still have time
 *Oct 11* | #94 #101 #69 | #180, #171, #174| Midterms; In a slump | Moderate
 *Oct 12* | #180 #170 #181 #174 | #171 #177 #188 #173 | Family in town | Moderate
-*Oct 18* | #172 #195 #177 #197 #155 | #191 #171 #178 #175 | Time Crunch, Amber's Interview; | Low/Stressed
+*Oct 18* | #172 #195 #177 #197 #155 | #191 #171 #178 #175 | Time Crunch, Amber's Interview; | Low
+*Oct 19* | #194 #178 | #175 #201 #200 #175 | Time Crunch | Low
 
 ## Review
 
