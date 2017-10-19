@@ -237,7 +237,7 @@ public class Hub {
                         shortestDistance = d;
                     }
                 }
-                tripDistance += shortestDistance.getGcd();
+                //tripDistance += shortestDistance.getGcd();
                 currentLocation = shortestDistance.getEndID();
             }
             //making traveledTo empty again
@@ -253,6 +253,15 @@ public class Hub {
                 if (temp.equals(d)) { tripDistance += d.getGcd(); }
             }
 
+            //apply 2opt
+            checkImprovement(traveledTo);
+
+            //get the updated trip distance after 2opt
+            ArrayList<Distance> traveledDistances = locationsToDistances(traveledTo);
+            for (int i = 0; i < traveledDistances.size(); i++) {
+                tripDistance += traveledDistances.get(i).getGcd();
+            }
+
             //compare the final distance to the stored shortest distance
             if (tripDistance < shortestTripDistance) {
                 //if the trip was shorter then store distance and starting city
@@ -262,8 +271,8 @@ public class Hub {
         }
 
         //recalulate the shortest trip for than one particular city:
-        //store in an ArrayList<Distance> to be returned
-        ArrayList<Distance> shortestIt = new ArrayList<Distance>();
+//        //store in an ArrayList<Distance> to be returned
+//        ArrayList<Distance> shortestIt = new ArrayList<Distance>();
         //start final trip at the predetermined shortest trip start
         Location currentLocation = shortestTripStart;
 
@@ -286,17 +295,38 @@ public class Hub {
                     shortestDistance = d;
                 }
             }
-            shortestIt.add(shortestDistance);
+            //shortestIt.add(shortestDistance);
             currentLocation = shortestDistance.getEndID();
         }
 
+        System.out.println("TraveledToFinal: " + traveledToFinal);
+
+        //add the distance back to the original city
         Object[] backAround = gcds[row];
         //grab the distance from the current city to original city
         Distance temp = new Distance(currentLocation, shortestTripStart);
-        shortestIt.add(temp);
-        shortestItinerary = shortestIt;
+        for (int i = 1; i < backAround.length; i++) {
+            Distance d = (Distance) backAround[i];
+            //add to tripDistance
+            //if (temp.equals(d)) { traveledToFinal.add(d); }
+        }
 
-        return shortestIt;
+
+//        Object[] backAround = gcds[row];
+//        //grab the distance from the current city to original city
+//        Distance temp = new Distance(currentLocation, shortestTripStart);
+//        shortestIt.add(temp);
+//        shortestItinerary = shortestIt;
+
+        //apply 2opt
+        checkImprovement(traveledToFinal);
+
+        //convert traveledToFinal location array to a distance array
+        ArrayList<Distance> updatedShortestIt = locationsToDistances(traveledToFinal);
+
+
+        shortestItinerary = updatedShortestIt;
+        return updatedShortestIt;
     }
 
     //will return an array list with each city listed once, with the shortest city as its end
@@ -313,6 +343,50 @@ public class Hub {
 
         }
         return GCDS;
+    }
+
+    public void checkImprovement(ArrayList<Location> traveled) {
+        boolean improvement = true;
+        while (improvement) {
+            improvement = false;
+            for (int i = 0; i <= traveled.size() - 3; i++) { // check n>4
+                for (int k = i + 2; k < traveled.size() - 1; k++) {
+                    Distance ii1 = new Distance(traveled.get(i), traveled.get(i + 1));
+                    Distance kk1 = new Distance(traveled.get(k), traveled.get(k + 1));
+                    Distance ik = new Distance(traveled.get(i), traveled.get(k));
+                    Distance i1k1 = new Distance(traveled.get(i + 1), traveled.get(k + 1));
+                    double delta = (-ii1.getGcd()) - kk1.getGcd() + ik.getGcd() + i1k1.getGcd();
+                    if (delta < 0) { //improvement?
+                        optSwap2(traveled, i + 1, k);
+                        improvement = true;
+                    }
+                }
+            }
+        }
+    }
+
+    public ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
+        ArrayList<Distance> finalDistances = new ArrayList<Distance>();
+        for (int i = 0; i < locations.size(); i++) {
+            if (i == locations.size() - 1) { //distance of last back to first
+                Distance base = new Distance(locations.get(i), locations.get(0));
+                finalDistances.add(base);
+            } else {
+                Distance d = new Distance(locations.get(i), locations.get(i + 1));
+                finalDistances.add(d);
+                }
+        }
+        return finalDistances;
+    }
+
+    public void optSwap2(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
+        while (i1 < k) {
+            Location temp = traveledTo.get(i1);
+            traveledTo.set(i1, traveledTo.get(k));
+            traveledTo.set(k, temp);
+            i1++;
+            k--;
+        }
     }
 
     public void drawSVG(String COmap) throws FileNotFoundException{
