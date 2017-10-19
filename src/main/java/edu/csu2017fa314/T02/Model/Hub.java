@@ -238,7 +238,7 @@ public class Hub {
         }
     }
 
-    public ArrayList<Distance> shortestTrip() {
+    private void shortestTrip() {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds();
 
@@ -356,7 +356,6 @@ public class Hub {
             ArrayList<Distance> updatedShortestIt = locationsToDistances(traveledToFinal);
 
             shortestItinerary = updatedShortestIt;
-            return updatedShortestIt;
         }
 
     //will return an array list with each city listed once, with the shortest city as its end
