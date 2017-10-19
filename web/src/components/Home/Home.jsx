@@ -28,7 +28,7 @@ render() {
     if(this.state.svgImage){
         displaySVG = (
             <div id="svgImage">
-                <img src={this.state.svgImage} width="45%"/>
+                <img src={this.state.svgImage} width="43%"/>
             </div>
         );
     }
@@ -36,6 +36,7 @@ render() {
     return <div className="home-container">
 
         <div className="inner">
+        <div id="background"></div>
 
   <p className="w3-myFont"><h2>T02 NEKA</h2></p>
 
@@ -53,8 +54,8 @@ render() {
             <p></p>
 
             <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
-                             <button>Open JSON File</button>
-                        </Dropzone>
+                 <button>Open JSON File</button>
+            </Dropzone>
             <p></p>
 
             <h3 className="section-heading"><p className="w3-myFont">Choose Preferences</p></h3>
