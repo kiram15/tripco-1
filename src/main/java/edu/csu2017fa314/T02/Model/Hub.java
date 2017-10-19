@@ -33,10 +33,16 @@ public class Hub {
     ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
 
-    public void searchDatabase(String username, String password){
+    public String searchDatabase(String username, String password, String searchingFor){
 
         //need to import server packages that contain the giveQuery method
-        String searchingFor = (giveQuery()).toLowerCase(); //call server method that returns the search string;
+        //String searchingFor = (Query()).toLowerCase(); //call server method that returns the search string;
+
+        //CALL WRTIEJSON
+        //return shortestItinerary
+        //update toString for distance
+
+        searchingFor = searchingFor.toLowerCase();
 
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
