@@ -83,6 +83,7 @@ public class Hub {
             System.err.println(e.getMessage());
         }
         shortestTrip();
+        writeJSON();
     }
 
     public void storeColumnHeaders(String firstLine){
@@ -193,12 +194,12 @@ public class Hub {
     }
 
     //method to write the JSON file
-    public void writeJSON(ArrayList<Distance> distance) {
+    private void writeJSON() {
         //new JSONarray to add all the strings to
         JSONArray array = new JSONArray();
 
         //loop through all the distance objects in the distance array
-        for (Distance d : distance) {
+        for (Distance d : shortestItinerary) {
             JSONObject obj = new JSONObject();
             JSONObject startObj = new JSONObject();
             JSONObject endObj = new JSONObject();
