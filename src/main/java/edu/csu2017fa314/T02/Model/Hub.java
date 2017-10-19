@@ -300,9 +300,6 @@ public class Hub {
         Distance temp = new Distance(currentLocation, shortestTripStart);
         for (int i = 1; i < backAround.length; i++) {
             Distance d = (Distance) backAround[i];
-        }
-
-
         //apply 2opt
         checkImprovement(traveledToFinal);
 
@@ -353,8 +350,7 @@ public class Hub {
     public ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
         ArrayList<Distance> finalDistances = new ArrayList<Distance>();
         for (int i = 0; i < locations.size(); i++) {
-            //distance of last back to first
-            if (i == locations.size() - 1) {
+            if (i == locations.size() - 1) { //distance of last back to first
                 Distance base = new Distance(locations.get(i), locations.get(0));
                 finalDistances.add(base);
             } else {
