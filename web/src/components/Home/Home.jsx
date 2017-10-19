@@ -58,9 +58,10 @@ render() {
             </Dropzone>
             <p></p>
 
-            <h3 className="section-heading"><p className="w3-myFont">Choose Preferences</p></h3>
-            
 
+
+        <div id="Prefs" >
+            <p className="w3-myFont"><h3>Choose Preferences</h3></p>
             <div className = "select-value">
                 <Select
                     name="form-field-name"
@@ -74,6 +75,7 @@ render() {
                 />
 
             </div>
+        </div>
             <p></p>
 
 

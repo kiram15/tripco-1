@@ -53,12 +53,18 @@
         color: white;
         position: relative;
     }
+    h4{
+        float: right;
+    }
 
   }
 
    #svgImage{
       img {
+         position: absolute;
          float: right;
+         top: 200px;
+         left: 670px;
        }
     }
 
@@ -71,4 +77,16 @@
         background-color: #3532BE;
     }
 
+#prefs{
+        position: absolute;
+        float: right;
+        height: 25%;
+        width: 75%;
+        top: 40px;
+        left: 700px;
+
+   }
+
+
 }
+
