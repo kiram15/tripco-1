@@ -40,8 +40,19 @@
     border: solid 1	px blue;
   }
 
-  input {
-      width: 200px;
+  .app-container{
+    position: absolute;
+    float: right;
+    top: 28px;
+    right: 1019px;
+    input {
+       width: 200px;
+       height: 20px;
+    }
+  }
+
+  #Itin{
+    top: 40px;
   }
 
   .w3-myFont {
@@ -62,9 +73,8 @@
    #svgImage{
       img {
          position: absolute;
-         float: right;
-         top: 200px;
-         left: 670px;
+         top: 175px;
+         left: 693px;
        }
     }
 

@@ -78,7 +78,7 @@ render() {
         </div>
             <p></p>
 
-
+        <div id="Itin" >
             <p className="w3-myFont"><h3>Itinerary</h3></p>
             <p></p>
             <table className="pair-table">
@@ -101,6 +101,7 @@ render() {
                 <button>Open SVG Image</button>
              </Dropzone>
              {displaySVG}
+            </div>
         </div>
     </div>
 }
