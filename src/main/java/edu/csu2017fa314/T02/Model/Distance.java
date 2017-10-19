@@ -71,7 +71,7 @@ public class Distance implements Comparable<Distance>{
       return "Distance{" +
               "StartID= '" + startID.toString() + '\'' +
               ", EndID= '" + endID.toString() + '\'' +
-              ", GCD= " + gcd '}';
+              ", GCD= " + gcd + '}';
     }
 
     public boolean equals(Distance d) {
