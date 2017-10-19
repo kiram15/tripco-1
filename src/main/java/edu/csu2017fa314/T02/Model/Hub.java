@@ -34,7 +34,9 @@ public class Hub {
 
 
     public void searchDatabase(String username, String password){
-        String searchingFor = //call server method that returns the search string;
+
+        String searchingFor = (giveQuery()).toLowerCase(); //call server method that returns the search string;
+        
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
         try { // connect to the database
@@ -55,9 +57,8 @@ public class Hub {
                         storeColumnHeaders(headers);
                     } finally { rs1.close(); }
                 } finally {}
-
                 try{ //search for searchingFor string in all columns
-                    String q2 = "select * from airports where name like '%" +searchingFor+ "%' or type like '%" +searchingFor+ "%' or id like '%" +searchingFor+ "%' or latitude like '%" +searchingFor+ "%' or longitude like '%" +searchingFor+ "%' or municipality like '%" +searchingFor+ "%' or elevation like '%" +searchingFor+ "%' or home_link like '%" +searchingFor+ "%' or wikipedia_link like '%" +searchingFor+ "%' order by name;";
+                    String q2 = "select * from airports where name like '%" + searchingFor + "%' or type like '%" + searchingFor + "%' or id like '%" + searchingFor + "%' or latitude like '%" + searchingFor + "%' or longitude like '%" + searchingFor + "%' or municipality like '%" + searchingFor + "%' or elevation like '%" + searchingFor + "%' or home_link like '%" + searchingFor + "%' or wikipedia_link like '%" + searchingFor + "%' order by name;";
                     ResultSet rs2 = st.executeQuery(q2);
                     try{ //parse matched rows
                         int count = 0;
@@ -73,18 +74,11 @@ public class Hub {
                         }
                     } finally { rs2.close(); }
                 } finally{ st.close(); }
-
-
             } finally { conn.close(); }
         } catch (Exception e) { // catches all exceptions in the nested try's
             System.err.printf("Exception: ");
             System.err.println(e.getMessage());
         }
-
-        //write JSON
-        //1. query you ran
-        //2. # of things you got back
-        //3. actual data rows
 
     }
 
@@ -429,7 +423,7 @@ public class Hub {
             pw.flush();
 
             pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>");
-            
+
             pw.println("</svg>");
 
             pw.close();
