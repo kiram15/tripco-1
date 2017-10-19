@@ -197,8 +197,6 @@ public class Hub {
     }
 
     public ArrayList<Distance> shortestTrip() {
-
-
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds();
 
@@ -270,9 +268,6 @@ public class Hub {
             }
         }
 
-        //recalulate the shortest trip for than one particular city:
-//        //store in an ArrayList<Distance> to be returned
-//        ArrayList<Distance> shortestIt = new ArrayList<Distance>();
         //start final trip at the predetermined shortest trip start
         Location currentLocation = shortestTripStart;
 
@@ -305,23 +300,14 @@ public class Hub {
         Distance temp = new Distance(currentLocation, shortestTripStart);
         for (int i = 1; i < backAround.length; i++) {
             Distance d = (Distance) backAround[i];
-            //add to tripDistance
-            //if (temp.equals(d)) { traveledToFinal.add(d); }
         }
 
-
-//        Object[] backAround = gcds[row];
-//        //grab the distance from the current city to original city
-//        Distance temp = new Distance(currentLocation, shortestTripStart);
-//        shortestIt.add(temp);
-//        shortestItinerary = shortestIt;
 
         //apply 2opt
         checkImprovement(traveledToFinal);
 
         //convert traveledToFinal location array to a distance array
         ArrayList<Distance> updatedShortestIt = locationsToDistances(traveledToFinal);
-
 
         shortestItinerary = updatedShortestIt;
         return updatedShortestIt;
@@ -331,14 +317,15 @@ public class Hub {
     public Object[][] calcAllGcds() {
         Object[][] GCDS = new Object[finalLocations.size()][finalLocations.size()+1];
         for (int i = 0; i < finalLocations.size(); i++) {
+            //get the initial Location
             GCDS[i][0] = finalLocations.get(i);
             for (int j = 0; j < finalLocations.size(); j++) {
+                //for all the Distances in the row
                 Location startID = finalLocations.get(i);
                 Location endID = finalLocations.get(j);
                 Distance d = new Distance(startID, endID);
-                GCDS[i][j+1] = d;
+                GCDS[i][j+1] = d; //j+1 because of the Location in the first column
             }
-
         }
         return GCDS;
     }
@@ -366,7 +353,8 @@ public class Hub {
     public ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
         ArrayList<Distance> finalDistances = new ArrayList<Distance>();
         for (int i = 0; i < locations.size(); i++) {
-            if (i == locations.size() - 1) { //distance of last back to first
+            //distance of last back to first
+            if (i == locations.size() - 1) {
                 Distance base = new Distance(locations.get(i), locations.get(0));
                 finalDistances.add(base);
             } else {
@@ -379,6 +367,7 @@ public class Hub {
 
     public void optSwap2(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
         while (i1 < k) {
+            //swap i+1 and k
             Location temp = traveledTo.get(i1);
             traveledTo.set(i1, traveledTo.get(k));
             traveledTo.set(k, temp);
