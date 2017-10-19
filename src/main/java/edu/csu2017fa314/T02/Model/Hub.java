@@ -299,8 +299,6 @@ public class Hub {
             currentLocation = shortestDistance.getEndID();
         }
 
-        System.out.println("TraveledToFinal: " + traveledToFinal);
-
         //add the distance back to the original city
         Object[] backAround = gcds[row];
         //grab the distance from the current city to original city
