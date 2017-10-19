@@ -84,6 +84,11 @@ public class Hub {
         }
         shortestTrip();
         writeJSON();
+        try {
+            drawSVG(args[1]);
+        } catch (IOException e){
+            System.exit(0);
+        }
     }
 
     public void storeColumnHeaders(String firstLine){
@@ -421,7 +426,7 @@ public class Hub {
         }
     }
 
-    public void drawSVG(String COmap) throws FileNotFoundException{
+    private void drawSVG(String COmap) throws FileNotFoundException{
         //create printWriter to CoMapTripCo svg
         try {
             PrintWriter pw = new PrintWriter(new File("COmapTripCo.svg"));
