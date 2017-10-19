@@ -2,15 +2,18 @@ import React, {Component} from 'react'
 import Dropzone from 'react-dropzone'
 import Select from 'react-select';
 
+
 class Home extends React.Component {
 constructor(props) {
    super(props);
    this.state = {
        svgImage: ''
    };
+
 }
 
 render() {
+
     var options = [];
     for (var i = 0; i < (this.props.columns.length); i++) {
         var ob = new Object();
@@ -23,14 +26,20 @@ render() {
     let total = this.props.totalDist; //update the total here
     let displaySVG = null;
     if(this.state.svgImage){
-        displaySVG = (<div className="svgImage"><img src={this.state.svgImage} width="70%"/></div>);
+        displaySVG = (
+            <div id="svgImage">
+                <img src={this.state.svgImage} width="43%"/>
+            </div>
+        );
     }
 
     return <div className="home-container">
-        <div className="inner">
 
-  <h2>T02 NEKA</h2>
-            <h3>Itinerary</h3>
+        <div className="inner">
+        <div id="background"></div>
+
+  <p className="w3-myFont"><h2>T02 NEKA</h2></p>
+
             <p></p>
             <div className="app-container">
                 <form id="SearchBar" onSubmit={this.props.fetch}>
@@ -43,12 +52,16 @@ render() {
                 </form>
             </div>
             <p></p>
+
             <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
-                <button>Open JSON File</button>
+                 <button>Open JSON File</button>
             </Dropzone>
             <p></p>
 
-            <h3 className="section-heading">Choose Preferences</h3>
+
+
+        <div id="Prefs" >
+            <p className="w3-myFont"><h3>Choose Preferences</h3></p>
             <div className = "select-value">
                 <Select
                     name="form-field-name"
@@ -60,20 +73,25 @@ render() {
                     searchable = {false}
                     backspaceToRemoveMethod=""
                 />
-            </div>
 
+            </div>
+        </div>
+            <p></p>
+
+        <div id="Itin" >
+            <p className="w3-myFont"><h3>Itinerary</h3></p>
             <p></p>
             <table className="pair-table">
                 <tr>
-                    <td><h8><b> Start Name </b></h8></td>
-                    <td><h8><b> End Name </b></h8></td>
-                    <td><h8><b> Distance (mi) </b></h8></td>
-                    <td><h8><b> Total Distance (mi)</b></h8></td>
+                    <td><h8><b><p className="w3-myFont"> Start Name </p></b></h8></td>
+                    <td><h8><b><p className="w3-myFont"> End Name </p></b></h8></td>
+                    <td><h8><b><p className="w3-myFont"> Distance (mi) </p></b></h8></td>
+                    <td><h8><b><p className="w3-myFont"> Total Distance (mi)</p></b></h8></td>
                 </tr>
                 {this.props.pairs}
                 <tbody>
                     <tr>
-                        <td colSpan="4">Total:</td>
+                        <td colSpan="4"><p className="w3-myFont">Total:</p></td>
                         <td>{total}</td>
                     </tr>
                 </tbody>
@@ -83,6 +101,7 @@ render() {
                 <button>Open SVG Image</button>
              </Dropzone>
              {displaySVG}
+            </div>
         </div>
     </div>
 }
@@ -116,5 +135,9 @@ dropSVG(acceptedFiles) {
     });
  }
 }
+
+
+
+
 
 export default Home
