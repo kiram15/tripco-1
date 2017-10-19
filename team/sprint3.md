@@ -40,7 +40,7 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 *Oct 11* | #94 #101 #69 | #180, #171, #174| Midterms; In a slump | Moderate
 *Oct 12* | #180 #170 #181 #174 | #171 #177 #188 #173 | Family in town | Moderate
 *Oct 18* | #172 #195 #177 #197 #155 | #191 #171 #178 #175 | Time Crunch, Amber's Interview; | Low
-*Oct 19* | #194 #178 | #175 #201 #200 #178 #175 | Time Crunch | Low
+*Oct 19* | #194 #178 | #175 #201 #200 #175 | Time Crunch | Low
 
 ## Review
 
