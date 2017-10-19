@@ -11,10 +11,13 @@ export default class App extends React.Component {
             total : 0,
             setInfo : [],
             selColumns : [],
-            //NEW:
-            serverReturned: " "
-    }
-};
+            queryResults : [],
+            svgResults : null
+        }
+    };
+
+
+
 
 render() {
     let pairs = this.state.allPairs;
@@ -22,12 +25,9 @@ render() {
         return <Pair {...pp}/>;
     });
     let svg;
-       if (this.state.serverReturned) { // if this.state.serverReturned is not null
-            // set the local variable svg to this.state.serverReturned.svg
-            //svg = this.state.serverReturned.svg;
-            svg = " "
-       }
-
+    let query;
+    svg = this.state.svgResults;
+    query = this.state.queryResults;
     return (
 
         <div className="app-container">
@@ -35,7 +35,8 @@ render() {
                 browseFile={this.browseFile.bind(this)}
                 selectColumns={this.selectColumns.bind(this)}
                 startEndInfo={this.startEndInfo.bind(this)}
-
+                query={query}
+                svg={svg}
                 onClick={this.onClick.bind(this)}
                 pairs={ps}
                 totalDist={this.state.total}
@@ -137,30 +138,62 @@ async browseFile(file) {
 }
 
     // This function sends `input` the server and updates the state with whatever is returned
-    async fetch(input){
-        input.preventDefault();
+    async fetch(type, input){
+        //input.preventDefault();
+        console.log("THIS IS TYPE::: ", type);
         console.log("Fetching... ", input);
+        let request;
 
-        let search = input;
+        //if text box
+        if (type === "query") {
+            request = {
+                request: "query",
+                description: input,
+            };
+            console.log("QUERY SHTUFF");
+        // if the button is clicked:
+        } else {
+            request = {
+                request: "svg",
+                description: ""
+            }
+            console.log("SVG SCHTUFF");
+        }
 
         try{
-            let jsonRet = await fetch(`http;//localhost:4567/testing`,
-            {
-                 method: "POST",
-                 body: JSON.stringify(input)
-            });
-
+            let jsonRet = await fetch(`http://localhost:4567/testing`,
+                {
+                    method: "POST",
+                    body: JSON.stringify(request)
+                });
+            console.log("After jsonret AWAIT");
             let ret = await jsonRet.json();
+            let parsed = JSON.parse(ret);
+            console.log("ret::: ", ret);
+            console.log(("PARSED???:: ", parsed));
             console.log("Got back: ", JSON.parse(ret));
+            console.log("THIS IS RET RESPONSE: ", parsed.response);
 
-            this.setState({
-                serverReturned: JSON.parse(ret)
-            });
-
-            }catch(e) {
-                console.error("Error talking to server");
-                console.error(e);
+            if (parsed.response === "query") {
+                console.log("BEFOre setSTATE (QUERY)");
+                this.setState({
+                    queryResults: parsed.trip
+                });
+                console.log("QUERY RET DOT RESPONSE");
+                console.log("Q RESULTS:: ", this.state.queryResults);
+            // if it's not, we assume the response field is "svg" and contains the an svg image
+            } else {
+                console.log("NON QUERY ELSE MLOOP");
+                this.setState({
+                    svgResults: JSON.parse(ret)
+                })
             }
+
+        }catch(e) {
+            console.error("Error talking to server");
+            console.error(e);
         }
+    }
+
 
 }
