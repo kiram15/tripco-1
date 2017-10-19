@@ -1,8 +1,7 @@
-:global {
-    @import "~/react-select/dist/react-select.css";
-}
-
 .home-container {
+
+@import url('../../node_modules/react-select/dist/react-select.css');
+
   .pair-table {
     table, th, td {
       border: 1px solid black;
@@ -60,4 +59,6 @@
          float: right;
        }
     }
+
+
 }

@@ -2,17 +2,18 @@ import React, {Component} from 'react'
 import Dropzone from 'react-dropzone'
 import Select from 'react-select';
 
+
 class Home extends React.Component {
 constructor(props) {
    super(props);
    this.state = {
        svgImage: ''
    };
+
 }
 
-
-
 render() {
+
     var options = [];
     for (var i = 0; i < (this.props.columns.length); i++) {
         var ob = new Object();
@@ -33,6 +34,7 @@ render() {
     }
 
     return <div className="home-container">
+
         <div className="inner">
 
   <p className="w3-myFont"><h2>T02 NEKA</h2></p>
