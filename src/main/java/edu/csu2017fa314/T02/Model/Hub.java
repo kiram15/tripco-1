@@ -35,8 +35,9 @@ public class Hub {
 
     public void searchDatabase(String username, String password){
 
+        //need to import server packages that contain the giveQuery method
         String searchingFor = (giveQuery()).toLowerCase(); //call server method that returns the search string;
-        
+
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
         try { // connect to the database
