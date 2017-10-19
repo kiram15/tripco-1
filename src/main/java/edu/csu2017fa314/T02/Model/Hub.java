@@ -30,17 +30,13 @@ public class Hub {
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
-    ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
+    public ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
 
     public String searchDatabase(String username, String password, String searchingFor){
 
-        //need to import server packages that contain the giveQuery method
-        //String searchingFor = (Query()).toLowerCase(); //call server method that returns the search string;
-
         //CALL WRTIEJSON
         //return shortestItinerary
-        //update toString for distance
 
         searchingFor = searchingFor.toLowerCase();
 
@@ -86,7 +82,7 @@ public class Hub {
             System.err.printf("Exception: ");
             System.err.println(e.getMessage());
         }
-
+        shortestTrip();
     }
 
     public void storeColumnHeaders(String firstLine){

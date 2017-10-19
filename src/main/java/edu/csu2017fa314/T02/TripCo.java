@@ -29,7 +29,7 @@ public class TripCo {
       System.out.println("Welcome to TripCo");
 
       //make a hub object
-      Hub h = new Hub();
+      //Hub h = new Hub();
 
       //call the method to read the csv file from command line/compute distances
       //method will return the array list to be passed to the writeJSON method
