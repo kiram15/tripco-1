@@ -27,13 +27,5 @@ public class TripCo {
 
    public static void main(String[] args) {
       System.out.println("Welcome to TripCo");
-
-      try {
-         //test drawsvg method
-         h.drawSVG(args[1]);
-      } catch (IOException e){
-         System.exit(0);
-      }
-
    }
 }
