@@ -10,6 +10,8 @@ constructor(props) {
    };
 }
 
+
+
 render() {
     var options = [];
     for (var i = 0; i < (this.props.columns.length); i++) {
@@ -23,14 +25,18 @@ render() {
     let total = this.props.totalDist; //update the total here
     let displaySVG = null;
     if(this.state.svgImage){
-        displaySVG = (<div className="svgImage"><img src={this.state.svgImage} width="70%"/></div>);
+        displaySVG = (
+            <div id="svgImage">
+                <img src={this.state.svgImage} width="45%"/>
+            </div>
+        );
     }
 
     return <div className="home-container">
         <div className="inner">
 
-  <h2>T02 NEKA</h2>
-            <h3>Itinerary</h3>
+  <p className="w3-myFont"><h2>T02 NEKA</h2></p>
+
             <p></p>
             <div className="app-container">
                 <form id="SearchBar" onSubmit={this.props.fetch}>
@@ -43,12 +49,15 @@ render() {
                 </form>
             </div>
             <p></p>
+
             <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
-                <button>Open JSON File</button>
-            </Dropzone>
+                             <button>Open JSON File</button>
+                        </Dropzone>
             <p></p>
 
-            <h3 className="section-heading">Choose Preferences</h3>
+            <h3 className="section-heading"><p className="w3-myFont">Choose Preferences</p></h3>
+            
+
             <div className = "select-value">
                 <Select
                     name="form-field-name"
@@ -60,20 +69,24 @@ render() {
                     searchable = {false}
                     backspaceToRemoveMethod=""
                 />
-            </div>
 
+            </div>
+            <p></p>
+
+
+            <p className="w3-myFont"><h3>Itinerary</h3></p>
             <p></p>
             <table className="pair-table">
                 <tr>
-                    <td><h8><b> Start Name </b></h8></td>
-                    <td><h8><b> End Name </b></h8></td>
-                    <td><h8><b> Distance (mi) </b></h8></td>
-                    <td><h8><b> Total Distance (mi)</b></h8></td>
+                    <td><h8><b><p className="w3-myFont"> Start Name </p></b></h8></td>
+                    <td><h8><b><p className="w3-myFont"> End Name </p></b></h8></td>
+                    <td><h8><b><p className="w3-myFont"> Distance (mi) </p></b></h8></td>
+                    <td><h8><b><p className="w3-myFont"> Total Distance (mi)</p></b></h8></td>
                 </tr>
                 {this.props.pairs}
                 <tbody>
                     <tr>
-                        <td colSpan="4">Total:</td>
+                        <td colSpan="4"><p className="w3-myFont">Total:</p></td>
                         <td>{total}</td>
                     </tr>
                 </tbody>
@@ -116,5 +129,9 @@ dropSVG(acceptedFiles) {
     });
  }
 }
+
+
+
+
 
 export default Home

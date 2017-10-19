@@ -1,3 +1,7 @@
+:global {
+    @import "~/react-select/dist/react-select.css";
+}
+
 .home-container {
   .pair-table {
     table, th, td {
@@ -7,11 +11,16 @@
     td {
       padding: 10px;
       margin: 5px;
+      font-size: 10px;
     }
+    font-family: Tahoma, Geneva, sans-serif;
+    float: left;
+    white-space:pre-wrap;
   }
 
   .dropzone-style {
     padding-bottom: 10px;
+    float: left;
   }
 
   .select-value{
@@ -36,4 +45,19 @@
       width: 200px;
   }
 
+  .w3-myFont {
+    font-family: Tahoma, Geneva, sans-serif;
+    color: #4644AB;
+
+    h2 {
+        text-align: center;
+    }
+
+  }
+
+   #svgImage{
+      img {
+         float: right;
+       }
+    }
 }
