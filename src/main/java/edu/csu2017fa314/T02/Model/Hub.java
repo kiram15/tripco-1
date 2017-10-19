@@ -34,12 +34,7 @@ public class Hub {
 
 
     public String searchDatabase(String username, String password, String searchingFor){
-
-        //CALL WRTIEJSON
-        //return shortestItinerary
-
         searchingFor = searchingFor.toLowerCase();
-
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
         try { // connect to the database
@@ -82,10 +77,11 @@ public class Hub {
             System.err.printf("Exception: ");
             System.err.println(e.getMessage());
         }
+        //call rest of hub
         shortestTrip();
         writeJSON();
         try {
-            drawSVG(args[1]);
+            drawSVG();
         } catch (IOException e){
             System.exit(0);
         }
@@ -426,10 +422,15 @@ public class Hub {
         }
     }
 
-    private void drawSVG(String COmap) throws FileNotFoundException{
+    private void drawSVG() throws FileNotFoundException{
+
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        String filepath = classLoader.getResource("COmap.svg").getFile();
+        File COmapFile = new File(filepath);
+
         //create printWriter to CoMapTripCo svg
         try {
-            PrintWriter pw = new PrintWriter(new File("COmapTripCo.svg"));
+            PrintWriter pw = new PrintWriter(COmapFile);
             //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
             LinkedList<String> ll = new LinkedList<String>();
             try{
