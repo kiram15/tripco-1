@@ -1,17 +1,26 @@
 .home-container {
+
+@import url('../../node_modules/react-select/dist/react-select.css');
+
   .pair-table {
     table, th, td {
       border: 1px solid black;
     }
 
     td {
-      padding: 10px;
+      padding: 5px;
       margin: 5px;
+      font-size: 12px;
     }
+    font-family: Tahoma, Geneva, sans-serif;
+    float: left;
+    white-space:pre-wrap;
+    width: 58%;
   }
 
   .dropzone-style {
     padding-bottom: 10px;
+    float: left;
   }
 
   .select-value{
@@ -32,8 +41,62 @@
     border: solid 1	px blue;
   }
 
-  input {
-      width: 200px;
+  .app-container{
+    position: absolute;
+    float: right;
+    top: 28px;
+    right: 1019px;
+    input {
+       width: 200px;
+       height: 20px;
+    }
   }
 
+  #Itin{
+    top: 40px;
+  }
+
+  .w3-myFont {
+    font-family: Tahoma, Geneva, sans-serif;
+    color: #4644AB;
+
+    h2 {
+        text-align: center;
+        color: white;
+        position: relative;
+    }
+    h4{
+        float: right;
+    }
+
+  }
+
+   #svgImage{
+      img {
+         position: absolute;
+         top: 150px;
+         left: 720px;
+       }
+    }
+
+    #background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 7.75%;
+        background-color: #3532BE;
+    }
+
+#prefs{
+        position: absolute;
+        float: right;
+        height: 25%;
+        width: 75%;
+        top: 40px;
+        left: 720px;
+   }
+
+
 }
+
