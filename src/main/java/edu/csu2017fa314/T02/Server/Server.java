@@ -9,6 +9,7 @@ import spark.Response;
 import edu.csu2017fa314.T02.Model.Hub;
 import edu.csu2017fa314.T02.Model.Distance;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static spark.Spark.post;
@@ -45,13 +46,14 @@ import static spark.Spark.post;
      // called by testing method if the client requests an svg
      private Object serveSvg() {
          Gson gson = new Gson();
+         String content = "";
          // Instead of writing the SVG to a file, we send it in plaintext back to the client to be rendered inline
-         String sampleSvg =
-                 "<svg width=\"120\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\">" +
-                 "  <line id=\"north\" y2=\"100\" x2=\"120\" y1=\"0\" x1=\"0\" stroke-width=\"5\" stroke=\"red\"/>" +
-                 "  <line id=\"west\" y2=\"100\" x2=\"0\" y1=\"0\" x1=\"120\" stroke-width=\"5\" stroke=\"blue\"/>" +
-                 " </svg>";
-         ServerSvgResponse ssres = new ServerSvgResponse(120, 100, sampleSvg);
+         try {
+             content = h.drawSVG();
+         } catch(IOException e){
+             System.exit(0);
+         }
+         ServerSvgResponse ssres = new ServerSvgResponse(120, 100, content);
 
          return gson.toJson(ssres, ServerSvgResponse.class);
      }
@@ -63,6 +65,7 @@ import static spark.Spark.post;
          //String queryString = String.format("SELECT * FROM airports WHERE municipality LIKE '%%%s%%' OR name LIKE '%%%s%%' OR type LIKE '%%%s%%' LIMIT 10", searched, searched, searched);
          //ArrayList<Location> queryResults = q.query(queryString);
          h.searchDatabase(this.user, this.password, searched);
+         System.out.println("after search database");
          ArrayList<Distance> trip = h.shortestItinerary;
          // Create object with svg file path and array of matching database entries to return to server
          ServerQueryResponse sRes = new ServerQueryResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image

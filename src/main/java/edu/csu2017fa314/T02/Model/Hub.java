@@ -23,6 +23,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.lang.ClassLoader;
+import java.io.InputStream;
+import java.net.URL;
+
 
 public class Hub {
     String[] infoArray;
@@ -33,13 +37,25 @@ public class Hub {
 
 
     public void searchDatabase(String username, String password, String searchingFor){
+        finalLocations.clear();
+        shortestItinerary.clear();
+        columns.clear();
+        reverseC.clear();
+        System.out.println("IN SEARCHDATABASESSS:: " + searchingFor);
         searchingFor = searchingFor.toLowerCase();
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
+        //String myUrl = "jdbc:mysql://localhost/cs314"; // Use this line if tunneling 3306 traffic through shell
+
         try { // connect to the database
+            System.out.println("IN FIRST TRY LOOP ");
+            System.out.println(username);
             Class.forName(myDriver);
+            System.out.println("IN BETWEEN");
             Connection conn = DriverManager.getConnection(myUrl, username, password);
+            System.out.println("RIGHT BEFORE SECOND TRY");
             try { // create a statement
+                System.out.println("IN SECOND TRY LOOP");
                 Statement st = conn.createStatement();
                 try { // submit a query to get column headers
                     String q1 = "select column_name from information_schema.columns where table_name='airports';";
@@ -48,42 +64,52 @@ public class Hub {
                         String headers = "";
                         while (rs1.next()){
                             String h = rs1.getString(1);
+                            //System.out.println("PRINTING H????:: " + h);
                             h = h + ",";
                             headers += h;
                         }
+                        //System.out.println("WE GOT HEADERS:: " + headers);
                         storeColumnHeaders(headers);
+                        //System.out.println("headers stored");
+
+                        try{ //search for searchingFor string in all columns
+                            st = conn.createStatement();
+
+                            String q2 = "select * from airports where name like '%" + searchingFor + "%' or type like '%" + searchingFor + "%' or id like '%" + searchingFor + "%' or latitude like '%" + searchingFor + "%' or longitude like '%" + searchingFor + "%' or municipality like '%" + searchingFor + "%' or elevation like '%" + searchingFor + "%' or home_link like '%" + searchingFor + "%' or wikipedia_link like '%" + searchingFor + "%' order by name;";
+                            ResultSet rs2 = st.executeQuery(q2);
+                            try{ //parse matched rows
+                                int count = 0;
+
+                                while(rs2.next() && count <= 24){ //for each row
+                                    String matchedRow = "";
+                                    //System.out.println("RS2 TO STRING: "+ rs2.getString(1));
+                                    for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
+                                        String rowCol = rs2.getString(i);
+                                        rowCol = rowCol + ",";
+                                        //System.out.println("PRINTING ROW COL????:: " + rowCol);
+                                        matchedRow += rowCol;
+                                    }
+
+                                    //System.out.println("Matched row numba : " + count + ": " + matchedRow);
+                                    parseRow(matchedRow);
+                                    ++count;
+                                }
+                            } finally { rs2.close(); }
+                        } finally{ st.close(); }
+
                     } finally { rs1.close(); }
+                    //System.out.println("after rs1 close");
                 } finally {}
-                try{ //search for searchingFor string in all columns
-                    String q2 = "select * from airports where name like '%" + searchingFor + "%' or type like '%" + searchingFor + "%' or id like '%" + searchingFor + "%' or latitude like '%" + searchingFor + "%' or longitude like '%" + searchingFor + "%' or municipality like '%" + searchingFor + "%' or elevation like '%" + searchingFor + "%' or home_link like '%" + searchingFor + "%' or wikipedia_link like '%" + searchingFor + "%' order by name;";
-                    ResultSet rs2 = st.executeQuery(q2);
-                    try{ //parse matched rows
-                        int count = 0;
-                        String matchedRow = "";
-                        while(rs2.next() && count <= 24){ //for each row
-                            for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
-                                String rowCol = rs2.getString(i);
-                                rowCol = rowCol + ",";
-                                matchedRow += rowCol;
-                            }
-                            parseRow(matchedRow);
-                            ++count;
-                        }
-                    } finally { rs2.close(); }
-                } finally{ st.close(); }
+
             } finally { conn.close(); }
         } catch (Exception e) { // catches all exceptions in the nested try's
             System.err.printf("Exception: ");
             System.err.println(e.getMessage());
         }
         //call rest of hub
+        //System.out.println("FINAL LOcations: " + finalLocations);
         shortestTrip();
         writeJSON();
-        try {
-            drawSVG();
-        } catch (IOException e){
-            System.exit(0);
-        }
     }
 
     public void storeColumnHeaders(String firstLine){
@@ -197,7 +223,8 @@ public class Hub {
     private void writeJSON() {
         //new JSONarray to add all the strings to
         JSONArray array = new JSONArray();
-
+        System.out.println("IN WRITE JSON");
+        System.out.println("PRINTING first thing in itinerary????:: " + shortestItinerary.get(0));
         //loop through all the distance objects in the distance array
         for (Distance d : shortestItinerary) {
             JSONObject obj = new JSONObject();
@@ -421,15 +448,15 @@ public class Hub {
         }
     }
 
-    private void drawSVG() throws FileNotFoundException{
-
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        String filepath = classLoader.getResource("COmap.svg").getFile();
+    public String drawSVG() throws FileNotFoundException{
+        System.out.println("WE IN SVG BROOO");
+        String SVG = "";
+        //ClassLoader classLoader = this.getClass().getClassLoader();
+        String filepath = "src/main/resources/COmap.svg";
         File COmapFile = new File(filepath);
 
         //create printWriter to CoMapTripCo svg
-        try {
-            PrintWriter pw = new PrintWriter(COmapFile);
+            //PrintWriter pw = new PrintWriter(COmapFile);
             //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
             LinkedList<String> ll = new LinkedList<String>();
             try{
@@ -440,8 +467,9 @@ public class Hub {
                     ll.addLast(line);
                 }
                 for(int i = 0; i < (ll.size()-3); i++){
-                    pw.println(ll.get(i));
-                    pw.flush();
+                    SVG += ll.get(i);
+                    //pw.println(ll.get(i));
+                    //pw.flush();
                 }
                 br.close();
             }catch(IOException e){
@@ -449,7 +477,8 @@ public class Hub {
                 System.exit(0);
             }
 
-            pw.println("</g>");
+            //pw.println("</g>");
+            SVG += "</g>";
 
             //draw lines from start to end locations
             double originStartLat = 0.0;
@@ -484,8 +513,9 @@ public class Hub {
                 double y1 = ((41 - startLat) * unitHeight) + 38;
                 double x2 = ((109 - endLon) * unitWidth) + 38;
                 double y2 = ((41 - endLat) * unitHeight) + 38;
-                pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>");
-                pw.flush();
+                //pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>");
+                SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
+                //pw.flush();
             }
 
             //absVal of lat/lons
@@ -499,18 +529,18 @@ public class Hub {
             double endY1 = ((41 - finalEndLat) * unitHeight) + 38;
             double endX2 = ((109 - originStartLon) * unitWidth) + 38;
             double endY2 = ((41 - originStartLat) * unitHeight) + 38;
-            pw.flush();
+            //pw.flush();
 
-            pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>");
+            //pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>");
+            SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
 
-            pw.println("</svg>");
+            //pw.println("</svg>");
+            SVG += "</svg>";
 
-            pw.close();
+            //pw.close();
 
-        }catch(FileNotFoundException e){
-            System.out.println("Error: File not found");
-            System.exit(0);
-        }
+        System.out.println("SVG!!!:::  " + SVG);
+        return SVG;
 
     }
 

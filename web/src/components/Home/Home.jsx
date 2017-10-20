@@ -87,7 +87,7 @@ render() {
              <Dropzone className="dropzone-style" onDrop={this.dropSVG.bind(this)}>
                 <button>Open SVG Image</button>
              </Dropzone>
-             {svg}
+             {displaySVG}
         </div>
     </div>
 }

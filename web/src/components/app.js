@@ -41,7 +41,7 @@ render() {
                 pairs={ps}
                 totalDist={this.state.total}
                 columns = {this.state.setInfo}
-
+                qreturn = {this.state.queryResults}
                 fetch={this.fetch.bind(this)}
             />
         </div>
@@ -71,30 +71,57 @@ render() {
 
 startEndInfo(file) {
     var finalStr = "";
-    console.log("In startEndInfo");
-    file = file.replace(/["{}]/g, "")
+    //console.log("In startEndInfo");
+    //file = file.replace(/["{}]/g, "")
+    //console.log("After replace");
     var columnNames = this.state.selColumns;
-    var info = file.split(',');
-    for (var i = 0; i < info.length; i++) {
-            info[i] = info[i].trim();
-    }
-
-    for (var i = 0; i < info.length; i++) {
-        for (var j = 0; j < (columnNames.length); j++) {
-            var colName = info[i].substring(0, info[i].indexOf(":"));
-            if (colName ==columnNames[j]) {
-                finalStr += info[i] + "\n";
-            }
+    console.log("set columnNames: ", this.state.selColumns);
+    //var info = file.split(',');
+    //console.log("done got split");
+    //for (var i = 0; i < info.length; i++) {
+    //        info[i] = info[i].trim();
+    //}
+    var seCol = JSON.parse(file);
+    console.log("sEINFO FILE: ", seCol);
+    var info = this.state.setInfo;
+    console.log("Info: ", info);
+    //for (var i = 0; i < info.length; i++) {
+        //console.log("IN FOR LOOP: ", info[i]);
+    for (var j = 0; j < (columnNames.length); j++) {
+            //console.log("SECOND LOOP: ", columnNames[j]);
+            //var colName = info[i].substring(0, info[i].indexOf(":"));
+        if ("index" ==columnNames[j]) {
+            finalStr = finalStr + "Index: " + seCol.index + "\n";
+        }
+        else if ("id" ==columnNames[j]) {
+            finalStr = finalStr + "ID: " + seCol.id + "\n";
+        }
+        else if ("type" ==columnNames[j]) {
+            finalStr = finalStr + "Type: " + seCol.type + "\n";
+        }
+        else if ("elevation" ==columnNames[j]) {
+            finalStr = finalStr + "Elevation: " + seCol.elevation + "\n";
+        }
+        else if ("municipality" ==columnNames[j]) {
+            finalStr = finalStr + "Municipality: " + seCol.municipality + "\n";
+        }
+        else if ("home_link" ==columnNames[j]) {
+            finalStr = finalStr + "Home link: " + seCol.home_link + "\n";
+        }
+        else{
+            finalStr = finalStr + "Wikipedia link: " + seCol.wikipedia_link + "\n";
         }
     }
-
+    //}
+    console.log("FINAL: ", finalStr);
     return finalStr;
 }
 
 async selectColumns(file) {
     //console.log("Got File:", file);
-    //console.log(file[0].startInfo);
-    var options = Object.keys(file[0].startInfo);
+    console.log(file[0]);
+    console.log(file[0].startID.info);
+    var options = Object.keys(file[1].startID.info);
     console.log("Options: ", options);
     this.setState({
         setInfo: options
@@ -108,15 +135,16 @@ async browseFile(file) {
     let runTotal = 0;
     this.selectColumns(file);
     for (let i = 0; i < Object.values (file).length; i++) {
-        let start = file[i].start; //get start from file i
-        let end = file[i].end; //get end from file i
-        let dist = file[i].distance;
+        let start = file[i].startID.name; //get start from file i
+        let end = file[i].endID.name; //get end from file i
+        let dist = file[i].gcd;
         runTotal = runTotal + dist;
 
-        var updatedStart = JSON.stringify(file[i].startInfo);
-        updatedStart = String(this.startEndInfo(updatedStart));
-        var updatedEnd = JSON.stringify(file[i].endInfo);
-        updatedEnd = String(this.startEndInfo(updatedEnd));
+        var updatedStart = JSON.stringify(file[i].startID.info);
+        updatedStart = this.startEndInfo(updatedStart);
+        console.log("up:", updatedStart);
+        var updatedEnd = JSON.stringify(file[i].endID.info);
+        updatedEnd = this.startEndInfo(updatedEnd);
 
         let p = { //create object with start, end, and dist variable
             start: start,
@@ -170,7 +198,7 @@ async browseFile(file) {
             let ret = await jsonRet.json();
             let parsed = JSON.parse(ret);
             console.log("ret::: ", ret);
-            console.log(("PARSED???:: ", parsed));
+            //console.log(("PARSED???:: ", parsed));
             console.log("Got back: ", JSON.parse(ret));
             console.log("THIS IS RET RESPONSE: ", parsed.response);
 
@@ -181,9 +209,11 @@ async browseFile(file) {
                 });
                 console.log("QUERY RET DOT RESPONSE");
                 console.log("Q RESULTS:: ", this.state.queryResults);
+                this.browseFile(this.state.queryResults);
             // if it's not, we assume the response field is "svg" and contains the an svg image
             } else {
                 console.log("NON QUERY ELSE MLOOP");
+
                 this.setState({
                     svgResults: JSON.parse(ret)
                 })
