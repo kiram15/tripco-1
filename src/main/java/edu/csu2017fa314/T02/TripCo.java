@@ -16,7 +16,7 @@ public class TripCo {
 
    public String getMessage() {
       if (name == "") {
-         return "Hello! ";
+         return "Hello!";
       } else {
          return "Hello " + name + "!";
       }
