@@ -46,26 +46,28 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 
 #### Completed user stories (epics) in Sprint Backlog 
 * #69:
-* #72:
 * #168:
 * #169:
+* #87:
+* #194:
 
-Completed *0* tasks / issues associated with these user stories.
+Completed *38* tasks / issues associated with these user stories.
 
 #### Incomplete user stories / epics in Sprint Backlog 
-* 
+* #72:
 
 #### What went well
-* 
+* 2-opt, database, server, eveything Nicole did
 
 #### Problems encountered and resolutions
-* 
+* time crunch- extending meetings for more time to work together
+* Team member excused absences - worked harder later
 
 ## Retrospective
 
 Topic | Teamwork | Process | Tools
 :--- | :--- | :--- | :---
-What we will change this time |  |  | 
-What we did well |  |  | 
-What we need to work on |  |  |
-What we will change next time |  |  | 
+What we will change this time | make sure we checkin with teammates | add extra meetings | focus on JUnit test
+What we did well | communicated effectively, checked in with teammates, more effective meetings | added extra meetings, time estimates, checking piazza | better use of githhub, React, IntelliJ, extra languages
+What we need to work on | Remind people to work earlier, better balance of checking in and working on our stuff | better time planning split up issues more, more issue assignment instead of database/website/server/client | better use of JUnit/code coverage, tunneling database
+What we will change next time | work earlier, work better as a team | better initial planning, get started earlier | Code coverage, JUnit, SQL
