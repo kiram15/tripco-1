@@ -8,13 +8,14 @@
     }
 
     td {
-      padding: 10px;
+      padding: 5px;
       margin: 5px;
-      font-size: 10px;
+      font-size: 12px;
     }
     font-family: Tahoma, Geneva, sans-serif;
     float: left;
     white-space:pre-wrap;
+    width: 58%;
   }
 
   .dropzone-style {
@@ -73,8 +74,8 @@
    #svgImage{
       img {
          position: absolute;
-         top: 175px;
-         left: 693px;
+         top: 150px;
+         left: 720px;
        }
     }
 
@@ -93,8 +94,7 @@
         height: 25%;
         width: 75%;
         top: 40px;
-        left: 700px;
-
+        left: 720px;
    }
 
 

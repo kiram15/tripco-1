@@ -58,6 +58,12 @@ render() {
             </Dropzone>
             <p></p>
 
+            <p></p>
+                         <Dropzone className="dropzone-style" onDrop={this.dropSVG.bind(this)}>
+                            <button>Open SVG Image</button>
+                         </Dropzone>
+                         {displaySVG}
+
 
 
         <div id="Prefs" >
@@ -96,11 +102,7 @@ render() {
                     </tr>
                 </tbody>
             </table>
-            <p></p>
-             <Dropzone className="dropzone-style" onDrop={this.dropSVG.bind(this)}>
-                <button>Open SVG Image</button>
-             </Dropzone>
-             {displaySVG}
+
             </div>
         </div>
     </div>
