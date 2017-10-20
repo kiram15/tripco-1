@@ -32,7 +32,7 @@ public class Hub {
     public ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
 
-    public String searchDatabase(String username, String password, String searchingFor){
+    public void searchDatabase(String username, String password, String searchingFor){
         searchingFor = searchingFor.toLowerCase();
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
@@ -433,7 +433,7 @@ public class Hub {
             //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
             LinkedList<String> ll = new LinkedList<String>();
             try{
-                Scanner br = new Scanner(new File(COmap));
+                Scanner br = new Scanner(COmapFile);
                 String line;
                 while(br.hasNext()) {
                     line = br.nextLine();

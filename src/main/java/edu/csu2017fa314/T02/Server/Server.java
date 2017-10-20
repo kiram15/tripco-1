@@ -62,7 +62,8 @@ import static spark.Spark.post;
          //QueryBuilder q = new QueryBuilder("user", "pass"); // Create new QueryBuilder instance and pass in credentials //TODO update credentials
          //String queryString = String.format("SELECT * FROM airports WHERE municipality LIKE '%%%s%%' OR name LIKE '%%%s%%' OR type LIKE '%%%s%%' LIMIT 10", searched, searched, searched);
          //ArrayList<Location> queryResults = q.query(queryString);
-         ArrayList<Distance> trip = h.searchDatabase(this.user, this.password, searched);
+         h.searchDatabase(this.user, this.password, searched);
+         ArrayList<Distance> trip = h.shortestItinerary;
          // Create object with svg file path and array of matching database entries to return to server
          ServerQueryResponse sRes = new ServerQueryResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image
 
