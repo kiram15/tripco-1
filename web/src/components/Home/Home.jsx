@@ -1,13 +1,15 @@
 import React, {Component} from 'react'
 import Dropzone from 'react-dropzone'
 import Select from 'react-select';
+import InlineSVG from 'svg-inline-react';
 
 
 class Home extends React.Component {
 constructor(props) {
    super(props);
    this.state = {
-       svgImage: ''
+       svgImage : [],
+       input : []
    };
 
 }
@@ -24,13 +26,13 @@ render() {
 
 
     let total = this.props.totalDist; //update the total here
-    let displaySVG = null;
-    if(this.state.svgImage){
-        displaySVG = (
-            <div id="svgImage">
-                <img src={this.state.svgImage} width="43%"/>
-            </div>
-        );
+    let svg = this.props.svg;
+    let txtSearch;
+    let displaySVG;
+    let renderedSvg;
+    if(this.props.svg){
+        displaySVG = <InlineSVG src={svg}></InlineSVG>;
+
     }
 
     return <div className="home-container">
@@ -42,26 +44,19 @@ render() {
 
             <p></p>
             <div className="app-container">
-                <form id="SearchBar" onSubmit={this.props.fetch}>
-                     <input className="search-button"
-                            type="text"
-                            id="txtSearch"
-                            placeholder="What are you searching for?"
-                     />
-                     <button type="submit">Submit</button>
+
+                <form onSubmit={this.handleSubmit.bind(this)}>
+                    <input size="35" className="search-button" type="text"
+                        onKeyUp={this.keyUp.bind(this)} placeholder="What are you searching for?" autoFocus/>
+                    <input type="submit" value="Submit" />
                 </form>
+
             </div>
+            <br />
+            <br />
+            <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
             <p></p>
 
-            <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
-                 <button>Open JSON File</button>
-            </Dropzone>
-            <p></p>
-
-            <p></p>
-                         <Dropzone className="dropzone-style" onDrop={this.dropSVG.bind(this)}>
-                            <button>Open SVG Image</button>
-                         </Dropzone>
                          {displaySVG}
 
 
@@ -103,7 +98,10 @@ render() {
                 </tbody>
             </table>
 
+             
+
             </div>
+
         </div>
     </div>
 }
@@ -131,11 +129,36 @@ dropSVG(acceptedFiles) {
     acceptedFiles.forEach(file => {
         console.log("Filename:", file.name, "File:", file);
         let fr = new FileReader();
+        //console.log("fr result: ", fr.result);
         fr.onload = () => this.setState({ svgImage: fr.result })
         (file).bind(this);
         fr.readAsDataURL(file);
+
     });
- }
+}
+
+keyUp(event) {
+    if (event.which === 13) { // Waiting for enter to be pressed. Enter is key 13: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
+        this.props.fetch("query", this.state.input); // Call fetch and pass whatever text is in the input box
+    } else {
+        this.setState({
+            input: event.target.value
+        });
+    }
+}
+
+handleSubmit(event) {
+    this.props.fetch("query", this.state.input);
+    event.preventDefault();
+}
+
+buttonClicked(event) {
+    this.props.fetch("svg", event.target.value);
+    console.log("SVG:: ", this.props.svg);
+}
+
+
+
 }
 
 

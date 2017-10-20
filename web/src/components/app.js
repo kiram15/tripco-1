@@ -11,23 +11,21 @@ export default class App extends React.Component {
             total : 0,
             setInfo : [],
             selColumns : [],
-            //NEW:
-            serverReturned: " "
-    }
-};
+            queryResults : [],
+            svgResults : null
+        }
+    };
+
+
+
 
 render() {
     let pairs = this.state.allPairs;
     let ps = pairs.map((pp) => {
         return <Pair {...pp}/>;
     });
-    let svg;
-       if (this.state.serverReturned) { // if this.state.serverReturned is not null
-            // set the local variable svg to this.state.serverReturned.svg
-            //svg = this.state.serverReturned.svg;
-            svg = " "
-       }
-
+    let svg = this.state.svgResults;
+    let query = this.state.queryResults;
     return (
 
         <div className="app-container">
@@ -35,12 +33,13 @@ render() {
                 browseFile={this.browseFile.bind(this)}
                 selectColumns={this.selectColumns.bind(this)}
                 startEndInfo={this.startEndInfo.bind(this)}
-
+                query={query}
+                svg={svg}
                 onClick={this.onClick.bind(this)}
                 pairs={ps}
                 totalDist={this.state.total}
                 columns = {this.state.setInfo}
-
+                qreturn = {this.state.queryResults}
                 fetch={this.fetch.bind(this)}
             />
         </div>
@@ -70,30 +69,57 @@ render() {
 
 startEndInfo(file) {
     var finalStr = "";
-    console.log("In startEndInfo");
-    file = file.replace(/["{}]/g, "")
+    //console.log("In startEndInfo");
+    //file = file.replace(/["{}]/g, "")
+    //console.log("After replace");
     var columnNames = this.state.selColumns;
-    var info = file.split(',');
-    for (var i = 0; i < info.length; i++) {
-            info[i] = info[i].trim();
-    }
-
-    for (var i = 0; i < info.length; i++) {
-        for (var j = 0; j < (columnNames.length); j++) {
-            var colName = info[i].substring(0, info[i].indexOf(":"));
-            if (colName ==columnNames[j]) {
-                finalStr += info[i] + "\n";
-            }
+    console.log("set columnNames: ", this.state.selColumns);
+    //var info = file.split(',');
+    //console.log("done got split");
+    //for (var i = 0; i < info.length; i++) {
+    //        info[i] = info[i].trim();
+    //}
+    var seCol = JSON.parse(file);
+    console.log("sEINFO FILE: ", seCol);
+    var info = this.state.setInfo;
+    console.log("Info: ", info);
+    //for (var i = 0; i < info.length; i++) {
+        //console.log("IN FOR LOOP: ", info[i]);
+    for (var j = 0; j < (columnNames.length); j++) {
+            //console.log("SECOND LOOP: ", columnNames[j]);
+            //var colName = info[i].substring(0, info[i].indexOf(":"));
+        if ("index" ==columnNames[j]) {
+            finalStr = finalStr + "Index: " + seCol.index + "\n";
+        }
+        else if ("id" ==columnNames[j]) {
+            finalStr = finalStr + "ID: " + seCol.id + "\n";
+        }
+        else if ("type" ==columnNames[j]) {
+            finalStr = finalStr + "Type: " + seCol.type + "\n";
+        }
+        else if ("elevation" ==columnNames[j]) {
+            finalStr = finalStr + "Elevation: " + seCol.elevation + "\n";
+        }
+        else if ("municipality" ==columnNames[j]) {
+            finalStr = finalStr + "Municipality: " + seCol.municipality + "\n";
+        }
+        else if ("home_link" ==columnNames[j]) {
+            finalStr = finalStr + "Home link: " + seCol.home_link + "\n";
+        }
+        else{
+            finalStr = finalStr + "Wikipedia link: " + seCol.wikipedia_link + "\n";
         }
     }
-
+    //}
+    console.log("FINAL: ", finalStr);
     return finalStr;
 }
 
 async selectColumns(file) {
     //console.log("Got File:", file);
-    //console.log(file[0].startInfo);
-    var options = Object.keys(file[0].startInfo);
+    console.log(file[0]);
+    console.log(file[0].startID.info);
+    var options = Object.keys(file[1].startID.info);
     console.log("Options: ", options);
     this.setState({
         setInfo: options
@@ -107,15 +133,16 @@ async browseFile(file) {
     let runTotal = 0;
     this.selectColumns(file);
     for (let i = 0; i < Object.values (file).length; i++) {
-        let start = file[i].start; //get start from file i
-        let end = file[i].end; //get end from file i
-        let dist = file[i].distance;
+        let start = file[i].startID.name; //get start from file i
+        let end = file[i].endID.name; //get end from file i
+        let dist = file[i].gcd;
         runTotal = runTotal + dist;
 
-        var updatedStart = JSON.stringify(file[i].startInfo);
-        updatedStart = String(this.startEndInfo(updatedStart));
-        var updatedEnd = JSON.stringify(file[i].endInfo);
-        updatedEnd = String(this.startEndInfo(updatedEnd));
+        var updatedStart = JSON.stringify(file[i].startID.info);
+        updatedStart = this.startEndInfo(updatedStart);
+        console.log("up:", updatedStart);
+        var updatedEnd = JSON.stringify(file[i].endID.info);
+        updatedEnd = this.startEndInfo(updatedEnd);
 
         let p = { //create object with start, end, and dist variable
             start: start,
@@ -137,30 +164,66 @@ async browseFile(file) {
 }
 
     // This function sends `input` the server and updates the state with whatever is returned
-    async fetch(input){
-        input.preventDefault();
+    async fetch(type, input){
+        //input.preventDefault();
+        console.log("THIS IS TYPE::: ", type);
         console.log("Fetching... ", input);
+        let request;
 
-        let search = input;
+        //if text box
+        if (type === "query") {
+            request = {
+                request: "query",
+                description: input,
+            };
+            console.log("QUERY SHTUFF");
+        // if the button is clicked:
+        } else {
+            request = {
+                request: "svg",
+                description: ""
+            }
+            console.log("SVG SCHTUFF");
+        }
 
         try{
-            let jsonRet = await fetch(`http;//localhost:4567/testing`,
-            {
-                 method: "POST",
-                 body: JSON.stringify(input)
-            });
-
+            let jsonRet = await fetch(`http://localhost:4567/testing`,
+                {
+                    method: "POST",
+                    body: JSON.stringify(request)
+                });
+            console.log("After jsonret AWAIT");
             let ret = await jsonRet.json();
+            let parsed = JSON.parse(ret);
+            //console.log("ret::: ", ret);
+            //console.log(("PARSED???:: ", parsed));
             console.log("Got back: ", JSON.parse(ret));
+            let parse = JSON.parse(ret);
+            console.log("THIS IS RET RESPONSE: ", parsed.response);
 
-            this.setState({
-                serverReturned: JSON.parse(ret)
-            });
+            if (parsed.response === "query") {
+                console.log("BEFOre setSTATE (QUERY)");
+                this.setState({
+                    queryResults: parsed.trip
+                });
+                console.log("QUERY RET DOT RESPONSE");
+                console.log("Q RESULTS:: ", this.state.queryResults);
+                this.browseFile(this.state.queryResults);
+            // if it's not, we assume the response field is "svg" and contains the an svg image
+            } else {
+                console.log("NON QUERY ELSE MLOOP");
 
-            }catch(e) {
-                console.error("Error talking to server");
-                console.error(e);
+                this.setState({
+                    svgResults: parse.contents
+                })
+                console.log("APP SVG:: ", parse.contents);
             }
+
+        }catch(e) {
+            console.error("Error talking to server");
+            console.error(e);
         }
+    }
+
 
 }

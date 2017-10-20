@@ -17,8 +17,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
 import java.util.Set;
-import java.io.BufferedReader;
 import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.lang.ClassLoader;
+import java.io.InputStream;
+import java.net.URL;
 
 
 public class Hub {
@@ -26,73 +33,137 @@ public class Hub {
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
-    ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
+    public ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
 
-    public void readFile(String fileName) {
-        ArrayList<Distance> distances = new ArrayList<Distance>();
-        File file = new File(fileName);
-        Scanner scnr;
-        try {
-            scnr = new Scanner(file);
-            if (scnr.hasNextLine()) {
-                String s = scnr.nextLine();
-                s = s.toLowerCase();
-                String[] infoArray = s.split(",");
 
-                for (int i = 0; i < infoArray.length; i++) {
-                    String infoString = infoArray[i];
-                    switch (infoString.trim()) { // associating column titles with column num, putting it in map
-                        case "name":
-                            columns.put("name", i);
-                            reverseC.put(i, "name");
-                            break;
-                        case "latitude":
-                            columns.put("latitude", i);
-                            reverseC.put(i, "latitude");
-                            break;
-                        case "longitude":
-                            columns.put("longitude", i);
-                            reverseC.put(i, "longitude");
-                            break;
-                        default:
-                            columns.put(infoString.trim(), i);
-                            reverseC.put(i, infoString.trim());
-                            break;
-                    }
-                }
-            }
-            while (scnr.hasNextLine()) {
-                String place = scnr.nextLine();
-                place = place.toLowerCase();
-                String[] props = place.split(","); //column names
-                LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
+    public void searchDatabase(String username, String password, String searchingFor){
+        finalLocations.clear();
+        shortestItinerary.clear();
+        columns.clear();
+        reverseC.clear();
+        System.out.println("IN SEARCHDATABASESSS:: " + searchingFor);
+        searchingFor = searchingFor.toLowerCase();
+        String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
+        String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
+        //String myUrl = "jdbc:mysql://localhost/cs314"; // Use this line if tunneling 3306 traffic through shell
 
-                String objectName = "";
-                String objectLatitude = "";
-                String objectLongitude = "";
-                //populates necessary info into variables
-                for (int i = 0; i < props.length; ++i) {
-                    if (i == columns.get("name")) {
-                        objectName = props[i].trim();
-                    } else if (i == columns.get("latitude")) {
-                        objectLatitude = props[i].trim();
-                    } else if (i == columns.get("longitude")) {
-                        objectLongitude = props[i].trim();
-                    } else {
-                        info.put(reverseC.get(i), props[i]);
-                    }
-                }
+        try { // connect to the database
+            System.out.println("IN FIRST TRY LOOP ");
+            System.out.println(username);
+            Class.forName(myDriver);
+            System.out.println("IN BETWEEN");
+            Connection conn = DriverManager.getConnection(myUrl, username, password);
+            System.out.println("RIGHT BEFORE SECOND TRY");
+            try { // create a statement
+                System.out.println("IN SECOND TRY LOOP");
+                Statement st = conn.createStatement();
+                try { // submit a query to get column headers
+                    String q1 = "select column_name from information_schema.columns where table_name='airports';";
+                    ResultSet rs1 = st.executeQuery(q1);
+                    try { // iterate through the query results and give string of column headers to storeColumnHeaders
+                        String headers = "";
+                        while (rs1.next()){
+                            String h = rs1.getString(1);
+                            //System.out.println("PRINTING H????:: " + h);
+                            h = h + ",";
+                            headers += h;
+                        }
+                        //System.out.println("WE GOT HEADERS:: " + headers);
+                        storeColumnHeaders(headers);
+                        //System.out.println("headers stored");
 
-                double doubleLat = latLonConvert(objectLatitude);
-                double doubleLon = latLonConvert(objectLongitude);
+                        try{ //search for searchingFor string in all columns
+                            st = conn.createStatement();
 
-                Location location = new Location(objectName, doubleLat, doubleLon, info);
+                            String q2 = "select * from airports where name like '%" + searchingFor + "%' or type like '%" + searchingFor + "%' or id like '%" + searchingFor + "%' or latitude like '%" + searchingFor + "%' or longitude like '%" + searchingFor + "%' or municipality like '%" + searchingFor + "%' or elevation like '%" + searchingFor + "%' or home_link like '%" + searchingFor + "%' or wikipedia_link like '%" + searchingFor + "%' order by name;";
+                            ResultSet rs2 = st.executeQuery(q2);
+                            try{ //parse matched rows
+                                int count = 0;
 
-                finalLocations.add(location);
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+                                while(rs2.next() && count <= 24){ //for each row
+                                    String matchedRow = "";
+                                    //System.out.println("RS2 TO STRING: "+ rs2.getString(1));
+                                    for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
+                                        String rowCol = rs2.getString(i);
+                                        rowCol = rowCol + ",";
+                                        //System.out.println("PRINTING ROW COL????:: " + rowCol);
+                                        matchedRow += rowCol;
+                                    }
+
+                                    //System.out.println("Matched row numba : " + count + ": " + matchedRow);
+                                    parseRow(matchedRow);
+                                    ++count;
+                                }
+                            } finally { rs2.close(); }
+                        } finally{ st.close(); }
+
+                    } finally { rs1.close(); }
+                    //System.out.println("after rs1 close");
+                } finally {}
+
+            } finally { conn.close(); }
+        } catch (Exception e) { // catches all exceptions in the nested try's
+            System.err.printf("Exception: ");
+            System.err.println(e.getMessage());
         }
+        //call rest of hub
+        //System.out.println("FINAL LOcations: " + finalLocations);
+        shortestTrip();
+        writeJSON();
+    }
+
+    public void storeColumnHeaders(String firstLine){
+        String s = firstLine.toLowerCase();
+        String[] infoArray = s.split(",");
+        for (int i = 0; i < infoArray.length; i++) {
+            String infoString = infoArray[i];
+            switch (infoString.trim()) { // associating column titles with column num, putting it in map
+                case "name":
+                    columns.put("name", i);
+                    reverseC.put(i, "name");
+                    break;
+                case "latitude":
+                    columns.put("latitude", i);
+                    reverseC.put(i, "latitude");
+                    break;
+                case "longitude":
+                    columns.put("longitude", i);
+                    reverseC.put(i, "longitude");
+                    break;
+                default:
+                    columns.put(infoString.trim(), i);
+                    reverseC.put(i, infoString.trim());
+                    break;
+            }
+        }
+    }
+
+    public void parseRow(String row){
+        row = row.toLowerCase();
+        String[] props = row.split(",");
+        LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
+        String objectName = "";
+        String objectLatitude = "";
+        String objectLongitude = "";
+        //populates necessary info into variables
+        for (int i = 0; i < props.length; ++i) {
+            if (i == columns.get("name")) {
+                objectName = props[i].trim();
+            } else if (i == columns.get("latitude")) {
+                objectLatitude = props[i].trim();
+            } else if (i == columns.get("longitude")) {
+                objectLongitude = props[i].trim();
+            } else {
+                info.put(reverseC.get(i), props[i]);
+            }
+        }
+
+        double doubleLat = latLonConvert(objectLatitude);
+        double doubleLon = latLonConvert(objectLongitude);
+
+        Location location = new Location(objectName, doubleLat, doubleLon, info);
+
+        finalLocations.add(location);
     }
 
     public double latLonConvert(String s) {
@@ -101,10 +172,8 @@ public class Hub {
         String symbol;
         double retVal;
         ArrayList<Double> values = new ArrayList<>();
-
         //in the loops, uses symbol as stopping point, extracts number, adds to arrayList,
         //and cuts off remaining, then uses the formula to convert into degrees
-
         if (s.contains("\"") && s.contains("'")) { // case for 106°49'43.24" W
             for (int i = 0; i < 3; i++) {
                 if (i == 0) {
@@ -151,12 +220,13 @@ public class Hub {
     }
 
     //method to write the JSON file
-    public void writeJSON(ArrayList<Distance> distance) {
+    private void writeJSON() {
         //new JSONarray to add all the strings to
         JSONArray array = new JSONArray();
-
+        System.out.println("IN WRITE JSON");
+        System.out.println("PRINTING first thing in itinerary????:: " + shortestItinerary.get(0));
         //loop through all the distance objects in the distance array
-        for (Distance d : distance) {
+        for (Distance d : shortestItinerary) {
             JSONObject obj = new JSONObject();
             JSONObject startObj = new JSONObject();
             JSONObject endObj = new JSONObject();
@@ -196,7 +266,7 @@ public class Hub {
         }
     }
 
-    public ArrayList<Distance> shortestTrip() {
+    private void shortestTrip() {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds();
 
@@ -314,7 +384,6 @@ public class Hub {
             ArrayList<Distance> updatedShortestIt = locationsToDistances(traveledToFinal);
 
             shortestItinerary = updatedShortestIt;
-            return updatedShortestIt;
         }
 
     //will return an array list with each city listed once, with the shortest city as its end
@@ -379,30 +448,40 @@ public class Hub {
         }
     }
 
-    public void drawSVG(String COmap) throws FileNotFoundException{
+    public String drawSVG() throws FileNotFoundException{
+        System.out.println("WE IN SVG BROOO ");
+        String SVG = "";
+        //ClassLoader classLoader = this.getClass().getClassLoader();
+        String filepath = "src/main/resources/COmap.svg";
+        File COmapFile = new File(filepath);
+
         //create printWriter to CoMapTripCo svg
-        try {
-            PrintWriter pw = new PrintWriter(new File("COmapTripCo.svg"));
+            //PrintWriter pw = new PrintWriter(COmapFile);
             //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
             LinkedList<String> ll = new LinkedList<String>();
             try{
-                Scanner br = new Scanner(new File(COmap));
+                Scanner br = new Scanner(COmapFile);
+                //System.out.println("SCANNER SVG");
                 String line;
                 while(br.hasNext()) {
                     line = br.nextLine();
+
                     ll.addLast(line);
                 }
                 for(int i = 0; i < (ll.size()-3); i++){
-                    pw.println(ll.get(i));
-                    pw.flush();
+                    SVG += ll.get(i);
+
+                    //pw.println(ll.get(i));
+                    //pw.flush();
                 }
                 br.close();
             }catch(IOException e){
                 System.out.println("ERROR: FAILED");
                 System.exit(0);
             }
-
-            pw.println("</g>");
+            System.out.println("SCANNER SVG: " + SVG);
+            //pw.println("</g>");
+            SVG += "</g>";
 
             //draw lines from start to end locations
             double originStartLat = 0.0;
@@ -414,6 +493,7 @@ public class Hub {
             double unitWidth = 141.515329; //COmap width-(38*2)/7
 
             for(Distance d : shortestItinerary){
+                System.out.println("In for loop");
                 if(!first){
                     originStartLat = d.getStartID().getLatitude();
                     originStartLon = d.getStartID().getLongitude();
@@ -437,8 +517,9 @@ public class Hub {
                 double y1 = ((41 - startLat) * unitHeight) + 38;
                 double x2 = ((109 - endLon) * unitWidth) + 38;
                 double y2 = ((41 - endLat) * unitHeight) + 38;
-                pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>");
-                pw.flush();
+                //pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>");
+                SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
+                //pw.flush();
             }
 
             //absVal of lat/lons
@@ -452,18 +533,18 @@ public class Hub {
             double endY1 = ((41 - finalEndLat) * unitHeight) + 38;
             double endX2 = ((109 - originStartLon) * unitWidth) + 38;
             double endY2 = ((41 - originStartLat) * unitHeight) + 38;
-            pw.flush();
+            //pw.flush();
 
-            pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>");
-            
-            pw.println("</svg>");
+            //pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>");
+            SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
 
-            pw.close();
+            //pw.println("</svg>");
+            SVG += "</svg>";
 
-        }catch(FileNotFoundException e){
-            System.out.println("Error: File not found");
-            System.exit(0);
-        }
+            //pw.close();
+
+        System.out.println("SVG!!!:::  " + SVG);
+        return SVG;
 
     }
 
