@@ -57,15 +57,6 @@ render() {
             <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
             <p></p>
 
-            <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
-                 <button>Open JSON File</button>
-            </Dropzone>
-            <p></p>
-
-            <p></p>
-                         <Dropzone className="dropzone-style" onDrop={this.dropSVG.bind(this)}>
-                            <button>Open SVG Image</button>
-                         </Dropzone>
                          {displaySVG}
 
 
