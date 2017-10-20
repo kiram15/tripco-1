@@ -49,6 +49,7 @@ import static spark.Spark.post;
          String content = "";
          // Instead of writing the SVG to a file, we send it in plaintext back to the client to be rendered inline
          try {
+             System.out.println("SVG Try:: " + h.shortestItinerary);
              content = h.drawSVG();
          } catch(IOException e){
              System.exit(0);

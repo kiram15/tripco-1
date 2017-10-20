@@ -449,7 +449,7 @@ public class Hub {
     }
 
     public String drawSVG() throws FileNotFoundException{
-        System.out.println("WE IN SVG BROOO");
+        System.out.println("WE IN SVG BROOO ");
         String SVG = "";
         //ClassLoader classLoader = this.getClass().getClassLoader();
         String filepath = "src/main/resources/COmap.svg";
@@ -461,13 +461,16 @@ public class Hub {
             LinkedList<String> ll = new LinkedList<String>();
             try{
                 Scanner br = new Scanner(COmapFile);
+                //System.out.println("SCANNER SVG");
                 String line;
                 while(br.hasNext()) {
                     line = br.nextLine();
+
                     ll.addLast(line);
                 }
                 for(int i = 0; i < (ll.size()-3); i++){
                     SVG += ll.get(i);
+
                     //pw.println(ll.get(i));
                     //pw.flush();
                 }
@@ -476,7 +479,7 @@ public class Hub {
                 System.out.println("ERROR: FAILED");
                 System.exit(0);
             }
-
+            System.out.println("SCANNER SVG: " + SVG);
             //pw.println("</g>");
             SVG += "</g>";
 
@@ -490,6 +493,7 @@ public class Hub {
             double unitWidth = 141.515329; //COmap width-(38*2)/7
 
             for(Distance d : shortestItinerary){
+                System.out.println("In for loop");
                 if(!first){
                     originStartLat = d.getStartID().getLatitude();
                     originStartLon = d.getStartID().getLongitude();

@@ -24,10 +24,8 @@ render() {
     let ps = pairs.map((pp) => {
         return <Pair {...pp}/>;
     });
-    let svg;
-    let query;
-    svg = this.state.svgResults;
-    query = this.state.queryResults;
+    let svg = this.state.svgResults;
+    let query = this.state.queryResults;
     return (
 
         <div className="app-container">
@@ -197,9 +195,10 @@ async browseFile(file) {
             console.log("After jsonret AWAIT");
             let ret = await jsonRet.json();
             let parsed = JSON.parse(ret);
-            console.log("ret::: ", ret);
+            //console.log("ret::: ", ret);
             //console.log(("PARSED???:: ", parsed));
             console.log("Got back: ", JSON.parse(ret));
+            let parse = JSON.parse(ret);
             console.log("THIS IS RET RESPONSE: ", parsed.response);
 
             if (parsed.response === "query") {
@@ -215,8 +214,9 @@ async browseFile(file) {
                 console.log("NON QUERY ELSE MLOOP");
 
                 this.setState({
-                    svgResults: JSON.parse(ret)
+                    svgResults: parse.contents
                 })
+                console.log("APP SVG:: ", parse.contents);
             }
 
         }catch(e) {

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Dropzone from 'react-dropzone'
 import Select from 'react-select';
+import InlineSVG from 'svg-inline-react';
 
 class Home extends React.Component {
 constructor(props) {
@@ -25,8 +26,9 @@ render() {
     let svg = this.props.svg;
     let txtSearch;
     let displaySVG;
-    if(this.state.svgImage){
-        displaySVG = (<div className="svgImage"><img src={this.state.svgImage} width="70%"/></div>);
+    let renderedSvg
+    if(this.props.svg){
+        renderedSvg = <InlineSVG src={svg}></InlineSVG>;
     }
 
     return <div className="home-container">
@@ -87,7 +89,7 @@ render() {
              <Dropzone className="dropzone-style" onDrop={this.dropSVG.bind(this)}>
                 <button>Open SVG Image</button>
              </Dropzone>
-             {displaySVG}
+             {renderedSvg}
         </div>
     </div>
 }
@@ -115,9 +117,11 @@ dropSVG(acceptedFiles) {
     acceptedFiles.forEach(file => {
         console.log("Filename:", file.name, "File:", file);
         let fr = new FileReader();
+        //console.log("fr result: ", fr.result);
         fr.onload = () => this.setState({ svgImage: fr.result })
         (file).bind(this);
         fr.readAsDataURL(file);
+
     });
 }
 
@@ -138,6 +142,7 @@ handleSubmit(event) {
 
 buttonClicked(event) {
     this.props.fetch("svg", event.target.value);
+    console.log("SVG:: ", this.props.svg);
 }
 
 
