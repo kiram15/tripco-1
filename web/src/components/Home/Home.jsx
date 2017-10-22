@@ -52,14 +52,10 @@ render() {
                 </form>
 
             </div>
-            <br />
-            <br />
             <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
             <p></p>
 
                          {displaySVG}
-
-
 
         <div id="Prefs" >
             <p className="w3-myFont"><h3>Choose Preferences</h3></p>
