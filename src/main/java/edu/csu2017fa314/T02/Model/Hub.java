@@ -217,7 +217,6 @@ public class Hub {
         }
     }
 
-
     private void shortestTrip() {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds();

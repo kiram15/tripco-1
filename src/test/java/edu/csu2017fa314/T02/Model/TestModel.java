@@ -134,6 +134,7 @@ public class TestModel {
     }
 
     // ----------------- Test drawSVG -----------------
+
     @Test
     public void testDrawSVG(){
         LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
@@ -156,19 +157,40 @@ public class TestModel {
             (hA.shortestItinerary).add(dA);
             dSVG = hA.drawSVG();
             assertNotNull(dSVG);
-
         } catch(IOException e){
             System.exit(0);
         }
     }
 
     // ----------------- Test searchDatabase -----------------
+    @Test
+    public void testSearchDatabase(){
 
+    }
 
     // ----------------- Test storeColumnHeaders -----------------
+    @Test
+    public void testStoreColumnHeaders(){
+        Hub hB = new Hub();
+        hB.storeColumnHeaders("");
+        assertEquals(hB.columns, null);
+        assertEquals(hB.reverseC, null);
 
+        hB.storeColumnHeaders("a b c");
+        assertNotNull(hB.columns);
+        assertNotNull(hB.reverseC);
+        assertEquals(hB.columns.size(), 1);
+        assertEquals(hB.reverseC.size(), 1);
+
+        hB.storeColumnHeaders("name, latitude,longitude,other");
+        assertEquals(hB.columns.size(), 4);
+        assertEquals(hB.reverseC.size(), 4);
+    }
 
     // ----------------- Test parseRow -----------------
+    @Test
+    public void testParseRow(){
 
+    }
 
 }
