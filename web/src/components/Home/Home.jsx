@@ -94,43 +94,12 @@ render() {
                 </tbody>
             </table>
 
-             
+
 
             </div>
 
         </div>
     </div>
-}
-
-drop(acceptedFiles) {
-    console.log("Accepting drop");
-    acceptedFiles.forEach(file => {
-        console.log("Filename:", file.name, "File:", file);
-        console.log(JSON.stringify(file));
-        let fr = new FileReader();
-        fr.onload = (function () {
-            return function (e) {
-                let JsonObj = JSON.parse(e.target.result);
-                console.log(JsonObj);
-                this.props.browseFile(JsonObj);
-            };
-        })(file).bind(this);
-
-        fr.readAsText(file);
-    });
-}
-
-dropSVG(acceptedFiles) {
-    console.log("Accepting SVG drop");
-    acceptedFiles.forEach(file => {
-        console.log("Filename:", file.name, "File:", file);
-        let fr = new FileReader();
-        //console.log("fr result: ", fr.result);
-        fr.onload = () => this.setState({ svgImage: fr.result })
-        (file).bind(this);
-        fr.readAsDataURL(file);
-
-    });
 }
 
 keyUp(event) {
@@ -150,7 +119,6 @@ handleSubmit(event) {
 
 buttonClicked(event) {
     this.props.fetch("svg", event.target.value);
-    console.log("SVG:: ", this.props.svg);
 }
 
 

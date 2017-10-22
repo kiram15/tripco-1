@@ -41,21 +41,20 @@ public class Hub {
         shortestItinerary.clear();
         columns.clear();
         reverseC.clear();
-        System.out.println("IN SEARCHDATABASESSS:: " + searchingFor);
         searchingFor = searchingFor.toLowerCase();
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
         //String myUrl = "jdbc:mysql://localhost/cs314"; // Use this line if tunneling 3306 traffic through shell
 
         try { // connect to the database
-            System.out.println("IN FIRST TRY LOOP ");
+            //System.out.println("IN FIRST TRY LOOP ");
             System.out.println(username);
             Class.forName(myDriver);
-            System.out.println("IN BETWEEN");
+            //System.out.println("IN BETWEEN");
             Connection conn = DriverManager.getConnection(myUrl, username, password);
-            System.out.println("RIGHT BEFORE SECOND TRY");
+            //System.out.println("RIGHT BEFORE SECOND TRY");
             try { // create a statement
-                System.out.println("IN SECOND TRY LOOP");
+                //System.out.println("IN SECOND TRY LOOP");
                 Statement st = conn.createStatement();
                 try { // submit a query to get column headers
                     String q1 = "select column_name from information_schema.columns where table_name='airports';";
@@ -217,6 +216,7 @@ public class Hub {
             return Double.parseDouble(s);
         }
     }
+
 
     private void shortestTrip() {
         //Adjacency matrix that holds all gcds
@@ -401,7 +401,6 @@ public class Hub {
     }
 
     public String drawSVG() throws FileNotFoundException{
-        System.out.println("WE IN SVG BROOO ");
         String SVG = "";
         //ClassLoader classLoader = this.getClass().getClassLoader();
         String filepath = "src/main/resources/COmap.svg";
@@ -431,7 +430,6 @@ public class Hub {
                 System.out.println("ERROR: FAILED");
                 System.exit(0);
             }
-            System.out.println("SCANNER SVG: " + SVG);
             //pw.println("</g>");
             SVG += "</g>";
 
@@ -445,7 +443,6 @@ public class Hub {
             double unitWidth = 141.515329; //COmap width-(38*2)/7
 
             for(Distance d : shortestItinerary){
-                System.out.println("In for loop");
                 if(!first){
                     originStartLat = d.getStartID().getLatitude();
                     originStartLon = d.getStartID().getLongitude();
@@ -495,7 +492,6 @@ public class Hub {
 
             //pw.close();
 
-        System.out.println("SVG!!!:::  " + SVG);
         return SVG;
 
     }
