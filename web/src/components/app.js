@@ -69,25 +69,17 @@ render() {
 
 startEndInfo(file) {
     var finalStr = "";
-    //console.log("In startEndInfo");
-    //file = file.replace(/["{}]/g, "")
-    //console.log("After replace");
+
     var columnNames = this.state.selColumns;
     console.log("set columnNames: ", this.state.selColumns);
-    //var info = file.split(',');
-    //console.log("done got split");
-    //for (var i = 0; i < info.length; i++) {
-    //        info[i] = info[i].trim();
-    //}
+
     var seCol = JSON.parse(file);
-    console.log("sEINFO FILE: ", seCol);
+
     var info = this.state.setInfo;
     console.log("Info: ", info);
-    //for (var i = 0; i < info.length; i++) {
-        //console.log("IN FOR LOOP: ", info[i]);
+
     for (var j = 0; j < (columnNames.length); j++) {
-            //console.log("SECOND LOOP: ", columnNames[j]);
-            //var colName = info[i].substring(0, info[i].indexOf(":"));
+
         if ("index" ==columnNames[j]) {
             finalStr = finalStr + "Index: " + seCol.index + "\n";
         }
@@ -110,7 +102,6 @@ startEndInfo(file) {
             finalStr = finalStr + "Wikipedia link: " + seCol.wikipedia_link + "\n";
         }
     }
-    //}
     console.log("FINAL: ", finalStr);
     return finalStr;
 }
@@ -140,7 +131,6 @@ async browseFile(file) {
 
         var updatedStart = JSON.stringify(file[i].startID.info);
         updatedStart = this.startEndInfo(updatedStart);
-        console.log("up:", updatedStart);
         var updatedEnd = JSON.stringify(file[i].endID.info);
         updatedEnd = this.startEndInfo(updatedEnd);
 
@@ -166,7 +156,7 @@ async browseFile(file) {
     // This function sends `input` the server and updates the state with whatever is returned
     async fetch(type, input){
         //input.preventDefault();
-        console.log("THIS IS TYPE::: ", type);
+        //console.log("THIS IS TYPE::: ", type);
         console.log("Fetching... ", input);
         let request;
 
@@ -176,14 +166,14 @@ async browseFile(file) {
                 request: "query",
                 description: input,
             };
-            console.log("QUERY SHTUFF");
+            console.log("Fetching Query");
         // if the button is clicked:
         } else {
             request = {
                 request: "svg",
                 description: ""
             }
-            console.log("SVG SCHTUFF");
+            console.log("Fetching SVG");
         }
 
         try{
@@ -192,31 +182,23 @@ async browseFile(file) {
                     method: "POST",
                     body: JSON.stringify(request)
                 });
-            console.log("After jsonret AWAIT");
             let ret = await jsonRet.json();
             let parsed = JSON.parse(ret);
-            //console.log("ret::: ", ret);
-            //console.log(("PARSED???:: ", parsed));
             console.log("Got back: ", JSON.parse(ret));
             let parse = JSON.parse(ret);
-            console.log("THIS IS RET RESPONSE: ", parsed.response);
+            //console.log("THIS IS RET RESPONSE: ", parsed.response);
 
             if (parsed.response === "query") {
-                console.log("BEFOre setSTATE (QUERY)");
                 this.setState({
                     queryResults: parsed.trip
                 });
-                console.log("QUERY RET DOT RESPONSE");
-                console.log("Q RESULTS:: ", this.state.queryResults);
                 this.browseFile(this.state.queryResults);
             // if it's not, we assume the response field is "svg" and contains the an svg image
             } else {
-                console.log("NON QUERY ELSE MLOOP");
 
                 this.setState({
                     svgResults: parse.contents
                 })
-                console.log("APP SVG:: ", parse.contents);
             }
 
         }catch(e) {

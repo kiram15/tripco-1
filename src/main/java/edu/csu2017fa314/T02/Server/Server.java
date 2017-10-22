@@ -49,7 +49,7 @@ import static spark.Spark.post;
          String content = "";
          // Instead of writing the SVG to a file, we send it in plaintext back to the client to be rendered inline
          try {
-             System.out.println("SVG Try:: " + h.shortestItinerary);
+             //System.out.println("SVG Try:: " + h.shortestItinerary);
              content = h.drawSVG();
          } catch(IOException e){
              System.exit(0);
@@ -66,7 +66,7 @@ import static spark.Spark.post;
          //String queryString = String.format("SELECT * FROM airports WHERE municipality LIKE '%%%s%%' OR name LIKE '%%%s%%' OR type LIKE '%%%s%%' LIMIT 10", searched, searched, searched);
          //ArrayList<Location> queryResults = q.query(queryString);
          h.searchDatabase(this.user, this.password, searched);
-         System.out.println("after search database");
+         //System.out.println("after search database");
          ArrayList<Distance> trip = h.shortestItinerary;
          // Create object with svg file path and array of matching database entries to return to server
          ServerQueryResponse sRes = new ServerQueryResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image
