@@ -4,11 +4,12 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 
-public class TestModel
-{
+public class TestModel {
     private Model m;
     private Hub h;
     //private Distance d;
@@ -131,4 +132,43 @@ public class TestModel
 
         return checkAgainst;
     }
+
+    // ----------------- Test drawSVG -----------------
+    @Test
+    public void testDrawSVG(){
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1","info1");
+        info1.put("extra2", "info2");
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1","info1");
+        info2.put("extra2", "info2");
+        Hub hA =  new Hub();
+        Location startL = new Location("denver", 70, 99.255556, info1);
+        Location endL = new Location("denver2", 80, 100, info2);
+        Distance dA = new Distance(startL, endL);
+        String dSVG = "";
+
+        try {
+            hA.shortestItinerary = null;
+            dSVG = hA.drawSVG();
+            assertEquals(null, dSVG);
+
+            (hA.shortestItinerary).add(dA);
+            dSVG = hA.drawSVG();
+            assertNotNull(dSVG);
+
+        } catch(IOException e){
+            System.exit(0);
+        }
+    }
+
+    // ----------------- Test searchDatabase -----------------
+
+
+    // ----------------- Test storeColumnHeaders -----------------
+
+
+    // ----------------- Test parseRow -----------------
+
+
 }
