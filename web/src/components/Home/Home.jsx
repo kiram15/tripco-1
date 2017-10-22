@@ -46,9 +46,9 @@ render() {
             <div className="app-container">
 
                 <form onSubmit={this.handleSubmit.bind(this)}>
-                    <input size="35" className="search-button" type="text"
+                    <input id="searchTB" size="35" className="search-button" type="text"
                         onKeyUp={this.keyUp.bind(this)} placeholder="What are you searching for?" autoFocus/>
-                    <input type="submit" value="Submit" />
+                    <input id="subButton" type="submit" value="Submit" />
                 </form>
 
             </div>
