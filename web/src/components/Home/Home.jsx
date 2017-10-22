@@ -46,20 +46,16 @@ render() {
             <div className="app-container">
 
                 <form onSubmit={this.handleSubmit.bind(this)}>
-                    <input size="35" className="search-button" type="text"
+                    <input id="searchTB" size="35" className="search-button" type="text"
                         onKeyUp={this.keyUp.bind(this)} placeholder="What are you searching for?" autoFocus/>
-                    <input type="submit" value="Submit" />
+                    <input id="subButton" type="submit" value="Submit" />
                 </form>
 
             </div>
-            <br />
-            <br />
             <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
             <p></p>
 
                          {displaySVG}
-
-
 
         <div id="Prefs" >
             <p className="w3-myFont"><h3>Choose Preferences</h3></p>

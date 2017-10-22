@@ -108,7 +108,6 @@ public class Hub {
         //call rest of hub
         //System.out.println("FINAL LOcations: " + finalLocations);
         shortestTrip();
-        writeJSON();
     }
 
     public void storeColumnHeaders(String firstLine){
@@ -218,50 +217,6 @@ public class Hub {
         }
     }
 
-    //method to write the JSON file
-    private void writeJSON() {
-        //new JSONarray to add all the strings to
-        JSONArray array = new JSONArray();
-        //loop through all the distance objects in the distance array
-        for (Distance d : shortestItinerary) {
-            JSONObject obj = new JSONObject();
-            JSONObject startObj = new JSONObject();
-            JSONObject endObj = new JSONObject();
-
-            Set<String> startKeys = d.getStartID().getInfoMap().keySet();
-            //startObj.put("start", d.getStartID().getName());
-            startObj.put("latitude", d.getStartID().getLatitude());
-            startObj.put("longitude", d.getStartID().getLongitude());
-            for(String s : startKeys){
-                startObj.put(s, d.getStartID().getInfoMap().get(s));
-            }
-
-            Set<String> endKeys = d.getEndID().getInfoMap().keySet();
-            //endObj.put("end", d.getEndID().getName());
-            endObj.put("latitude", d.getStartID().getLatitude());
-            endObj.put("longitude", d.getStartID().getLongitude());
-            for(String s : endKeys){
-                endObj.put(s, d.getEndID().getInfoMap().get(s));
-            }
-
-            obj.put("start", d.getStartID().getName());
-            obj.put("end", d.getEndID().getName());
-            obj.put("distance", d.getGcd());
-            obj.put("startInfo", startObj);
-            obj.put("endInfo", endObj);
-
-
-            array.add(obj);
-
-        }
-
-        try (PrintWriter write = new PrintWriter(new File("Itinerary.json"))) {
-            write.print(array.toJSONString());
-            write.close();
-        } catch (IOException e) {
-            System.out.print("Error: Cannot write to file" + e);
-        }
-    }
 
     private void shortestTrip() {
         //Adjacency matrix that holds all gcds
