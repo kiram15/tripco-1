@@ -190,7 +190,25 @@ public class TestModel {
     // ----------------- Test parseRow -----------------
     @Test
     public void testParseRow(){
+        Hub hC = new Hub();
+        hC.parseRow("");
+        assertEquals(hC.finalLocations, null);
 
+        //shouldn't add anything to final locations if there's missing components
+        hC.parseRow("denver");
+        assertEquals(hC.finalLocations, null);
+
+        hC.parseRow("denver,");
+        assertEquals(hC.finalLocations, null);
+
+        hC.parseRow("denver, -90.89");
+        assertEquals(hC.finalLocations, null);
+
+        hC.parseRow("denver, -100, 89");
+        assertEquals(hC.finalLocations.size(), 1);
+        hC.parseRow("colorado, 80, 100");
+        assertEquals(hC.finalLocations.size(), 2);
     }
+
 
 }
