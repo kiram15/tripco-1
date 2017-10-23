@@ -101,6 +101,38 @@ public class TestModel
 
     // ------------------- Test Shorter Trip -------------------
 
+    //
+    //    @Test
+    //    public void testShorterTrip(){
+    //        //tests shorterTrip by making a call to readFile which then calls the shorter trip method
+    //        //method should return an ArrayList<Distance> that contains the itinerary for the shortest trip
+    //        //given the smaller_test.csv file I'm passing it, it should return the following array list:
+    //        Hub h0 = new Hub();
+    //        h0.readFile("smaller_test.csv");
+    //        assertEquals(fillShortTrip(), h0.shortestTrip());
+    //
+    //    }
+
+//    private ArrayList<Distance> fillShortTrip() {
+//        Location st0 = new Location("two22 brew", h.latLonConvert("39°38'07\" N"), h.latLonConvert("104°45'32\" W"), null);
+//        Location st1 = new Location("mad jacks mountain brewery", h.latLonConvert("39°24'05\" N"), h.latLonConvert("105°28'37\" W"), null);
+//        Location st2 = new Location("equinox brewing", h.latLonConvert("40°35'17\" N"), h.latLonConvert("105°4'26\" W"), null);
+//        Location st3 = new Location("elevation beer company", h.latLonConvert("38°31'06\" N"), h.latLonConvert("106°03'32\" W"), null);
+//
+//        Distance d0 = new Distance(st0, st1);
+//        Distance d1 = new Distance(st1, st3);
+//        Distance d2 = new Distance(st3, st2);
+//        Distance d3 = new Distance(st2, st0);
+//
+//        ArrayList<Distance> checkAgainst = new ArrayList<Distance>();
+//        checkAgainst.add(d0);
+//        checkAgainst.add(d1);
+//        checkAgainst.add(d2);
+//        checkAgainst.add(d3);
+//
+//        return checkAgainst;
+//    }
+
     @Test
     public void testShorterTrip(){
         //tests shorterTrip by making a call to storeColumnHeaders and parseRow which then calls the
