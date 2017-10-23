@@ -266,7 +266,7 @@ public class Hub {
         }
     }
 
-    private void shortestTrip() {
+    public void shortestTrip() {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds();
 
@@ -309,7 +309,6 @@ public class Hub {
                         shortestDistance = d;
                     }
                 }
-                //tripDistance += shortestDistance.getGcd();
                 currentLocation = shortestDistance.getEndID();
             }
             //making traveledTo empty again
@@ -379,7 +378,6 @@ public class Hub {
         }
             //apply 2opt
             checkImprovement(traveledToFinal);
-
             //convert traveledToFinal location array to a distance array
             ArrayList<Distance> updatedShortestIt = locationsToDistances(traveledToFinal);
 
