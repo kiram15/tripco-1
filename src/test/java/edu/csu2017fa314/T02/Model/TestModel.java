@@ -53,6 +53,8 @@ public class TestModel {
         L1.setLon(-102);
         Distance d = new Distance(L1, L2, miles);
         assertEquals(276, d.computeGCD(L1, L2, miles));
+        miles =  false;
+        assertEquals(445, d.computeGCD(L1, L2, miles));
     }
 
     @Test
