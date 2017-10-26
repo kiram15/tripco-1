@@ -452,10 +452,32 @@ public class Hub {
                 double endLon = d.getEndID().getLongitude();
 
                 //absVal of lat/lons
-                startLat = Math.abs(startLat);
-                startLon = Math.abs(startLon);
-                endLat = Math.abs(endLat);
-                endLon = Math.abs(endLon);
+                //startLat = Math.abs(startLat);
+                //startLon = Math.abs(startLon);
+                //endLat = Math.abs(endLat);
+                //endLon = Math.abs(endLon);
+
+                if(startLat < 0){ //lat is negative
+                    startLat = Math.abs(startLat);
+                    startLat *= 2;
+                }
+                if(endLat < 0){ //lat is negative
+                    endLat = Math.abs(endLat);
+                    endLat *= 2;
+                }
+                if(startLon > 0){ //lon is positive - double
+                    startLon *= 2;
+                }
+                if(startLon < 0){ //lon is neg - abs
+                    startLon = Math.abs(startLon);
+                }
+                if(endLon > 0){ //lon is positive - double
+                    endLon *= 2;
+                }
+                if(endLon < 0){ //lon is neg - abs
+                    endLon = Math.abs(endLon);
+                }
+
 
                 finalEndLat = d.getEndID().getLatitude();
                 finalEndLon = d.getEndID().getLongitude();
@@ -470,10 +492,31 @@ public class Hub {
             }
 
             //absVal of lat/lons
-            finalEndLat = Math.abs(finalEndLat);
-            finalEndLon = Math.abs(finalEndLon);
-            originStartLat = Math.abs(originStartLat);
-            originStartLon = Math.abs(originStartLon);
+//            finalEndLat = Math.abs(finalEndLat);
+//            finalEndLon = Math.abs(finalEndLon);
+//            originStartLat = Math.abs(originStartLat);
+//            originStartLon = Math.abs(originStartLon);
+
+            if(finalEndLat < 0){ //lat is negative
+                finalEndLat = Math.abs(finalEndLat);
+                finalEndLat *= 2;
+            }
+            if(originStartLat < 0){ //lat is negative
+                originStartLat = Math.abs(originStartLat);
+                originStartLat *= 2;
+            }
+            if(finalEndLon > 0){ //lon is positive - double
+                finalEndLon *= 2;
+            }
+            if(finalEndLon < 0){ //lon is neg - abs
+                finalEndLon = Math.abs(finalEndLon);
+            }
+            if(originStartLon > 0){ //lon is positive - double
+                originStartLon *= 2;
+            }
+            if(originStartLon < 0){ //lon is neg - abs
+                originStartLon = Math.abs(originStartLon);
+            }
 
             //draw last line connected end point with start
             double endX1 = ((finalEndLon) * unitWidth);
