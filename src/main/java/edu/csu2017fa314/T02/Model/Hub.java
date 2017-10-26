@@ -425,7 +425,7 @@ public class Hub {
                 }
                 br.close();
             }catch(IOException e){
-                System.out.println("ERROR: FAILED TO WRITE SVG");
+                System.out.println("ERROR: FAILED TO WRITE SVG. Caught after trying to create a scanner");
                 System.exit(0);
             }
             //pw.println("</g>");
