@@ -29,14 +29,14 @@ public class Location {
 	  return this.lon;
   }
 
-  public LinkedHashMap<String, String> getInfoMap(){
-      return this.info;
-  }
+//  public LinkedHashMap<String, String> getInfoMap(){
+//      return this.info;
+//  }
 
-  //returns value associated with key in the info Map
-  public String getOtherInfo(String key){
-      return this.info.get(key);
-  }
+//  //returns value associated with key in the info Map
+//  public String getOtherInfo(String key){
+//      return this.info.get(key);
+//  }
 
   public void setLon(double lon){
       this.lon = lon;
