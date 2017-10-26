@@ -51,8 +51,8 @@ public class TestModel {
         Location n1 = new Location("amber", 60.0, 70.5, null);
         Location n2 = new Location("nicole", 100.0, 60.0, null);
 
-        Distance d0 = new Distance(n0, n1); //1640
-        Distance d1 = new Distance(n1, n2); //2755
+        Distance d0 = new Distance(n0, n1, miles); //1640
+        Distance d1 = new Distance(n1, n2, miles); //2755
 
         assertEquals((1640-2755), d0.compareTo(d1));
     }
@@ -62,7 +62,7 @@ public class TestModel {
         h = new Hub();
         L1 = new Location("test1", 37, -102, null);
         L2 = new Location("test2", 41, -109, null);
-        Distance D1 = new Distance (L1, L2);
+        Distance D1 = new Distance (L1, L2, miles);
         String finalString = "Distance{StartID= 'Name: 'test1', Latitude: '37.0', Longitude: '-102.0', " +
                 "EndID= 'Name: 'test2', Latitude: '41.0', Longitude: '-109.0', GCD= '466}";
         String testString = D1.toString();
@@ -73,7 +73,7 @@ public class TestModel {
     public void testDEquals() {
         L1 = new Location("test1", 37, -102, null);
         L2 = new Location("test2", 41, -109, null);
-        Distance D1 = new Distance (L1, L2);
+        Distance D1 = new Distance (L1, L2, miles);
         assertFalse(D1.equals(L1));
     }
 
