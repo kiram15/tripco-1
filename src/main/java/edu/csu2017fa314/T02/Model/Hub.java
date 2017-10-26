@@ -34,6 +34,7 @@ public class Hub {
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     public ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
+    public boolean miles = true;
 
 
     public void searchDatabase(String username, String password, String searchingFor){
@@ -217,7 +218,6 @@ public class Hub {
         }
     }
 
-
     public void shortestTrip() {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds();
@@ -232,7 +232,7 @@ public class Hub {
         LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
         Location bigD1 = new Location("New Zealand", -41.28650, 174.77620, info);
         Location bigD2 = new Location("Madrid", 40.41680, -3.70380, info);
-        Distance hugeDistance = new Distance(bigD1, bigD2);
+        Distance hugeDistance = new Distance(bigD1, bigD2, miles);
 
         //temp array list to keep track of the cities we have been to
         ArrayList<Location> traveledTo = new ArrayList<Location>();
@@ -269,7 +269,7 @@ public class Hub {
             //add the distance back to the original city
             Object[] backAround = gcds[row];
             //grab the distance from the current city to original city
-            Distance temp = new Distance(currentLocation, l);
+            Distance temp = new Distance(currentLocation, l, miles);
             for (int i = 1; i < backAround.length; i++) {
                 Distance d = (Distance) backAround[i];
                 //add to tripDistance
@@ -324,7 +324,7 @@ public class Hub {
         //add the distance back to the original city
         Object[] backAround = gcds[row];
         //grab the distance from the current city to original city
-        Distance temp = new Distance(currentLocation, shortestTripStart);
+        Distance temp = new Distance(currentLocation, shortestTripStart, miles);
         for (int i = 1; i < backAround.length; i++) {
             Distance d = (Distance) backAround[i];
         }
@@ -346,7 +346,7 @@ public class Hub {
                 //for all the Distances in the row
                 Location startID = finalLocations.get(i);
                 Location endID = finalLocations.get(j);
-                Distance d = new Distance(startID, endID);
+                Distance d = new Distance(startID, endID, miles);
                 GCDS[i][j+1] = d; //j+1 because of the Location in the first column
             }
         }
@@ -359,10 +359,10 @@ public class Hub {
             improvement = false;
             for (int i = 0; i <= traveled.size() - 3; i++) { // check n>4
                 for (int k = i + 2; k < traveled.size() - 1; k++) {
-                    Distance ii1 = new Distance(traveled.get(i), traveled.get(i + 1));
-                    Distance kk1 = new Distance(traveled.get(k), traveled.get(k + 1));
-                    Distance ik = new Distance(traveled.get(i), traveled.get(k));
-                    Distance i1k1 = new Distance(traveled.get(i + 1), traveled.get(k + 1));
+                    Distance ii1 = new Distance(traveled.get(i), traveled.get(i + 1), miles);
+                    Distance kk1 = new Distance(traveled.get(k), traveled.get(k + 1), miles);
+                    Distance ik = new Distance(traveled.get(i), traveled.get(k), miles);
+                    Distance i1k1 = new Distance(traveled.get(i + 1), traveled.get(k + 1), miles);
                     double delta = (-ii1.getGcd()) - kk1.getGcd() + ik.getGcd() + i1k1.getGcd();
                     if (delta < 0) { //improvement?
                         optSwap2(traveled, i + 1, k);
@@ -377,10 +377,10 @@ public class Hub {
         ArrayList<Distance> finalDistances = new ArrayList<Distance>();
         for (int i = 0; i < locations.size(); i++) {
             if (i == locations.size() - 1) { //distance of last back to first
-                Distance base = new Distance(locations.get(i), locations.get(0));
+                Distance base = new Distance(locations.get(i), locations.get(0), miles);
                 finalDistances.add(base);
             } else {
-                Distance d = new Distance(locations.get(i), locations.get(i + 1));
+                Distance d = new Distance(locations.get(i), locations.get(i + 1), miles);
                 finalDistances.add(d);
                 }
         }

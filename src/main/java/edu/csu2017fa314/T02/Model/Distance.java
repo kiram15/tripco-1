@@ -5,10 +5,10 @@ public class Distance implements Comparable<Distance>{
   private Location endID;
   private int gcd;
 
-  public Distance(Location startID, Location endID){
+  public Distance(Location startID, Location endID, boolean miles){
       this.startID = startID;
       this.endID = endID;
-      this.gcd = computeGCD(startID, endID);
+      this.gcd = computeGCD(startID, endID, miles);
   }
 
   public Location getStartID(){
@@ -23,14 +23,17 @@ public class Distance implements Comparable<Distance>{
       return this.gcd;
   }
 
-  public int computeGCD(Location loc1, Location loc2) {
+  public int computeGCD(Location loc1, Location loc2, boolean miles) {
 
       double lat1 = loc1.getLatitude();
       double lon1 = loc1.getLongitude();
       double lat2 = loc2.getLatitude();
       double lon2 = loc2.getLongitude();
 
-      double r = 3958.7613; //radius of earth in miles
+      double r = 0.0;
+      if(miles){
+        r = 3958.7613; //radius of earth in miles
+      }else{ r = 6371.0088; } //radius of earth in km
       double phi1 = Math.toRadians(lat1);
       double lam1 = Math.toRadians(lon1);
       double phi2 = Math.toRadians(lat2);
