@@ -31,6 +31,31 @@ public class TestModel
         assertArrayEquals(m.getNumbers(), new int[] {0, 1, 2, 3, 4, 5});
     }
 
+    // --------------------- Location Testing  ---------------------
+
+    @Test
+    public void testLtoString() {
+        h = new Hub();
+        L1 = new Location("test", 100, -50, null);
+        String finalString = "Name: 'test', Latitude: '100.0', Longitude: '-50.0";
+        String testString = L1.toString();
+        assertEquals(finalString, testString);
+    }
+
+    // --------------------- Distance Testing  ---------------------
+
+    @Test
+    public void testDtoString() {
+        h = new Hub();
+        L1 = new Location("test1", 37, -102, null);
+        L2 = new Location("test2", 41, -109, null);
+        Distance D1 = new Distance (L1, L2);
+        String finalString = "Distance{StartID= 'Name: 'test1', Latitude: '37.0', Longitude: '-102.0', " +
+                "EndID= 'Name: 'test2', Latitude: '41.0', Longitude: '-109.0', GCD= '466}";
+        String testString = D1.toString();
+        assertTrue(finalString.equals(testString));
+    }
+
     // ------------------- Test Great Circle Distance -------------------
 
     @Test
