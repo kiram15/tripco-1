@@ -437,8 +437,8 @@ public class Hub {
             double finalEndLat = 0.0;
             double finalEndLon = 0.0;
             boolean first = false;
-            double unitHeight = 2.844444; //COmap height-(38*2)/4 512/180 WorldMap Height - unit
-            double unitWidth = 2.844444; //COmap width-(38*2)/7 1024/360 WorldMap width - unit
+            double unitHeight = 3.6; //COmap height-(38*2)/4 512/180 WorldMap Height - unit
+            double unitWidth = 2.08; //COmap width-(38*2)/7 1024/360 WorldMap width - unit
 
             for(Distance d : shortestItinerary){
                 if(!first){
