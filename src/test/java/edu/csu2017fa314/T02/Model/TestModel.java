@@ -15,6 +15,7 @@ public class TestModel {
     //private Distance d;
     private Location L1, L2, L3, L4;
     private ArrayList<Distance> shortTrip;
+    private boolean miles = true;
 
     @Before
     public void setUp() throws Exception
@@ -36,12 +37,12 @@ public class TestModel {
 
     @Test
     public void testDiagonalGCD(){
-        Distance d = new Distance(L1, L2);
-        assertEquals(466, d.computeGCD(L1, L2));
+        Distance d = new Distance(L1, L2, miles);
+        assertEquals(466, d.computeGCD(L1, L2, miles));
         L1.setLat(41);
         L2.setLat(37);
-        Distance d2 = new Distance(L1, L2);
-        assertEquals(466, d.computeGCD(L1, L2));
+        Distance d2 = new Distance(L1, L2, miles);
+        assertEquals(466, d.computeGCD(L1, L2, miles));
     }
 
     @Test
@@ -50,8 +51,8 @@ public class TestModel {
         L2.setLon(-102);
         L1.setLat(37);
         L1.setLon(-102);
-        Distance d = new Distance(L1, L2);
-        assertEquals(276, d.computeGCD(L1, L2));
+        Distance d = new Distance(L1, L2, miles);
+        assertEquals(276, d.computeGCD(L1, L2, miles));
     }
 
     @Test
@@ -60,20 +61,20 @@ public class TestModel {
         L2.setLat(37);
         L1.setLon(-102);
         L2.setLon(-109);
-        Distance d = new Distance(L1, L2);
-        assertEquals(386, d.computeGCD(L1, L2));
+        Distance d = new Distance(L1, L2, miles);
+        assertEquals(386, d.computeGCD(L1, L2, miles));
     }
 
     @Test
     public void testSameLocationGCD(){
-        Distance d = new Distance(L1, L1);
-        assertEquals(0, d.computeGCD(L1, L1));
+        Distance d = new Distance(L1, L1, miles);
+        assertEquals(0, d.computeGCD(L1, L1, miles));
     }
 
     @Test
     public void testReverseGCD(){
-        Distance d = new Distance(L1, L2);
-        assertEquals(d.computeGCD(L1, L2), d.computeGCD(L2, L1));
+        Distance d = new Distance(L1, L2, miles);
+        assertEquals(d.computeGCD(L1, L2, miles), d.computeGCD(L2, L1, miles));
     }
 
     // ----------------- Test Lat/Lon Decimal Convert -----------------
@@ -155,10 +156,10 @@ public class TestModel {
         Location n2 = new Location("nicole", 100.0, 60.0, null);
         Location n3 = new Location("emerson", 45.0, 55.0, null);
 
-        Distance d0 = new Distance(n1, n3);
-        Distance d1 = new Distance(n3, n0);
-        Distance d2 = new Distance(n0, n2);
-        Distance d3 = new Distance(n2, n1);
+        Distance d0 = new Distance(n1, n3, miles);
+        Distance d1 = new Distance(n3, n0, miles);
+        Distance d2 = new Distance(n0, n2, miles);
+        Distance d3 = new Distance(n2, n1, miles);
 
         ArrayList<Distance> checkAgainst = new ArrayList<Distance>();
         checkAgainst.add(d0);
@@ -182,7 +183,7 @@ public class TestModel {
         Hub hA =  new Hub();
         Location startL = new Location("denver", 70, 99.255556, info1);
         Location endL = new Location("denver2", 80, 100, info2);
-        Distance dA = new Distance(startL, endL);
+        Distance dA = new Distance(startL, endL, miles);
         String dSVG = "";
 
         try {
