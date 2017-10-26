@@ -50,10 +50,6 @@
     }
   }
 
-  #Itin{
-    top: 40px;
-  }
-
   .w3-myFont {
     font-family: Tahoma, Geneva, sans-serif;
     color: #4644AB;
@@ -86,15 +82,14 @@
         background-color: #3532BE;
     }
 
-#prefs{
-        position: absolute;
-        float: right;
-        height: 25%;
-        width: 75%;
-        top: 40px;
-        left: 720px;
-   }
+}
 
+.Itinerary{
+    #prefs{
+    }
+    #Itin{
+        top: 40px;
+    }
 
 }
 

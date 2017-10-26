@@ -16,7 +16,7 @@ public class ServerQueryResponse {
     public ServerQueryResponse(ArrayList<Distance> trip) {
 
         this.trip = trip;
-        System.out.println(this.toString());
+        //System.out.println(this.toString());
     }
 
     @Override

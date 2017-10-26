@@ -79,7 +79,7 @@ public class Hub {
                             try{ //parse matched rows
                                 int count = 0;
 
-                                while(rs2.next() && count <= 24){ //for each row
+                                while(rs2.next() && count <= 49){ //for each row
                                     String matchedRow = "";
                                     //System.out.println("RS2 TO STRING: "+ rs2.getString(1));
                                     for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
@@ -217,7 +217,7 @@ public class Hub {
         }
     }
 
-    private void shortestTrip() {
+    public void shortestTrip() {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds();
 
@@ -260,7 +260,6 @@ public class Hub {
                         shortestDistance = d;
                     }
                 }
-                //tripDistance += shortestDistance.getGcd();
                 currentLocation = shortestDistance.getEndID();
             }
             //making traveledTo empty again
@@ -330,7 +329,6 @@ public class Hub {
         }
             //apply 2opt
             checkImprovement(traveledToFinal);
-
             //convert traveledToFinal location array to a distance array
             ArrayList<Distance> updatedShortestIt = locationsToDistances(traveledToFinal);
 
