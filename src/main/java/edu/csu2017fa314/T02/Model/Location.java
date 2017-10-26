@@ -29,14 +29,14 @@ public class Location {
 	  return this.lon;
   }
 
-  public LinkedHashMap<String, String> getInfoMap(){
-      return this.info;
-  }
+//  public LinkedHashMap<String, String> getInfoMap(){
+//      return this.info;
+//  }
 
-  //returns value associated with key in the info Map
-  public String getOtherInfo(String key){
-      return this.info.get(key);
-  }
+//  //returns value associated with key in the info Map
+//  public String getOtherInfo(String key){
+//      return this.info.get(key);
+//  }
 
   public void setLon(double lon){
       this.lon = lon;
@@ -50,10 +50,21 @@ public class Location {
 	    return "Name: '" + this.name + "', Latitude: '" + this.lat + "', Longitude: '" + this.lon;
   }
 
-  public boolean equals(Location l) {
-      if (this.name.equals(l.name) && (this.lat == l.lat) && (this.lon == l.lon)) { return true; }
-      else { return false; }
-  }
+    public boolean equals(Object object) {
+        if(object instanceof Location &&
+                ((Location)object).getName().equals(this.name) && ((Location)object).getLatitude() == (this.lat) &&
+                ((Location)object).getLongitude() == (this.lon)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+//    public boolean equals(Location l) {
+//      if (this.name.equals(l.name) && (this.lat == l.lat) && (this.lon == l.lon)) { return true; }
+//      else { return false; }
+//  }
 
 
 }

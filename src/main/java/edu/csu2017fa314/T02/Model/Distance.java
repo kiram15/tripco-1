@@ -62,7 +62,8 @@ public class Distance implements Comparable<Distance>{
       if(startName.equals(otherStartName) && endName.equals(otherEndName)){
           return true;
       }
-      else return false;
+      else
+          return false;
   }
 
     @Override
@@ -71,15 +72,9 @@ public class Distance implements Comparable<Distance>{
     }
 
     public String toString(){
-      return "Distance{" +
-              "StartID= '" + startID.toString() + '\'' +
-              ", EndID= '" + endID.toString() + '\'' +
-              ", GCD= " + gcd + '}';
+        return "Distance{" +
+                "StartID= '" + startID.toString() + '\'' +
+                ", EndID= '" + endID.toString() + '\'' +
+                ", GCD= '" + gcd + '}';
     }
-
-    public boolean equals(Distance d) {
-        if (this.startID.equals(d.startID) && (this.endID.equals(d.endID)) && (this.gcd == d.gcd)) { return true; }
-        else { return false; }
-    }
-
 }
