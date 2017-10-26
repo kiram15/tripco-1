@@ -437,8 +437,8 @@ public class Hub {
             double finalEndLat = 0.0;
             double finalEndLon = 0.0;
             boolean first = false;
-            double unitHeight = 176.7706; //COmap height-(38*2)/4
-            double unitWidth = 141.515329; //COmap width-(38*2)/7
+            double unitHeight = 2.844444; //COmap height-(38*2)/4 512/180 WorldMap Height - unit
+            double unitWidth = 2.844444; //COmap width-(38*2)/7 1024/360 WorldMap width - unit
 
             for(Distance d : shortestItinerary){
                 if(!first){
@@ -460,10 +460,10 @@ public class Hub {
                 finalEndLat = d.getEndID().getLatitude();
                 finalEndLon = d.getEndID().getLongitude();
 
-                double x1 = ((109 - startLon) * unitWidth) + 38;
-                double y1 = ((41 - startLat) * unitHeight) + 38;
-                double x2 = ((109 - endLon) * unitWidth) + 38;
-                double y2 = ((41 - endLat) * unitHeight) + 38;
+                double x1 = (startLon * unitWidth);
+                double y1 = (startLat * unitHeight);
+                double x2 = (endLon * unitWidth);
+                double y2 = (endLat * unitHeight);
                 //pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>");
                 SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
                 //pw.flush();
@@ -476,10 +476,10 @@ public class Hub {
             originStartLon = Math.abs(originStartLon);
 
             //draw last line connected end point with start
-            double endX1 = ((109 - finalEndLon) * unitWidth) + 38;
-            double endY1 = ((41 - finalEndLat) * unitHeight) + 38;
-            double endX2 = ((109 - originStartLon) * unitWidth) + 38;
-            double endY2 = ((41 - originStartLat) * unitHeight) + 38;
+            double endX1 = ((finalEndLon) * unitWidth);
+            double endY1 = ((finalEndLat) * unitHeight);
+            double endX2 = ((originStartLon) * unitWidth);
+            double endY2 = ((originStartLat) * unitHeight);
             //pw.flush();
 
             //pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>");
