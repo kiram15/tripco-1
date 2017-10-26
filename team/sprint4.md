@@ -39,6 +39,7 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 :--- | :--- | :--- | :--- | :---
 *date* | *issue numbers only* | *issue numbers only* | *None* | *High*
 10/25 | #201 #218 #222 #219 #252 | #223 #216 #240 #221 | Midterm/Halloweekend | Moderate (large project/workload) 
+10/26 | #74 #221 #223 #241 #242 #258 #263 #266 | #243 #240 #262 | Midterm/Halloweekend | Moderately positive
  
 
 ## Review
