@@ -401,15 +401,15 @@ public class Hub {
     public String drawSVG() throws FileNotFoundException{
         String SVG = "";
         //ClassLoader classLoader = this.getClass().getClassLoader();
-        String filepath = "src/main/resources/COmap.svg";
-        File COmapFile = new File(filepath);
+        String filepath = "src/main/resources/WorldMap.svg";
+        File WorldMapFile = new File(filepath);
 
         //create printWriter to CoMapTripCo svg
             //PrintWriter pw = new PrintWriter(COmapFile);
             //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
             LinkedList<String> ll = new LinkedList<String>();
             try{
-                Scanner br = new Scanner(COmapFile);
+                Scanner br = new Scanner(WorldMapFile);
                 //System.out.println("SCANNER SVG");
                 String line;
                 while(br.hasNext()) {
@@ -425,7 +425,7 @@ public class Hub {
                 }
                 br.close();
             }catch(IOException e){
-                System.out.println("ERROR: FAILED");
+                System.out.println("ERROR: FAILED TO WRITE SVG");
                 System.exit(0);
             }
             //pw.println("</g>");
