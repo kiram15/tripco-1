@@ -37,69 +37,64 @@ render() {
 
     return <div className="home-container">
 
-        <div className="inner">
-        <div id="background"></div>
+<div className="inner">
+    <div id="background"></div>
 
   <p className="w3-myFont"><h2>T02 NEKA</h2></p>
 
-            <p></p>
-            <div className="app-container">
+  <p></p>
+  <div className="app-container">
+    <form onSubmit={this.handleSubmit.bind(this)}>
+        <input id="searchTB" size="35" className="search-button" type="text"
+        onKeyUp={this.keyUp.bind(this)} placeholder="What are you searching for?" autoFocus/>
+        <input id="subButton" type="submit" value="Submit" />
+    </form>
+  </div>
 
-                <form onSubmit={this.handleSubmit.bind(this)}>
-                    <input id="searchTB" size="35" className="search-button" type="text"
-                        onKeyUp={this.keyUp.bind(this)} placeholder="What are you searching for?" autoFocus/>
-                    <input id="subButton" type="submit" value="Submit" />
-                </form>
+  <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
+  <p></p>
+  {displaySVG}
+  <p></p>
 
-            </div>
-            <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
-            <p></p>
-
-                         {displaySVG}
-
-        <div id="Prefs" >
-            <p className="w3-myFont"><h3>Choose Preferences</h3></p>
-            <div className = "select-value">
-                <Select
-                    name="form-field-name"
-                    options={options}
-                    onChange={this.props.onClick}
-                    simpleValue = {true}
-                    closeOnSelect = {false}
-                    multi={true}
-                    searchable = {false}
-                    backspaceToRemoveMethod=""
-                />
-
-            </div>
-        </div>
-            <p></p>
-
-        <div id="Itin" >
-            <p className="w3-myFont"><h3>Itinerary</h3></p>
-            <p></p>
-            <table className="pair-table">
-                <tr>
-                    <td><h8><b><p className="w3-myFont"> Start Name </p></b></h8></td>
-                    <td><h8><b><p className="w3-myFont"> End Name </p></b></h8></td>
-                    <td><h8><b><p className="w3-myFont"> Distance (mi) </p></b></h8></td>
-                    <td><h8><b><p className="w3-myFont"> Total Distance (mi)</p></b></h8></td>
-                </tr>
-                {this.props.pairs}
-                <tbody>
-                    <tr>
-                        <td colSpan="4"><p className="w3-myFont">Total:</p></td>
-                        <td>{total}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-
-
-            </div>
-
-        </div>
+  <div className="Itinerary">
+    <div id="Itin" >
+        <p className="w3-myFont"><h3>Itinerary</h3></p>
+        <p></p>
+        <table className="pair-table">
+            <tr>
+                <td><h8><b><p className="w3-myFont"> Start Name </p></b></h8></td>
+                <td><h8><b><p className="w3-myFont"> End Name </p></b></h8></td>
+                <td><h8><b><p className="w3-myFont"> Distance (mi) </p></b></h8></td>
+                <td><h8><b><p className="w3-myFont"> Total Distance (mi)</p></b></h8></td>
+            </tr>
+            {this.props.pairs}
+            <tbody>
+                 <tr>
+                    <td colSpan="4"><p className="w3-myFont">Total:</p></td>
+                    <td>{total}</td>
+                 </tr>
+            </tbody>
+        </table>
     </div>
+
+    <div id="Prefs" >
+         <p className="w3-myFont"><h3>Choose Preferences</h3></p>
+         <div className = "select-value">
+         <Select
+              name="form-field-name"
+              options={options}
+              onChange={this.props.onClick}
+              simpleValue = {true}
+              closeOnSelect = {false}
+              multi={true}
+              searchable = {false}
+              backspaceToRemoveMethod=""
+         />
+    </div>
+  </div>
+</div>
+</div>
+</div>
 }
 
 keyUp(event) {
