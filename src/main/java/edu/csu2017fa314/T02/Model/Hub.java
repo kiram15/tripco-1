@@ -34,6 +34,7 @@ public class Hub {
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     public ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
+    public boolean miles = true;
 
 
     public void searchDatabase(String username, String password, String searchingFor){
