@@ -43,18 +43,19 @@ render() {
 
   <p className="w3-myFont"><h2>T02 NEKA</h2></p>
 
+  <div className="optimization">
+        Select your optimizations:<p></p>
+        <button type="button" onClick={this.milesClicked.bind(this)}>Miles</button>
+        <button type="button" onClick={this.kiloClicked.bind(this)}>Kilometers</button>
+  </div>
   <p></p>
+
   <div className="app-container">
     <form onSubmit={this.handleSubmit.bind(this)}>
         <input id="searchTB" size="35" className="search-button" type="text"
         onKeyUp={this.keyUp.bind(this)} placeholder="What are you searching for?" autoFocus/>
         <input id="subButton" type="submit" value="Submit" />
     </form>
-  </div>
-
-  <div className="optimization">
-      <button type="button" onClick={this.milesClicked.bind(this)}>Miles</button>
-      <button type="button" onClick={this.kiloClicked.bind(this)}>Kilometers</button>
   </div>
 
   <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
