@@ -9,7 +9,8 @@ constructor(props) {
    super(props);
    this.state = {
        svgImage : [],
-       input : []
+       input : [],
+       unit : "miles"
    };
 
 }
@@ -49,6 +50,11 @@ render() {
         onKeyUp={this.keyUp.bind(this)} placeholder="What are you searching for?" autoFocus/>
         <input id="subButton" type="submit" value="Submit" />
     </form>
+  </div>
+
+  <div className="optimization">
+      <button type="button" onClick={this.milesClicked.bind(this)}>Miles</button>
+      <button type="button" onClick={this.kiloClicked.bind(this)}>Kilometers</button>
   </div>
 
   <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
@@ -110,13 +116,27 @@ keyUp(event) {
 }
 
 handleSubmit(event) {
-    this.props.fetch("query", this.state.input);
+    this.props.fetch("query", this.state.input, this.state.unit);
     //console.log("handele submit");
     event.preventDefault();
 }
 
 buttonClicked(event) {
-    this.props.fetch("svg", event.target.value);
+    this.props.fetch("svg", event.target.value, this.state.unit);
+}
+
+milesClicked(event){
+    this.setState({
+        unit : "miles"
+    });
+    console.log("Units are miles");
+}
+
+kiloClicked(event){
+    this.setState({
+        unit : "km"
+    });
+    console.log("Units are km");
 }
 
 
