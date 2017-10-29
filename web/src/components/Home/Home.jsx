@@ -9,7 +9,8 @@ constructor(props) {
    super(props);
    this.state = {
        svgImage : [],
-       input : []
+       input : [],
+       unit : "miles"
    };
 
 }
@@ -42,7 +43,13 @@ render() {
 
   <p className="w3-myFont"><h2>T02 NEKA</h2></p>
 
+  <div className="optimization">
+        Select your optimizations:<p></p>
+        <button type="button" onClick={this.milesClicked.bind(this)}>Miles</button>
+        <button type="button" onClick={this.kiloClicked.bind(this)}>Kilometers</button>
+  </div>
   <p></p>
+
   <div className="app-container">
     <form onSubmit={this.handleSubmit.bind(this)}>
         <input id="searchTB" size="35" className="search-button" type="text"
@@ -110,13 +117,27 @@ keyUp(event) {
 }
 
 handleSubmit(event) {
-    this.props.fetch("query", this.state.input);
+    this.props.fetch("query", this.state.input, this.state.unit);
     //console.log("handele submit");
     event.preventDefault();
 }
 
 buttonClicked(event) {
-    this.props.fetch("svg", event.target.value);
+    this.props.fetch("svg", event.target.value, this.state.unit);
+}
+
+milesClicked(event){
+    this.setState({
+        unit : "miles"
+    });
+    console.log("Units are miles");
+}
+
+kiloClicked(event){
+    this.setState({
+        unit : "km"
+    });
+    console.log("Units are km");
 }
 
 

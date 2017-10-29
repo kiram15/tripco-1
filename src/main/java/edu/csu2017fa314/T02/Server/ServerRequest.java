@@ -8,10 +8,12 @@ package edu.csu2017fa314.T02.Server;
  public class ServerRequest {
      private String request = "";
      private String description = "";
+     private String unit = "";
 
-     public ServerRequest(String request, String description) {
+     public ServerRequest(String request, String description, String unit) {
          this.request = request;
          this.description = description;
+         this.unit = unit;
      }
 
      public String getRequest() {
@@ -26,6 +28,10 @@ package edu.csu2017fa314.T02.Server;
          return description;
      }
 
+     public String getUnit(){
+         return unit;
+     }
+
      public void setDescription(String description) {
          this.description = description;
      }
@@ -35,6 +41,7 @@ package edu.csu2017fa314.T02.Server;
          return "Request{" +
                  "request='" + request + '\'' +
                  ", description='" + description + '\'' +
+                 ", unit='" + unit + '\'' +
                  '}';
      }
  }
