@@ -398,50 +398,45 @@ public class Hub {
         }
     }
 
-    public String drawSVG() throws FileNotFoundException{
+    public String drawSVG() throws FileNotFoundException {
         String SVG = "";
+
         //ClassLoader classLoader = this.getClass().getClassLoader();
         String filepath = "src/main/resources/WorldMap.svg";
         File WorldMapFile = new File(filepath);
 
-        //create printWriter to CoMapTripCo svg
-            //PrintWriter pw = new PrintWriter(COmapFile);
-            //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
-            LinkedList<String> ll = new LinkedList<String>();
-            try{
-                Scanner br = new Scanner(WorldMapFile);
-                //System.out.println("SCANNER SVG");
-                String line;
-                while(br.hasNext()) {
-                    line = br.nextLine();
+        //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
+        LinkedList<String> ll = new LinkedList<String>();
+        try {
+            Scanner br = new Scanner(WorldMapFile);
+            String line;
+            while (br.hasNext()) {
+                line = br.nextLine();
 
-                    ll.addLast(line);
-                }
-                for(int i = 0; i < (ll.size()-3); i++){
-                    SVG += ll.get(i);
-
-                    //pw.println(ll.get(i));
-                    //pw.flush();
-                }
-                br.close();
-            }catch(IOException e){
-                System.out.println("ERROR: FAILED TO WRITE SVG. Caught after trying to create a scanner");
-                System.exit(0);
+                ll.addLast(line);
             }
-            //pw.println("</g>");
-            SVG += "</g>";
+            for (int i = 0; i < (ll.size() - 3); i++) {
+                SVG += ll.get(i);
+            }
+            br.close();
+        } catch (IOException e) {
+            System.out.println("ERROR: FAILED TO WRITE SVG. Caught after trying to create a scanner");
+            System.exit(0);
+        }
+        SVG += "</g>";
 
-            //draw lines from start to end locations
-            double originStartLat = 0.0;
-            double originStartLon = 0.0;
-            double finalEndLat = 0.0;
-            double finalEndLon = 0.0;
-            boolean first = false;
-            double unitHeight = 3.6; //COmap height-(38*2)/4 512/180 WorldMap Height - unit
-            double unitWidth = 2.08; //COmap width-(38*2)/7 1024/360 WorldMap width - unit
+        //draw lines from start to end locations
+        double originStartLat = 0.0;
+        double originStartLon = 0.0;
+        double finalEndLat = 0.0;
+        double finalEndLon = 0.0;
+        boolean first = false;
+        double unitHeight = 3.6; //512/180 WorldMap Height - unit
+        double unitWidth = 2.08; //1024/360 WorldMap width - unit
 
-            for(Distance d : shortestItinerary){
-                if(!first){
+        if (!shortestItinerary.isEmpty()) {
+            for (Distance d : shortestItinerary) {
+                if (!first) {
                     originStartLat = d.getStartID().getLatitude();
                     originStartLon = d.getStartID().getLongitude();
                     first = true;
@@ -451,30 +446,24 @@ public class Hub {
                 double endLat = d.getEndID().getLatitude();
                 double endLon = d.getEndID().getLongitude();
 
-                //absVal of lat/lons
-                //startLat = Math.abs(startLat);
-                //startLon = Math.abs(startLon);
-                //endLat = Math.abs(endLat);
-                //endLon = Math.abs(endLon);
-
-                if(startLat < 0){ //lat is negative
+                if (startLat < 0) { //lat is negative
                     startLat = Math.abs(startLat);
                     startLat *= 2;
                 }
-                if(endLat < 0){ //lat is negative
+                if (endLat < 0) { //lat is negative
                     endLat = Math.abs(endLat);
                     endLat *= 2;
                 }
-                if(startLon > 0){ //lon is positive - double
+                if (startLon > 0) { //lon is positive - double
                     startLon *= 2;
                 }
-                if(startLon < 0){ //lon is neg - abs
+                if (startLon < 0) { //lon is neg - abs
                     startLon = Math.abs(startLon);
                 }
-                if(endLon > 0){ //lon is positive - double
+                if (endLon > 0) { //lon is positive - double
                     endLon *= 2;
                 }
-                if(endLon < 0){ //lon is neg - abs
+                if (endLon < 0) { //lon is neg - abs
                     endLon = Math.abs(endLon);
                 }
 
@@ -486,53 +475,40 @@ public class Hub {
                 double y1 = (startLat * unitHeight);
                 double x2 = (endLon * unitWidth);
                 double y2 = (endLat * unitHeight);
-                //pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>");
                 SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
-                //pw.flush();
             }
 
-            //absVal of lat/lons
-//            finalEndLat = Math.abs(finalEndLat);
-//            finalEndLon = Math.abs(finalEndLon);
-//            originStartLat = Math.abs(originStartLat);
-//            originStartLon = Math.abs(originStartLon);
+        if (finalEndLat < 0) { //lat is negative
+            finalEndLat = Math.abs(finalEndLat);
+            finalEndLat *= 2;
+        }
+        if (originStartLat < 0) { //lat is negative
+            originStartLat = Math.abs(originStartLat);
+            originStartLat *= 2;
+        }
+        if (finalEndLon > 0) { //lon is positive - double
+            finalEndLon *= 2;
+        }
+        if (finalEndLon < 0) { //lon is neg - abs
+            finalEndLon = Math.abs(finalEndLon);
+        }
+        if (originStartLon > 0) { //lon is positive - double
+            originStartLon *= 2;
+        }
+        if (originStartLon < 0) { //lon is neg - abs
+            originStartLon = Math.abs(originStartLon);
+        }
 
-            if(finalEndLat < 0){ //lat is negative
-                finalEndLat = Math.abs(finalEndLat);
-                finalEndLat *= 2;
-            }
-            if(originStartLat < 0){ //lat is negative
-                originStartLat = Math.abs(originStartLat);
-                originStartLat *= 2;
-            }
-            if(finalEndLon > 0){ //lon is positive - double
-                finalEndLon *= 2;
-            }
-            if(finalEndLon < 0){ //lon is neg - abs
-                finalEndLon = Math.abs(finalEndLon);
-            }
-            if(originStartLon > 0){ //lon is positive - double
-                originStartLon *= 2;
-            }
-            if(originStartLon < 0){ //lon is neg - abs
-                originStartLon = Math.abs(originStartLon);
-            }
+        //draw last line connected end point with start
+        double endX1 = ((finalEndLon) * unitWidth);
+        double endY1 = ((finalEndLat) * unitHeight);
+        double endX2 = ((originStartLon) * unitWidth);
+        double endY2 = ((originStartLat) * unitHeight);
+        SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
 
-            //draw last line connected end point with start
-            double endX1 = ((finalEndLon) * unitWidth);
-            double endY1 = ((finalEndLat) * unitHeight);
-            double endX2 = ((originStartLon) * unitWidth);
-            double endY2 = ((originStartLat) * unitHeight);
-            //pw.flush();
+        SVG += "</svg>";
+    }
 
-            //pw.println("  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>");
-            SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
-
-            //pw.println("</svg>");
-            SVG += "</svg>";
-
-            //pw.close();
-        
         return SVG;
 
     }
