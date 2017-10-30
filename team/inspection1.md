@@ -1,10 +1,10 @@
-# Team *T##* - Inspection *#*
+# Team *T02* - Inspection *1*
  
 Inspection | Details
 ----- | -----
-Subject | *material to review for meeting*
-Meeting | *date, time, location*
-Checklist | *reference, URL, etc.*
+Subject | 2-Opt
+Meeting | 11/1, 10AM, Ayelsworth
+Checklist | http://users.csc.calpoly.edu/~jdalbey/301/Forms/CodeReviewChecklistJava.pdf
 
 ### Roles
 Name | Role | Preparation Time
