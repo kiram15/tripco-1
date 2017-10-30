@@ -9,8 +9,10 @@ Checklist | *reference, URL, etc.*
 ### Roles
 Name | Role | Preparation Time
 ---- | ---- | ----
- | |
- | |
+ Amber | End User | 
+ Kira | Maintainer |
+ Emerson | Tester |
+ Nicole | Moderator |
 
 ### Log
 file:line | defect | h/m/l | github# | who
