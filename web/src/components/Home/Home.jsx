@@ -11,7 +11,7 @@ constructor(props) {
        svgImage : [],
        input : [],
        unit : "miles",
-       optimization : ""
+       optimization : "None"
    };
 
 }
@@ -112,7 +112,7 @@ render() {
 
 keyUp(event) {
     if (event.which === 13) { // Waiting for enter to be pressed. Enter is key 13: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
-        this.props.fetch("query", this.state.input); // Call fetch and pass whatever text is in the input box
+        this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization); // Call fetch and pass whatever text is in the input box
         //console.log("event 13 thing");
     } else {
         this.setState({
@@ -123,13 +123,13 @@ keyUp(event) {
 }
 
 handleSubmit(event) {
-    this.props.fetch("query", this.state.input, this.state.unit);
+    this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization);
     //console.log("handele submit");
     event.preventDefault();
 }
 
 buttonClicked(event) {
-    this.props.fetch("svg", event.target.value, this.state.unit);
+    this.props.fetch("svg", event.target.value, this.state.unit, this.state.optimization);
 }
 
 milesClicked(event){
