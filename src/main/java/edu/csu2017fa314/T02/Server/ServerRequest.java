@@ -9,11 +9,13 @@ package edu.csu2017fa314.T02.Server;
      private String request = "";
      private String description = "";
      private String unit = "";
+     private String optSelection = "";
 
-     public ServerRequest(String request, String description, String unit) {
+     public ServerRequest(String request, String description, String unit, String optSelection) {
          this.request = request;
          this.description = description;
          this.unit = unit;
+         this.optSelection = optSelection;
      }
 
      public String getRequest() {
@@ -32,6 +34,10 @@ package edu.csu2017fa314.T02.Server;
          return unit;
      }
 
+     public String getOptSelection(){
+         return this.optSelection;
+     }
+
      public void setDescription(String description) {
          this.description = description;
      }
@@ -42,6 +48,7 @@ package edu.csu2017fa314.T02.Server;
                  "request='" + request + '\'' +
                  ", description='" + description + '\'' +
                  ", unit='" + unit + '\'' +
+                 ", optSelection='" + optSelection + '\'' +
                  '}';
      }
  }

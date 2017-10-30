@@ -10,7 +10,8 @@ constructor(props) {
    this.state = {
        svgImage : [],
        input : [],
-       unit : "miles"
+       unit : "miles",
+       optimization : ""
    };
 
 }
@@ -47,6 +48,11 @@ render() {
         Select your optimizations:<p></p>
         <button type="button" onClick={this.milesClicked.bind(this)}>Miles</button>
         <button type="button" onClick={this.kiloClicked.bind(this)}>Kilometers</button>
+        <p></p>
+        <button type="button" onClick={this.NoneClicked.bind(this)}>None</button>
+        <button type="button" onClick={this.NNClicked.bind(this)}>Nearest Neighbor</button>
+        <button type="button" onClick={this.TwoOptClicked.bind(this)}>2-opt</button>
+        <button type="button" onClick={this.ThreeOptClicked.bind(this)}>3-opt</button>
   </div>
   <p></p>
 
@@ -140,6 +146,33 @@ kiloClicked(event){
     console.log("Units are km");
 }
 
+NoneClicked(event){
+    this.setState({
+        optimization : "None"
+    });
+    console.log("Opt is none");
+}
+
+NNClicked(event){
+    this.setState({
+        optimization : "NearestNeighbor"
+    });
+    console.log("Opt is NearestNeighbor");
+}
+
+TwoOptClicked(event){
+    this.setState({
+        optimization : "TwoOpt"
+    });
+    console.log("Opt is TwoOpt");
+}
+
+ThreeOptClicked(event){
+    this.setState({
+        optimization : "ThreeOpt"
+    });
+    console.log("Opt is ThreeOpt");
+}
 
 
 }

@@ -35,6 +35,7 @@ public class Hub {
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     public ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
     public boolean miles = true;
+    public String optimization = "";
 
 
     public void searchDatabase(String username, String password, String searchingFor){
