@@ -159,6 +159,7 @@ async browseFile(file) {
         //console.log("THIS IS TYPE::: ", type);
         console.log("Fetching... ", input);
         console.log("Using Unit: ", setUnit);
+        console.log("Using Optimization: ", opt);
         let request;
 
         //if text box
@@ -167,7 +168,7 @@ async browseFile(file) {
                 request: "query",
                 description: input,
                 unit : setUnit,
-                //opt : algo
+                optSelection : opt
             };
             console.log("Fetching Query");
         // if the button is clicked:

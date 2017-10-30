@@ -191,7 +191,7 @@ public class TestModel {
         h0.parseRow("alnolte,amber,denver, 60.0, 70.5, 10");
         h0.parseRow("nkacirek,nicole,boulder, 100.0, 60.0, 10");
         h0.parseRow("emictosh,emerson,littleton, 45.0, 55.0, 10");
-        h0.shortestTrip();
+        h0.shortestTrip2Opt();
         assertEquals(fillShortTrip(), h0.shortestItinerary);
     }
 
