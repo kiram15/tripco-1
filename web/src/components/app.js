@@ -12,11 +12,10 @@ export default class App extends React.Component {
             setInfo : [],
             selColumns : [],
             queryResults : [],
-            svgResults : null
+            svgResults : null,
+            searchResult: null
         }
     };
-
-
 
 
 render() {
@@ -63,8 +62,6 @@ render() {
         }
 
     }
-
-
 
 
 startEndInfo(file) {
@@ -198,6 +195,25 @@ async browseFile(file) {
                 this.setState({
                     queryResults: parsed.trip
                 });
+
+                //do something with this.state.queryResults here that will put it in the search result box
+                console.log("queryResults", this.state.queryResults);
+                var myDiv = document.createElement("div");
+                for (var i = 0; i < this.state.queryResults.length; i++) {
+                    var checkBox = document.createElement("input");
+                    var label = document.createElement("label");
+                    checkBox.type = "checkbox";
+                    checkBox.value = this.state.queryResults[i];
+                    myDiv.appendChild(checkBox);
+                    myDiv.appendChild(label);
+                    label.appendChild(document.createTextNode(this.state.queryResults[i]));
+                }
+                this.setState({
+                    searchResult: myDiv
+                })
+                console.log("searchResult", this.state.searchResult);
+
+                //this will actually display it in the table
                 this.browseFile(this.state.queryResults);
             // if it's not, we assume the response field is "svg" and contains the an svg image
             } else {

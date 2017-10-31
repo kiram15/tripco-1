@@ -56,6 +56,11 @@ render() {
   </div>
   <p></p>
 
+  <div className="searchResult">
+    <input type="checkbox" value="test"/>
+    <label>Test</label>
+  </div>
+
   <div className="app-container">
     <form onSubmit={this.handleSubmit.bind(this)}>
         <input id="searchTB" size="35" className="search-button" type="text"
@@ -124,7 +129,7 @@ keyUp(event) {
 
 handleSubmit(event) {
     this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization);
-    //console.log("handele submit");
+    //console.log("handle submit");
     event.preventDefault();
 }
 
@@ -176,9 +181,5 @@ ThreeOptClicked(event){
 
 
 }
-
-
-
-
 
 export default Home
