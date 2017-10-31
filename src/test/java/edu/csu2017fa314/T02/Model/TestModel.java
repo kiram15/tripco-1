@@ -265,4 +265,13 @@ public class TestModel {
         }
     }
 
+    // ------------------------- Test searchDatabase ----------------------------
+
+    @Test
+    public void testSearchDatabase(){
+
+
+
+    }
+
 }

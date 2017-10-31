@@ -8,24 +8,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.lang.Math;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
-import java.io.PrintWriter;
-import java.util.Collections;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Collections;
-import java.util.Set;
-import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.lang.ClassLoader;
-import java.io.InputStream;
-import java.net.URL;
 
 
 public class Hub {
@@ -49,99 +37,58 @@ public class Hub {
         //String myUrl = "jdbc:mysql://localhost/cs314"; // Use this line if tunneling 3306 traffic through shell
 
         try { // connect to the database
+            //System.out.println("IN FIRST TRY LOOP ");
             System.out.println(username);
             Class.forName(myDriver);
+            //System.out.println("IN BETWEEN");
             Connection conn = DriverManager.getConnection(myUrl, username, password);
+            //System.out.println("RIGHT BEFORE SECOND TRY");
             try { // create a statement
+                //System.out.println("IN SECOND TRY LOOP");
                 Statement st = conn.createStatement();
-
-
                 try { // submit a query to get column headers
-                    //String tblCountQ = "select count(*) from information_schema.tables where table_type = 'base table';";
-                    //ResultSet tblCountRS = st.executeQuery(tblCountQ);
-                    //int numTbls = ((Number)tblCountRS.getObject(1)).intValue();
-
-                    //st = conn.createStatement();
-                    String tblNamesQ = "select TABLE_NAME from information_schema.tables where table_type = 'base table';";
-                    ResultSet tblNamesRS = st.executeQuery(tblNamesQ);
-
-                    while(tblNamesRS.next()){
-                        String tableName = tblNamesRS.getString(1);
-                        st = conn.createStatement();
-                        String tableNameColsQ = "select column_name from information_schema.columns where table_name='" + tableName + "';";
-                        ResultSet tableNameColsRS = st.executeQuery(tableNameColsQ);
-
-                        try { // iterate through the query results and give string of column headers to storeColumnHeaders
-                            String headers = "";
-                            while (tableNameColsRS.next()){
-                                String h = tableNameColsRS.getString(1);
-                                h = h + ",";
-                                headers += h;
-                            }
-                            storeColumnHeaders(headers);
-
-                            try{ //search for searchingFor string in all columns
-                                st = conn.createStatement();
-                                String q2 = "select * from airports where name like '%" + searchingFor + "%' or type like '%" + searchingFor + "%' or id like '%" + searchingFor + "%' or latitude like '%" + searchingFor + "%' or longitude like '%" + searchingFor + "%' or municipality like '%" + searchingFor + "%' or elevation like '%" + searchingFor + "%' or home_link like '%" + searchingFor + "%' or wikipedia_link like '%" + searchingFor + "%' order by name limit 50;";
-                                ResultSet rs2 = st.executeQuery(q2);
-                                try{ //parse matched rows
-                                    int count = 0;
-
-                                    while(rs2.next()){ //for each row
-                                        String matchedRow = "";
-                                        for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
-                                            String rowCol = rs2.getString(i);
-                                            rowCol = rowCol + ",";
-                                            matchedRow += rowCol;
-                                        }
-                                        parseRow(matchedRow);
-                                        ++count;
-                                    }
-                                } finally { rs2.close(); }
-                            } finally{ st.close(); }
-
-                        } finally { tableNameColsRS.close(); }
-
-
-                    }
-
-                    /*String q1 = "select column_name from information_schema.columns where table_name='" + tableName + "';";
+                    String q1 = "select column_name from information_schema.columns where table_name='airports';";
                     ResultSet rs1 = st.executeQuery(q1);
                     try { // iterate through the query results and give string of column headers to storeColumnHeaders
                         String headers = "";
                         while (rs1.next()){
                             String h = rs1.getString(1);
+                            //System.out.println("PRINTING H????:: " + h);
                             h = h + ",";
                             headers += h;
                         }
+                        //System.out.println("WE GOT HEADERS:: " + headers);
                         storeColumnHeaders(headers);
+                        //System.out.println("headers stored");
 
                         try{ //search for searchingFor string in all columns
                             st = conn.createStatement();
 
-                            String q2 = "select * from airports where name like '%" + searchingFor + "%' or type like '%" + searchingFor + "%' or id like '%" + searchingFor + "%' or latitude like '%" + searchingFor + "%' or longitude like '%" + searchingFor + "%' or municipality like '%" + searchingFor + "%' or elevation like '%" + searchingFor + "%' or home_link like '%" + searchingFor + "%' or wikipedia_link like '%" + searchingFor + "%' order by name limit 50;";
+                            String q2 = "select * from airports where name like '%" + searchingFor + "%' or type like '%" + searchingFor + "%' or id like '%" + searchingFor + "%' or latitude like '%" + searchingFor + "%' or longitude like '%" + searchingFor + "%' or municipality like '%" + searchingFor + "%' or elevation like '%" + searchingFor + "%' or home_link like '%" + searchingFor + "%' or wikipedia_link like '%" + searchingFor + "%' order by name;";
                             ResultSet rs2 = st.executeQuery(q2);
                             try{ //parse matched rows
                                 int count = 0;
 
-                                while(rs2.next()){ //for each row
+                                while(rs2.next() && count <= 49){ //for each row
                                     String matchedRow = "";
+                                    //System.out.println("RS2 TO STRING: "+ rs2.getString(1));
                                     for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
                                         String rowCol = rs2.getString(i);
                                         rowCol = rowCol + ",";
+                                        //System.out.println("PRINTING ROW COL????:: " + rowCol);
                                         matchedRow += rowCol;
                                     }
+
+                                    //System.out.println("Matched row numba : " + count + ": " + matchedRow);
                                     parseRow(matchedRow);
                                     ++count;
                                 }
                             } finally { rs2.close(); }
                         } finally{ st.close(); }
 
-                    } finally { rs1.close(); }*/
-
-
+                    } finally { rs1.close(); }
+                    //System.out.println("after rs1 close");
                 } finally {}
-
 
             } finally { conn.close(); }
         } catch (Exception e) { // catches all exceptions in the nested try's
@@ -164,11 +111,10 @@ public class Hub {
                 shortestTrip3Opt();
                 break;
         }
-
+        //shortestTrip();
     }
 
     public void storeColumnHeaders(String firstLine){
-        columns.clear();
         String s = firstLine.toLowerCase();
         String[] infoArray = s.split(",");
         for (int i = 0; i < infoArray.length; i++) {
@@ -389,13 +335,13 @@ public class Hub {
         for (int i = 1; i < backAround.length; i++) {
             Distance d = (Distance) backAround[i];
         }
-            //apply 2opt
-            checkImprovement(traveledToFinal);
-            //convert traveledToFinal location array to a distance array
-            ArrayList<Distance> updatedShortestIt = locationsToDistances(traveledToFinal);
+        //apply 2opt
+        checkImprovement(traveledToFinal);
+        //convert traveledToFinal location array to a distance array
+        ArrayList<Distance> updatedShortestIt = locationsToDistances(traveledToFinal);
 
-            shortestItinerary = updatedShortestIt;
-        }
+        shortestItinerary = updatedShortestIt;
+    }
 
     public void shortestTrip3Opt(){
 
@@ -449,7 +395,7 @@ public class Hub {
             } else {
                 Distance d = new Distance(locations.get(i), locations.get(i + 1), miles);
                 finalDistances.add(d);
-                }
+            }
         }
         return finalDistances;
     }
@@ -545,36 +491,36 @@ public class Hub {
                 SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
             }
 
-        if (finalEndLat < 0) { //lat is negative
-            finalEndLat = Math.abs(finalEndLat);
-            finalEndLat *= 2;
-        }
-        if (originStartLat < 0) { //lat is negative
-            originStartLat = Math.abs(originStartLat);
-            originStartLat *= 2;
-        }
-        if (finalEndLon > 0) { //lon is positive - double
-            finalEndLon *= 2;
-        }
-        if (finalEndLon < 0) { //lon is neg - abs
-            finalEndLon = Math.abs(finalEndLon);
-        }
-        if (originStartLon > 0) { //lon is positive - double
-            originStartLon *= 2;
-        }
-        if (originStartLon < 0) { //lon is neg - abs
-            originStartLon = Math.abs(originStartLon);
-        }
+            if (finalEndLat < 0) { //lat is negative
+                finalEndLat = Math.abs(finalEndLat);
+                finalEndLat *= 2;
+            }
+            if (originStartLat < 0) { //lat is negative
+                originStartLat = Math.abs(originStartLat);
+                originStartLat *= 2;
+            }
+            if (finalEndLon > 0) { //lon is positive - double
+                finalEndLon *= 2;
+            }
+            if (finalEndLon < 0) { //lon is neg - abs
+                finalEndLon = Math.abs(finalEndLon);
+            }
+            if (originStartLon > 0) { //lon is positive - double
+                originStartLon *= 2;
+            }
+            if (originStartLon < 0) { //lon is neg - abs
+                originStartLon = Math.abs(originStartLon);
+            }
 
-        //draw last line connected end point with start
-        double endX1 = ((finalEndLon) * unitWidth);
-        double endY1 = ((finalEndLat) * unitHeight);
-        double endX2 = ((originStartLon) * unitWidth);
-        double endY2 = ((originStartLat) * unitHeight);
-        SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
+            //draw last line connected end point with start
+            double endX1 = ((finalEndLon) * unitWidth);
+            double endY1 = ((finalEndLat) * unitHeight);
+            double endX2 = ((originStartLon) * unitWidth);
+            double endY2 = ((originStartLat) * unitHeight);
+            SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
 
-        SVG += "</svg>";
-    }
+            SVG += "</svg>";
+        }
 
         return SVG;
 
