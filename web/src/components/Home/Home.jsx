@@ -26,6 +26,17 @@ render() {
         options.push(ob);
     }
 
+    var myDiv = document.getElementById("searchResult");
+    for (var i = 0; i < (this.props.queryResults.length); i++) {
+        var checkBox = document.createElement("input");
+        var label = document.createElement("label");
+        checkBox.type = "checkbox";
+        checkBox.value = this.props.queryResults[i];
+        myDiv.appendChild(checkBox);
+        myDiv.appendChild(label);
+        label.appendChild(document.createTextNode(this.props.queryResults[i]));
+    }
+    console.log("myDiv", myDiv);
 
     let total = this.props.totalDist; //update the total here
     let svg = this.props.svg;
@@ -56,9 +67,10 @@ render() {
   </div>
   <p></p>
 
-  <div className="searchResult">
+  <div id="searchResult">
     <input type="checkbox" value="test"/>
     <label>Test</label>
+    {this.props.searchResult}
   </div>
 
   <div className="app-container">
