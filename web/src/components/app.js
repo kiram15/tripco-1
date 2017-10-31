@@ -154,11 +154,12 @@ async browseFile(file) {
 }
 
     // This function sends `input` the server and updates the state with whatever is returned
-    async fetch(type, input, setUnit){
+    async fetch(type, input, setUnit, opt){
         //input.preventDefault();
         //console.log("THIS IS TYPE::: ", type);
         console.log("Fetching... ", input);
         console.log("Using Unit: ", setUnit);
+        console.log("Using Optimization: ", opt);
         let request;
 
         //if text box
@@ -167,7 +168,7 @@ async browseFile(file) {
                 request: "query",
                 description: input,
                 unit : setUnit,
-                //opt : algo
+                optSelection : opt
             };
             console.log("Fetching Query");
         // if the button is clicked:
@@ -176,7 +177,7 @@ async browseFile(file) {
                 request: "svg",
                 description: "",
                 unit : setUnit,
-                //opt : algo
+                optSelection : opt
             }
             console.log("Fetching SVG");
         }

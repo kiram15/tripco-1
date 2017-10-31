@@ -35,6 +35,7 @@ public class Hub {
     ArrayList<Location> finalLocations = new ArrayList<Location>();
     public ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
     public boolean miles = true;
+    public String optimization = "";
 
 
     public void searchDatabase(String username, String password, String searchingFor){
@@ -148,7 +149,22 @@ public class Hub {
             System.err.println(e.getMessage());
         }
         //call rest of hub
-        shortestTrip();
+        //switch statement that calls the specific shortest trip method based on selected optimization
+        switch(optimization){
+            case "None":
+                shortestItinerary = locationsToDistances(finalLocations);
+                break;
+            case "NearestNeighbor":
+                shortestTripNN();
+                break;
+            case "TwoOpt":
+                shortestTrip2Opt();
+                break;
+            case "ThreeOpt":
+                shortestTrip3Opt();
+                break;
+        }
+
     }
 
     public void storeColumnHeaders(String firstLine){
@@ -259,7 +275,11 @@ public class Hub {
         }
     }
 
-    public void shortestTrip() {
+    public void shortestTripNN(){
+
+    }
+
+    public void shortestTrip2Opt() {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds();
 
@@ -376,6 +396,12 @@ public class Hub {
 
             shortestItinerary = updatedShortestIt;
         }
+
+    public void shortestTrip3Opt(){
+
+    }
+
+
 
     //will return an array list with each city listed once, with the shortest city as its end
     private Object[][] calcAllGcds() {

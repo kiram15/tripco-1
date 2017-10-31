@@ -10,7 +10,8 @@ constructor(props) {
    this.state = {
        svgImage : [],
        input : [],
-       unit : "miles"
+       unit : "miles",
+       optimization : "None"
    };
 
 }
@@ -47,6 +48,11 @@ render() {
         Select your optimizations:<p></p>
         <button type="button" onClick={this.milesClicked.bind(this)}>Miles</button>
         <button type="button" onClick={this.kiloClicked.bind(this)}>Kilometers</button>
+        <p></p>
+        <button type="button" onClick={this.NoneClicked.bind(this)}>None</button>
+        <button type="button" onClick={this.NNClicked.bind(this)}>Nearest Neighbor</button>
+        <button type="button" onClick={this.TwoOptClicked.bind(this)}>2-opt</button>
+        <button type="button" onClick={this.ThreeOptClicked.bind(this)}>3-opt</button>
   </div>
   <p></p>
 
@@ -106,7 +112,7 @@ render() {
 
 keyUp(event) {
     if (event.which === 13) { // Waiting for enter to be pressed. Enter is key 13: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
-        this.props.fetch("query", this.state.input); // Call fetch and pass whatever text is in the input box
+        this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization); // Call fetch and pass whatever text is in the input box
         //console.log("event 13 thing");
     } else {
         this.setState({
@@ -117,13 +123,13 @@ keyUp(event) {
 }
 
 handleSubmit(event) {
-    this.props.fetch("query", this.state.input, this.state.unit);
+    this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization);
     //console.log("handele submit");
     event.preventDefault();
 }
 
 buttonClicked(event) {
-    this.props.fetch("svg", event.target.value, this.state.unit);
+    this.props.fetch("svg", event.target.value, this.state.unit, this.state.optimization);
 }
 
 milesClicked(event){
@@ -140,6 +146,33 @@ kiloClicked(event){
     console.log("Units are km");
 }
 
+NoneClicked(event){
+    this.setState({
+        optimization : "None"
+    });
+    console.log("Opt is none");
+}
+
+NNClicked(event){
+    this.setState({
+        optimization : "NearestNeighbor"
+    });
+    console.log("Opt is NearestNeighbor");
+}
+
+TwoOptClicked(event){
+    this.setState({
+        optimization : "TwoOpt"
+    });
+    console.log("Opt is TwoOpt");
+}
+
+ThreeOptClicked(event){
+    this.setState({
+        optimization : "ThreeOpt"
+    });
+    console.log("Opt is ThreeOpt");
+}
 
 
 }

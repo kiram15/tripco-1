@@ -60,12 +60,13 @@ import static spark.Spark.post;
      }
 
      // called by testing method if client requests a search
-     private Object serveQuery(String searched, boolean miles) {
+     private Object serveQuery(String searched, boolean miles, String optimization) {
          Gson gson = new Gson();
          //QueryBuilder q = new QueryBuilder("user", "pass"); // Create new QueryBuilder instance and pass in credentials //TODO update credentials
          //String queryString = String.format("SELECT * FROM airports WHERE municipality LIKE '%%%s%%' OR name LIKE '%%%s%%' OR type LIKE '%%%s%%' LIMIT 10", searched, searched, searched);
          //ArrayList<Location> queryResults = q.query(queryString);
          h.miles = miles;
+         h.optimization = optimization;
 
          h.searchDatabase(this.user, this.password, searched);
 
@@ -104,6 +105,7 @@ import static spark.Spark.post;
          // Notice how DataClass has name and ID and how the frontend is generating an object with name and ID.
          System.out.println("Got \"" + sRec.toString() + "\" from server.");
          String u = sRec.getUnit();
+         String o = sRec.getOptSelection();
 
          //checks if user wants km or nah
          if(u.equals("km")){
@@ -113,8 +115,7 @@ import static spark.Spark.post;
          // Because both possible requests from the client have the same format,
          // we can check the "type" of request we've received: either "query" or "svg" or "unit"
          if (sRec.getRequest().equals("query")) {
-            System.out.println("RETURNING QUERY, Using miles???: " + miles);
-            return serveQuery(sRec.getDescription(), miles);
+            return serveQuery(sRec.getDescription(), miles, o);
          // see if the user is looking for the map:
         } else {
             return serveSvg();
