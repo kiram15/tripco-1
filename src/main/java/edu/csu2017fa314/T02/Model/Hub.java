@@ -70,7 +70,6 @@ public class Hub {
                         String tableNameColsQ = "select column_name from information_schema.columns where table_name='" + tableName + "';";
                         ResultSet tableNameColsRS = st.executeQuery(tableNameColsQ);
 
-
                         try { // iterate through the query results and give string of column headers to storeColumnHeaders
                             String headers = "";
                             while (tableNameColsRS.next()){
