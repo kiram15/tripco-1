@@ -310,6 +310,10 @@ public class TestModel {
                     String insertInto2 = "insert into TestData values (2,boulder,25,150,5000);";
                     st.executeQuery(insertInto2);
 
+                    st = conn.createStatement();
+                    Hub hD = new Hub();
+                   // assertEquals(,hD.searchDatabase(););
+
                 }finally { st.close(); }
             }finally{ conn.close(); }
         } catch (Exception e) { // catches all exceptions in the nested try's
