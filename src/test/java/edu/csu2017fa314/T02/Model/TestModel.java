@@ -273,18 +273,22 @@ public class TestModel {
     public void testSearchDatabase() {
         // JDBC driver name and database URL
         final String myDriver = "com.mysql.jdbc.Driver";
-        final String myUrl = "jdbc:mysql://localhost/alnolte";
+        final String myUrl = "jdbc:mysql://localhost/myDatabase";
 
         //  Database credentials
-        final String username = "alnolte";
-        final String password = "diamonds";
+        final String username = "Amber Nolte";
+        final String password = "mtw14nov";
 
         try { // connect to the database
             Class.forName(myDriver);
+            System.out.println("did class.mydriver");
             Connection conn = DriverManager.getConnection(myUrl, username, password);
+            System.out.println("did conn = driverManager");
             try {
                 Statement st = conn.createStatement();
+                System.out.println("did st");
                 try {
+                    System.out.println("boutta create database");
                     String createTable = "CREATE TABLE TestData " +
                             "(id INTEGER, " +
                             " name STRING, " +
@@ -305,7 +309,7 @@ public class TestModel {
                     st = conn.createStatement();
                     String insertInto2 = "insert into TestData values (2,boulder,25,150,5000);";
                     st.executeQuery(insertInto2);
-                    
+
                 }finally { st.close(); }
             }finally{ conn.close(); }
         } catch (Exception e) { // catches all exceptions in the nested try's
