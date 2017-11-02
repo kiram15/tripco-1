@@ -474,12 +474,18 @@ public class Hub {
                 else if (startLat > 0) { //lat is positive
                     startLat = (90-startLat) * unit;
                 }
+                else{
+                    startLat = 256;
+                }
 
                 if (endLat < 0) { //lat is negative
                     endLat = 512 - (Math.abs(-90-endLat) * unit);
                 }
                 else if (endLat > 0) { //lat is positive
                     endLat = (90-endLat) * unit;
+                }
+                else{
+                    endLat = 256;
                 }
 
                 if (startLon < 0) { //lon is neg
@@ -488,12 +494,18 @@ public class Hub {
                 else if (startLon > 0) { //lon is positive
                     startLon = 1024 - (180-startLon) * unit;
                 }
+                else{
+                    startLon = 512;
+                }
 
                 if (endLon < 0) { //lon is neg
                     endLon = (Math.abs(-180-endLon) * unit);
                 }
                 else if (endLon > 0) { //lon is positive
                     endLon = 1024 - (180-endLon) * unit;
+                }
+                else{
+                    endLon = 512;
                 }
 
 
@@ -504,7 +516,7 @@ public class Hub {
                 double y1 = startLat;
                 double x2 = endLon;
                 double y2 = endLat;
-                SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
+                SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
             }
 
             if (finalEndLat < 0) { //lat is negative
@@ -513,12 +525,18 @@ public class Hub {
             else if (finalEndLat > 0) { //lat is positive
                 finalEndLat = (90-finalEndLat) * unit;
             }
+            else {
+                finalEndLat = 256;
+            }
 
             if (originStartLat < 0) { //lat is negative
                 originStartLat = 512 - (Math.abs(-90-originStartLat) * unit);
             }
             else if (originStartLat > 0) { //lat is positive
                 originStartLat = (90-originStartLat) * unit;
+            }
+            else{
+                originStartLat = 256;
             }
 
             if (originStartLon < 0) { //lon is neg
@@ -527,6 +545,9 @@ public class Hub {
             else if (originStartLon > 0) { //lon is positive
                 originStartLon = 1024 - (180-originStartLon) * unit;
             }
+            else{
+                originStartLon = 512;
+            }
 
             if (finalEndLon < 0) { //lon is neg
                 finalEndLon = (Math.abs(-180-finalEndLon) * unit);
@@ -534,13 +555,16 @@ public class Hub {
             else if (finalEndLon > 0) { //lon is positive
                 finalEndLon = 1024 - (180-finalEndLon) * unit;
             }
+            else{
+                originStartLon = 512;
+            }
 
         //draw last line connected end point with start
         double endX1 = finalEndLon;
         double endY1 = finalEndLat;
         double endX2 = originStartLon;
         double endY2 = originStartLat;
-        SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
+        SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
 
         SVG += "</svg>";
     }
