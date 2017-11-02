@@ -487,7 +487,7 @@ public class Hub {
                 double x1 = (startLon * unitWidth);
                 double y1 = (startLat * unitHeight);
                 double x2 = (endLon * unitWidth);
-                double y2 = (endLat * unitHeight);g
+                double y2 = (endLat * unitHeight);
                 SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
             }
 
