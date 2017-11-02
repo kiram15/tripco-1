@@ -97,6 +97,9 @@ public class Hub {
             case "ThreeOpt":
                 shortestTrip3Opt();
                 break;
+            default:
+                shortestItinerary = locationsToDistances(finalLocations);
+                break;
         }
     }
 
@@ -292,7 +295,7 @@ public class Hub {
             }
         }
 
-        
+
         //start final trip at the predetermined shortest trip start
         Location currentLocation = shortestTripStart;
 
