@@ -273,7 +273,7 @@ public class Hub {
             }
 
             //apply 2opt
-            checkImprovement(traveledTo);
+            checkImprovement2(traveledTo);
 
             //get the updated trip distance after 2opt
             ArrayList<Distance> traveledDistances = locationsToDistances(traveledTo);
@@ -319,7 +319,7 @@ public class Hub {
         }
 
         //apply 2opt
-        checkImprovement(traveledToFinal);
+        checkImprovement2(traveledToFinal);
         //convert traveledToFinal location array to a distance array
         shortestItinerary = locationsToDistances(traveledToFinal);
      }
@@ -347,7 +347,7 @@ public class Hub {
     }
 
     //determines all the possible areas that 2opt could improve in a given arraylist of locations
-    private void checkImprovement(ArrayList<Location> traveled) {
+    private void checkImprovement2(ArrayList<Location> traveled) {
         boolean improvement = true;
         //while there is still possible improvements to be made
         while (improvement) {
@@ -360,7 +360,7 @@ public class Hub {
                     Distance i1k1 = new Distance(traveled.get(i + 1), traveled.get(k + 1), miles);
                     double delta = (-ii1.getGcd()) - kk1.getGcd() + ik.getGcd() + i1k1.getGcd();
                     if (delta < 0) { //improvement?
-                        optSwap2(traveled, i + 1, k);
+                        optSwap(traveled, i + 1, k);
                         improvement = true;
                     }
                 }
@@ -368,8 +368,112 @@ public class Hub {
         }
     }
 
+    //determines all the possible areas that 2opt could improve in a given arraylist of locations
+    private void checkImprovement3(ArrayList<Location> traveled) {
+        boolean improvement = true;
+        //while there is still possible improvements to be made
+        while (improvement) {
+            improvement = false;
+            for (int i = 0; i <= traveled.size() - 5; i++) {
+                //starts at i+2 because i, i+1, start at j
+                for (int j = i + 2; j < traveled.size() - 3; j++)
+                    //starts at i+4 because i, i+1, j, j+1, start at k
+                    for (int k = i + 4; k < traveled.size() - 1; k++) {
+                        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+                        Distance ij = new Distance(traveled.get(i), traveled.get(j), miles);
+                        Distance ij1 = new Distance(traveled.get(i), traveled.get(j+1), miles);
+                        Distance ik = new Distance(traveled.get(i), traveled.get(k), miles);
+                        Distance ik1 = new Distance(traveled.get(i), traveled.get(k+1), miles);
+
+                        Distance i1j = new Distance(traveled.get(i+1), traveled.get(j), miles);
+                        Distance i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
+                        Distance i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
+                        Distance i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
+
+                        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+                        Distance jk = new Distance(traveled.get(j), traveled.get(k), miles);
+                        Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
+
+                        Distance j1k = new Distance(traveled.get(j+1), traveled.get(k), miles);
+                        Distance j1k1 = new Distance(traveled.get(j+1), traveled.get(k+1), miles);
+
+                        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+
+
+                        //won't the arraylist be changing after everyone of these swaps?
+                        //create a temp for each one? complexity?
+
+                        // --- SWAP 1 ---
+                        // (i, k) (j+1, j) (i+1, k+1)
+                        double delta1 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ij1.getGcd() + jk.getGcd() + i1j1.getGcd() + jk1.getGcd();
+
+                        if (delta1 < 0) { //improvement?
+                            optSwap(traveled, i + 1, k); //reverse i+1 through k
+                            improvement = true;
+                        }
+
+
+                        // --- SWAP 2 ---
+                        // (i, j) (i+1, j+1) (k, k+1)
+                        double delta2 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ii1.getGcd() + jj1.getGcd() + i1k.getGcd() + j1k1.getGcd();
+
+                        if (delta2 < 0) { //improvement?
+                            optSwap(traveled, i + 1, j); //swap i+1 and j
+                            improvement = true;
+                        }
+
+                        // --- SWAP 3 ---
+                        // (i, i+1) (j, k) (j+1, k+1)
+                        double delta3 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ij.getGcd() + i1k.getGcd() + jj1.getGcd() + kk1.getGcd();
+
+                        if (delta3 < 0) { //improvement?
+                            optSwap(traveled, j + 1, k); //swap j+1 and k
+                            improvement = true;
+                        }
+
+                        // --- SWAP 4 ---
+                        // (i, j) (i+1, k) (j+1, k+1) -- swap i+1 and j, swap j+1 and k
+                        double delta4 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ii1.getGcd() + jk.getGcd() + i1j1.getGcd() + kk1.getGcd();
+
+                        if (delta4 < 0) { //improvement?
+                            optSwap(traveled, i + 1, j); //swap i+1 and j
+                            optSwap(traveled, j + 1, k); //swap j+1 and k
+                            improvement = true;
+                        }
+
+                        // --- SWAP 5 ---
+                        // (i, j+1) (k, i+1) (j, k+1) -- swap i+1 and j+1, swap j and k
+                        double delta5 =  -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ik.getGcd() + i1j1.getGcd() + jk.getGcd() + i1k1.getGcd();
+
+                        if (delta5 < 0) {
+                            optSwap(traveled, i+1, j+1);
+                            //other swap
+                            improvement = true;
+                        }
+
+
+
+
+
+
+                        //to
+                        //delta = -dis(route,i,i+1)-dis(route,k,k+1)+dis(route,i,k)+dis(route,i+1,k+1)
+
+                        //delta = -dis(route,i,i+1)-dis(route,j,j+1)-dis(route,k,k+1)+dis(route(i,j+1))
+                        //+dis(route(k,j))+dis(route(j+1,i+1))+dis(route(j,k+1))
+                    }
+            }
+        }
+    }
+
+
     //preforms the swap method for 2opt
-    private void optSwap2(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
+    private void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
         while (i1 < k) {
             //swap i+1 and k
             Location temp = traveledTo.get(i1);
