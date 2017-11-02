@@ -467,7 +467,6 @@ public class Hub {
                 double startLon = d.getStartID().getLongitude();
                 double endLat = d.getEndID().getLatitude();
                 double endLon = d.getEndID().getLongitude();
-                System.out.println("startLat "+ startLat + " startLon " + startLon + " endLat " + endLat + " endLon " + endLon);
 
                 if (startLat < 0) { //lat is negative
                     startLat = 512 - (Math.abs(-90-startLat) * unit);
@@ -485,7 +484,6 @@ public class Hub {
 
                 if (startLon < 0) { //lon is neg
                     startLon = (Math.abs(-180-startLon) * unit);
-                    System.out.println("startLon:" + startLon);
                 }
                 else if (startLon > 0) { //lon is positive
                     startLon = 1024 - (180-startLon) * unit;
@@ -506,7 +504,6 @@ public class Hub {
                 double y1 = startLat;
                 double x2 = endLon;
                 double y2 = endLat;
-                System.out.println("y1 "+ y1 + " x1 " + x1 + " x2 " + x2 + " y2 " + y2);
                 SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
             }
 
