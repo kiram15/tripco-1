@@ -292,6 +292,7 @@ public class Hub {
             }
         }
 
+        
         //start final trip at the predetermined shortest trip start
         Location currentLocation = shortestTripStart;
 
