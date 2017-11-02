@@ -359,8 +359,6 @@ public class Hub {
 
     }
 
-
-
     //will return an array list with each city listed once, with the shortest city as its end
     private Object[][] calcAllGcds() {
         Object[][] GCDS = new Object[finalLocations.size()][finalLocations.size()+1];
@@ -456,8 +454,7 @@ public class Hub {
         double finalEndLat = 0.0;
         double finalEndLon = 0.0;
         boolean first = false;
-        double unitHeight = 3.6; //512/180 WorldMap Height - unit
-        double unitWidth = 2.08; //1024/360 WorldMap width - unit
+        double unit = 2.84444444444444;
 
         if (!shortestItinerary.isEmpty()) {
             for (Distance d : shortestItinerary) {
@@ -470,65 +467,82 @@ public class Hub {
                 double startLon = d.getStartID().getLongitude();
                 double endLat = d.getEndID().getLatitude();
                 double endLon = d.getEndID().getLongitude();
+                System.out.println("startLat "+ startLat + " startLon " + startLon + " endLat " + endLat + " endLon " + endLon);
 
                 if (startLat < 0) { //lat is negative
-                    startLat = Math.abs(startLat);
-                    startLat *= 2;
+                    startLat = 512 - (Math.abs(-90-startLat) * unit);
                 }
+                else if (startLat > 0) { //lat is positive
+                    startLat = (90-startLat) * unit;
+                }
+
                 if (endLat < 0) { //lat is negative
-                    endLat = Math.abs(endLat);
-                    endLat *= 2;
+                    endLat = 512 - (Math.abs(-90-endLat) * unit);
                 }
-                if (startLon > 0) { //lon is positive - double
-                    startLon *= 2;
+                else if (endLat > 0) { //lat is positive
+                    endLat = (90-endLat) * unit;
                 }
-                if (startLon < 0) { //lon is neg - abs
-                    startLon = Math.abs(startLon);
+
+                if (startLon < 0) { //lon is neg
+                    startLon = (Math.abs(-180-startLon) * unit);
+                    System.out.println("startLon:" + startLon);
                 }
-                if (endLon > 0) { //lon is positive - double
-                    endLon *= 2;
+                else if (startLon > 0) { //lon is positive
+                    startLon = 1024 - (180-startLon) * unit;
                 }
-                if (endLon < 0) { //lon is neg - abs
-                    endLon = Math.abs(endLon);
+
+                if (endLon < 0) { //lon is neg
+                    endLon = (Math.abs(-180-endLon) * unit);
+                }
+                else if (endLon > 0) { //lon is positive
+                    endLon = 1024 - (180-endLon) * unit;
                 }
 
 
                 finalEndLat = d.getEndID().getLatitude();
                 finalEndLon = d.getEndID().getLongitude();
 
-                double x1 = (startLon * unitWidth);
-                double y1 = (startLat * unitHeight);
-                double x2 = (endLon * unitWidth);
-                double y2 = (endLat * unitHeight);
+                double x1 = startLon;
+                double y1 = startLat;
+                double x2 = endLon;
+                double y2 = endLat;
+                System.out.println("y1 "+ y1 + " x1 " + x1 + " x2 " + x2 + " y2 " + y2);
                 SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
             }
 
-        if (finalEndLat < 0) { //lat is negative
-            finalEndLat = Math.abs(finalEndLat);
-            finalEndLat *= 2;
-        }
-        if (originStartLat < 0) { //lat is negative
-            originStartLat = Math.abs(originStartLat);
-            originStartLat *= 2;
-        }
-        if (finalEndLon > 0) { //lon is positive - double
-            finalEndLon *= 2;
-        }
-        if (finalEndLon < 0) { //lon is neg - abs
-            finalEndLon = Math.abs(finalEndLon);
-        }
-        if (originStartLon > 0) { //lon is positive - double
-            originStartLon *= 2;
-        }
-        if (originStartLon < 0) { //lon is neg - abs
-            originStartLon = Math.abs(originStartLon);
-        }
+            if (finalEndLat < 0) { //lat is negative
+                finalEndLat = 512 - (Math.abs(-90-finalEndLat) * unit);
+            }
+            else if (finalEndLat > 0) { //lat is positive
+                finalEndLat = (90-finalEndLat) * unit;
+            }
+
+            if (originStartLat < 0) { //lat is negative
+                originStartLat = 512 - (Math.abs(-90-originStartLat) * unit);
+            }
+            else if (originStartLat > 0) { //lat is positive
+                originStartLat = (90-originStartLat) * unit;
+            }
+
+            if (originStartLon < 0) { //lon is neg
+                originStartLon = (Math.abs(-180-originStartLon) * unit);
+            }
+            else if (originStartLon > 0) { //lon is positive
+                originStartLon = 1024 - (180-originStartLon) * unit;
+            }
+
+            if (finalEndLon < 0) { //lon is neg
+                finalEndLon = (Math.abs(-180-finalEndLon) * unit);
+            }
+            else if (finalEndLon > 0) { //lon is positive
+                finalEndLon = 1024 - (180-finalEndLon) * unit;
+            }
 
         //draw last line connected end point with start
-        double endX1 = ((finalEndLon) * unitWidth);
-        double endY1 = ((finalEndLat) * unitHeight);
-        double endX2 = ((originStartLon) * unitWidth);
-        double endY2 = ((originStartLat) * unitHeight);
+        double endX1 = finalEndLon;
+        double endY1 = finalEndLat;
+        double endX2 = originStartLon;
+        double endY2 = originStartLat;
         SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
 
         SVG += "</svg>";
