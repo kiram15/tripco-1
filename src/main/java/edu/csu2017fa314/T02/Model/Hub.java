@@ -209,7 +209,103 @@ public class Hub {
 
     //master method for when user selects Nearest Neighbor optimization (calls all helpers)
     public void shortestTripNN(){
+        //Adjacency matrix that holds all gcds
+        Object[][] gcds = calcAllGcds();
 
+        //keep track of the city that the shortest trip starts from
+        Location shortestTripStart = finalLocations.get(0);
+        //keep track of the shortest distance
+        int shortestTripDistance = 999999999;
+        //row is the current row in the adjancency matrix where the current location is
+        int row = 0;
+
+        //Create a huge distance to use for inital comparison
+        LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
+        Location bigD1 = new Location("New Zealand", -41.28650, 174.77620, info);
+        Location bigD2 = new Location("Madrid", 40.41680, -3.70380, info);
+        Distance hugeDistance = new Distance(bigD1, bigD2, miles);
+
+        //temp array list to keep track of the cities we have been to
+        ArrayList<Location> traveledTo = new ArrayList<Location>();
+
+        //for each location in the finalLocations array list: picking a starting city
+        for (Location l : finalLocations) {
+            //set the first city in the finalLocations array list to our current location
+            Location currentLocation = l;
+            int tripDistance = 0;
+
+            //while there are still more cities to travel to
+            while (traveledTo.size() < finalLocations.size()) {
+                for (int i = 0; i < finalLocations.size(); i++) {
+                    if (finalLocations.get(i).equals(currentLocation)) {
+                        row = i;
+                    }
+                }
+                traveledTo.add(currentLocation);
+                if (traveledTo.size() == finalLocations.size()) {
+                    break;
+                }
+                Distance shortestDistance = hugeDistance;
+                for (int i = 1; i < gcds[0].length; i++) { //because we aren't including initial location
+                    Distance d = (Distance) gcds[row][i];
+                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
+                        shortestDistance = d;
+                        tripDistance += shortestDistance.getGcd();
+                    }
+                }
+                currentLocation = shortestDistance.getEndID();
+            }
+
+            //add the distance back to the original city
+            Object[] backAround = gcds[row];
+
+            //grab the distance from the current city to original city
+            Distance temp = new Distance(currentLocation, l, miles);
+            for (int i = 1; i < backAround.length; i++) {
+                Distance d = (Distance) backAround[i];
+                //add to tripDistance
+                if (temp.equals(d)) {
+                    tripDistance += d.getGcd();
+                }
+            }
+
+            //making traveledTo empty again
+            traveledTo = new ArrayList<Location>();
+
+            //compare the final distance to the stored shortest distance
+            if (tripDistance < shortestTripDistance) {
+                //if the trip was shorter then store distance and starting city
+                shortestTripDistance = tripDistance;
+                shortestTripStart = l;
+            }
+        }
+
+        //start final trip at the predetermined shortest trip start
+        Location currentLocation = shortestTripStart;
+
+        ArrayList<Location> traveledToFinal = new ArrayList<Location>();
+        //while there are still more cities to travel to
+        while (traveledToFinal.size() < finalLocations.size()) {
+            for (int i = 0; i < finalLocations.size(); i++) {
+                if (finalLocations.get(i).equals(currentLocation)) {
+                    row = i;
+                }
+            }
+            traveledToFinal.add(currentLocation);
+            if (traveledToFinal.size() == finalLocations.size()) {
+                break;
+            }
+            Distance shortestDistance = hugeDistance;
+            for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
+                Distance d = (Distance) gcds[row][i];
+                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
+                    shortestDistance = d;
+                }
+            }
+            currentLocation = shortestDistance.getEndID();
+        }
+        //convert traveledToFinal location array to a distance array
+        shortestItinerary = locationsToDistances(traveledToFinal);
     }
 
     //master method for when user selects 2opt optimization (calls all helpers)
