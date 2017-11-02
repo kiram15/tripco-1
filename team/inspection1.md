@@ -25,6 +25,6 @@ file:line | defect | h/m/l | github# | who
  Hub : 381-399 | checkImprovement method needs comments | l | #286| Kira
  Hub : 248 | rename variable intRow | l | #287 | Kira
  Hub : 240,358,381,401,415 | add header comments to explain method | l | #286 | Kira 
- Hub : 36,37,38 | make global variables private & add getters/setters | l | |
- Hub : 141 | add default to optimization switch statement | l | |
+ Hub : 36,37,38 | make global variables private & add getters/setters | l | #289 | Emerson
+ Hub : 141 | add default to optimization switch statement | l | #290 | Emerson
  
