@@ -20,9 +20,35 @@ public class Hub {
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
-    public ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
-    public boolean miles = true;
-    public String optimization = "";
+    ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
+    boolean miles = true;
+    String optimization = "";
+
+    //three necessary getters!!
+    public ArrayList<Distance> getShortestItinerary(){
+        return this.shortestItinerary;
+    }
+
+    public boolean getMiles(){
+        return this.miles;
+    }
+
+    public String getOptimization(){
+        return this.optimization;
+    }
+
+    //three necessary setters!!
+    public void setShortestItinerary(ArrayList<Distance> shortest){
+        this.shortestItinerary = shortest;
+    }
+
+    public void setMiles(boolean mile){
+        this.miles = mile;
+    }
+
+    public void setOptimization(String opt){
+        this.optimization = opt;
+    }
 
 
     public void searchDatabase(String username, String password, String searchingFor){
