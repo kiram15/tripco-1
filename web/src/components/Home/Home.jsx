@@ -67,6 +67,7 @@ render() {
   <p></p>
 
   <div id="searchResult">
+  search to see results
   </div>
   <p></p>
 
@@ -142,6 +143,7 @@ keyUp(event) {
 }
 
 handleSubmit(event) {
+    document.getElementById("searchResult").innerHTML = "";
     this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization);
     //console.log("handle submit");
     event.preventDefault();
@@ -192,7 +194,6 @@ ThreeOptClicked(event){
     });
     console.log("Opt is ThreeOpt");
 }
-
 
 }
 
