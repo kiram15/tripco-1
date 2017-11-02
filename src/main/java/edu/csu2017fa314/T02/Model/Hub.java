@@ -8,25 +8,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.lang.Math;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
-import java.io.PrintWriter;
-import java.util.Collections;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Collections;
-import java.util.Set;
-import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.lang.ClassLoader;
-import java.io.InputStream;
-import java.net.URL;
-
 
 public class Hub {
     String[] infoArray;
@@ -49,14 +36,9 @@ public class Hub {
         //String myUrl = "jdbc:mysql://localhost/cs314"; // Use this line if tunneling 3306 traffic through shell
 
         try { // connect to the database
-            //System.out.println("IN FIRST TRY LOOP ");
-            System.out.println(username);
             Class.forName(myDriver);
-            //System.out.println("IN BETWEEN");
             Connection conn = DriverManager.getConnection(myUrl, username, password);
-            //System.out.println("RIGHT BEFORE SECOND TRY");
             try { // create a statement
-                //System.out.println("IN SECOND TRY LOOP");
                 Statement st = conn.createStatement();
                 try { // submit a query to get column headers
                     String q1 = "select column_name from information_schema.columns where table_name='airports';";
@@ -65,13 +47,10 @@ public class Hub {
                         String headers = "";
                         while (rs1.next()){
                             String h = rs1.getString(1);
-                            //System.out.println("PRINTING H????:: " + h);
                             h = h + ",";
                             headers += h;
                         }
-                        //System.out.println("WE GOT HEADERS:: " + headers);
                         storeColumnHeaders(headers);
-                        //System.out.println("headers stored");
 
                         try{ //search for searchingFor string in all columns
                             st = conn.createStatement();
@@ -83,15 +62,12 @@ public class Hub {
 
                                 while(rs2.next() && count <= 49){ //for each row
                                     String matchedRow = "";
-                                    //System.out.println("RS2 TO STRING: "+ rs2.getString(1));
                                     for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
                                         String rowCol = rs2.getString(i);
                                         rowCol = rowCol + ",";
-                                        //System.out.println("PRINTING ROW COL????:: " + rowCol);
                                         matchedRow += rowCol;
                                     }
 
-                                    //System.out.println("Matched row numba : " + count + ": " + matchedRow);
                                     parseRow(matchedRow);
                                     ++count;
                                 }
@@ -99,7 +75,6 @@ public class Hub {
                         } finally{ st.close(); }
 
                     } finally { rs1.close(); }
-                    //System.out.println("after rs1 close");
                 } finally {}
 
             } finally { conn.close(); }
@@ -123,7 +98,6 @@ public class Hub {
                 shortestTrip3Opt();
                 break;
         }
-        //shortestTrip();
     }
 
     public void storeColumnHeaders(String firstLine){
@@ -233,10 +207,12 @@ public class Hub {
         }
     }
 
+    //master method for when user selects Nearest Neighbor optimization (calls all helpers)
     public void shortestTripNN(){
 
     }
 
+    //master method for when user selects 2opt optimization (calls all helpers)
     public void shortestTrip2Opt() {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds();
@@ -245,6 +221,7 @@ public class Hub {
         Location shortestTripStart = finalLocations.get(0);
         //keep track of the shortest distance
         int shortestTripDistance = 999999999;
+        //row is the current row in the adjancency matrix where the current location is
         int row = 0;
 
         //Create a huge distance to use for inital comparison
@@ -282,8 +259,6 @@ public class Hub {
                 }
                 currentLocation = shortestDistance.getEndID();
             }
-            //making traveledTo empty again
-            traveledTo = new ArrayList<Location>();
 
             //add the distance back to the original city
             Object[] backAround = gcds[row];
@@ -306,6 +281,9 @@ public class Hub {
                 tripDistance += traveledDistances.get(i).getGcd();
             }
 
+            //making traveledTo empty again
+            traveledTo = new ArrayList<Location>();
+
             //compare the final distance to the stored shortest distance
             if (tripDistance < shortestTripDistance) {
                 //if the trip was shorter then store distance and starting city
@@ -314,6 +292,7 @@ public class Hub {
             }
         }
 
+        
         //start final trip at the predetermined shortest trip start
         Location currentLocation = shortestTripStart;
 
@@ -336,30 +315,19 @@ public class Hub {
                     shortestDistance = d;
                 }
             }
-            //shortestIt.add(shortestDistance);
             currentLocation = shortestDistance.getEndID();
         }
 
-        //add the distance back to the original city
-        Object[] backAround = gcds[row];
-        //grab the distance from the current city to original city
-        Distance temp = new Distance(currentLocation, shortestTripStart, miles);
-        for (int i = 1; i < backAround.length; i++) {
-            Distance d = (Distance) backAround[i];
-        }
-            //apply 2opt
-            checkImprovement(traveledToFinal);
-            //convert traveledToFinal location array to a distance array
-            ArrayList<Distance> updatedShortestIt = locationsToDistances(traveledToFinal);
+        //apply 2opt
+        checkImprovement(traveledToFinal);
+        //convert traveledToFinal location array to a distance array
+        shortestItinerary = locationsToDistances(traveledToFinal);
+     }
 
-            shortestItinerary = updatedShortestIt;
-        }
-
+    //master method for when user selects 2opt optimization (calls all helpers)
     public void shortestTrip3Opt(){
 
     }
-
-
 
     //will return an array list with each city listed once, with the shortest city as its end
     private Object[][] calcAllGcds() {
@@ -378,8 +346,10 @@ public class Hub {
         return GCDS;
     }
 
+    //determines all the possible areas that 2opt could improve in a given arraylist of locations
     private void checkImprovement(ArrayList<Location> traveled) {
         boolean improvement = true;
+        //while there is still possible improvements to be made
         while (improvement) {
             improvement = false;
             for (int i = 0; i <= traveled.size() - 3; i++) { // check n>4
@@ -398,20 +368,7 @@ public class Hub {
         }
     }
 
-    private ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
-        ArrayList<Distance> finalDistances = new ArrayList<Distance>();
-        for (int i = 0; i < locations.size(); i++) {
-            if (i == locations.size() - 1) { //distance of last back to first
-                Distance base = new Distance(locations.get(i), locations.get(0), miles);
-                finalDistances.add(base);
-            } else {
-                Distance d = new Distance(locations.get(i), locations.get(i + 1), miles);
-                finalDistances.add(d);
-                }
-        }
-        return finalDistances;
-    }
-
+    //preforms the swap method for 2opt
     private void optSwap2(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
         while (i1 < k) {
             //swap i+1 and k
@@ -421,6 +378,22 @@ public class Hub {
             i1++;
             k--;
         }
+    }
+
+    //transforms an arrayList of location objects into an arrayList of distance objects using the
+    //location objects in the order they are passed in
+    private ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
+        ArrayList<Distance> finalDistances = new ArrayList<Distance>();
+        for (int i = 0; i < locations.size(); i++) {
+            if (i == locations.size() - 1) { //distance of last back to first
+                Distance base = new Distance(locations.get(i), locations.get(0), miles);
+                finalDistances.add(base);
+            } else {
+                Distance d = new Distance(locations.get(i), locations.get(i + 1), miles);
+                finalDistances.add(d);
+            }
+        }
+        return finalDistances;
     }
 
     public String drawSVG() throws FileNotFoundException {
