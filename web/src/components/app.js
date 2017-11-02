@@ -17,8 +17,6 @@ export default class App extends React.Component {
     };
 
 
-
-
 render() {
     let pairs = this.state.allPairs;
     let ps = pairs.map((pp) => {
@@ -41,6 +39,7 @@ render() {
                 columns = {this.state.setInfo}
                 qreturn = {this.state.queryResults}
                 fetch={this.fetch.bind(this)}
+                queryResults={this.state.queryResults}
             />
         </div>
 
@@ -63,8 +62,6 @@ render() {
         }
 
     }
-
-
 
 
 startEndInfo(file) {
@@ -198,7 +195,12 @@ async browseFile(file) {
                 this.setState({
                     queryResults: parsed.trip
                 });
-                this.browseFile(this.state.queryResults);
+
+                //do something with this.state.queryResults here that will put it in the search result box
+                console.log("queryResults", this.state.queryResults);
+
+                //this will actually display it in the table
+                //this.browseFile(this.state.queryResults);
             // if it's not, we assume the response field is "svg" and contains the an svg image
             } else {
 
