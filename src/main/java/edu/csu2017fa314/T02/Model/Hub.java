@@ -618,7 +618,7 @@ public class Hub {
                 double distance =Math.sqrt((Math.pow((endLon-startLon),2)) + (Math.pow((endLat-startLat),2)));
 
                 //if longer than 512 pixels, then you need to draw it around the back
-                if(distance < 550){
+                if(distance < 512){
                     double x1 = startLon;
                     double y1 = startLat;
                     double x2 = endLon;
@@ -672,7 +672,7 @@ public class Hub {
             }
 
             double distancefinal =Math.sqrt((Math.pow((originStartLon-finalEndLon),2)) + (Math.pow((originStartLat-finalEndLat),2)));
-            if(distancefinal < 550) {
+            if(distancefinal < 512) {
                 //draw last line connected end point with start
                 double endX1 = finalEndLon;
                 double endY1 = finalEndLat;
@@ -689,7 +689,7 @@ public class Hub {
 
     }
 
-    public String wrapAround(double x1, double y1, double x2, double y2){
+    private String wrapAround(double x1, double y1, double x2, double y2){
         String aroundBackLines = "";
         //reflect both points across the y axis
         //do midpoint formula to get the point in the middle
@@ -703,20 +703,33 @@ public class Hub {
             //then add/subtract that distance (depending on which direction you're going) for your new x
             // you will keep the same y value
 
+
         //left point first - (x1, y1)
         double leftDFromAxis = midX - x1;
         double newLeftX = x1 - leftDFromAxis;
-        if(newLeftX > 0){
+        if(newLeftX < 512){
             newLeftX = 0;
         }
+        else{
+            newLeftX = 1024;
+        }
+
         //new line needs to be drawn from (new left x to x1)
         aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + newLeftX + "\" y1=\"" + midY + "\" x2=\"" + x1 + "\" y2=\"" + y1 + "\" id=\"svg_1\"/>";
-
+        System.out.println("coordinates after left point " + newLeftX + ", " + midY + ", " + x1 + ", " + y1);
         //right point next - (x2, y2)
         double rightDFromAxis = x2 - midX;
         double newRightX = x2 + rightDFromAxis;
+        if(newRightX < 512){
+            newRightX = 0;
+        }
+        else {
+            newRightX = 1024;
+        }
+
         //new line needs to be drawn from (new left x to x1)
         aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x2 + "\" y1=\"" + y2 + "\" x2=\"" + newRightX + "\" y2=\"" + midY + "\" id=\"svg_1\"/>";
+        System.out.println("coordinates after right point " + x2 + ", " + y2 + ", " + newRightX + ", " + midY);
 
         return aroundBackLines;
     }
