@@ -17,8 +17,6 @@ export default class App extends React.Component {
     };
 
 
-
-
 render() {
     let pairs = this.state.allPairs;
     let ps = pairs.map((pp) => {
@@ -41,6 +39,7 @@ render() {
                 columns = {this.state.setInfo}
                 qreturn = {this.state.queryResults}
                 fetch={this.fetch.bind(this)}
+                queryResults={this.state.queryResults}
             />
         </div>
 
@@ -63,8 +62,6 @@ render() {
         }
 
     }
-
-
 
 
 startEndInfo(file) {
@@ -154,11 +151,12 @@ async browseFile(file) {
 }
 
     // This function sends `input` the server and updates the state with whatever is returned
-    async fetch(type, input, setUnit){
+    async fetch(type, input, setUnit, opt){
         //input.preventDefault();
         //console.log("THIS IS TYPE::: ", type);
         console.log("Fetching... ", input);
         console.log("Using Unit: ", setUnit);
+        console.log("Using Optimization: ", opt);
         let request;
 
         //if text box
@@ -167,7 +165,7 @@ async browseFile(file) {
                 request: "query",
                 description: input,
                 unit : setUnit,
-                //opt : algo
+                optSelection : opt
             };
             console.log("Fetching Query");
         // if the button is clicked:
@@ -176,7 +174,7 @@ async browseFile(file) {
                 request: "svg",
                 description: "",
                 unit : setUnit,
-                //opt : algo
+                optSelection : opt
             }
             console.log("Fetching SVG");
         }
@@ -197,7 +195,12 @@ async browseFile(file) {
                 this.setState({
                     queryResults: parsed.trip
                 });
-                this.browseFile(this.state.queryResults);
+
+                //do something with this.state.queryResults here that will put it in the search result box
+                console.log("queryResults", this.state.queryResults);
+
+                //this will actually display it in the table
+                //this.browseFile(this.state.queryResults);
             // if it's not, we assume the response field is "svg" and contains the an svg image
             } else {
 

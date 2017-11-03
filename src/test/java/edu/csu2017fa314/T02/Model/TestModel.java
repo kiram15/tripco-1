@@ -175,7 +175,7 @@ public class TestModel {
         h0.parseRow("alnolte,amber,denver, 60.0, 70.5, 10");
         h0.parseRow("nkacirek,nicole,boulder, 100.0, 60.0, 10");
         h0.parseRow("emictosh,emerson,littleton, 45.0, 55.0, 10");
-        h0.shortestTrip();
+        h0.shortestTrip2Opt();
         assertEquals(fillShortTrip(), h0.shortestItinerary);
     }
 
@@ -199,5 +199,54 @@ public class TestModel {
         return checkAgainst;
     }
 
+    // ------------------------- Test drawSVG ----------------------------
+
+    @Test
+    public void testDrawSVG(){
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1","info1");
+        info1.put("extra2", "info2");
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1","info1");
+        info2.put("extra2", "info2");
+        Hub hA =  new Hub();
+        Location startL = new Location("denver", 70, 99.255556, info1);
+        Location endL = new Location("denver2", 80, 100, info2);
+        Distance dA = new Distance(startL, endL, miles);
+        Location startL1 = new Location("denver", -70, -99.255556, info1);
+        Location endL1 = new Location("denver2", 80, 100, info2);
+        Distance dA1 = new Distance(startL1, endL1, miles);
+        Location startL2 = new Location("denver", 70, 99.255556, info1);
+        Location endL2 = new Location("denver2", -80, -100, info2);
+        Distance dA2 = new Distance(startL2, endL2, miles);
+        Location startL3 = new Location("denver", -70, 99.255556, info1);
+        Location endL3 = new Location("denver2", 80, -100, info2);
+        Distance dA3 = new Distance(startL3, endL3, miles);
+        String dSVG = "";
+
+        try {
+            dSVG = hA.drawSVG();
+            assertNotEquals("", dSVG);
+
+            hA.shortestItinerary.add(dA);
+            dSVG = hA.drawSVG();
+            assertNotEquals("", dSVG);
+
+            hA.shortestItinerary.add(dA1);
+            dSVG = hA.drawSVG();
+            assertNotEquals("", dSVG);
+
+            hA.shortestItinerary.add(dA2);
+            dSVG = hA.drawSVG();
+            assertNotEquals("", dSVG);
+
+            hA.shortestItinerary.add(dA3);
+            dSVG = hA.drawSVG();
+            assertNotEquals("", dSVG);
+
+        } catch(IOException e){
+            System.exit(0);
+        }
+    }
 
 }
