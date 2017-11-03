@@ -196,11 +196,10 @@ async browseFile(file) {
                     queryResults: parsed.trip
                 });
 
-                //do something with this.state.queryResults here that will put it in the search result box
                 console.log("queryResults", this.state.queryResults);
 
                 //this will actually display it in the table
-                //this.browseFile(this.state.queryResults);
+                this.browseFile(this.state.queryResults);
             // if it's not, we assume the response field is "svg" and contains the an svg image
             } else {
 

@@ -11,7 +11,8 @@ constructor(props) {
        svgImage : [],
        input : [],
        unit : "miles",
-       optimization : "None"
+       optimization : "None",
+       selectedLocations: []
    };
 
 }
@@ -82,6 +83,8 @@ render() {
           <button type="button" onClick={this.ThreeOptClicked.bind(this)}>3-opt</button>
     </div>
     <p></p>
+
+    <button type="button" onClick={this.updateSelectedLocations.bind(this)}>Plan</button>
 
 
   <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
@@ -193,6 +196,21 @@ ThreeOptClicked(event){
         optimization : "ThreeOpt"
     });
     console.log("Opt is ThreeOpt");
+}
+
+updateSelectedLocations(event) {
+    var parentDiv = document.getElementById("searchResult");
+    var locations = parentDiv.getElementsByTagName("input");
+    var tempSLIndex = 0;
+    this.state.selectedLocations = [];
+    for (var i = 0; i < locations.length; i++) {
+        //do something with the checked location - add to selected locations array??
+        if (locations[i].checked) {
+            this.state.selectedLocations[tempSLIndex] = locations[i].value;
+            tempSLIndex++;
+        }
+    }
+    console.log("selectedLocations:", this.state.selectedLocations);
 }
 
 }
