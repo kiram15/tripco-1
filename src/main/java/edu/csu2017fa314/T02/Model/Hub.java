@@ -260,7 +260,7 @@ public class Hub {
                 currentLocation = shortestDistance.getEndID();
             }
 
-            //add the distance back to the original city
+            //add the distance back to the original cit
             Object[] backAround = gcds[row];
             //grab the distance from the current city to original city
             Distance temp = new Distance(currentLocation, l, miles);
@@ -403,41 +403,40 @@ public class Hub {
                         //won't the arraylist be changing after everyone of these swaps?
                         //create a temp for each one? complexity?
 
-                        // --- SWAP 1 ---
-                        // (i, k) (j+1, j) (i+1, k+1)
-                        double delta1 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ij1.getGcd() + jk.getGcd() + i1j1.getGcd() + jk1.getGcd();
-
-                        if (delta1 < 0) { //improvement?
-                            optSwap(traveled, i + 1, k); //reverse i+1 through k
-                            improvement = true;
-                        }
-
-
-                        // --- SWAP 2 ---
+                        // --- SWAP 1 --- (orange 1)
                         // (i, j) (i+1, j+1) (k, k+1)
                         double delta2 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ii1.getGcd() + jj1.getGcd() + i1k.getGcd() + j1k1.getGcd();
+                                + ij.getGcd() + i1j1.getGcd() + kk1.getGcd();
 
                         if (delta2 < 0) { //improvement?
                             optSwap(traveled, i + 1, j); //swap i+1 and j
                             improvement = true;
                         }
 
-                        // --- SWAP 3 ---
+                        // --- SWAP 2 --- (orange 2)
                         // (i, i+1) (j, k) (j+1, k+1)
                         double delta3 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ij.getGcd() + i1k.getGcd() + jj1.getGcd() + kk1.getGcd();
+                                + ii1.getGcd() + jk.getGcd() + j1k1.getGcd();
 
                         if (delta3 < 0) { //improvement?
                             optSwap(traveled, j + 1, k); //swap j+1 and k
                             improvement = true;
                         }
 
-                        // --- SWAP 4 ---
-                        // (i, j) (i+1, k) (j+1, k+1) -- swap i+1 and j, swap j+1 and k
+                        // --- SWAP 3 --- (orange 3)
+                        // (i, k) (j+1, j) (i+1, k+1)
+                        double delta1 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ik.getGcd() + jj1.getGcd() + i1k1.getGcd();
+
+                        if (delta1 < 0) { //improvement?
+                            optSwap(traveled, i + 1, k); //reverse i+1 through k
+                            improvement = true;
+                        }
+
+                        // --- SWAP 4 --- (blue 1)
+                        // (i, j) (i+1, k) (j+1, k+1)
                         double delta4 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ii1.getGcd() + jk.getGcd() + i1j1.getGcd() + kk1.getGcd();
+                                + ij.getGcd() + i1k.getGcd() + k1j1p;
 
                         if (delta4 < 0) { //improvement?
                             optSwap(traveled, i + 1, j); //swap i+1 and j
@@ -445,34 +444,27 @@ public class Hub {
                             improvement = true;
                         }
 
-                        // --- SWAP 5 ---
-                        // (i, j+1) (k, i+1) (j, k+1) -- swap i+1 and j+1, swap j and k
-                        double delta5 =  -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ik.getGcd() + i1j1.getGcd() + jk.getGcd() + i1k1.getGcd();
-
-                        if (delta5 < 0) {
-                            optSwap(traveled, i+1, j+1);
-                            //other swap
-                            improvement = true;
-                        }
+                        // --- SWAP 5 --- (blue 2)
+                        // (i, k) (j+1, i+1) (j, k+1) -- switch two parts, then swap j+1 and k
 
 
+                        // --- SWAP 6 --- (blue 3)
+                        // (i, j+1) (k, j) (i+1, k+1)
 
 
+                        // --- SWAP 7 --- (green 1)
+                        // (i, j+1) (k, i+1) (j, k+1)
 
+                        //assert that the old distance - delta = new distance
+                        //possible infinite loop
 
-                        //to
-                        //delta = -dis(route,i,i+1)-dis(route,k,k+1)+dis(route,i,k)+dis(route,i+1,k+1)
-
-                        //delta = -dis(route,i,i+1)-dis(route,j,j+1)-dis(route,k,k+1)+dis(route(i,j+1))
-                        //+dis(route(k,j))+dis(route(j+1,i+1))+dis(route(j,k+1))
                     }
             }
         }
     }
 
 
-    //preforms the swap method for 2opt
+    //preforms the swap method for 2opt and 3opt
     private void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
         while (i1 < k) {
             //swap i+1 and k
