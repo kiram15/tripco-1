@@ -405,47 +405,34 @@ public class Hub {
 
                         // --- SWAP 1 --- (orange 1)
                         // (i, j) (i+1, j+1) (k, k+1)
-                        double delta2 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ij.getGcd() + i1j1.getGcd() + kk1.getGcd();
-
-                        if (delta2 < 0) { //improvement?
-                            optSwap(traveled, i + 1, j); //swap i+1 and j
-                            improvement = true;
-                        }
+//                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+//                                + ij.getGcd() + i1j1.getGcd() + kk1.getGcd();
 
                         // --- SWAP 2 --- (orange 2)
                         // (i, i+1) (j, k) (j+1, k+1)
-                        double delta3 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ii1.getGcd() + jk.getGcd() + j1k1.getGcd();
 
-                        if (delta3 < 0) { //improvement?
-                            optSwap(traveled, j + 1, k); //swap j+1 and k
-                            improvement = true;
-                        }
+                        //delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                        //  + ii1.getGcd() + jk.getGcd() + j1k1.getGcd();
+
 
                         // --- SWAP 3 --- (orange 3)
                         // (i, k) (j+1, j) (i+1, k+1)
-                        double delta1 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ik.getGcd() + jj1.getGcd() + i1k1.getGcd();
 
-                        if (delta1 < 0) { //improvement?
-                            optSwap(traveled, i + 1, k); //reverse i+1 through k
-                            improvement = true;
-                        }
+//                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+//                                + ik.getGcd() + jj1.getGcd() + i1k1.getGcd();
+
+
 
                         // --- SWAP 4 --- (blue 1)
                         // (i, j) (i+1, k) (j+1, k+1)
-                        double delta4 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ij.getGcd() + i1k.getGcd() + k1j1p;
 
-                        if (delta4 < 0) { //improvement?
-                            optSwap(traveled, i + 1, j); //swap i+1 and j
-                            optSwap(traveled, j + 1, k); //swap j+1 and k
-                            improvement = true;
-                        }
+//                        delta4 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+//                                + ij.getGcd() + i1k.getGcd() + k1;
+
 
                         // --- SWAP 5 --- (blue 2)
                         // (i, k) (j+1, i+1) (j, k+1) -- switch two parts, then swap j+1 and k
+
 
 
                         // --- SWAP 6 --- (blue 3)
