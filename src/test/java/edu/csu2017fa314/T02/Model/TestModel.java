@@ -146,9 +146,8 @@ public class TestModel {
         assertEquals(-106.24, h.latLonConvert("-106.24"), 0.01);
     }
 
-    // ------------------- Test Shorter Trip -------------------
-
-
+    // ------------------- Test Shorter Trip Nearest Neighbor -------------------
+    
     @Test
     public void testShorterTripNN(){
         //tests shorterTrip by making a call to storeColumnHeaders and parseRow which then calls the
@@ -159,7 +158,7 @@ public class TestModel {
         h0.parseRow("kiram15,kira,fort collins, 45.0, 45.0, 10");
         h0.parseRow("alnolte,amber,denver, 22.5, 135.0, 10");
         h0.parseRow("nkacirek,nicole,boulder, 85.0, 175.0, 10");
-        h0.parseRow("emictosh,emerson,littleton, 5.0, 90.0, 10");
+        h0.parseRow("emictosh,emerson,littleton, 25.0, 90.0, 10");
         h0.shortestTripNN();
         assertEquals(fillShortTripNN(), h0.shortestItinerary);
     }
@@ -183,6 +182,8 @@ public class TestModel {
 
         return checkAgainst;
     }
+
+    // ------------------- Test Shorter Trip 2opt -------------------
 
     @Test
     public void testShorterTrip2Opt(){

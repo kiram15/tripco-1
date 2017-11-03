@@ -278,10 +278,10 @@ public class Hub {
                     Distance d = (Distance) gcds[row][i];
                     if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
                         shortestDistance = d;
-                        tripDistance += shortestDistance.getGcd();
                     }
                 }
                 currentLocation = shortestDistance.getEndID();
+                tripDistance += shortestDistance.getGcd();
             }
 
             //add the distance back to the original city
