@@ -8,36 +8,47 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.lang.Math;
-
-import com.sun.org.apache.regexp.internal.RE;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
-import java.io.PrintWriter;
-import java.util.Collections;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Collections;
-import java.util.Set;
-import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.lang.ClassLoader;
-import java.io.InputStream;
-import java.net.URL;
-
 
 public class Hub {
     String[] infoArray;
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
-    public ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
-    public boolean miles = true;
-    public String optimization = "";
+    ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
+    boolean miles = true;
+    String optimization = "";
+
+    //three necessary getters
+    public ArrayList<Distance> getShortestItinerary(){
+        return this.shortestItinerary;
+    }
+
+    public boolean getMiles(){
+        return this.miles;
+    }
+
+    public String getOptimization(){
+        return this.optimization;
+    }
+
+    //three necessary setters
+    public void setShortestItinerary(ArrayList<Distance> shortest){
+        this.shortestItinerary = shortest;
+    }
+
+    public void setMiles(boolean mile){
+        this.miles = mile;
+    }
+
+    public void setOptimization(String opt){
+        this.optimization = opt;
+    }
 
 
     public void searchDatabase(String username, String password, String searchingFor){
@@ -109,6 +120,9 @@ public class Hub {
                 break;
             case "ThreeOpt":
                 shortestTrip3Opt();
+                break;
+            default:
+                shortestItinerary = locationsToDistances(finalLocations);
                 break;
         }
 
@@ -222,10 +236,108 @@ public class Hub {
         }
     }
 
+    //master method for when user selects Nearest Neighbor optimization (calls all helpers)
     public void shortestTripNN(){
+        //Adjacency matrix that holds all gcds
+        Object[][] gcds = calcAllGcds();
 
+        //keep track of the city that the shortest trip starts from
+        Location shortestTripStart = finalLocations.get(0);
+        //keep track of the shortest distance
+        int shortestTripDistance = 999999999;
+        //row is the current row in the adjancency matrix where the current location is
+        int row = 0;
+
+        //Create a huge distance to use for inital comparison
+        LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
+        Location bigD1 = new Location("New Zealand", -41.28650, 174.77620, info);
+        Location bigD2 = new Location("Madrid", 40.41680, -3.70380, info);
+        Distance hugeDistance = new Distance(bigD1, bigD2, miles);
+
+        //temp array list to keep track of the cities we have been to
+        ArrayList<Location> traveledTo = new ArrayList<Location>();
+
+        //for each location in the finalLocations array list: picking a starting city
+        for (Location l : finalLocations) {
+            //set the first city in the finalLocations array list to our current location
+            Location currentLocation = l;
+            int tripDistance = 0;
+
+            //while there are still more cities to travel to
+            while (traveledTo.size() < finalLocations.size()) {
+                for (int i = 0; i < finalLocations.size(); i++) {
+                    if (finalLocations.get(i).equals(currentLocation)) {
+                        row = i;
+                    }
+                }
+                traveledTo.add(currentLocation);
+                if (traveledTo.size() == finalLocations.size()) {
+                    break;
+                }
+                Distance shortestDistance = hugeDistance;
+                for (int i = 1; i < gcds[0].length; i++) { //because we aren't including initial location
+                    Distance d = (Distance) gcds[row][i];
+                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
+                        shortestDistance = d;
+                        tripDistance += shortestDistance.getGcd();
+                    }
+                }
+                currentLocation = shortestDistance.getEndID();
+            }
+
+            //add the distance back to the original city
+            Object[] backAround = gcds[row];
+
+            //grab the distance from the current city to original city
+            Distance temp = new Distance(currentLocation, l, miles);
+            for (int i = 1; i < backAround.length; i++) {
+                Distance d = (Distance) backAround[i];
+                //add to tripDistance
+                if (temp.equals(d)) {
+                    tripDistance += d.getGcd();
+                }
+            }
+
+            //making traveledTo empty again
+            traveledTo = new ArrayList<Location>();
+
+            //compare the final distance to the stored shortest distance
+            if (tripDistance < shortestTripDistance) {
+                //if the trip was shorter then store distance and starting city
+                shortestTripDistance = tripDistance;
+                shortestTripStart = l;
+            }
+        }
+
+        //start final trip at the predetermined shortest trip start
+        Location currentLocation = shortestTripStart;
+
+        ArrayList<Location> traveledToFinal = new ArrayList<Location>();
+        //while there are still more cities to travel to
+        while (traveledToFinal.size() < finalLocations.size()) {
+            for (int i = 0; i < finalLocations.size(); i++) {
+                if (finalLocations.get(i).equals(currentLocation)) {
+                    row = i;
+                }
+            }
+            traveledToFinal.add(currentLocation);
+            if (traveledToFinal.size() == finalLocations.size()) {
+                break;
+            }
+            Distance shortestDistance = hugeDistance;
+            for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
+                Distance d = (Distance) gcds[row][i];
+                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
+                    shortestDistance = d;
+                }
+            }
+            currentLocation = shortestDistance.getEndID();
+        }
+        //convert traveledToFinal location array to a distance array
+        shortestItinerary = locationsToDistances(traveledToFinal);
     }
 
+    //master method for when user selects 2opt optimization (calls all helpers)
     public void shortestTrip2Opt() {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds();
@@ -234,6 +346,7 @@ public class Hub {
         Location shortestTripStart = finalLocations.get(0);
         //keep track of the shortest distance
         int shortestTripDistance = 999999999;
+        //row is the current row in the adjancency matrix where the current location is
         int row = 0;
 
         //Create a huge distance to use for inital comparison
@@ -271,8 +384,6 @@ public class Hub {
                 }
                 currentLocation = shortestDistance.getEndID();
             }
-            //making traveledTo empty again
-            traveledTo = new ArrayList<Location>();
 
             //add the distance back to the original city
             Object[] backAround = gcds[row];
@@ -295,6 +406,9 @@ public class Hub {
                 tripDistance += traveledDistances.get(i).getGcd();
             }
 
+            //making traveledTo empty again
+            traveledTo = new ArrayList<Location>();
+
             //compare the final distance to the stored shortest distance
             if (tripDistance < shortestTripDistance) {
                 //if the trip was shorter then store distance and starting city
@@ -302,6 +416,7 @@ public class Hub {
                 shortestTripStart = l;
             }
         }
+
 
         //start final trip at the predetermined shortest trip start
         Location currentLocation = shortestTripStart;
@@ -325,30 +440,19 @@ public class Hub {
                     shortestDistance = d;
                 }
             }
-            //shortestIt.add(shortestDistance);
             currentLocation = shortestDistance.getEndID();
         }
 
-        //add the distance back to the original city
-        Object[] backAround = gcds[row];
-        //grab the distance from the current city to original city
-        Distance temp = new Distance(currentLocation, shortestTripStart, miles);
-        for (int i = 1; i < backAround.length; i++) {
-            Distance d = (Distance) backAround[i];
-        }
-            //apply 2opt
-            checkImprovement(traveledToFinal);
-            //convert traveledToFinal location array to a distance array
-            ArrayList<Distance> updatedShortestIt = locationsToDistances(traveledToFinal);
+        //apply 2opt
+        checkImprovement(traveledToFinal);
+        //convert traveledToFinal location array to a distance array
+        shortestItinerary = locationsToDistances(traveledToFinal);
+     }
 
-            shortestItinerary = updatedShortestIt;
-        }
-
+    //master method for when user selects 2opt optimization (calls all helpers)
     public void shortestTrip3Opt(){
 
     }
-
-
 
     //will return an array list with each city listed once, with the shortest city as its end
     private Object[][] calcAllGcds() {
@@ -367,8 +471,10 @@ public class Hub {
         return GCDS;
     }
 
+    //determines all the possible areas that 2opt could improve in a given arraylist of locations
     private void checkImprovement(ArrayList<Location> traveled) {
         boolean improvement = true;
+        //while there is still possible improvements to be made
         while (improvement) {
             improvement = false;
             for (int i = 0; i <= traveled.size() - 3; i++) { // check n>4
@@ -387,20 +493,7 @@ public class Hub {
         }
     }
 
-    private ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
-        ArrayList<Distance> finalDistances = new ArrayList<Distance>();
-        for (int i = 0; i < locations.size(); i++) {
-            if (i == locations.size() - 1) { //distance of last back to first
-                Distance base = new Distance(locations.get(i), locations.get(0), miles);
-                finalDistances.add(base);
-            } else {
-                Distance d = new Distance(locations.get(i), locations.get(i + 1), miles);
-                finalDistances.add(d);
-                }
-        }
-        return finalDistances;
-    }
-
+    //preforms the swap method for 2opt
     private void optSwap2(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
         while (i1 < k) {
             //swap i+1 and k
@@ -410,6 +503,22 @@ public class Hub {
             i1++;
             k--;
         }
+    }
+
+    //transforms an arrayList of location objects into an arrayList of distance objects using the
+    //location objects in the order they are passed in
+    private ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
+        ArrayList<Distance> finalDistances = new ArrayList<Distance>();
+        for (int i = 0; i < locations.size(); i++) {
+            if (i == locations.size() - 1) { //distance of last back to first
+                Distance base = new Distance(locations.get(i), locations.get(0), miles);
+                finalDistances.add(base);
+            } else {
+                Distance d = new Distance(locations.get(i), locations.get(i + 1), miles);
+                finalDistances.add(d);
+            }
+        }
+        return finalDistances;
     }
 
     public String drawSVG() throws FileNotFoundException {
@@ -445,8 +554,7 @@ public class Hub {
         double finalEndLat = 0.0;
         double finalEndLon = 0.0;
         boolean first = false;
-        double unitHeight = 3.6; //512/180 WorldMap Height - unit
-        double unitWidth = 2.08; //1024/360 WorldMap width - unit
+        double unit = 2.84444444444444;
 
         if (!shortestItinerary.isEmpty()) {
             for (Distance d : shortestItinerary) {
@@ -461,70 +569,169 @@ public class Hub {
                 double endLon = d.getEndID().getLongitude();
 
                 if (startLat < 0) { //lat is negative
-                    startLat = Math.abs(startLat);
-                    startLat *= 2;
+                    startLat = 512 - (Math.abs(-90-startLat) * unit);
                 }
+                else if (startLat > 0) { //lat is positive
+                    startLat = (90-startLat) * unit;
+                }
+                else{
+                    startLat = 256;
+                }
+
                 if (endLat < 0) { //lat is negative
-                    endLat = Math.abs(endLat);
-                    endLat *= 2;
+                    endLat = 512 - (Math.abs(-90-endLat) * unit);
                 }
-                if (startLon > 0) { //lon is positive - double
-                    startLon *= 2;
+                else if (endLat > 0) { //lat is positive
+                    endLat = (90-endLat) * unit;
                 }
-                if (startLon < 0) { //lon is neg - abs
-                    startLon = Math.abs(startLon);
+                else{
+                    endLat = 256;
                 }
-                if (endLon > 0) { //lon is positive - double
-                    endLon *= 2;
+
+                if (startLon < 0) { //lon is neg
+                    startLon = (Math.abs(-180-startLon) * unit);
                 }
-                if (endLon < 0) { //lon is neg - abs
-                    endLon = Math.abs(endLon);
+                else if (startLon > 0) { //lon is positive
+                    startLon = 1024 - (180-startLon) * unit;
+                }
+                else{
+                    startLon = 512;
+                }
+
+                if (endLon < 0) { //lon is neg
+                    endLon = (Math.abs(-180-endLon) * unit);
+                }
+                else if (endLon > 0) { //lon is positive
+                    endLon = 1024 - (180-endLon) * unit;
+                }
+                else{
+                    endLon = 512;
                 }
 
 
                 finalEndLat = d.getEndID().getLatitude();
                 finalEndLon = d.getEndID().getLongitude();
 
-                double x1 = (startLon * unitWidth);
-                double y1 = (startLat * unitHeight);
-                double x2 = (endLon * unitWidth);
-                double y2 = (endLat * unitHeight);
-                SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
+                //compute the length of the line in pixels
+                //use basic distance formula to compute the distance between the two points
+                    //distance = sqr((x2-x1)^2 + (y2-y1)^2))
+                double distance =Math.sqrt((Math.pow((endLon-startLon),2)) + (Math.pow((endLat-startLat),2)));
+
+                //if longer than 512 pixels, then you need to draw it around the back
+                if(distance < 512){
+                    double x1 = startLon;
+                    double y1 = startLat;
+                    double x2 = endLon;
+                    double y2 = endLat;
+                    SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
+                }
+                else{
+                    //call helper method to get the two lines that need to wrap around the map
+                    SVG += wrapAround(startLon, startLat, endLon, endLat);
+                }
             }
 
-        if (finalEndLat < 0) { //lat is negative
-            finalEndLat = Math.abs(finalEndLat);
-            finalEndLat *= 2;
-        }
-        if (originStartLat < 0) { //lat is negative
-            originStartLat = Math.abs(originStartLat);
-            originStartLat *= 2;
-        }
-        if (finalEndLon > 0) { //lon is positive - double
-            finalEndLon *= 2;
-        }
-        if (finalEndLon < 0) { //lon is neg - abs
-            finalEndLon = Math.abs(finalEndLon);
-        }
-        if (originStartLon > 0) { //lon is positive - double
-            originStartLon *= 2;
-        }
-        if (originStartLon < 0) { //lon is neg - abs
-            originStartLon = Math.abs(originStartLon);
-        }
+            if (finalEndLat < 0) { //lat is negative
+                finalEndLat = 512 - (Math.abs(-90-finalEndLat) * unit);
+            }
+            else if (finalEndLat > 0) { //lat is positive
+                finalEndLat = (90-finalEndLat) * unit;
+            }
+            else {
+                finalEndLat = 256;
+            }
 
-        //draw last line connected end point with start
-        double endX1 = ((finalEndLon) * unitWidth);
-        double endY1 = ((finalEndLat) * unitHeight);
-        double endX2 = ((originStartLon) * unitWidth);
-        double endY2 = ((originStartLat) * unitHeight);
-        SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"3\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
+            if (originStartLat < 0) { //lat is negative
+                originStartLat = 512 - (Math.abs(-90-originStartLat) * unit);
+            }
+            else if (originStartLat > 0) { //lat is positive
+                originStartLat = (90-originStartLat) * unit;
+            }
+            else{
+                originStartLat = 256;
+            }
 
-        SVG += "</svg>";
+            if (originStartLon < 0) { //lon is neg
+                originStartLon = (Math.abs(-180-originStartLon) * unit);
+            }
+            else if (originStartLon > 0) { //lon is positive
+                originStartLon = 1024 - (180-originStartLon) * unit;
+            }
+            else{
+                originStartLon = 512;
+            }
+
+            if (finalEndLon < 0) { //lon is neg
+                finalEndLon = (Math.abs(-180-finalEndLon) * unit);
+            }
+            else if (finalEndLon > 0) { //lon is positive
+                finalEndLon = 1024 - (180-finalEndLon) * unit;
+            }
+            else{
+                originStartLon = 512;
+            }
+
+            double distancefinal =Math.sqrt((Math.pow((originStartLon-finalEndLon),2)) + (Math.pow((originStartLat-finalEndLat),2)));
+            if(distancefinal < 512) {
+                //draw last line connected end point with start
+                double endX1 = finalEndLon;
+                double endY1 = finalEndLat;
+                double endX2 = originStartLon;
+                double endY2 = originStartLat;
+                SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
+            }
+            else{
+                SVG += wrapAround(finalEndLon, finalEndLat, originStartLon, originStartLat);
+            }
+                SVG += "</svg>";
     }
-
         return SVG;
 
+    }
+
+    private String wrapAround(double x1, double y1, double x2, double y2){
+        String aroundBackLines = "";
+        //reflect both points across the y axis
+        //do midpoint formula to get the point in the middle
+        // M = ( (x1 + x2)/2 ,  (y1 + y2)/2  )
+        double midX = (x1 + x2) / 2;
+        double midY = (y1 + y2) / 2;
+            //now have two points that make a line and can be reflected across and axis
+        //To reflect: Go one point at a time:
+            //the point is the new axis
+            //figure out the distance between the mid point's x and the og point's x
+            //then add/subtract that distance (depending on which direction you're going) for your new x
+            // you will keep the same y value
+
+
+        //left point first - (x1, y1)
+        double leftDFromAxis = midX - x1;
+        double newLeftX = x1 - leftDFromAxis;
+        if(newLeftX < 512){
+            newLeftX = 0;
+        }
+        else{
+            newLeftX = 1024;
+        }
+
+        //new line needs to be drawn from (new left x to x1)
+        aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + newLeftX + "\" y1=\"" + midY + "\" x2=\"" + x1 + "\" y2=\"" + y1 + "\" id=\"svg_1\"/>";
+        System.out.println("coordinates after left point " + newLeftX + ", " + midY + ", " + x1 + ", " + y1);
+        //right point next - (x2, y2)
+        double rightDFromAxis = x2 - midX;
+        double newRightX = x2 + rightDFromAxis;
+        if(newRightX < 512){
+            newRightX = 0;
+        }
+        else {
+            newRightX = 1024;
+        }
+
+        //new line needs to be drawn from (new left x to x1)
+        aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x2 + "\" y1=\"" + y2 + "\" x2=\"" + newRightX + "\" y2=\"" + midY + "\" id=\"svg_1\"/>";
+        System.out.println("coordinates after right point " + x2 + ", " + y2 + ", " + newRightX + ", " + midY);
+
+        return aroundBackLines;
     }
 
 }
