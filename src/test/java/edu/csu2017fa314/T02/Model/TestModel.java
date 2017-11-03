@@ -185,7 +185,7 @@ public class TestModel {
         //shorter trip method. The shorterTrip method does not return anything, but does set the value
         //of hub's shortestItinerary
         Hub h0 = new Hub();
-        h0.storeColumnHeaders("id,airportsName,city,airportsLatitude,airportsLongitude,elevation,");
+        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
         h0.parseRow("kiram15,kira,fort collins, 40.0, 50.0, 10");
         h0.parseRow("alnolte,amber,denver, 60.0, 70.5, 10");
         h0.parseRow("nkacirek,nicole,boulder, 100.0, 60.0, 10");

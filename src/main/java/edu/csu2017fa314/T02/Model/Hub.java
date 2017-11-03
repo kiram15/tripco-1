@@ -66,10 +66,10 @@ public class Hub {
                 Statement st = conn.createStatement();
                 try{
                     //give order of column header to storeColumnHeaders
-                    String colHeaders = "airportsID, airportsCode, airportsType, airportsName, airportsLatitude, airportsLongitude, airportsElevation, airportsContinent, airportsIso_country, airportsIso_region, airportsMunicipality, airportsScheduled_service, airportsGps_code, airportsIata_code, airportsLocal_code, airportsHome_link, airportsWikipedia_link, airportsKeywords, "
-                            + "regionsID, regionsCode, regionsLocal_code, regionsName, regionsContinent, regionsIso_country, regionsWikipedia_link, regionsKeywords, "
-                            + "countriesID, countriesCode, countriesName, countriesContinent, countriesWikipedia_link, countriesKeywords, "
-                            + "continentsID, continentsName, continentsCode, continentsWikipedia_link";
+                    String colHeaders = "airports_ID, airports_Code, airports_Type, airports_Name, airports_Latitude, airports_Longitude, airports_Elevation, airports_Continent, airports_Iso_country, airports_Iso_region, airports_Municipality, airports_Scheduled_service, airports_Gps_code, airports_Iata_code, airports_Local_code, airports_Home_link, airports_Wikipedia_link, airports_Keywords, "
+                            + "regions_ID, regions_Code, regions_Local_code, regions_Name, regions_Continent, regions_Iso_country, regions_Wikipedia_link, regions_Keywords, "
+                            + "countries_ID, countries_Code, countries_Name, countries_Continent, countries_Wikipedia_link, countries_Keywords, "
+                            + "continents_ID, continents_Name, continents_Code, continents_Wikipedia_link";
                     storeColumnHeaders(colHeaders);
 
                     String allTblsSearchQ = "select airports.id as airports_ID, airports.code as airports_Code, airports.type as airports_Type, airports.name as airports_Name, airports.latitude as airports_Latitude, airports.longitude as airports_Longitude, airports.elevation as airports_Elevation, airports.continent as airports_Continent, airports.iso_country as airports_Iso_country, airports.iso_region as airports_Iso_region, airports.municipality as airports_Municipality, airports.scheduled_service as airports_Scheduled_service, airports.gps_code as airports_Gps_code, airports.iata_code as airports_Iata_code, airports.local_code as airports_Local_code, airports.home_link as airports_Home_link, airports.wikipedia_link as airports_Wikipedia_link, airports.keywords as airports_Keywords, "
@@ -133,17 +133,17 @@ public class Hub {
         for (int i = 0; i < infoArray.length; i++) {
             String infoString = infoArray[i];
             switch (infoString.trim()) { // associating column titles with column num, putting it in map
-                case "airportsname":
-                    columns.put("airportsname", i);
-                    reverseC.put(i, "airportsname");
+                case "airports_name":
+                    columns.put("airports_name", i);
+                    reverseC.put(i, "airports_name");
                     break;
-                case "airportslatitude":
-                    columns.put("airportslatitude", i);
-                    reverseC.put(i, "airportslatitude");
+                case "airports_latitude":
+                    columns.put("airports_latitude", i);
+                    reverseC.put(i, "airports_latitude");
                     break;
-                case "airportslongitude":
-                    columns.put("airportslongitude", i);
-                    reverseC.put(i, "airportslongitude");
+                case "airports_longitude":
+                    columns.put("airports_longitude", i);
+                    reverseC.put(i, "airports_longitude");
                     break;
                 default:
                     columns.put(infoString.trim(), i);
@@ -162,11 +162,11 @@ public class Hub {
         String objectLongitude = "";
         //populates necessary info into variables
         for (int i = 0; i < props.length; ++i) {
-            if (i == columns.get("airportsname")) {
+            if (i == columns.get("airports_name")) {
                 objectName = props[i].trim();
-            } else if (i == columns.get("airportslatitude")) {
+            } else if (i == columns.get("airports_latitude")) {
                 objectLatitude = props[i].trim();
-            } else if (i == columns.get("airportslongitude")) {
+            } else if (i == columns.get("airports_longitude")) {
                 objectLongitude = props[i].trim();
             } else {
                 info.put(reverseC.get(i), props[i]);
