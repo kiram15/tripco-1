@@ -49,9 +49,7 @@ public class Hub {
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
         //String myUrl = "jdbc:mysql://localhost/cs314"; // Use this line if tunneling 3306 traffic through shell
-
         try { // connect to the database
-            System.out.println(username);
             Class.forName(myDriver);
             Connection conn = DriverManager.getConnection(myUrl, username, password);
             try { // create a statement
@@ -59,122 +57,39 @@ public class Hub {
                 try{
                     //give order of column header to storeColumnHeaders
                     String colHeaders = "airportsID, airportsCode, airportsType, airportsName, airportsLatitude, airportsLongitude, airportsElevation, airportsContinent, airportsIso_country, airportsIso_region, airportsMunicipality, airportsScheduled_service, airportsGps_code, airportsIata_code, airportsLocal_code, airportsHome_link, airportsWikipedia_link, airportsKeywords, "
-                                        + "regionsID, regionsCode, regionsLocal_code, regionsName, regionsContinent, regionsIso_country, regionsWikipedia_link, regionsKeywords, "
-                                        + "countriesID, countriesCode, countriesName, countriesContinent, countriesWikipedia_link, countriesKeywords, "
-                                        + "continentsID, continentsName, continentsCode, continentsWikipedia_link";
+                            + "regionsID, regionsCode, regionsLocal_code, regionsName, regionsContinent, regionsIso_country, regionsWikipedia_link, regionsKeywords, "
+                            + "countriesID, countriesCode, countriesName, countriesContinent, countriesWikipedia_link, countriesKeywords, "
+                            + "continentsID, continentsName, continentsCode, continentsWikipedia_link";
                     storeColumnHeaders(colHeaders);
 
-                    
-                    String allTblsQ = "select airports.id as airportsID, airports.code as airportsCode, airports.type as airportsType, airports.name as airportsName, airports.latitude as airportsLatitude, airports.longitude as airportsLongitude, airports.elevation as airportsElevation, airports.continent as airportsContinent, airports.iso_country as airportsIso_country, airports.iso_region as airportsIso_region, airports.municipality as airportsMunicipality, airports.scheduled_service as airportsScheduled_service, airports.gps_code as airportsGps_code, airports.iata_code as airportsIata_code, airports.local_code as airportsLocal_code, airports.home_link as airportsHome_link, airports.wikipedia_link as airportsWikipedia_link, airports.keywords as airportsKeywords, "
-                                        + "regions.id as regionsID, regions.code as regionsCode, regions.local_code as regionsLocal_code, regions.name as regionsName, regions.continent as regionsContinent, regions.iso_country as regionsIso_country, regions.wikipedia_link as regionsWikipedia_link, regions.keywords as regionsKeywords, "
-                                        + "countries.id as countriesID, countries.code as countriesCode, countries.name as countriesName, countries.continent as countriesContinent, countries.wikipedia_link as countriesWikipedia_link, countries.keywords as countriesKeywords, "
-                                        + "continents.id as continentsID, continents.name as continentsName, continents.code as continentsCode, continents.wikepedia_link as continentsWikipedia_link"
-                                        + "from continents "
-                                        + "inner join countries on countries.continent = continents.code "
-                                        + "inner join regions on regions.iso_country = countries.code "
-                                        + "inner join world on world.iso_region = regions.code "
-                                        + "where "
-                                        + ""
-                                        + ""
-                                        + ""
-                                        + "limit 50;"
+                    String allTblsSearchQ = "select airports.id as airportsID, airports.code as airportsCode, airports.type as airportsType, airports.name as airportsName, airports.latitude as airportsLatitude, airports.longitude as airportsLongitude, airports.elevation as airportsElevation, airports.continent as airportsContinent, airports.iso_country as airportsIso_country, airports.iso_region as airportsIso_region, airports.municipality as airportsMunicipality, airports.scheduled_service as airportsScheduled_service, airports.gps_code as airportsGps_code, airports.iata_code as airportsIata_code, airports.local_code as airportsLocal_code, airports.home_link as airportsHome_link, airports.wikipedia_link as airportsWikipedia_link, airports.keywords as airportsKeywords, "
+                            + "regions.id as regionsID, regions.code as regionsCode, regions.local_code as regionsLocal_code, regions.name as regionsName, regions.continent as regionsContinent, regions.iso_country as regionsIso_country, regions.wikipedia_link as regionsWikipedia_link, regions.keywords as regionsKeywords, "
+                            + "countries.id as countriesID, countries.code as countriesCode, countries.name as countriesName, countries.continent as countriesContinent, countries.wikipedia_link as countriesWikipedia_link, countries.keywords as countriesKeywords, "
+                            + "continents.id as continentsID, continents.name as continentsName, continents.code as continentsCode, continents.wikipedia_link as continentsWikipedia_link "
+                            + "from continents "
+                            + "inner join countries on countries.continent = continents.code "
+                            + "inner join regions on regions.iso_country = countries.code "
+                            + "inner join airports on airports.iso_region = regions.code "
+                            + "where "
+                            + "airports.id like '%" + searchingFor + "%' or airports.code like '%" + searchingFor + "%' or airports.type like '%" + searchingFor + "%' or airports.name like '%" + searchingFor + "%' or airports.latitude like '%" + searchingFor + "%' or airports.longitude like '%" + searchingFor + "%' or airports.elevation like '%" + searchingFor + "%' or airports.continent like '%" + searchingFor + "%' or airports.iso_country like '%" + searchingFor + "%' or airports.iso_region like '%" + searchingFor + "%' or airports.municipality like '%" + searchingFor + "%' or airports.scheduled_service like '%" + searchingFor + "%' or airports.gps_code like '%" + searchingFor + "%' or airports.iata_code like '%" + searchingFor + "%' or airports.local_code like '%" + searchingFor + "%' or airports.home_link like '%" + searchingFor + "%' or airports.wikipedia_link like '%" + searchingFor + "%' or airports.keywords like '%" + searchingFor + "%' or "
+                            + "regions.id like '%" + searchingFor + "%' or regions.code like '%" + searchingFor + "%' or regions.local_code like '%" + searchingFor + "%' or regions.name like '%" + searchingFor + "%' or regions.continent like '%" + searchingFor + "%' or regions.iso_country like '%" + searchingFor + "%' or regions.wikipedia_link like '%" + searchingFor + "%' or regions.keywords like '%" + searchingFor + "%' or "
+                            + "countries.id like '%" + searchingFor + "%' or countries.code like '%" + searchingFor + "%' or countries.name like '%" + searchingFor + "%' or countries.continent like '%" + searchingFor + "%' or countries.wikipedia_link like '%" + searchingFor + "%' or countries.keywords like '%" + searchingFor + "%' or "
+                            + "continents.id like '%" + searchingFor + "%' or continents.name like '%" + searchingFor + "%' or continents.code like '%" + searchingFor + "%' or continents.wikipedia_link like '%" + searchingFor + "%' "
+                            + "limit 50;";
 
-                            ;
-                    ResultSet allTblsRS = st.executeQuery(allTblsQ);
-
-
-
-
-
-                }finally{}
-
-                /*try { // submit a query to get column headers
-                    //String tblCountQ = "select count(*) from information_schema.tables where table_type = 'base table';";
-                    //ResultSet tblCountRS = st.executeQuery(tblCountQ);
-                    //int numTbls = ((Number)tblCountRS.getObject(1)).intValue();
-
-                    //st = conn.createStatement();
-                    String tblNamesQ = "select TABLE_NAME from information_schema.tables where table_type = 'base table';";
-                    ResultSet tblNamesRS = st.executeQuery(tblNamesQ);
-
-                    while(tblNamesRS.next()){
-                        String tableName = tblNamesRS.getString(1);
-                        st = conn.createStatement();
-                        String tableNameColsQ = "select column_name from information_schema.columns where table_name='" + tableName + "';";
-                        ResultSet tableNameColsRS = st.executeQuery(tableNameColsQ);
-
-                        try { // iterate through the query results and give string of column headers to storeColumnHeaders
-                            String headers = "";
-                            while (tableNameColsRS.next()){
-                                String h = tableNameColsRS.getString(1);
-                                h = h + ",";
-                                headers += h;
+                    ResultSet allTblsSearchRS = st.executeQuery(allTblsSearchQ);
+                    try{ //parse matched rows
+                        while(allTblsSearchRS.next()){ //for each row
+                            String matchedRow = "";
+                            for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
+                                String rowCol = allTblsSearchRS.getString(i);
+                                rowCol = rowCol + ",";
+                                matchedRow += rowCol;
                             }
-                            storeColumnHeaders(headers);
-
-                            try{ //search for searchingFor string in all columns
-                                st = conn.createStatement();
-                                String q2 = "select * from airports where name like '%" + searchingFor + "%' or type like '%" + searchingFor + "%' or id like '%" + searchingFor + "%' or latitude like '%" + searchingFor + "%' or longitude like '%" + searchingFor + "%' or municipality like '%" + searchingFor + "%' or elevation like '%" + searchingFor + "%' or home_link like '%" + searchingFor + "%' or wikipedia_link like '%" + searchingFor + "%' order by name limit 50;";
-                                ResultSet rs2 = st.executeQuery(q2);
-                                try{ //parse matched rows
-                                    int count = 0;
-
-                                    while(rs2.next()){ //for each row
-                                        String matchedRow = "";
-                                        for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
-                                            String rowCol = rs2.getString(i);
-                                            rowCol = rowCol + ",";
-                                            matchedRow += rowCol;
-                                        }
-                                        parseRow(matchedRow);
-                                        ++count;
-                                    }
-                                } finally { rs2.close(); }
-                            } finally{ st.close(); }
-
-                        } finally { tableNameColsRS.close(); }
-
-
-                    }
-
-                    /*String q1 = "select column_name from information_schema.columns where table_name='" + tableName + "';";
-                    ResultSet rs1 = st.executeQuery(q1);
-                    try { // iterate through the query results and give string of column headers to storeColumnHeaders
-                        String headers = "";
-                        while (rs1.next()){
-                            String h = rs1.getString(1);
-                            h = h + ",";
-                            headers += h;
+                            parseRow(matchedRow);
                         }
-                        storeColumnHeaders(headers);
-
-                        try{ //search for searchingFor string in all columns
-                            st = conn.createStatement();
-
-                            String q2 = "select * from airports where name like '%" + searchingFor + "%' or type like '%" + searchingFor + "%' or id like '%" + searchingFor + "%' or latitude like '%" + searchingFor + "%' or longitude like '%" + searchingFor + "%' or municipality like '%" + searchingFor + "%' or elevation like '%" + searchingFor + "%' or home_link like '%" + searchingFor + "%' or wikipedia_link like '%" + searchingFor + "%' order by name limit 50;";
-                            ResultSet rs2 = st.executeQuery(q2);
-                            try{ //parse matched rows
-                                int count = 0;
-
-                                while(rs2.next()){ //for each row
-                                    String matchedRow = "";
-                                    for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
-                                        String rowCol = rs2.getString(i);
-                                        rowCol = rowCol + ",";
-                                        matchedRow += rowCol;
-                                    }
-                                    parseRow(matchedRow);
-                                    ++count;
-                                }
-                            } finally { rs2.close(); }
-                        } finally{ st.close(); }
-
-                    } finally { rs1.close(); }
-
-
-                } finally {}*/
-
-
+                    } finally { allTblsSearchRS.close(); }
+                } finally{ st.close(); }
             } finally { conn.close(); }
         } catch (Exception e) { // catches all exceptions in the nested try's
             System.err.printf("Exception: ");
