@@ -97,8 +97,8 @@ render() {
             <tr>
                 <td><h8><b><p className="w3-myFont"> Start Name </p></b></h8></td>
                 <td><h8><b><p className="w3-myFont"> End Name </p></b></h8></td>
-                <td><h8><b><p className="w3-myFont"> Distance (mi) </p></b></h8></td>
-                <td><h8><b><p className="w3-myFont"> Total Distance (mi)</p></b></h8></td>
+                <td><h8><b><p className="w3-myFont"> Distance </p></b></h8></td>
+                <td><h8><b><p className="w3-myFont"> Total Distance </p></b></h8></td>
             </tr>
             {this.props.pairs}
             <tbody>
