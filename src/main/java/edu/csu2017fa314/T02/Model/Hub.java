@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 import java.lang.ClassLoader;
 
 public class Hub {
-    String[] infoArray;
+    //String[] infoArray;
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
@@ -129,7 +129,6 @@ public class Hub {
     }
 
     public void storeColumnHeaders(String firstLine){
-        columns.clear();
         String s = firstLine.toLowerCase();
         String[] infoArray = s.split(",");
         for (int i = 0; i < infoArray.length; i++) {
