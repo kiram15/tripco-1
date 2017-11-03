@@ -43,6 +43,7 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 10/29 | #226 #247 #272 #262 #248 | #274 #216 #240 #246 #249 | Fixing 2-opt distances | Good
 11/1 | #274 #283 #286 #287 #289 #290 | #243 #255 #242 #216 #250| CS370 Project (Emerson), Math Midterm (Emerson+Amber), Interview Prep (Kira) | Low 
 11/2 | #242 #246 #298 | #243 #255 #240 #297 | Same as last daily scrum | Low
+11/3 | #75 #240 #243 #249 #297 | #255 #276 #216 #244 #250 | Same as last daily scrum | Medium
  
 
 ## Review
