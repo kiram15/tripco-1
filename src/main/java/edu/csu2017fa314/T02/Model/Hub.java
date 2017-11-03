@@ -105,7 +105,7 @@ public class Hub {
             System.err.printf("Exception: ");
             System.err.println(e.getMessage());
         }
-        //call rest of hub
+
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
