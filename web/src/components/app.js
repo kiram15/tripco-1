@@ -80,6 +80,9 @@ startEndInfo(file) {
         if ("index" ==columnNames[j]) {
             finalStr = finalStr + "Index: " + seCol.index + "\n";
         }
+        else if ("code" ==columnNames[j]) {
+            finalStr = finalStr + "Code: " + seCol.code + "\n";
+        }
         else if ("id" ==columnNames[j]) {
             finalStr = finalStr + "ID: " + seCol.id + "\n";
         }
@@ -95,8 +98,32 @@ startEndInfo(file) {
         else if ("home_link" ==columnNames[j]) {
             finalStr = finalStr + "Home link: " + seCol.home_link + "\n";
         }
-        else{
+        else if ("wikipedia_link" ==columnNames[j]) {
             finalStr = finalStr + "Wikipedia link: " + seCol.wikipedia_link + "\n";
+        }
+        else if ("iso_country" ==columnNames[j]) {
+            finalStr = finalStr + "Country: " + seCol.iso_country + "\n";
+        }
+        else if ("continent" ==columnNames[j]) {
+            finalStr = finalStr + "Continent: " + seCol.continent + "\n";
+        }
+        else if ("iso_region" ==columnNames[j]) {
+            finalStr = finalStr + "Region: " + seCol.iso_region + "\n";
+        }
+        else if ("keywords" ==columnNames[j]) {
+            finalStr = finalStr + "Keywords: " + seCol.keywords + "\n";
+        }
+        else if ("gps_code" ==columnNames[j]) {
+            finalStr = finalStr + "GPS Code: " + seCol.gps_code + "\n";
+        }
+        else if ("iata_code" ==columnNames[j]) {
+            finalStr = finalStr + "Iata Code: " + seCol.iata_code + "\n";
+        }
+        else if ("local_code" ==columnNames[j]) {
+            finalStr = finalStr + "Local Code: " + seCol.local_code + "\n";
+        }
+        else{
+            finalStr = finalStr + "Scheduled Service: " + seCol.scheduled_service + "\n";
         }
     }
     console.log("FINAL: ", finalStr);
