@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.lang.Math;
+
+import com.sun.org.apache.regexp.internal.RE;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import java.io.PrintWriter;
@@ -54,9 +56,39 @@ public class Hub {
             Connection conn = DriverManager.getConnection(myUrl, username, password);
             try { // create a statement
                 Statement st = conn.createStatement();
+                try{
+                    //give order of column header to storeColumnHeaders
+                    String colHeaders = "airportsID, airportsCode, airportsType, airportsName, airportsLatitude, airportsLongitude, airportsElevation, airportsContinent, airportsIso_country, airportsIso_region, airportsMunicipality, airportsScheduled_service, airportsGps_code, airportsIata_code, airportsLocal_code, airportsHome_link, airportsWikipedia_link, airportsKeywords, "
+                                        + "regionsID, regionsCode, regionsLocal_code, regionsName, regionsContinent, regionsIso_country, regionsWikipedia_link, regionsKeywords, "
+                                        + "countriesID, countriesCode, countriesName, countriesContinent, countriesWikipedia_link, countriesKeywords, "
+                                        + "continentsID, continentsName, continentsCode, continentsWikipedia_link";
+                    storeColumnHeaders(colHeaders);
+
+                    
+                    String allTblsQ = "select airports.id as airportsID, airports.code as airportsCode, airports.type as airportsType, airports.name as airportsName, airports.latitude as airportsLatitude, airports.longitude as airportsLongitude, airports.elevation as airportsElevation, airports.continent as airportsContinent, airports.iso_country as airportsIso_country, airports.iso_region as airportsIso_region, airports.municipality as airportsMunicipality, airports.scheduled_service as airportsScheduled_service, airports.gps_code as airportsGps_code, airports.iata_code as airportsIata_code, airports.local_code as airportsLocal_code, airports.home_link as airportsHome_link, airports.wikipedia_link as airportsWikipedia_link, airports.keywords as airportsKeywords, "
+                                        + "regions.id as regionsID, regions.code as regionsCode, regions.local_code as regionsLocal_code, regions.name as regionsName, regions.continent as regionsContinent, regions.iso_country as regionsIso_country, regions.wikipedia_link as regionsWikipedia_link, regions.keywords as regionsKeywords, "
+                                        + "countries.id as countriesID, countries.code as countriesCode, countries.name as countriesName, countries.continent as countriesContinent, countries.wikipedia_link as countriesWikipedia_link, countries.keywords as countriesKeywords, "
+                                        + "continents.id as continentsID, continents.name as continentsName, continents.code as continentsCode, continents.wikepedia_link as continentsWikipedia_link"
+                                        + "from continents "
+                                        + "inner join countries on countries.continent = continents.code "
+                                        + "inner join regions on regions.iso_country = countries.code "
+                                        + "inner join world on world.iso_region = regions.code "
+                                        + "where "
+                                        + ""
+                                        + ""
+                                        + ""
+                                        + "limit 50;"
+
+                            ;
+                    ResultSet allTblsRS = st.executeQuery(allTblsQ);
 
 
-                try { // submit a query to get column headers
+
+
+
+                }finally{}
+
+                /*try { // submit a query to get column headers
                     //String tblCountQ = "select count(*) from information_schema.tables where table_type = 'base table';";
                     //ResultSet tblCountRS = st.executeQuery(tblCountQ);
                     //int numTbls = ((Number)tblCountRS.getObject(1)).intValue();
@@ -137,10 +169,10 @@ public class Hub {
                             } finally { rs2.close(); }
                         } finally{ st.close(); }
 
-                    } finally { rs1.close(); }*/
+                    } finally { rs1.close(); }
 
 
-                } finally {}
+                } finally {}*/
 
 
             } finally { conn.close(); }
@@ -174,15 +206,15 @@ public class Hub {
         for (int i = 0; i < infoArray.length; i++) {
             String infoString = infoArray[i];
             switch (infoString.trim()) { // associating column titles with column num, putting it in map
-                case "name":
+                case "airportsName":
                     columns.put("name", i);
                     reverseC.put(i, "name");
                     break;
-                case "latitude":
+                case "airportsLatitude":
                     columns.put("latitude", i);
                     reverseC.put(i, "latitude");
                     break;
-                case "longitude":
+                case "airportsLongitude":
                     columns.put("longitude", i);
                     reverseC.put(i, "longitude");
                     break;
@@ -203,11 +235,11 @@ public class Hub {
         String objectLongitude = "";
         //populates necessary info into variables
         for (int i = 0; i < props.length; ++i) {
-            if (i == columns.get("name")) {
+            if (i == columns.get("airportsName")) {
                 objectName = props[i].trim();
-            } else if (i == columns.get("latitude")) {
+            } else if (i == columns.get("airportsLatitude")) {
                 objectLatitude = props[i].trim();
-            } else if (i == columns.get("longitude")) {
+            } else if (i == columns.get("airportsLongitude")) {
                 objectLongitude = props[i].trim();
             } else {
                 info.put(reverseC.get(i), props[i]);
