@@ -50,7 +50,6 @@ public class Hub {
         this.optimization = opt;
     }
 
-
     public void searchDatabase(String username, String password, String searchingFor){
         finalLocations.clear();
         shortestItinerary.clear();
@@ -72,6 +71,8 @@ public class Hub {
                             + "countriesID, countriesCode, countriesName, countriesContinent, countriesWikipedia_link, countriesKeywords, "
                             + "continentsID, continentsName, continentsCode, continentsWikipedia_link";
                     storeColumnHeaders(colHeaders);
+
+                    System.out.println(columns);
 
                     String allTblsSearchQ = "select airports.id as airportsID, airports.code as airportsCode, airports.type as airportsType, airports.name as airportsName, airports.latitude as airportsLatitude, airports.longitude as airportsLongitude, airports.elevation as airportsElevation, airports.continent as airportsContinent, airports.iso_country as airportsIso_country, airports.iso_region as airportsIso_region, airports.municipality as airportsMunicipality, airports.scheduled_service as airportsScheduled_service, airports.gps_code as airportsGps_code, airports.iata_code as airportsIata_code, airports.local_code as airportsLocal_code, airports.home_link as airportsHome_link, airports.wikipedia_link as airportsWikipedia_link, airports.keywords as airportsKeywords, "
                             + "regions.id as regionsID, regions.code as regionsCode, regions.local_code as regionsLocal_code, regions.name as regionsName, regions.continent as regionsContinent, regions.iso_country as regionsIso_country, regions.wikipedia_link as regionsWikipedia_link, regions.keywords as regionsKeywords, "
@@ -134,17 +135,17 @@ public class Hub {
         for (int i = 0; i < infoArray.length; i++) {
             String infoString = infoArray[i];
             switch (infoString.trim()) { // associating column titles with column num, putting it in map
-                case "airportsName":
-                    columns.put("name", i);
-                    reverseC.put(i, "name");
+                case "airportsname":
+                    columns.put("airportsname", i);
+                    reverseC.put(i, "airportsname");
                     break;
-                case "airportsLatitude":
-                    columns.put("latitude", i);
-                    reverseC.put(i, "latitude");
+                case "airportslatitude":
+                    columns.put("airportslatitude", i);
+                    reverseC.put(i, "airportslatitude");
                     break;
-                case "airportsLongitude":
-                    columns.put("longitude", i);
-                    reverseC.put(i, "longitude");
+                case "airportslongitude":
+                    columns.put("airportslongitude", i);
+                    reverseC.put(i, "airportslongitude");
                     break;
                 default:
                     columns.put(infoString.trim(), i);
@@ -163,11 +164,11 @@ public class Hub {
         String objectLongitude = "";
         //populates necessary info into variables
         for (int i = 0; i < props.length; ++i) {
-            if (i == columns.get("airportsName")) {
+            if (i == columns.get("airportsname")) {
                 objectName = props[i].trim();
-            } else if (i == columns.get("airportsLatitude")) {
+            } else if (i == columns.get("airportslatitude")) {
                 objectLatitude = props[i].trim();
-            } else if (i == columns.get("airportsLongitude")) {
+            } else if (i == columns.get("airportslongitude")) {
                 objectLongitude = props[i].trim();
             } else {
                 info.put(reverseC.get(i), props[i]);
