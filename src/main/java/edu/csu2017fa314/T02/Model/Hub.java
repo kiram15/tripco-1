@@ -277,10 +277,10 @@ public class Hub {
                     Distance d = (Distance) gcds[row][i];
                     if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
                         shortestDistance = d;
-                        tripDistance += shortestDistance.getGcd();
                     }
                 }
                 currentLocation = shortestDistance.getEndID();
+                tripDistance += shortestDistance.getGcd();
             }
 
             //add the distance back to the original city
@@ -714,7 +714,6 @@ public class Hub {
 
         //new line needs to be drawn from (new left x to x1)
         aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + newLeftX + "\" y1=\"" + midY + "\" x2=\"" + x1 + "\" y2=\"" + y1 + "\" id=\"svg_1\"/>";
-        System.out.println("coordinates after left point " + newLeftX + ", " + midY + ", " + x1 + ", " + y1);
         //right point next - (x2, y2)
         double rightDFromAxis = x2 - midX;
         double newRightX = x2 + rightDFromAxis;
@@ -727,8 +726,6 @@ public class Hub {
 
         //new line needs to be drawn from (new left x to x1)
         aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x2 + "\" y1=\"" + y2 + "\" x2=\"" + newRightX + "\" y2=\"" + midY + "\" id=\"svg_1\"/>";
-        System.out.println("coordinates after right point " + x2 + ", " + y2 + ", " + newRightX + ", " + midY);
-
         return aroundBackLines;
     }
 
