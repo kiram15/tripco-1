@@ -72,8 +72,6 @@ public class Hub {
                             + "continentsID, continentsName, continentsCode, continentsWikipedia_link";
                     storeColumnHeaders(colHeaders);
 
-                    System.out.println(columns);
-
                     String allTblsSearchQ = "select airports.id as airportsID, airports.code as airportsCode, airports.type as airportsType, airports.name as airportsName, airports.latitude as airportsLatitude, airports.longitude as airportsLongitude, airports.elevation as airportsElevation, airports.continent as airportsContinent, airports.iso_country as airportsIso_country, airports.iso_region as airportsIso_region, airports.municipality as airportsMunicipality, airports.scheduled_service as airportsScheduled_service, airports.gps_code as airportsGps_code, airports.iata_code as airportsIata_code, airports.local_code as airportsLocal_code, airports.home_link as airportsHome_link, airports.wikipedia_link as airportsWikipedia_link, airports.keywords as airportsKeywords, "
                             + "regions.id as regionsID, regions.code as regionsCode, regions.local_code as regionsLocal_code, regions.name as regionsName, regions.continent as regionsContinent, regions.iso_country as regionsIso_country, regions.wikipedia_link as regionsWikipedia_link, regions.keywords as regionsKeywords, "
                             + "countries.id as countriesID, countries.code as countriesCode, countries.name as countriesName, countries.continent as countriesContinent, countries.wikipedia_link as countriesWikipedia_link, countries.keywords as countriesKeywords, "
