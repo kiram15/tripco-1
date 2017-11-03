@@ -3,7 +3,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -154,7 +153,7 @@ public class TestModel {
         //shorter trip method. The shorterTrip method does not return anything, but does set the value
         //of hub's shortestItinerary
         Hub h0 = new Hub();
-        h0.storeColumnHeaders("id,name,city,latitude,longitude,elevation,");
+        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
         h0.parseRow("kiram15,kira,fort collins, 45.0, 45.0, 10");
         h0.parseRow("alnolte,amber,denver, 22.5, 135.0, 10");
         h0.parseRow("nkacirek,nicole,boulder, 85.0, 175.0, 10");
@@ -191,7 +190,7 @@ public class TestModel {
         //shorter trip method. The shorterTrip method does not return anything, but does set the value
         //of hub's shortestItinerary
         Hub h0 = new Hub();
-        h0.storeColumnHeaders("id,name,city,latitude,longitude,elevation,");
+        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
         h0.parseRow("kiram15,kira,fort collins, 40.0, 50.0, 10");
         h0.parseRow("alnolte,amber,denver, 60.0, 70.5, 10");
         h0.parseRow("nkacirek,nicole,boulder, 100.0, 60.0, 10");
