@@ -180,7 +180,9 @@ async browseFile(file) {
         }
 
         try{
-            let jsonRet = await fetch(`http://localhost:4567/testing`,
+            let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/testing";
+            console.log(serverUrl);
+            let jsonReturned = await fetch(serverUrl,
                 {
                     method: "POST",
                     body: JSON.stringify(request)
