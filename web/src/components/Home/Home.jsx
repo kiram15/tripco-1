@@ -84,8 +84,10 @@ render() {
     </div>
     <p></p>
 
+    <button type="button" onClick={this.selectAll.bind(this)}>Select All</button>
+    <button type="button" onClick={this.clearAll.bind(this)}>Clear All</button>
     <button type="button" onClick={this.updateSelectedLocations.bind(this)}>Plan</button>
-
+    <p></p>
 
   <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
   <p></p>
@@ -211,6 +213,22 @@ updateSelectedLocations(event) {
         }
     }
     console.log("selectedLocations:", this.state.selectedLocations);
+}
+
+selectAll(source) {
+  var parentDiv = document.getElementById("searchResult");
+  var checkboxes = parentDiv.getElementsByTagName("input");
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = true;
+  }
+}
+
+clearAll(source) {
+  var parentDiv = document.getElementById("searchResult");
+  var checkboxes = parentDiv.getElementsByTagName("input");
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = false;
+  }
 }
 
 }
