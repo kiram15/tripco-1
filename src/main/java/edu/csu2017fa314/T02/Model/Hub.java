@@ -341,6 +341,7 @@ public class Hub {
         shortestItinerary = locationsToDistances(traveledToFinal);
     }
 
+
     //master method for when user selects 2opt optimization (calls all helpers)
     public void shortestTrip2Opt() {
         //Adjacency matrix that holds all gcds
@@ -580,7 +581,7 @@ public class Hub {
     }
 
     //determines all the possible areas that 2opt could improve in a given arraylist of locations
-    private void checkImprovement2(ArrayList<Location> traveled) {
+    public void checkImprovement2(ArrayList<Location> traveled) {
         boolean improvement = true;
         //while there is still possible improvements to be made
         while (improvement) {
@@ -601,8 +602,8 @@ public class Hub {
         }
     }
 
-    //determines all the possible areas that 2opt could improve in a given arraylist of locations
-    private void checkImprovement3(ArrayList<Location> traveled) {
+    //determines all the possible areas that 3opt could improve in a given arraylist of locations
+    public ArrayList<Location> checkImprovement3(ArrayList<Location> traveled) {
         boolean improvement = true;
         //while there is still possible improvements to be made
         while (improvement) {
@@ -747,6 +748,9 @@ public class Hub {
                         double delta7 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
                                 + ij1.getGcd() + i1k.getGcd() + jk1.getGcd();
 
+                        // --- SWAP 6 --- (blue 3)
+                        // (i, j+1) (k, j) (i+1, k+1)
+
                         if (delta7 < 0) { //improvement?
                             replaceSegment(i + 1, j + 1, k, traveled);
 
@@ -763,6 +767,7 @@ public class Hub {
                     }
             }
         }
+        return traveled;
     }
 
     //preforms the swap method for 2opt and 3opt

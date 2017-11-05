@@ -189,7 +189,6 @@ public class TestModel {
 
     @Test
     public void testShorterTrip2Opt(){
-
         //tests shorterTrip by making a call to storeColumnHeaders and parseRow which then calls the
         //shorter trip method. The shorterTrip method does not return anything, but does set the value
         //of hub's shortestItinerary
@@ -203,9 +202,15 @@ public class TestModel {
         assertEquals(fillShortTrip2Opt(), h0.shortestItinerary);
     }
 
+    //        40, -88  - TOP RIGHT kira
+    //        40, -92  - TOP LEFT amber
+
+    //        34, -92  - BOTTOM LEFT nicole
+    //        34, -88  - BOTTOM RIGHT emerson
+
+    // top left, bottom right top right bottom left
 
     private ArrayList<Distance> fillShortTrip2Opt(){
-
         Location n0 = new Location("kira", 40.0, 50.0, null);
         Location n1 = new Location("amber", 60.0, 70.5, null);
         Location n2 = new Location("nicole", 100.0, 60.0, null);
@@ -221,6 +226,256 @@ public class TestModel {
         checkAgainst.add(d1);
         checkAgainst.add(d2);
         checkAgainst.add(d3);
+
+        return checkAgainst;
+    }
+
+    // ------------------- Test Shorter Trip 3opt -------------------
+
+    @Test
+    public void testShorterTrip3Opt(){
+        //tests shorterTrip3Opt by making a call to storeColumnHeaders and parseRow which then calls the
+        //shorter trip method. The shorterTrip method does not return anything, but does set the value
+        //of hub's shortestItinerary
+        Hub h0 = new Hub();
+        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
+        h0.parseRow("kiram15,kira,fort collins, 34.0, -92.0, 10");    //A
+        h0.parseRow("alnolte,amber,denver, 34.0, -88, 10");           //B
+        h0.parseRow("nkacirek,nicole,boulder, 37.0, -85.0, 10");      //C
+        h0.parseRow("emictosh,emerson,littleton, 40.0, -88.0, 10");   //D
+        h0.parseRow("maddic, maddi, loveland, 40.0, -92.0, 10");      //E
+        h0.parseRow("jamesp, james, godrics hollow, 37.0, -95.0, 10");//F
+        h0.shortestTrip3Opt();
+
+
+        ArrayList<Distance> check1 = fillShortTrip3Opt();
+        ArrayList<Distance> check2 = h0.shortestItinerary;
+
+        System.out.println("CHECK1");
+        for (int i = 0; i < check1.size(); i++) {
+            System.out.println("S: " + check1.get(i).getStartID().getName() + " E: " + check1.get(i).getEndID().getName());
+        }
+        System.out.println("\nCHECK2");
+        for (int i = 0; i < check2.size(); i++) {
+            System.out.println("S: " + check2.get(i).getStartID().getName()  + " E: " + check2.get(i).getEndID().getName());
+        }
+
+
+        assertEquals(fillShortTrip3Opt(), h0.shortestItinerary);
+    }
+
+
+    private ArrayList<Distance> fillShortTrip3Opt(){
+        Location a = new Location("kira", 34.0, -92.0, null);
+        Location b = new Location("amber", 34.0, -88.0, null);
+        Location c = new Location("nicole", 37.0, -85.0, null);
+        Location d = new Location("emerson", 40.0, -88.0, null);
+        Location e = new Location("maddi", 40.0, -92.0, null);
+        Location f = new Location("james", 37.0, -95.0, null);
+
+        Distance d0 = new Distance(a, b, miles);
+        Distance d1 = new Distance(b, c, miles);
+        Distance d2 = new Distance(c, d, miles);
+        Distance d3 = new Distance(d, e, miles);
+        Distance d4 = new Distance(e, f, miles);
+        Distance d5 = new Distance(f, a, miles);
+
+        ArrayList<Distance> checkAgainst = new ArrayList<Distance>();
+        checkAgainst.add(d3);
+        checkAgainst.add(d4);
+        checkAgainst.add(d5);
+        checkAgainst.add(d0);
+        checkAgainst.add(d1);
+        checkAgainst.add(d2);
+
+        return checkAgainst;
+    }
+
+
+    @Test
+    public void Test3Opt1(){
+        System.out.println("------ TEST 1 ------");
+        Hub h0 = new Hub();
+        //test where b and c should switch
+        Location a = new Location("A", 34.0, -92.0, null);
+        Location b = new Location("B", 34.0, -88.0, null);
+        Location c = new Location("C", 37.0, -85.0, null);
+        Location d = new Location("D", 40.0, -88.0, null);
+        Location e = new Location("E", 40.0, -92.0, null);
+        Location f = new Location("F", 37.0, -95.0, null);
+
+        ArrayList<Location> checkOne = new ArrayList<Location>();
+        checkOne.add(a);
+        checkOne.add(c);
+        checkOne.add(b);
+        checkOne.add(d);
+        checkOne.add(e);
+        checkOne.add(f);
+
+        ArrayList<Location> after3opt = h0.checkImprovement3(checkOne);
+        assertEquals(optimalShortTrip3Opt(), after3opt);
+    }
+
+    @Test
+    public void Test3Opt2(){
+        System.out.println("------ TEST 2 ------");
+        Hub h0 = new Hub();
+        //test where e and d should switch
+        Location a = new Location("A", 34.0, -92.0, null);
+        Location b = new Location("B", 34.0, -88.0, null);
+        Location c = new Location("C", 37.0, -85.0, null);
+        Location d = new Location("D", 40.0, -88.0, null);
+        Location e = new Location("E", 40.0, -92.0, null);
+        Location f = new Location("F", 37.0, -95.0, null);
+
+        ArrayList<Location> checkTwo = new ArrayList<Location>();
+        checkTwo.add(a);
+        checkTwo.add(b);
+        checkTwo.add(c);
+        checkTwo.add(e);
+        checkTwo.add(d);
+        checkTwo.add(f);
+
+        ArrayList<Location> after3opt = h0.checkImprovement3(checkTwo);
+        assertEquals(optimalShortTrip3Opt(), after3opt);
+    }
+
+    @Test
+    public void Test3Opt3(){
+        System.out.println("------ TEST 3 ------");
+        Hub h0 = new Hub();
+        //test where b through e should reverse
+        Location a = new Location("A", 34.0, -92.0, null);
+        Location b = new Location("B", 34.0, -88.0, null);
+        Location c = new Location("C", 37.0, -85.0, null);
+        Location d = new Location("D", 40.0, -88.0, null);
+        Location e = new Location("E", 40.0, -92.0, null);
+        Location f = new Location("F", 37.0, -95.0, null);
+
+        ArrayList<Location> checkThree = new ArrayList<Location>();
+        checkThree.add(a);
+        checkThree.add(e);
+        checkThree.add(d);
+        checkThree.add(c);
+        checkThree.add(b);
+        checkThree.add(f);
+
+        ArrayList<Location> after3opt = h0.checkImprovement3(checkThree);
+        assertEquals(optimalShortTrip3Opt(), after3opt);
+    }
+
+    @Test
+    public void Test3Opt4(){
+        System.out.println("------ TEST 4 ------");
+        Hub h0 = new Hub();
+        //test where b and c should switch, and d and e should switch
+        Location a = new Location("A", 34.0, -92.0, null);
+        Location b = new Location("B", 34.0, -88.0, null);
+        Location c = new Location("C", 37.0, -85.0, null);
+        Location d = new Location("D", 40.0, -88.0, null);
+        Location e = new Location("E", 40.0, -92.0, null);
+        Location f = new Location("F", 37.0, -95.0, null);
+
+        ArrayList<Location> checkFour = new ArrayList<Location>();
+        checkFour.add(a);
+        checkFour.add(c);
+        checkFour.add(b);
+        checkFour.add(e);
+        checkFour.add(d);
+        checkFour.add(f);
+
+        ArrayList<Location> after3opt = h0.checkImprovement3(checkFour);
+        assertEquals(optimalShortTrip3Opt(), after3opt);
+    }
+
+    @Test
+    public void Test3Opt5(){
+        System.out.println("------ TEST 5 ------");
+        Hub h0 = new Hub();
+        //test where d and e should switch, and switch two middle groups
+        Location a = new Location("A", 34.0, -92.0, null);
+        Location b = new Location("B", 34.0, -88.0, null);
+        Location c = new Location("C", 37.0, -85.0, null);
+        Location d = new Location("D", 40.0, -88.0, null);
+        Location e = new Location("E", 40.0, -92.0, null);
+        Location f = new Location("F", 37.0, -95.0, null);
+
+        ArrayList<Location> checkFive = new ArrayList<Location>();
+        checkFive.add(a);
+        checkFive.add(d);
+        checkFive.add(e);
+        checkFive.add(c);
+        checkFive.add(b);
+        checkFive.add(f);
+
+        ArrayList<Location> after3opt = h0.checkImprovement3(checkFive);
+        assertEquals(optimalShortTrip3Opt(), after3opt);
+    }
+
+    @Test
+    public void Test3Opt6(){
+        System.out.println("------ TEST 6------");
+        Hub h0 = new Hub();
+        //test where b and c should switch, and switch two middle groups
+        Location a = new Location("A", 34.0, -92.0, null);
+        Location b = new Location("B", 34.0, -88.0, null);
+        Location c = new Location("C", 37.0, -85.0, null);
+        Location d = new Location("D", 40.0, -88.0, null);
+        Location e = new Location("E", 40.0, -92.0, null);
+        Location f = new Location("F", 37.0, -95.0, null);
+
+        ArrayList<Location> checkSix = new ArrayList<Location>();
+        checkSix.add(a);
+        checkSix.add(e);
+        checkSix.add(d);
+        checkSix.add(b);
+        checkSix.add(c);
+        checkSix.add(f);
+
+        ArrayList<Location> after3opt = h0.checkImprovement3(checkSix);
+        assertEquals(optimalShortTrip3Opt(), after3opt);
+    }
+
+    @Test
+    public void Test3Opt7(){
+        System.out.println("------ TEST 7 ------");
+        Hub h0 = new Hub();
+        //test where b and c should switch, and switch two middle groups
+        Location a = new Location("A", 34.0, -92.0, null);
+        Location b = new Location("B", 34.0, -88.0, null);
+        Location c = new Location("C", 37.0, -85.0, null);
+        Location d = new Location("D", 40.0, -88.0, null);
+        Location e = new Location("E", 40.0, -92.0, null);
+        Location f = new Location("F", 37.0, -95.0, null);
+
+        ArrayList<Location> checkSeven = new ArrayList<Location>();
+        checkSeven.add(a);
+        checkSeven.add(d);
+        checkSeven.add(e);
+        checkSeven.add(b);
+        checkSeven.add(c);
+        checkSeven.add(f);
+
+        ArrayList<Location> after3opt = h0.checkImprovement3(checkSeven);
+        assertEquals(optimalShortTrip3Opt(), after3opt);
+    }
+
+
+    private ArrayList<Location> optimalShortTrip3Opt(){
+        Location a = new Location("A", 34.0, -92.0, null);
+        Location b = new Location("B", 34.0, -88.0, null);
+        Location c = new Location("C", 37.0, -85.0, null);
+        Location d = new Location("D", 40.0, -88.0, null);
+        Location e = new Location("E", 40.0, -92.0, null);
+        Location f = new Location("F", 37.0, -95.0, null);
+
+        ArrayList<Location> checkAgainst = new ArrayList<Location>();
+        checkAgainst.add(a);
+        checkAgainst.add(b);
+        checkAgainst.add(c);
+        checkAgainst.add(d);
+        checkAgainst.add(e);
+        checkAgainst.add(f);
 
         return checkAgainst;
     }
