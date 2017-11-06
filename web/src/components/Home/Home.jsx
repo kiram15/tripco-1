@@ -221,14 +221,11 @@ updateSelectedLocations(event) {
         }
     }
     console.log("selectedLocations:", this.state.selectedLocations);
+    document.getElementById("checkedLocations").innerHTML = "";
     var selected = document.getElementById("checkedLocations");
         for (var i = 0; i < (this.state.selectedLocations.length); i++) {
-            //var liSL = document.createElement("li");
-            //var liSL = document.createElement("li");
             var brSL = document.createElement("br");
             var textNode = document.createTextNode(this.state.selectedLocations[i]);
-            //liSL.appendChild(textNode);
-            //selected.appendChild(liSL);
             selected.appendChild(textNode);
             selected.appendChild(brSL);
         }
@@ -241,6 +238,8 @@ selectAll(source) {
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = true;
   }
+    
+  this.updateSelectedLocations(this);
 }
 
 clearAll(source) {
@@ -249,6 +248,8 @@ clearAll(source) {
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = false;
   }
+  this.updateSelectedLocations(this);
+  
 }
 
 }
