@@ -41,6 +41,12 @@ import static spark.Spark.post;
          post("/testing", (rec, res) -> {
              return g.toJson(testing(rec, res));
          }); // Create new listener
+         //another listener (for download)
+         post("/download", (rec, res) -> {
+             download(rec, res);
+             // return the raw HttpServletResponse from the Response
+             return rec.raw();
+         })
      }
 
      // called by testing method if the client requests an svg
@@ -68,7 +74,7 @@ import static spark.Spark.post;
          h.setMiles(miles);
          h.setOptimization(optimization);
 
-         h.searchDatabase(this.user, this.password, searched);
+         h.searchDatabase(this.user, this.password, searched, false);
 
          //System.out.println("after search database");
          ArrayList<Distance> trip = h.getShortestItinerary();
@@ -79,6 +85,46 @@ import static spark.Spark.post;
 
          //Convert response to json
          return gson.toJson(sRes, ServerQueryResponse.class);
+     }
+
+     private Object serveUpload(ArrayList<String> locations, boolean miles, String optimization){
+         Gson gson = new Gson();
+
+         String queryString = "SELECT * FROM airports WHERE ";
+         for(int i = 0; i < locations.size(); ++i){
+             if (i == locations.size() - 1) {
+                  queryString += "code LIKE '%" + locations.get(i).getCode + "%';";
+              } else {
+                  queryString += "code LIKE '%" + locations.get(i).getCode + "%' OR ";
+              }
+         }
+
+         h.setMiles(miles);
+         h.setOptimization(optimization);
+
+         h.searchDatabase(this.user, this.password, queryString, true);
+
+         ArrayList<Distance> trip = h.getShortestItinerary();
+
+         ServerQueryResponse sRes = new ServerQueryResponse(trip);
+
+         return gson.toJson(sRes, ServerQueryResponse.class);
+     }
+
+     private Object download(Request rec, Response res){
+         // As before, parse the request and convert it to a Java class with Gson:
+         JsonParser parser = new JsonParser();
+         JsonElement elm = parser.parse(rec.body());
+         Gson gson = new Gson();
+
+         ServerRequest sRec = gson.fromJson(elm, ServerRequest.className);
+         //need to set different headers to write the file
+         setHeadersFile(res);
+
+         writeFile(res, sRec.getDescription());
+
+         return res;
+
      }
 
      private Object testing(Request rec, Response res) {
@@ -115,13 +161,40 @@ import static spark.Spark.post;
          // Because both possible requests from the client have the same format,
          // we can check the "type" of request we've received: either "query" or "svg" or "unit"
          if (sRec.getRequest().equals("query")) {
-            return serveQuery(sRec.getDescription(), miles, o);
+            return serveQuery(sRec.getDescription().get(0), miles, o);
          // see if the user is looking for the map:
-        } else {
+        }
+         else if(sRec.getRequest().eqauls("upload")){
+             return serveUpload(sRec.getDescription());
+         }
+         else {
             return serveSvg();
         }
 
      }
+
+     private void writeFile(Response res, ArrayList<String> locations) {
+          try {
+              // Write our file directly to the response rather than to a file
+              PrintWriter fileWriter = new PrintWriter(res.raw().getOutputStream());
+              // Ideally, the user will be able to name their own trips. We hard code it here:
+              fileWriter.println("{ \"title\" : \"The Coolest Trip\",\n" +
+                      "  \"destinations\" : [");
+              for (int i = 0; i < locations.size(); i++) {
+                  if (i < locations.size() - 1) {
+                      fileWriter.println("\"" + locations.get(i) + "\",");
+                  } else {
+                      fileWriter.println("\"" + locations.get(i) + "\"]}");
+                  }
+              }
+              // Important: flush and close the writer or a blank file will be sent
+              fileWriter.flush();
+              fileWriter.close();
+
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+      }
 
      private void setHeaders(Response res) {
          // Declares returning type json
@@ -131,4 +204,19 @@ import static spark.Spark.post;
          res.header("Access-Control-Allow-Origin", "*");
          res.header("Access-Control-Allow-Headers", "*");
      }
+
+     private void setHeadersFile(Response res) {
+         /* Unlike the other responses, the file request sends back an actual file. This means
+          that we have to work with the raw HttpServletRequest that Spark's Response class is built
+          on.
+         */
+          // First, add the same Access Control headers as before
+          res.raw().addHeader("Access-Control-Allow-Origin", "*");
+          res.raw().addHeader("Access-Control-Allow-Headers", "*");
+          // Set the content type to "force-download." Basically, we "trick" the browser with
+          // an unknown file type to make it download the file instead of opening it.
+          res.raw().setContentType("application/force-download");
+          res.raw().addHeader("Content-Disposition", "attachment; filename=\"selection.json\"");
+     }
+
  }

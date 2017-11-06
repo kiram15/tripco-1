@@ -33,6 +33,10 @@ public class Location {
 	  return this.lon;
   }
 
+  public String getCode() {
+      return this.info.get(airports_code);
+  }
+
 //  public LinkedHashMap<String, String> getInfoMap(){
 //      return this.info;
 //  }

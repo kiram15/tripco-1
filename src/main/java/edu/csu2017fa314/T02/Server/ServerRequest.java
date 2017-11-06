@@ -5,13 +5,15 @@ package edu.csu2017fa314.T02.Server;
  * Edited for use by emcintos 10/14/17.
  */
 
+ import java.util.ArrayList;
+
  public class ServerRequest {
      private String request = "";
-     private String description = "";
+     private ArrayList<String> description;
      private String unit = "";
      private String optSelection = "";
 
-     public ServerRequest(String request, String description, String unit, String optSelection) {
+     public ServerRequest(String request, ArrayList<String> description, String unit, String optSelection) {
          this.request = request;
          this.description = description;
          this.unit = unit;
@@ -26,7 +28,7 @@ package edu.csu2017fa314.T02.Server;
          this.request = request;
      }
 
-     public String getDescription() {
+     public ArrayList<String> getDescription() {
          return description;
      }
 
@@ -38,8 +40,9 @@ package edu.csu2017fa314.T02.Server;
          return this.optSelection;
      }
 
-     public void setDescription(String description) {
-         this.description = description;
+     public void setDescription(ArrayList<String> description) {
+         this.description = new ArrayList<String>();
+         this.description.addAll(description);
      }
 
      @Override
