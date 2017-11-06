@@ -251,6 +251,9 @@ public class TestModel {
         Location startL4 = new Location("denver", 0, 0, info1);
         Location endL4 = new Location("denver2", 0, 0, info2);
         Distance dA4 = new Distance(startL4, endL4, miles);
+        Location startL5 = new Location("california", 36.77, -199.41, info1);
+        Location endL5 = new Location("australia", -25.28, 133.775, info2);
+        Distance dA5 = new Distance(startL5, endL5, miles);
         String dSVG = "";
 
         try {
@@ -282,6 +285,10 @@ public class TestModel {
             assertNotEquals("", dSVG);
 
             hA.shortestItinerary.add(dA4);
+            dSVG = hA.drawSVG();
+            assertNotEquals("", dSVG);
+
+            hA.shortestItinerary.add(dA5);
             dSVG = hA.drawSVG();
             assertNotEquals("", dSVG);
 
