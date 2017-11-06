@@ -73,6 +73,10 @@ render() {
   </div>
   <p></p>
 
+  <p className="w3-myFont">Search Results</p>
+  <div id="checkedLocations">
+  </div>
+
     <div className="optimization">
           Select your optimizations:<p></p>
           <button type="button" onClick={this.milesClicked.bind(this)}>Miles</button>
@@ -85,6 +89,7 @@ render() {
     </div>
     <p></p>
 
+    <button type="button" onClick={this.updateSelectedLocations.bind(this)}>Select</button>
     <button type="button" onClick={this.selectAll.bind(this)}>Select All</button>
     <button type="button" onClick={this.clearAll.bind(this)}>Clear All</button>
     <button type="button" onClick={this.updateSelectedLocations.bind(this)}>Plan</button>
