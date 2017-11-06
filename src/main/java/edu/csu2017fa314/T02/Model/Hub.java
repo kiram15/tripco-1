@@ -70,43 +70,6 @@ public class Hub {
             Connection conn = DriverManager.getConnection(myUrl, username, password);
             try { // create a statement
                 Statement st = conn.createStatement();
-                try { // submit a query to get column headers
-                    String q1 = "select column_name from information_schema.columns where table_name='airports';";
-                    ResultSet rs1 = st.executeQuery(q1);
-                    try { // iterate through the query results and give string of column headers to storeColumnHeaders
-                        String headers = "";
-                        while (rs1.next()){
-                            String h = rs1.getString(1);
-                            h = h + ",";
-                            headers += h;
-                        }
-                        storeColumnHeaders(headers);
-
-                        try{ //search for searchingFor string in all columns
-                            st = conn.createStatement();
-
-                            String q2 = "select * from airports where name like '%" + searchingFor + "%' or type like '%" + searchingFor + "%' or id like '%" + searchingFor + "%' or latitude like '%" + searchingFor + "%' or longitude like '%" + searchingFor + "%' or municipality like '%" + searchingFor + "%' or elevation like '%" + searchingFor + "%' or home_link like '%" + searchingFor + "%' or wikipedia_link like '%" + searchingFor + "%' order by name;";
-                            ResultSet rs2 = st.executeQuery(q2);
-                            try{ //parse matched rows
-                                int count = 0;
-
-                                while(rs2.next() && count <= 49){ //for each row
-                                    String matchedRow = "";
-                                    for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
-                                        String rowCol = rs2.getString(i);
-                                        rowCol = rowCol + ",";
-                                        matchedRow += rowCol;
-                                    }
-
-                                    parseRow(matchedRow);
-                                    ++count;
-                                }
-                            } finally { rs2.close(); }
-                        } finally{ st.close(); }
-
-                    } finally { rs1.close(); }
-                } finally {}
-
                 try{
                     //give order of column header to storeColumnHeaders
                     String colHeaders = "airports_ID, airports_Code, airports_Type, airports_Name, airports_Latitude, airports_Longitude, airports_Elevation, airports_Continent, airports_Iso_country, airports_Iso_region, airports_Municipality, airports_Scheduled_service, airports_Gps_code, airports_Iata_code, airports_Local_code, airports_Home_link, airports_Wikipedia_link, airports_Keywords, "
@@ -656,7 +619,7 @@ public class Hub {
 
 
             //System.out.println(this.getClass().getResourceAsStream("/WorldMap.svg"));
-        // copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
+            // copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
             LinkedList<String> ll = new LinkedList<String>();
 
             String line;
@@ -741,7 +704,7 @@ public class Hub {
 
                 //compute the length of the line in pixels
                 //use basic distance formula to compute the distance between the two points
-                    //distance = sqr((x2-x1)^2 + (y2-y1)^2))
+                //distance = sqr((x2-x1)^2 + (y2-y1)^2))
                 double distance =Math.sqrt((Math.pow((endLon-startLon),2)) + (Math.pow((endLat-startLat),2)));
 
                 //if longer than 512 pixels, then you need to draw it around the back
@@ -798,15 +761,6 @@ public class Hub {
                 finalEndLon = 512;
             }
 
-            //draw last line connected end point with start
-            double endX1 = finalEndLon;
-            double endY1 = finalEndLat;
-            double endX2 = originStartLon;
-            double endY2 = originStartLat;
-            SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
-
-            SVG += "</svg>";
-        }
             double distancefinal =Math.sqrt((Math.pow((originStartLon-finalEndLon),2)) + (Math.pow((originStartLat-finalEndLat),2)));
             if(distancefinal < 512) {
                 //draw last line connected end point with start
@@ -819,12 +773,11 @@ public class Hub {
             else{
                 SVG += wrapAround(finalEndLon, finalEndLat, originStartLon, originStartLat);
             }
-                SVG += "</svg>";
-    //}
+            SVG += "</svg>";
+        }
         return SVG;
 
     }
-
 
     private String wrapAround(double x1, double y1, double x2, double y2){
         String aroundBackLines = "";
@@ -833,12 +786,12 @@ public class Hub {
         // M = ( (x1 + x2)/2 ,  (y1 + y2)/2  )
         double midX = (x1 + x2) / 2;
         double midY = (y1 + y2) / 2;
-            //now have two points that make a line and can be reflected across and axis
+        //now have two points that make a line and can be reflected across and axis
         //To reflect: Go one point at a time:
-            //the point is the new axis
-            //figure out the distance between the mid point's x and the og point's x
-            //then add/subtract that distance (depending on which direction you're going) for your new x
-            // you will keep the same y value
+        //the point is the new axis
+        //figure out the distance between the mid point's x and the og point's x
+        //then add/subtract that distance (depending on which direction you're going) for your new x
+        // you will keep the same y value
 
 
         //left point first - (x1, y1)
