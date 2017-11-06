@@ -77,27 +77,54 @@ startEndInfo(file) {
 
     for (var j = 0; j < (columnNames.length); j++) {
 
-        if ("index" ==columnNames[j]) {
-            finalStr = finalStr + "Index: " + seCol.index + "\n";
+        if ("Airport ID" ==columnNames[j]) {
+            finalStr = finalStr + "Airport ID: " + seCol.airports_id + "\n";
         }
-        else if ("id" ==columnNames[j]) {
-            finalStr = finalStr + "ID: " + seCol.id + "\n";
+        else if("Latitude" ==columnNames[j]) {
+            finalStr = finalStr + "Latitude: " + seCol.Latitude+ "\n";
         }
-        else if ("type" ==columnNames[j]) {
-            finalStr = finalStr + "Type: " + seCol.type + "\n";
+        else if("Longitude" ==columnNames[j]) {
+            finalStr = finalStr + "Longitude: " + seCol.Longitude+ "\n";
         }
-        else if ("elevation" ==columnNames[j]) {
-            finalStr = finalStr + "Elevation: " + seCol.elevation + "\n";
+        else if ("Airport Code" ==columnNames[j]) {
+            finalStr = finalStr + "Airport Code: " + seCol.airports_code + "\n";
         }
-        else if ("municipality" ==columnNames[j]) {
-            finalStr = finalStr + "Municipality: " + seCol.municipality + "\n";
+        else if ("Type" ==columnNames[j]) {
+            finalStr = finalStr + "Type: " + seCol.airports_type + "\n";
         }
-        else if ("home_link" ==columnNames[j]) {
-            finalStr = finalStr + "Home link: " + seCol.home_link + "\n";
+        else if ("Elevation" ==columnNames[j]) {
+            finalStr = finalStr + "Elevation: " + seCol.airports_elevation + "\n";
         }
-        else{
-            finalStr = finalStr + "Wikipedia link: " + seCol.wikipedia_link + "\n";
+        else if ("Municipality" ==columnNames[j]) {
+            finalStr = finalStr + "Municipality: " + seCol.airports_municipality + "\n";
         }
+        else if ("Airport Website" ==columnNames[j]) {
+            finalStr = finalStr + "Website: " + seCol.airports_home_link + "\n";
+        }
+        else if ("Airport Wikipedia" ==columnNames[j]) {
+            finalStr = finalStr + "Wikipedia: " + seCol.airports_wikipedia_link + "\n";
+        }
+        else if ("Country" ==columnNames[j]) {
+            finalStr = finalStr + "Country: " + seCol.countries_name + "\n";
+        }
+        else if ("Continent" ==columnNames[j]) {
+            finalStr = finalStr + "Continent: " + seCol.continents_name + "\n";
+        }
+        else if ("Region" ==columnNames[j]) {
+            finalStr = finalStr + "Region: " + seCol.regions_name + "\n";
+        }
+        else if ("GPS Code" ==columnNames[j]) {
+            finalStr = finalStr + "GPS Code: " + seCol.airports_gps_code + "\n";
+        }
+        else if ("Local Code" ==columnNames[j]) {
+            finalStr = finalStr + "Local Code: " + seCol.airports_local_code + "\n";
+        }
+        else if ("Region Code" ==columnNames[j]) {
+            finalStr = finalStr + "Region Code: " + seCol.regions_code + "\n";
+        }
+        // else{
+        //     finalStr = finalStr + "Scheduled Service: " + seCol.scheduled_service + "\n";
+        // }
     }
     console.log("FINAL: ", finalStr);
     return finalStr;
@@ -107,7 +134,10 @@ async selectColumns(file) {
     //console.log("Got File:", file);
     console.log(file[0]);
     console.log(file[0].startID.info);
-    var options = Object.keys(file[1].startID.info);
+    var options = ["Airport ID", "Latitude", "Longitude", "Airport Code", "Type",
+                    "Elevation", "Municipality", "Airport Website",
+                    "Airport Wikipedia", "Country", "Continent", "Region",
+                    "GPS Code", "Local Code", "Region Code"]
     console.log("Options: ", options);
     this.setState({
         setInfo: options
