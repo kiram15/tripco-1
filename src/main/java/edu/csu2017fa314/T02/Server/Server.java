@@ -81,6 +81,28 @@ import static spark.Spark.post;
          //Convert response to json
          return gson.toJson(sRes, ServerQueryResponse.class);
      }
+     
+     // TODO: called by testing method if client requests a plan 
+     private Object servePlan(String selected, boolean miles, String optimization) {
+         Gson gson = new Gson();
+         //QueryBuilder q = new QueryBuilder("user", "pass"); // Create new QueryBuilder instance and pass in credentials //TODO update credentials
+         //String queryString = String.format("SELECT * FROM airports WHERE municipality LIKE '%%%s%%' OR name LIKE '%%%s%%' OR type LIKE '%%%s%%' LIMIT 10", searched, searched, searched);
+         //ArrayList<Location> queryResults = q.query(queryString);
+         h.setMiles(miles);
+         h.setOptimization(optimization);
+
+         h.finalLocationsFromWeb(selected);
+
+         //System.out.println("after search database");
+         ArrayList<Distance> trip = h.getShortestItinerary();
+         // Create object with svg file path and array of matching database entries to return to server
+         ServerPlanResponse sRes = new ServerPlanResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image
+
+         //System.out.println("Sending \"" + sRes.toString() + "\" to server.");
+
+         //Convert response to json
+         return gson.toJson(sRes, ServerPlanResponse.class);
+     }
 
      private Object testing(Request rec, Response res) {
          // Set the return headers
@@ -118,7 +140,11 @@ import static spark.Spark.post;
          if (sRec.getRequest().equals("query")) {
             return serveQuery(sRec.getDescription(), miles, o);
          // see if the user is looking for the map:
-        } else {
+        } 
+        else if(sRec.getRequest().equals("plan")) {
+            return servePlan(sRec.getDescription(), miles, o);
+        }
+        else {
             return serveSvg();
         }
 

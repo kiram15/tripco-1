@@ -119,6 +119,10 @@ public class Hub {
         //moved the call to shortest Trip out of database
     }
 
+    public void finalLocationsFromWeb(String selectedLocations){
+    
+    };
+    
     public void createItinerary(){
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
