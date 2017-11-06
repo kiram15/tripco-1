@@ -268,7 +268,7 @@ public class TestModel {
     }
 
     // ------------------------- Test searchDatabase ----------------------------
-/*
+
     @Test
     public void testSearchDatabase() {
         // JDBC driver name and database URL
@@ -321,7 +321,7 @@ public class TestModel {
             System.err.println(e.getMessage());
         }
 
-    }*/
+    }
 
 
 }
