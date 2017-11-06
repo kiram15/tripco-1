@@ -42,7 +42,7 @@ render() {
     console.log("MyDiv", myDiv);
 
     var selected = document.getElementById("checkedLocations");
-    for (var i = 0; i < (this.state.selectedLocations); i++) {
+    for (var i = 0; i < (this.state.selectedLocations.length); i++) {
         var inputSL = document.createElement("input");
         var labelSL = document.createElement("label");
         var br = document.createElement("br");
@@ -53,7 +53,7 @@ render() {
         labelSL.appendChild(document.createTextNode(this.state.selectedLocations[i]));
         selected.appendChild(br);
     }
-      console.log("selected Div", selected);
+    console.log("selected Div", selected);
 
     let total = this.props.totalDist; //update the total here
     let svg = this.props.svg;
