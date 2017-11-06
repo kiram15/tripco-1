@@ -16,6 +16,11 @@
     <name>T02</name>
     <url>https://github.com/csu2017fa314/T02/</url>
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -14,6 +14,12 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.lang.ClassLoader;
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+//import java.io.IOUtils;
 
 public class Hub {
     //String[] infoArray;
@@ -605,26 +611,29 @@ public class Hub {
     public String drawSVG() throws FileNotFoundException {
         String SVG = "";
 
-        //ClassLoader classLoader = this.getClass().getClassLoader();
-        String filepath = "src/main/resources/WorldMap.svg";
-        File WorldMapFile = new File(filepath);
-
-        //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
-        LinkedList<String> ll = new LinkedList<String>();
         try {
-            Scanner br = new Scanner(WorldMapFile);
+            InputStream in = getClass().getResourceAsStream("/WorldMap.svg");
+            BufferedReader buf = new BufferedReader(new InputStreamReader(in));
+
+            File WorldMapFile;
+
+
+            System.out.println(this.getClass().getResourceAsStream("/WorldMap.svg"));
+        // copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
+            LinkedList<String> ll = new LinkedList<String>();
+
             String line;
-            while (br.hasNext()) {
-                line = br.nextLine();
+            while ((line = buf.readLine()) != null) {
 
                 ll.addLast(line);
             }
             for (int i = 0; i < (ll.size() - 3); i++) {
                 SVG += ll.get(i);
             }
-            br.close();
+            buf.close();
         } catch (IOException e) {
             System.out.println("ERROR: FAILED TO WRITE SVG. Caught after trying to create a scanner");
+            System.out.println("Exception: " + e);
             System.exit(0);
         }
         SVG += "</g>";
