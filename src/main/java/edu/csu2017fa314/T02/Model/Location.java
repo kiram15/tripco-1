@@ -14,6 +14,10 @@ public class Location {
       this.name = name;
       this.lat = Lat;
       this.lon = Lon;
+      if(info != null){
+          info.put("Latitude", Double.toString(Lat));
+          info.put("Longitude", Double.toString(Lon));
+      }
       this.info = info;
   }
 
