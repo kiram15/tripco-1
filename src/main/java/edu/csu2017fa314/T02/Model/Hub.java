@@ -655,7 +655,7 @@ public class Hub {
             File WorldMapFile;
 
 
-            System.out.println(this.getClass().getResourceAsStream("/WorldMap.svg"));
+            //System.out.println(this.getClass().getResourceAsStream("/WorldMap.svg"));
         // copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
             LinkedList<String> ll = new LinkedList<String>();
 
