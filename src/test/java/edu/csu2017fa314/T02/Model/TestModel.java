@@ -257,6 +257,14 @@ public class TestModel {
             dSVG = hA.drawSVG();
             assertNotEquals("", dSVG);
 
+            hA.shortestItinerary.add(dA4);
+            dSVG = hA.drawSVG();
+            assertNotEquals("", dSVG);
+            assertTrue(dSVG.contains("y1=\"256.0\""));
+            assertTrue(dSVG.contains("y2=\"256.0\""));
+            assertTrue(dSVG.contains("x1=\"512.0\""));
+            assertTrue(dSVG.contains("x2=\"512.0\""));
+
             hA.shortestItinerary.add(dA);
             dSVG = hA.drawSVG();
             assertNotEquals("", dSVG);

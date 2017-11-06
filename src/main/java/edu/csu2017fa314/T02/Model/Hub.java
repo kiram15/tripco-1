@@ -795,7 +795,7 @@ public class Hub {
                 finalEndLon = 1024 - (180-finalEndLon) * unit;
             }
             else{
-                originStartLon = 512;
+                finalEndLon = 512;
             }
 
             //draw last line connected end point with start
