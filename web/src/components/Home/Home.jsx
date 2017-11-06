@@ -27,20 +27,6 @@ render() {
         options.push(ob);
     }
 
-    var myDiv = document.getElementById("searchResult");
-    for (var i = 0; i < (this.props.queryResults.length); i++) {
-        var checkBox = document.createElement("input");
-        var label = document.createElement("label");
-        var br = document.createElement("br");
-        checkBox.type = "checkbox";
-        checkBox.value = this.props.queryResults[i].startID.name;
-        myDiv.appendChild(checkBox);
-        myDiv.appendChild(label);
-        label.appendChild(document.createTextNode(this.props.queryResults[i].startID.name));
-        myDiv.appendChild(br);
-    }
-    console.log("MyDiv", myDiv);
-
     let total = this.props.totalDist; //update the total here
     let svg = this.props.svg;
     let txtSearch;
@@ -160,6 +146,19 @@ handleSubmit(event) {
     this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization);
     //console.log("handle submit");
     event.preventDefault();
+    var myDiv = document.getElementById("searchResult");
+        for (var i = 0; i < (this.props.queryResults.length); i++) {
+            var checkBox = document.createElement("input");
+            var label = document.createElement("label");
+            var br = document.createElement("br");
+            checkBox.type = "checkbox";
+            checkBox.value = this.props.queryResults[i].startID.name;
+            myDiv.appendChild(checkBox);
+            myDiv.appendChild(label);
+            label.appendChild(document.createTextNode(this.props.queryResults[i].startID.name));
+            myDiv.appendChild(br);
+        }
+        console.log("MyDiv", myDiv);
 }
 
 buttonClicked(event) {
