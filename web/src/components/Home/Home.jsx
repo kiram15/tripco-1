@@ -223,15 +223,10 @@ updateSelectedLocations(event) {
     console.log("selectedLocations:", this.state.selectedLocations);
     var selected = document.getElementById("checkedLocations");
         for (var i = 0; i < (this.state.selectedLocations.length); i++) {
-            var inputSL = document.createElement("input");
-            var labelSL = document.createElement("label");
+            var liSL = document.createElement("li");
             var brSL = document.createElement("br");
-            inputSL.type = "text";
-            inputSL.value = this.state.selectedLocations[i];
-            console.log("selected Div", selected);
-            selected.appendChild(inputSL);
-            selected.appendChild(labelSL);
-            labelSL.appendChild(document.createTextNode(this.state.selectedLocations[i]));
+            liSL.appendChild(this.state.selectedLocations[i]);
+            selected.appendChild(liSL);
             selected.appendChild(brSL);
         }
         console.log("selected Div", selected);
