@@ -221,6 +221,17 @@ updateSelectedLocations(event) {
         }
     }
     console.log("selectedLocations:", this.state.selectedLocations);
+
+    var selected = document.getElementById("checkedLocations");
+    for (var i = 0; i < (this.state.selectedLocations); i++) {
+       var label = document.createElement("label");
+       var br = document.createElement("br");
+       myDiv.appendChild(label);
+       label.appendChild(document.createTextNode(this.state.selectedLocations[i]));
+       myDiv.appendChild(br);
+  }
+
+
 }
 
 selectAll(source) {
