@@ -99,10 +99,10 @@ startEndInfo(file) {
             finalStr = finalStr + "Municipality: " + seCol.airports_municipality + "\n";
         }
         else if ("Airport Website" ==columnNames[j]) {
-            finalStr = finalStr + "Home link: " + seCol.airports_home_link + "\n";
+            finalStr = finalStr + "Website: " + seCol.airports_home_link + "\n";
         }
         else if ("Airport Wikipedia" ==columnNames[j]) {
-            finalStr = finalStr + "Wikipedia link: " + seCol.airports_wikipedia_link + "\n";
+            finalStr = finalStr + "Wikipedia: " + seCol.airports_wikipedia_link + "\n";
         }
         else if ("Country" ==columnNames[j]) {
             finalStr = finalStr + "Country: " + seCol.countries_name + "\n";
@@ -113,10 +113,10 @@ startEndInfo(file) {
         else if ("Region" ==columnNames[j]) {
             finalStr = finalStr + "Region: " + seCol.regions_name + "\n";
         }
-        else if ("GPDS Code" ==columnNames[j]) {
+        else if ("GPS Code" ==columnNames[j]) {
             finalStr = finalStr + "GPS Code: " + seCol.airports_gps_code + "\n";
         }
-        else if ("Localk Code" ==columnNames[j]) {
+        else if ("Local Code" ==columnNames[j]) {
             finalStr = finalStr + "Local Code: " + seCol.airports_local_code + "\n";
         }
         else if ("Region Code" ==columnNames[j]) {
