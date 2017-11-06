@@ -67,6 +67,7 @@ render() {
   </div>
   <p></p>
 
+  <p className="w3-myFont">Search Results</p>
   <div id="searchResult">
   search to see results
   </div>
