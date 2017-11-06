@@ -4,8 +4,13 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.sql.*;
 
 public class TestModel {
     private Model m;
@@ -15,8 +20,7 @@ public class TestModel {
     private boolean miles = true;
 
     @Before
-    public void setUp() throws Exception
-    {
+    public void setUp() throws Exception {
         m = new Model();
         h = new Hub();
         L1 = new Location("test", 37, -102, null);
@@ -25,9 +29,8 @@ public class TestModel {
     }
 
     @Test
-    public void testGetNumbers()
-    {
-        assertArrayEquals(m.getNumbers(), new int[] {0, 1, 2, 3, 4, 5});
+    public void testGetNumbers() {
+        assertArrayEquals(m.getNumbers(), new int[]{0, 1, 2, 3, 4, 5});
     }
 
     // --------------------- Location Testing  ---------------------
@@ -52,7 +55,7 @@ public class TestModel {
         Distance d0 = new Distance(n0, n1, miles); //1640
         Distance d1 = new Distance(n1, n2, miles); //2755
 
-        assertEquals((1640-2755), d0.compareTo(d1));
+        assertEquals((1640 - 2755), d0.compareTo(d1));
     }
 
     @Test
@@ -60,7 +63,7 @@ public class TestModel {
         h = new Hub();
         L1 = new Location("test1", 37, -102, null);
         L2 = new Location("test2", 41, -109, null);
-        Distance D1 = new Distance (L1, L2, miles);
+        Distance D1 = new Distance(L1, L2, miles);
         String finalString = "Distance{StartID= 'Name: 'test1', Latitude: '37.0', Longitude: '-102.0', " +
                 "EndID= 'Name: 'test2', Latitude: '41.0', Longitude: '-109.0', GCD= '466}";
         String testString = D1.toString();
@@ -71,14 +74,14 @@ public class TestModel {
     public void testDEquals() {
         L1 = new Location("test1", 37, -102, null);
         L2 = new Location("test2", 41, -109, null);
-        Distance D1 = new Distance (L1, L2, miles);
+        Distance D1 = new Distance(L1, L2, miles);
         assertFalse(D1.equals(L1));
     }
 
     // ------------------- Test Great Circle Distance -------------------
 
     @Test
-    public void testDiagonalGCD(){
+    public void testDiagonalGCD() {
         Distance d = new Distance(L1, L2, miles);
         assertEquals(466, d.computeGCD(L1, L2, miles));
         L1.setLat(41);
@@ -88,19 +91,19 @@ public class TestModel {
     }
 
     @Test
-    public void testSameLonGCD(){
+    public void testSameLonGCD() {
         L2.setLat(41);
         L2.setLon(-102);
         L1.setLat(37);
         L1.setLon(-102);
         Distance d = new Distance(L1, L2, miles);
         assertEquals(276, d.computeGCD(L1, L2, miles));
-        miles =  false;
+        miles = false;
         assertEquals(445, d.computeGCD(L1, L2, miles));
     }
 
     @Test
-    public void testSameLatGCD(){
+    public void testSameLatGCD() {
         L1.setLat(37);
         L2.setLat(37);
         L1.setLon(-102);
@@ -110,13 +113,13 @@ public class TestModel {
     }
 
     @Test
-    public void testSameLocationGCD(){
+    public void testSameLocationGCD() {
         Distance d = new Distance(L1, L1, miles);
         assertEquals(0, d.computeGCD(L1, L1, miles));
     }
 
     @Test
-    public void testReverseGCD(){
+    public void testReverseGCD() {
         Distance d = new Distance(L1, L2, miles);
         assertEquals(d.computeGCD(L1, L2, miles), d.computeGCD(L2, L1, miles));
     }
@@ -124,7 +127,7 @@ public class TestModel {
     // ----------------- Test Lat/Lon Decimal Convert -----------------
 
     @Test
-    public void testDMSLatLon(){
+    public void testDMSLatLon() {
         Hub h = new Hub();
         assertEquals(106.828678, h.latLonConvert("106°49'43.24\" W"), 0.01);
         assertEquals(70.009258, h.latLonConvert("70°0'33.33\" N"), 0.01);
@@ -132,14 +135,14 @@ public class TestModel {
     }
 
     @Test
-    public void testDMLatLon(){
+    public void testDMLatLon() {
         Hub h = new Hub();
         assertEquals(99.255556, h.latLonConvert("99°15.13' W"), 0.01);
         assertEquals(70, h.latLonConvert("70°0' S"), 0.01);
     }
 
     @Test
-    public void testDLatLon(){
+    public void testDLatLon() {
         Hub h = new Hub();
         assertEquals(99.25, h.latLonConvert("99.25°"), 0.01);
         assertEquals(-106.24, h.latLonConvert("-106.24"), 0.01);
@@ -186,6 +189,7 @@ public class TestModel {
 
     @Test
     public void testShorterTrip2Opt(){
+
         //tests shorterTrip by making a call to storeColumnHeaders and parseRow which then calls the
         //shorter trip method. The shorterTrip method does not return anything, but does set the value
         //of hub's shortestItinerary
@@ -199,7 +203,9 @@ public class TestModel {
         assertEquals(fillShortTrip2Opt(), h0.shortestItinerary);
     }
 
+
     private ArrayList<Distance> fillShortTrip2Opt(){
+
         Location n0 = new Location("kira", 40.0, 50.0, null);
         Location n1 = new Location("amber", 60.0, 70.5, null);
         Location n2 = new Location("nicole", 100.0, 60.0, null);
@@ -222,14 +228,14 @@ public class TestModel {
     // ------------------------- Test drawSVG ----------------------------
 
     @Test
-    public void testDrawSVG(){
+    public void testDrawSVG() {
         LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
-        info1.put("extra1","info1");
+        info1.put("extra1", "info1");
         info1.put("extra2", "info2");
         LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
-        info2.put("extra1","info1");
+        info2.put("extra1", "info1");
         info2.put("extra2", "info2");
-        Hub hA =  new Hub();
+        Hub hA = new Hub();
         Location startL = new Location("denver", 70, 99.255556, info1);
         Location endL = new Location("denver2", 80, 100, info2);
         Distance dA = new Distance(startL, endL, miles);
@@ -242,11 +248,25 @@ public class TestModel {
         Location startL3 = new Location("denver", -70, 99.255556, info1);
         Location endL3 = new Location("denver2", 80, -100, info2);
         Distance dA3 = new Distance(startL3, endL3, miles);
+        Location startL4 = new Location("denver", 0, 0, info1);
+        Location endL4 = new Location("denver2", 0, 0, info2);
+        Distance dA4 = new Distance(startL4, endL4, miles);
+        Location startL5 = new Location("california", 36.77, -199.41, info1);
+        Location endL5 = new Location("australia", -25.28, 133.775, info2);
+        Distance dA5 = new Distance(startL5, endL5, miles);
         String dSVG = "";
 
         try {
             dSVG = hA.drawSVG();
             assertNotEquals("", dSVG);
+
+            hA.shortestItinerary.add(dA4);
+            dSVG = hA.drawSVG();
+            assertNotEquals("", dSVG);
+            assertTrue(dSVG.contains("y1=\"256.0\""));
+            assertTrue(dSVG.contains("y2=\"256.0\""));
+            assertTrue(dSVG.contains("x1=\"512.0\""));
+            assertTrue(dSVG.contains("x2=\"512.0\""));
 
             hA.shortestItinerary.add(dA);
             dSVG = hA.drawSVG();
@@ -264,9 +284,18 @@ public class TestModel {
             dSVG = hA.drawSVG();
             assertNotEquals("", dSVG);
 
-        } catch(IOException e){
+            hA.shortestItinerary.add(dA4);
+            dSVG = hA.drawSVG();
+            assertNotEquals("", dSVG);
+
+            hA.shortestItinerary.add(dA5);
+            dSVG = hA.drawSVG();
+            assertNotEquals("", dSVG);
+
+        } catch (IOException e) {
             System.exit(0);
         }
     }
+    
 
 }

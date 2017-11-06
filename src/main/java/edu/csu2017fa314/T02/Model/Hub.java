@@ -451,7 +451,7 @@ public class Hub {
         checkImprovement2(traveledToFinal);
         //convert traveledToFinal location array to a distance array
         shortestItinerary = locationsToDistances(traveledToFinal);
-     }
+    }
 
     //master method for when user selects 2opt optimization (calls all helpers)
     public void shortestTrip3Opt(){
@@ -618,8 +618,8 @@ public class Hub {
             File WorldMapFile;
 
 
-            System.out.println(this.getClass().getResourceAsStream("/WorldMap.svg"));
-        // copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
+            //System.out.println(this.getClass().getResourceAsStream("/WorldMap.svg"));
+            // copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
             LinkedList<String> ll = new LinkedList<String>();
 
             String line;
@@ -704,7 +704,7 @@ public class Hub {
 
                 //compute the length of the line in pixels
                 //use basic distance formula to compute the distance between the two points
-                    //distance = sqr((x2-x1)^2 + (y2-y1)^2))
+                //distance = sqr((x2-x1)^2 + (y2-y1)^2))
                 double distance =Math.sqrt((Math.pow((endLon-startLon),2)) + (Math.pow((endLat-startLat),2)));
 
                 //if longer than 512 pixels, then you need to draw it around the back
@@ -758,7 +758,7 @@ public class Hub {
                 finalEndLon = 1024 - (180-finalEndLon) * unit;
             }
             else{
-                originStartLon = 512;
+                finalEndLon = 512;
             }
 
             double distancefinal =Math.sqrt((Math.pow((originStartLon-finalEndLon),2)) + (Math.pow((originStartLat-finalEndLat),2)));
@@ -773,8 +773,8 @@ public class Hub {
             else{
                 SVG += wrapAround(finalEndLon, finalEndLat, originStartLon, originStartLat);
             }
-                SVG += "</svg>";
-    }
+            SVG += "</svg>";
+        }
         return SVG;
 
     }
@@ -786,12 +786,12 @@ public class Hub {
         // M = ( (x1 + x2)/2 ,  (y1 + y2)/2  )
         double midX = (x1 + x2) / 2;
         double midY = (y1 + y2) / 2;
-            //now have two points that make a line and can be reflected across and axis
+        //now have two points that make a line and can be reflected across and axis
         //To reflect: Go one point at a time:
-            //the point is the new axis
-            //figure out the distance between the mid point's x and the og point's x
-            //then add/subtract that distance (depending on which direction you're going) for your new x
-            // you will keep the same y value
+        //the point is the new axis
+        //figure out the distance between the mid point's x and the og point's x
+        //then add/subtract that distance (depending on which direction you're going) for your new x
+        // you will keep the same y value
 
 
         //left point first - (x1, y1)
