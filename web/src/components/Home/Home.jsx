@@ -11,7 +11,8 @@ constructor(props) {
        svgImage : [],
        input : [],
        unit : "miles",
-       optimization : "None"
+       optimization : "None",
+       selectedLocations: []
    };
 
 }
@@ -83,6 +84,10 @@ render() {
     </div>
     <p></p>
 
+    <button type="button" onClick={this.selectAll.bind(this)}>Select All</button>
+    <button type="button" onClick={this.clearAll.bind(this)}>Clear All</button>
+    <button type="button" onClick={this.updateSelectedLocations.bind(this)}>Plan</button>
+    <p></p>
 
   <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
   <p></p>
@@ -97,8 +102,8 @@ render() {
             <tr>
                 <td><h8><b><p className="w3-myFont"> Start Name </p></b></h8></td>
                 <td><h8><b><p className="w3-myFont"> End Name </p></b></h8></td>
-                <td><h8><b><p className="w3-myFont"> Distance (mi) </p></b></h8></td>
-                <td><h8><b><p className="w3-myFont"> Total Distance (mi)</p></b></h8></td>
+                <td><h8><b><p className="w3-myFont"> Distance </p></b></h8></td>
+                <td><h8><b><p className="w3-myFont"> Total Distance </p></b></h8></td>
             </tr>
             {this.props.pairs}
             <tbody>
@@ -193,6 +198,37 @@ ThreeOptClicked(event){
         optimization : "ThreeOpt"
     });
     console.log("Opt is ThreeOpt");
+}
+
+updateSelectedLocations(event) {
+    var parentDiv = document.getElementById("searchResult");
+    var locations = parentDiv.getElementsByTagName("input");
+    var tempSLIndex = 0;
+    this.state.selectedLocations = [];
+    for (var i = 0; i < locations.length; i++) {
+        //do something with the checked location - add to selected locations array??
+        if (locations[i].checked) {
+            this.state.selectedLocations[tempSLIndex] = locations[i].value;
+            tempSLIndex++;
+        }
+    }
+    console.log("selectedLocations:", this.state.selectedLocations);
+}
+
+selectAll(source) {
+  var parentDiv = document.getElementById("searchResult");
+  var checkboxes = parentDiv.getElementsByTagName("input");
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = true;
+  }
+}
+
+clearAll(source) {
+  var parentDiv = document.getElementById("searchResult");
+  var checkboxes = parentDiv.getElementsByTagName("input");
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = false;
+  }
 }
 
 }

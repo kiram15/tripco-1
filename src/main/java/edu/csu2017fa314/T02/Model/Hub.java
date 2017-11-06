@@ -14,9 +14,15 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.lang.ClassLoader;
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+//import java.io.IOUtils;
 
 public class Hub {
-    String[] infoArray;
+    //String[] infoArray;
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
@@ -24,7 +30,7 @@ public class Hub {
     boolean miles = true;
     String optimization = "";
 
-    //three necessary getters!!
+    //three necessary getters
     public ArrayList<Distance> getShortestItinerary(){
         return this.shortestItinerary;
     }
@@ -37,7 +43,7 @@ public class Hub {
         return this.optimization;
     }
 
-    //three necessary setters!!
+    //three necessary setters
     public void setShortestItinerary(ArrayList<Distance> shortest){
         this.shortestItinerary = shortest;
     }
@@ -50,7 +56,6 @@ public class Hub {
         this.optimization = opt;
     }
 
-
     public void searchDatabase(String username, String password, String searchingFor){
         finalLocations.clear();
         shortestItinerary.clear();
@@ -60,55 +65,53 @@ public class Hub {
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
         //String myUrl = "jdbc:mysql://localhost/cs314"; // Use this line if tunneling 3306 traffic through shell
-
         try { // connect to the database
             Class.forName(myDriver);
             Connection conn = DriverManager.getConnection(myUrl, username, password);
             try { // create a statement
                 Statement st = conn.createStatement();
-                try { // submit a query to get column headers
-                    String q1 = "select column_name from information_schema.columns where table_name='airports';";
-                    ResultSet rs1 = st.executeQuery(q1);
-                    try { // iterate through the query results and give string of column headers to storeColumnHeaders
-                        String headers = "";
-                        while (rs1.next()){
-                            String h = rs1.getString(1);
-                            h = h + ",";
-                            headers += h;
+                try{
+                    //give order of column header to storeColumnHeaders
+                    String colHeaders = "airports_ID, airports_Code, airports_Type, airports_Name, airports_Latitude, airports_Longitude, airports_Elevation, airports_Continent, airports_Iso_country, airports_Iso_region, airports_Municipality, airports_Scheduled_service, airports_Gps_code, airports_Iata_code, airports_Local_code, airports_Home_link, airports_Wikipedia_link, airports_Keywords, "
+                            + "regions_ID, regions_Code, regions_Local_code, regions_Name, regions_Continent, regions_Iso_country, regions_Wikipedia_link, regions_Keywords, "
+                            + "countries_ID, countries_Code, countries_Name, countries_Continent, countries_Wikipedia_link, countries_Keywords, "
+                            + "continents_ID, continents_Name, continents_Code, continents_Wikipedia_link";
+                    storeColumnHeaders(colHeaders);
+
+                    String allTblsSearchQ = "select airports.id as airports_ID, airports.code as airports_Code, airports.type as airports_Type, airports.name as airports_Name, airports.latitude as airports_Latitude, airports.longitude as airports_Longitude, airports.elevation as airports_Elevation, airports.continent as airports_Continent, airports.iso_country as airports_Iso_country, airports.iso_region as airports_Iso_region, airports.municipality as airports_Municipality, airports.scheduled_service as airports_Scheduled_service, airports.gps_code as airports_Gps_code, airports.iata_code as airports_Iata_code, airports.local_code as airports_Local_code, airports.home_link as airports_Home_link, airports.wikipedia_link as airports_Wikipedia_link, airports.keywords as airports_Keywords, "
+                            + "regions.id as regions_ID, regions.code as regions_Code, regions.local_code as regions_Local_code, regions.name as regions_Name, regions.continent as regions_Continent, regions.iso_country as regions_Iso_country, regions.wikipedia_link as regions_Wikipedia_link, regions.keywords as regions_Keywords, "
+                            + "countries.id as countries_ID, countries.code as countries_Code, countries.name as countries_Name, countries.continent as countries_Continent, countries.wikipedia_link as countries_Wikipedia_link, countries.keywords as countries_Keywords, "
+                            + "continents.id as continents_ID, continents.name as continents_Name, continents.code as continents_Code, continents.wikipedia_link as continents_Wikipedia_link "
+                            + "from continents "
+                            + "inner join countries on countries.continent = continents.code "
+                            + "inner join regions on regions.iso_country = countries.code "
+                            + "inner join airports on airports.iso_region = regions.code "
+                            + "where "
+                            + "airports.id like '%" + searchingFor + "%' or airports.code like '%" + searchingFor + "%' or airports.type like '%" + searchingFor + "%' or airports.name like '%" + searchingFor + "%' or airports.latitude like '%" + searchingFor + "%' or airports.longitude like '%" + searchingFor + "%' or airports.elevation like '%" + searchingFor + "%' or airports.continent like '%" + searchingFor + "%' or airports.iso_country like '%" + searchingFor + "%' or airports.iso_region like '%" + searchingFor + "%' or airports.municipality like '%" + searchingFor + "%' or airports.scheduled_service like '%" + searchingFor + "%' or airports.gps_code like '%" + searchingFor + "%' or airports.iata_code like '%" + searchingFor + "%' or airports.local_code like '%" + searchingFor + "%' or airports.home_link like '%" + searchingFor + "%' or airports.wikipedia_link like '%" + searchingFor + "%' or airports.keywords like '%" + searchingFor + "%' or "
+                            + "regions.id like '%" + searchingFor + "%' or regions.code like '%" + searchingFor + "%' or regions.local_code like '%" + searchingFor + "%' or regions.name like '%" + searchingFor + "%' or regions.continent like '%" + searchingFor + "%' or regions.iso_country like '%" + searchingFor + "%' or regions.wikipedia_link like '%" + searchingFor + "%' or regions.keywords like '%" + searchingFor + "%' or "
+                            + "countries.id like '%" + searchingFor + "%' or countries.code like '%" + searchingFor + "%' or countries.name like '%" + searchingFor + "%' or countries.continent like '%" + searchingFor + "%' or countries.wikipedia_link like '%" + searchingFor + "%' or countries.keywords like '%" + searchingFor + "%' or "
+                            + "continents.id like '%" + searchingFor + "%' or continents.name like '%" + searchingFor + "%' or continents.code like '%" + searchingFor + "%' or continents.wikipedia_link like '%" + searchingFor + "%' "
+                            + "limit 100;";
+
+                    ResultSet allTblsSearchRS = st.executeQuery(allTblsSearchQ);
+                    try{ //parse matched rows
+                        while(allTblsSearchRS.next()){ //for each row
+                            String matchedRow = "";
+                            for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
+                                String rowCol = allTblsSearchRS.getString(i);
+                                rowCol = rowCol + ",";
+                                matchedRow += rowCol;
+                            }
+                            parseRow(matchedRow);
                         }
-                        storeColumnHeaders(headers);
-
-                        try{ //search for searchingFor string in all columns
-                            st = conn.createStatement();
-
-                            String q2 = "select * from airports where name like '%" + searchingFor + "%' or type like '%" + searchingFor + "%' or id like '%" + searchingFor + "%' or latitude like '%" + searchingFor + "%' or longitude like '%" + searchingFor + "%' or municipality like '%" + searchingFor + "%' or elevation like '%" + searchingFor + "%' or home_link like '%" + searchingFor + "%' or wikipedia_link like '%" + searchingFor + "%' order by name;";
-                            ResultSet rs2 = st.executeQuery(q2);
-                            try{ //parse matched rows
-                                int count = 0;
-
-                                while(rs2.next() && count <= 49){ //for each row
-                                    String matchedRow = "";
-                                    for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
-                                        String rowCol = rs2.getString(i);
-                                        rowCol = rowCol + ",";
-                                        matchedRow += rowCol;
-                                    }
-
-                                    parseRow(matchedRow);
-                                    ++count;
-                                }
-                            } finally { rs2.close(); }
-                        } finally{ st.close(); }
-
-                    } finally { rs1.close(); }
-                } finally {}
-
+                    } finally { allTblsSearchRS.close(); }
+                } finally{ st.close(); }
             } finally { conn.close(); }
         } catch (Exception e) { // catches all exceptions in the nested try's
             System.err.printf("Exception: ");
             System.err.println(e.getMessage());
         }
-        //call rest of hub
+
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
@@ -127,6 +130,7 @@ public class Hub {
                 shortestItinerary = locationsToDistances(finalLocations);
                 break;
         }
+
     }
 
     public void storeColumnHeaders(String firstLine){
@@ -135,17 +139,17 @@ public class Hub {
         for (int i = 0; i < infoArray.length; i++) {
             String infoString = infoArray[i];
             switch (infoString.trim()) { // associating column titles with column num, putting it in map
-                case "name":
-                    columns.put("name", i);
-                    reverseC.put(i, "name");
+                case "airports_name":
+                    columns.put("airports_name", i);
+                    reverseC.put(i, "airports_name");
                     break;
-                case "latitude":
-                    columns.put("latitude", i);
-                    reverseC.put(i, "latitude");
+                case "airports_latitude":
+                    columns.put("airports_latitude", i);
+                    reverseC.put(i, "airports_latitude");
                     break;
-                case "longitude":
-                    columns.put("longitude", i);
-                    reverseC.put(i, "longitude");
+                case "airports_longitude":
+                    columns.put("airports_longitude", i);
+                    reverseC.put(i, "airports_longitude");
                     break;
                 default:
                     columns.put(infoString.trim(), i);
@@ -164,11 +168,11 @@ public class Hub {
         String objectLongitude = "";
         //populates necessary info into variables
         for (int i = 0; i < props.length; ++i) {
-            if (i == columns.get("name")) {
+            if (i == columns.get("airports_name")) {
                 objectName = props[i].trim();
-            } else if (i == columns.get("latitude")) {
+            } else if (i == columns.get("airports_latitude")) {
                 objectLatitude = props[i].trim();
-            } else if (i == columns.get("longitude")) {
+            } else if (i == columns.get("airports_longitude")) {
                 objectLongitude = props[i].trim();
             } else {
                 info.put(reverseC.get(i), props[i]);
@@ -279,10 +283,10 @@ public class Hub {
                     Distance d = (Distance) gcds[row][i];
                     if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
                         shortestDistance = d;
-                        tripDistance += shortestDistance.getGcd();
                     }
                 }
                 currentLocation = shortestDistance.getEndID();
+                tripDistance += shortestDistance.getGcd();
             }
 
             //add the distance back to the original city
@@ -385,7 +389,7 @@ public class Hub {
                 currentLocation = shortestDistance.getEndID();
             }
 
-            //add the distance back to the original city
+            //add the distance back to the original cit
             Object[] backAround = gcds[row];
             //grab the distance from the current city to original city
             Distance temp = new Distance(currentLocation, l, miles);
@@ -398,7 +402,7 @@ public class Hub {
             }
 
             //apply 2opt
-            checkImprovement(traveledTo);
+            checkImprovement2(traveledTo);
 
             //get the updated trip distance after 2opt
             ArrayList<Distance> traveledDistances = locationsToDistances(traveledTo);
@@ -444,7 +448,7 @@ public class Hub {
         }
 
         //apply 2opt
-        checkImprovement(traveledToFinal);
+        checkImprovement2(traveledToFinal);
         //convert traveledToFinal location array to a distance array
         shortestItinerary = locationsToDistances(traveledToFinal);
     }
@@ -472,7 +476,7 @@ public class Hub {
     }
 
     //determines all the possible areas that 2opt could improve in a given arraylist of locations
-    private void checkImprovement(ArrayList<Location> traveled) {
+    private void checkImprovement2(ArrayList<Location> traveled) {
         boolean improvement = true;
         //while there is still possible improvements to be made
         while (improvement) {
@@ -485,7 +489,7 @@ public class Hub {
                     Distance i1k1 = new Distance(traveled.get(i + 1), traveled.get(k + 1), miles);
                     double delta = (-ii1.getGcd()) - kk1.getGcd() + ik.getGcd() + i1k1.getGcd();
                     if (delta < 0) { //improvement?
-                        optSwap2(traveled, i + 1, k);
+                        optSwap(traveled, i + 1, k);
                         improvement = true;
                     }
                 }
@@ -493,8 +497,91 @@ public class Hub {
         }
     }
 
-    //preforms the swap method for 2opt
-    private void optSwap2(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
+    //determines all the possible areas that 2opt could improve in a given arraylist of locations
+    private void checkImprovement3(ArrayList<Location> traveled) {
+        boolean improvement = true;
+        //while there is still possible improvements to be made
+        while (improvement) {
+            improvement = false;
+            for (int i = 0; i <= traveled.size() - 5; i++) {
+                //starts at i+2 because i, i+1, start at j
+                for (int j = i + 2; j < traveled.size() - 3; j++)
+                    //starts at i+4 because i, i+1, j, j+1, start at k
+                    for (int k = i + 4; k < traveled.size() - 1; k++) {
+                        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+                        Distance ij = new Distance(traveled.get(i), traveled.get(j), miles);
+                        Distance ij1 = new Distance(traveled.get(i), traveled.get(j+1), miles);
+                        Distance ik = new Distance(traveled.get(i), traveled.get(k), miles);
+                        Distance ik1 = new Distance(traveled.get(i), traveled.get(k+1), miles);
+
+                        Distance i1j = new Distance(traveled.get(i+1), traveled.get(j), miles);
+                        Distance i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
+                        Distance i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
+                        Distance i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
+
+                        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+                        Distance jk = new Distance(traveled.get(j), traveled.get(k), miles);
+                        Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
+
+                        Distance j1k = new Distance(traveled.get(j+1), traveled.get(k), miles);
+                        Distance j1k1 = new Distance(traveled.get(j+1), traveled.get(k+1), miles);
+
+                        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+
+
+                        //won't the arraylist be changing after everyone of these swaps?
+                        //create a temp for each one? complexity?
+
+                        // --- SWAP 1 --- (orange 1)
+                        // (i, j) (i+1, j+1) (k, k+1)
+//                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+//                                + ij.getGcd() + i1j1.getGcd() + kk1.getGcd();
+
+                        // --- SWAP 2 --- (orange 2)
+                        // (i, i+1) (j, k) (j+1, k+1)
+
+                        //delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                        //  + ii1.getGcd() + jk.getGcd() + j1k1.getGcd();
+
+
+                        // --- SWAP 3 --- (orange 3)
+                        // (i, k) (j+1, j) (i+1, k+1)
+
+//                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+//                                + ik.getGcd() + jj1.getGcd() + i1k1.getGcd();
+
+
+
+                        // --- SWAP 4 --- (blue 1)
+                        // (i, j) (i+1, k) (j+1, k+1)
+
+//                        delta4 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+//                                + ij.getGcd() + i1k.getGcd() + k1;
+
+
+                        // --- SWAP 5 --- (blue 2)
+                        // (i, k) (j+1, i+1) (j, k+1) -- switch two parts, then swap j+1 and k
+
+
+
+                        // --- SWAP 6 --- (blue 3)
+                        // (i, j+1) (k, j) (i+1, k+1)
+
+
+                        // --- SWAP 7 --- (green 1)
+                        // (i, j+1) (k, i+1) (j, k+1)
+
+                        //assert that the old distance - delta = new distance
+                        //possible infinite loop
+
+                    }
+            }
+        }
+    }
+
+
+    //preforms the swap method for 2opt and 3opt
+    private void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
         while (i1 < k) {
             //swap i+1 and k
             Location temp = traveledTo.get(i1);
@@ -524,26 +611,29 @@ public class Hub {
     public String drawSVG() throws FileNotFoundException {
         String SVG = "";
 
-        //ClassLoader classLoader = this.getClass().getClassLoader();
-        String filepath = "src/main/resources/WorldMap.svg";
-        File WorldMapFile = new File(filepath);
-
-        //copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
-        LinkedList<String> ll = new LinkedList<String>();
         try {
-            Scanner br = new Scanner(WorldMapFile);
+            InputStream in = getClass().getResourceAsStream("/WorldMap.svg");
+            BufferedReader buf = new BufferedReader(new InputStreamReader(in));
+
+            File WorldMapFile;
+
+
+            //System.out.println(this.getClass().getResourceAsStream("/WorldMap.svg"));
+            // copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
+            LinkedList<String> ll = new LinkedList<String>();
+
             String line;
-            while (br.hasNext()) {
-                line = br.nextLine();
+            while ((line = buf.readLine()) != null) {
 
                 ll.addLast(line);
             }
             for (int i = 0; i < (ll.size() - 3); i++) {
                 SVG += ll.get(i);
             }
-            br.close();
+            buf.close();
         } catch (IOException e) {
             System.out.println("ERROR: FAILED TO WRITE SVG. Caught after trying to create a scanner");
+            System.out.println("Exception: " + e);
             System.exit(0);
         }
         SVG += "</g>";
@@ -612,11 +702,23 @@ public class Hub {
                 finalEndLat = d.getEndID().getLatitude();
                 finalEndLon = d.getEndID().getLongitude();
 
-                double x1 = startLon;
-                double y1 = startLat;
-                double x2 = endLon;
-                double y2 = endLat;
-                SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
+                //compute the length of the line in pixels
+                //use basic distance formula to compute the distance between the two points
+                //distance = sqr((x2-x1)^2 + (y2-y1)^2))
+                double distance =Math.sqrt((Math.pow((endLon-startLon),2)) + (Math.pow((endLat-startLat),2)));
+
+                //if longer than 512 pixels, then you need to draw it around the back
+                if(distance < 512){
+                    double x1 = startLon;
+                    double y1 = startLat;
+                    double x2 = endLon;
+                    double y2 = endLat;
+                    SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
+                }
+                else{
+                    //call helper method to get the two lines that need to wrap around the map
+                    SVG += wrapAround(startLon, startLat, endLon, endLat);
+                }
             }
 
             if (finalEndLat < 0) { //lat is negative
@@ -656,21 +758,67 @@ public class Hub {
                 finalEndLon = 1024 - (180-finalEndLon) * unit;
             }
             else{
-                originStartLon = 512;
+                finalEndLon = 512;
             }
 
-            //draw last line connected end point with start
-            double endX1 = finalEndLon;
-            double endY1 = finalEndLat;
-            double endX2 = originStartLon;
-            double endY2 = originStartLat;
-            SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
-
+            double distancefinal =Math.sqrt((Math.pow((originStartLon-finalEndLon),2)) + (Math.pow((originStartLat-finalEndLat),2)));
+            if(distancefinal < 512) {
+                //draw last line connected end point with start
+                double endX1 = finalEndLon;
+                double endY1 = finalEndLat;
+                double endX2 = originStartLon;
+                double endY2 = originStartLat;
+                SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
+            }
+            else{
+                SVG += wrapAround(finalEndLon, finalEndLat, originStartLon, originStartLat);
+            }
             SVG += "</svg>";
         }
-
         return SVG;
 
+    }
+
+    private String wrapAround(double x1, double y1, double x2, double y2){
+        String aroundBackLines = "";
+        //reflect both points across the y axis
+        //do midpoint formula to get the point in the middle
+        // M = ( (x1 + x2)/2 ,  (y1 + y2)/2  )
+        double midX = (x1 + x2) / 2;
+        double midY = (y1 + y2) / 2;
+        //now have two points that make a line and can be reflected across and axis
+        //To reflect: Go one point at a time:
+        //the point is the new axis
+        //figure out the distance between the mid point's x and the og point's x
+        //then add/subtract that distance (depending on which direction you're going) for your new x
+        // you will keep the same y value
+
+
+        //left point first - (x1, y1)
+        double leftDFromAxis = midX - x1;
+        double newLeftX = x1 - leftDFromAxis;
+        if(newLeftX < 512){
+            newLeftX = 0;
+        }
+        else{
+            newLeftX = 1024;
+        }
+
+        //new line needs to be drawn from (new left x to x1)
+        aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + newLeftX + "\" y1=\"" + midY + "\" x2=\"" + x1 + "\" y2=\"" + y1 + "\" id=\"svg_1\"/>";
+        //right point next - (x2, y2)
+        double rightDFromAxis = x2 - midX;
+        double newRightX = x2 + rightDFromAxis;
+        if(newRightX < 512){
+            newRightX = 0;
+        }
+        else {
+            newRightX = 1024;
+        }
+
+        //new line needs to be drawn from (new left x to x1)
+        aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x2 + "\" y1=\"" + y2 + "\" x2=\"" + newRightX + "\" y2=\"" + midY + "\" id=\"svg_1\"/>";
+        return aroundBackLines;
     }
 
 }

@@ -75,7 +75,7 @@ import static spark.Spark.post;
          // Create object with svg file path and array of matching database entries to return to server
          ServerQueryResponse sRes = new ServerQueryResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image
 
-         System.out.println("Sending \"" + sRes.toString() + "\" to server.");
+         //System.out.println("Sending \"" + sRes.toString() + "\" to server.");
 
          //Convert response to json
          return gson.toJson(sRes, ServerQueryResponse.class);
