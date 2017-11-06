@@ -33,10 +33,10 @@ render() {
         var label = document.createElement("label");
         var br = document.createElement("br");
         checkBox.type = "checkbox";
-        checkBox.value = this.props.queryResults[i].startID.name;
+        checkBox.value = this.props.queryResults[i].name;
         myDiv.appendChild(checkBox);
         myDiv.appendChild(label);
-        label.appendChild(document.createTextNode(this.props.queryResults[i].startID.name));
+        label.appendChild(document.createTextNode(this.props.queryResults[i].name));
         myDiv.appendChild(br);
     }
     console.log("MyDiv", myDiv);
