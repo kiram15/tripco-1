@@ -80,8 +80,16 @@ startEndInfo(file) {
         if ("Airport ID" ==columnNames[j]) {
             finalStr = finalStr + "Airport ID: " + seCol.airports_id + "\n";
         }
+<<<<<<< HEAD
         else if("Latitude" ==columnNames[j]) {
             finalStr = finalStr + "Latitude: " + seCol.Latitude+ "\n";
+=======
+        else if ("code" ==columnNames[j]) {
+            finalStr = finalStr + "Code: " + seCol.code + "\n";
+        }
+        else if ("id" ==columnNames[j]) {
+            finalStr = finalStr + "ID: " + seCol.id + "\n";
+>>>>>>> e68ce94f8d294468e7ef51eb3d3f7daaccc0f95f
         }
         else if("Longitude" ==columnNames[j]) {
             finalStr = finalStr + "Longitude: " + seCol.Longitude+ "\n";
