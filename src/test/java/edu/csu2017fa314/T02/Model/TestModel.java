@@ -268,7 +268,7 @@ public class TestModel {
     }
 
     // ------------------------- Test searchDatabase ----------------------------
-
+/*
     @Test
     public void testSearchDatabase() {
         // JDBC driver name and database URL
@@ -277,7 +277,7 @@ public class TestModel {
 
         //  Database credentials
         final String username = "Amber Nolte";
-        final String password = "mtw14nov";
+        final String password = "password";
 
         try { // connect to the database
             Class.forName(myDriver);
@@ -321,7 +321,7 @@ public class TestModel {
             System.err.println(e.getMessage());
         }
 
-    }
+    }*/
 
 
 }
