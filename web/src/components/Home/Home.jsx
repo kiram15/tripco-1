@@ -224,8 +224,12 @@ updateSelectedLocations(event) {
 
     var selected = document.getElementById("checkedLocations");
     for (var i = 0; i < (this.state.selectedLocations); i++) {
+       var inputSL = document.createElement("input");
        var labelSL = document.createElement("label");
        var br = document.createElement("br");
+       inputSL.type = "text";
+       inputSL.value = this.state.selectedLocations[i];
+       selected.appendChild(inputSL);
        selected.appendChild(labelSL);
        labelSL.appendChild(document.createTextNode(this.state.selectedLocations[i]));
        selected.appendChild(br);
