@@ -513,7 +513,7 @@ public class Hub {
                 }
             }
 
-            //apply 2opt
+            //apply 3opt
             checkImprovement3(traveledTo);
 
             //get the updated trip distance after 2opt
@@ -557,7 +557,7 @@ public class Hub {
             }
             currentLocation = shortestDistance.getEndID();
         }
-        //apply 2opt
+        //apply 3opt
         checkImprovement3(traveledToFinal);
         //convert traveledToFinal location array to a distance array
         shortestItinerary = locationsToDistances(traveledToFinal);
@@ -633,6 +633,11 @@ public class Hub {
 
                         Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
 
+                        int ogDistance = 0;
+                        ArrayList<Distance> ogDistances = locationsToDistances(traveled);
+                        for (int a = 0; a < ogDistances.size(); a++) {
+                            ogDistance += ogDistances.get(a).getGcd();
+                        }
 
                         //won't the arraylist be changing after everyone of these swaps?
                         //create a temp for each one? complexity?
@@ -643,15 +648,31 @@ public class Hub {
                                 + ij.getGcd() + i1j1.getGcd() + kk1.getGcd();
 
                         if (delta1 < 0) { //improvement?
+                            System.out.println("DELTA1 < 0: YES " + delta1);
+                            System.out.println("BEFORE: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
+
                             optSwap(traveled, i + 1, j); //swap i+1 and j
                             improvement = true;
+
+                            System.out.println("\nAFTER: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
 
                             int updatedDistance1 = 0;
                             ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
                             for (int a = 0; a < traveledDistances.size(); a++) {
                                 updatedDistance1 += traveledDistances.get(a).getGcd();
                             }
-                            System.out.println("New Distance (1): " + updatedDistance1);
+                            System.out.println("\n" + ogDistance + " + " + delta1 +
+                                    " == " + updatedDistance1);
+                            assert ogDistance + delta1 == updatedDistance1 : "Swap 1 Failed";
+                            ogDistance = updatedDistance1;
+                            System.out.println("New Distance (1): " + updatedDistance1  + "\n");
+                            //assert that the old distance - delta = new distance
                         }
 
                         // ------------- SWAP 2 ------------- (orange 2)
@@ -661,15 +682,30 @@ public class Hub {
                                 + ii1.getGcd() + jk.getGcd() + j1k1.getGcd();
 
                         if (delta2 < 0) { //improvement?
+                            System.out.println("DELTA2 < 0: YES " + delta2);
+                            System.out.println("BEFORE: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
+
                             optSwap(traveled, j + 1, k); //swap j+1 and k
                             improvement = true;
+
+                            System.out.println("\nAFTER: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
 
                             int updatedDistance2 = 0;
                             ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
                             for (int a = 0; a < traveledDistances.size(); a++) {
                                 updatedDistance2 += traveledDistances.get(a).getGcd();
                             }
-                            System.out.println("New Distance (2): " + updatedDistance2);
+                            System.out.println("\n" + ogDistance + " + " + delta2 +
+                                    " == " + updatedDistance2);
+                            assert ogDistance + delta2 == updatedDistance2 : "Swap 2 Failed";
+                            ogDistance = updatedDistance2;
+                            System.out.println("New Distance (2): " + updatedDistance2  + "\n");
                         }
 
                         // ------------- SWAP 3 ------------- (orange 3)
@@ -679,15 +715,30 @@ public class Hub {
                                 + ik.getGcd() + jj1.getGcd() + i1k1.getGcd();
 
                         if (delta3 < 0) { //improvement?
+                            System.out.println("DELTA3 < 0: YES " + delta3);
+                            System.out.println("BEFORE: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
+
                             optSwap(traveled, i + 1, k); //reverse i+1 through k
                             improvement = true;
+
+                            System.out.println("\nAFTER: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
 
                             int updatedDistance3 = 0;
                             ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
                             for (int a = 0; a < traveledDistances.size(); a++) {
                                 updatedDistance3 += traveledDistances.get(a).getGcd();
                             }
-                            System.out.println("New Distance (3): " + updatedDistance3);
+                            System.out.println("\n" + ogDistance + " + " + delta3 +
+                                    " == " + updatedDistance3);
+                            assert ogDistance + delta3 == updatedDistance3 : "Swap 3 Failed";
+                            ogDistance = updatedDistance3;
+                            System.out.println("New Distance (3): " + updatedDistance3  + "\n");
                         }
 
                         // ------------- SWAP 4 ------------- (blue 1)
@@ -697,8 +748,19 @@ public class Hub {
                                 + ij.getGcd() + i1k.getGcd() + j1k1.getGcd();
 
                         if (delta4 < 0) { //improvement?
+                            System.out.println("DELTA4 < 0: YES " + delta4);
+                            System.out.println("BEFORE: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
+
                             optSwap(traveled, i + 1, j); //swap i+1 and j
                             optSwap(traveled, j + 1, k); //swap j+1 and k
+
+                            System.out.println("\nAFTER: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
                             improvement = true;
 
                             int updatedDistance4 = 0;
@@ -706,7 +768,11 @@ public class Hub {
                             for (int a = 0; a < traveledDistances.size(); a++) {
                                 updatedDistance4 += traveledDistances.get(a).getGcd();
                             }
-                            System.out.println("New Distance (4): " + updatedDistance4);
+                            System.out.println("\n" + ogDistance + " + " + delta4 +
+                                    " == " + updatedDistance4);
+                            assert ogDistance + delta4 == updatedDistance4 : "Swap 4 Failed";
+                            ogDistance = updatedDistance4;
+                            System.out.println("New Distance (4): " + updatedDistance4  + "\n");
                         }
 
                         // ------------- SWAP 5 ------------- (blue 2)
@@ -715,15 +781,31 @@ public class Hub {
                                 + ik.getGcd() + i1j1.getGcd() + jk1.getGcd();
 
                         if (delta5 < 0) { //improvement?
-                            optSwap(traveled, i + 1, j); //swap j+1 and k
+                            System.out.println("DELTA5 < 0: YES " + delta5);
+                            System.out.println("BEFORE: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
+
+                            optSwap(traveled, j + 1, k); //swap j+1 and k
                             replaceSegment(i + 1, j + 1, k, traveled);
+
+                            System.out.println("\nAFTER: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
+                            improvement = true;
 
                             int updatedDistance5 = 0;
                             ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
                             for (int a = 0; a < traveledDistances.size(); a++) {
                                 updatedDistance5 += traveledDistances.get(a).getGcd();
                             }
-                            System.out.println("New Distance (5): " + updatedDistance5);
+                            System.out.println("\n" + ogDistance + " + " + delta5 +
+                                    " == " + updatedDistance5);
+                            assert ogDistance + delta5 == updatedDistance5 : "Swap 5 Failed";
+                            ogDistance = updatedDistance5;
+                            System.out.println("New Distance (5): " + updatedDistance5 + "\n");
                         }
 
                         // ------------- SWAP 6 ------------- (blue 3)
@@ -732,15 +814,30 @@ public class Hub {
                                 + ij1.getGcd() + jk.getGcd() + i1k1.getGcd();
 
                         if (delta6 < 0) { //improvement?
+                            System.out.println("DELTA6 < 0: YES " + delta6);
+                            System.out.println("BEFORE: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
                             optSwap(traveled, i+1, j);
                             replaceSegment(i + 1, j + 1, k, traveled);
+
+                            System.out.println("\nAFTER: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
 
                             int updatedDistance6 = 0;
                             ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
                             for (int a = 0; a < traveledDistances.size(); a++) {
                                 updatedDistance6 += traveledDistances.get(a).getGcd();
                             }
-                            System.out.println("New Distance (6): " + updatedDistance6);
+                            System.out.println("\n" + ogDistance + " + " + delta6 +
+                                    " == " + updatedDistance6);
+
+                            assert ogDistance + delta6 == updatedDistance6 : "Swap 6 Failed";
+                            ogDistance = updatedDistance6;
+                            System.out.println("New Distance (6): " + updatedDistance6  + "\n");
                         }
 
                         // ------------- SWAP 7 ------------- (green 1)
@@ -748,17 +845,31 @@ public class Hub {
                         double delta7 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
                                 + ij1.getGcd() + i1k.getGcd() + jk1.getGcd();
 
-                        // --- SWAP 6 --- (blue 3)
-                        // (i, j+1) (k, j) (i+1, k+1)
 
                         if (delta7 < 0) { //improvement?
+                            System.out.println("DELTA7 < 0: YES " + delta7);
+                            System.out.println("BEFORE: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
+
                             replaceSegment(i + 1, j + 1, k, traveled);
+
+                            System.out.println("\nAFTER: ");
+                            for (int y = 0; y < traveled.size(); y++) {
+                                System.out.print(traveled.get(y).getName());
+                            }
 
                             int updatedDistance7 = 0;
                             ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
                             for (int a = 0; a < traveledDistances.size(); a++) {
                                 updatedDistance7 += traveledDistances.get(a).getGcd();
                             }
+                            System.out.println("\n" + ogDistance + " + " + delta7 +
+                                    " == " + updatedDistance7);
+
+                            assert ogDistance + delta7 == updatedDistance7 : "Swap 7 Failed";
+                            ogDistance = updatedDistance7;
                             System.out.println("New Distance (7): " + updatedDistance7);
                         }
 
@@ -785,7 +896,7 @@ public class Hub {
     //switches all the elements from (i+1 to j) with the elements from (j+1 to k)
     public void replaceSegment(int i1, int j1, int k, ArrayList<Location> traveled) {
         ArrayList <Location> list2 = new ArrayList<Location>();
-        for(int x = k; x > j1; x--) { //for all the elements from j+1 to k
+        for(int x = k; x >= j1; x--) { //for all the elements from j+1 to k
             list2.add(traveled.remove(x)); //remove them from the original list in backwards order
         }
 

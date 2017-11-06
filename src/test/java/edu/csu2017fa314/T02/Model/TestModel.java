@@ -247,7 +247,6 @@ public class TestModel {
         h0.parseRow("jamesp, james, godrics hollow, 37.0, -95.0, 10");//F
         h0.shortestTrip3Opt();
 
-
         ArrayList<Distance> check1 = fillShortTrip3Opt();
         ArrayList<Distance> check2 = h0.shortestItinerary;
 
@@ -260,11 +259,9 @@ public class TestModel {
             System.out.println("S: " + check2.get(i).getStartID().getName()  + " E: " + check2.get(i).getEndID().getName());
         }
 
-
         assertEquals(fillShortTrip3Opt(), h0.shortestItinerary);
     }
-
-
+    
     private ArrayList<Distance> fillShortTrip3Opt(){
         Location a = new Location("kira", 34.0, -92.0, null);
         Location b = new Location("amber", 34.0, -88.0, null);
@@ -468,6 +465,7 @@ public class TestModel {
         Location d = new Location("D", 40.0, -88.0, null);
         Location e = new Location("E", 40.0, -92.0, null);
         Location f = new Location("F", 37.0, -95.0, null);
+
 
         ArrayList<Location> checkAgainst = new ArrayList<Location>();
         checkAgainst.add(a);
