@@ -148,56 +148,64 @@ public class TestModel {
         assertEquals(-106.24, h.latLonConvert("-106.24"), 0.01);
     }
 
-    // ------------------- Test Shorter Trip -------------------
-
-    //
-    //    @Test
-    //    public void testShorterTrip(){
-    //        //tests shorterTrip by making a call to readFile which then calls the shorter trip method
-    //        //method should return an ArrayList<Distance> that contains the itinerary for the shortest trip
-    //        //given the smaller_test.csv file I'm passing it, it should return the following array list:
-    //        Hub h0 = new Hub();
-    //        h0.readFile("smaller_test.csv");
-    //        assertEquals(fillShortTrip(), h0.shortestTrip());
-    //
-    //    }
-
-//    private ArrayList<Distance> fillShortTrip() {
-//        Location st0 = new Location("two22 brew", h.latLonConvert("39°38'07\" N"), h.latLonConvert("104°45'32\" W"), null);
-//        Location st1 = new Location("mad jacks mountain brewery", h.latLonConvert("39°24'05\" N"), h.latLonConvert("105°28'37\" W"), null);
-//        Location st2 = new Location("equinox brewing", h.latLonConvert("40°35'17\" N"), h.latLonConvert("105°4'26\" W"), null);
-//        Location st3 = new Location("elevation beer company", h.latLonConvert("38°31'06\" N"), h.latLonConvert("106°03'32\" W"), null);
-//
-//        Distance d0 = new Distance(st0, st1);
-//        Distance d1 = new Distance(st1, st3);
-//        Distance d2 = new Distance(st3, st2);
-//        Distance d3 = new Distance(st2, st0);
-//
-//        ArrayList<Distance> checkAgainst = new ArrayList<Distance>();
-//        checkAgainst.add(d0);
-//        checkAgainst.add(d1);
-//        checkAgainst.add(d2);
-//        checkAgainst.add(d3);
-//
-//        return checkAgainst;
-//    }
-
+    // ------------------- Test Shorter Trip Nearest Neighbor -------------------
+    
     @Test
-    public void testShorterTrip() {
+    public void testShorterTripNN(){
         //tests shorterTrip by making a call to storeColumnHeaders and parseRow which then calls the
         //shorter trip method. The shorterTrip method does not return anything, but does set the value
         //of hub's shortestItinerary
         Hub h0 = new Hub();
-        h0.storeColumnHeaders("id,name,city,latitude,longitude,elevation,");
+        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
+        h0.parseRow("kiram15,kira,fort collins, 45.0, 45.0, 10");
+        h0.parseRow("alnolte,amber,denver, 22.5, 135.0, 10");
+        h0.parseRow("nkacirek,nicole,boulder, 85.0, 175.0, 10");
+        h0.parseRow("emictosh,emerson,littleton, 25.0, 90.0, 10");
+        h0.shortestTripNN();
+        assertEquals(fillShortTripNN(), h0.shortestItinerary);
+    }
+
+    private ArrayList<Distance> fillShortTripNN(){
+        Location n0 = new Location("kira", 45.0, 45.0, null);
+        Location n1 = new Location("amber", 22.5, 135.0, null);
+        Location n2 = new Location("nicole", 85.0, 175.0, null);
+        Location n3 = new Location("emerson", 25.0, 90.0, null);
+
+        Distance d0 = new Distance(n0, n3, miles);
+        Distance d1 = new Distance(n3, n1, miles);
+        Distance d2 = new Distance(n1, n2, miles);
+        Distance d3 = new Distance(n2, n0, miles);
+
+        ArrayList<Distance> checkAgainst = new ArrayList<Distance>();
+        checkAgainst.add(d0);
+        checkAgainst.add(d1);
+        checkAgainst.add(d2);
+        checkAgainst.add(d3);
+
+        return checkAgainst;
+    }
+
+    // ------------------- Test Shorter Trip 2opt -------------------
+
+    @Test
+    public void testShorterTrip2Opt(){
+
+        //tests shorterTrip by making a call to storeColumnHeaders and parseRow which then calls the
+        //shorter trip method. The shorterTrip method does not return anything, but does set the value
+        //of hub's shortestItinerary
+        Hub h0 = new Hub();
+        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
         h0.parseRow("kiram15,kira,fort collins, 40.0, 50.0, 10");
         h0.parseRow("alnolte,amber,denver, 60.0, 70.5, 10");
         h0.parseRow("nkacirek,nicole,boulder, 100.0, 60.0, 10");
         h0.parseRow("emictosh,emerson,littleton, 45.0, 55.0, 10");
         h0.shortestTrip2Opt();
-        assertEquals(fillShortTrip(), h0.shortestItinerary);
+        assertEquals(fillShortTrip2Opt(), h0.shortestItinerary);
     }
 
-    private ArrayList<Distance> fillShortTrip() {
+
+    private ArrayList<Distance> fillShortTrip2Opt(){
+
         Location n0 = new Location("kira", 40.0, 50.0, null);
         Location n1 = new Location("amber", 60.0, 70.5, null);
         Location n2 = new Location("nicole", 100.0, 60.0, null);
