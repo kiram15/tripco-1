@@ -41,6 +41,20 @@ render() {
     }
     console.log("MyDiv", myDiv);
 
+    var selected = document.getElementById("checkedLocations");
+    for (var i = 0; i < (this.state.selectedLocations); i++) {
+        var inputSL = document.createElement("input");
+        var labelSL = document.createElement("label");
+        var br = document.createElement("br");
+        inputSL.type = "text";
+        inputSL.value = this.state.selectedLocations[i];
+        selected.appendChild(inputSL);
+        selected.appendChild(labelSL);
+        labelSL.appendChild(document.createTextNode(this.state.selectedLocations[i]));
+        selected.appendChild(br);
+    }
+      console.log("selected Div", selected);
+
     let total = this.props.totalDist; //update the total here
     let svg = this.props.svg;
     let txtSearch;
@@ -221,22 +235,6 @@ updateSelectedLocations(event) {
         }
     }
     console.log("selectedLocations:", this.state.selectedLocations);
-
-    var selected = document.getElementById("checkedLocations");
-    for (var i = 0; i < (this.state.selectedLocations); i++) {
-       var inputSL = document.createElement("input");
-       var labelSL = document.createElement("label");
-       var br = document.createElement("br");
-       inputSL.type = "text";
-       inputSL.value = this.state.selectedLocations[i];
-       selected.appendChild(inputSL);
-       selected.appendChild(labelSL);
-       labelSL.appendChild(document.createTextNode(this.state.selectedLocations[i]));
-       selected.appendChild(br);
-  }
-  console.log("selected Div", selected);
-
-
 }
 
 selectAll(source) {
