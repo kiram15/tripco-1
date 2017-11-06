@@ -35,6 +35,10 @@ public class Hub {
         return this.shortestItinerary;
     }
 
+    public ArrayList<Location> getFinalLocations(){
+        return this.finalLocations;
+    }
+
     public boolean getMiles(){
         return this.miles;
     }
@@ -112,6 +116,10 @@ public class Hub {
             System.err.println(e.getMessage());
         }
 
+        //moved the call to shortest Trip out of database
+    }
+
+    public void createItinerary(){
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
@@ -130,7 +138,6 @@ public class Hub {
                 shortestItinerary = locationsToDistances(finalLocations);
                 break;
         }
-
     }
 
     public void storeColumnHeaders(String firstLine){

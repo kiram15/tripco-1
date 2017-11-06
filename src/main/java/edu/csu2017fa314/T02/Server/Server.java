@@ -8,6 +8,7 @@ import spark.Request;
 import spark.Response;
 import edu.csu2017fa314.T02.Model.Hub;
 import edu.csu2017fa314.T02.Model.Distance;
+import edu.csu2017fa314.T02.Model.Location;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ import static spark.Spark.post;
          h.searchDatabase(this.user, this.password, searched);
 
          //System.out.println("after search database");
-         ArrayList<Distance> trip = h.getShortestItinerary();
+         ArrayList<Location> trip = h.getFinalLocations();
          // Create object with svg file path and array of matching database entries to return to server
          ServerQueryResponse sRes = new ServerQueryResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image
 
