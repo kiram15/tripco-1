@@ -144,6 +144,7 @@ keyUp(event) {
 handleSubmit(event) {
     document.getElementById("searchResult").innerHTML = "";
     this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization);
+    event.preventDefault();
     //console.log("handle submit");
         var myDiv = document.getElementById("searchResult");
         for (var i = 0; i < (this.props.queryResults.length); i++) {
@@ -158,7 +159,7 @@ handleSubmit(event) {
             myDiv.appendChild(br);
         }
         console.log("MyDiv", myDiv);
-    event.preventDefault();
+
 }
 
 buttonClicked(event) {
