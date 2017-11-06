@@ -145,7 +145,7 @@ handleSubmit(event) {
     document.getElementById("searchResult").innerHTML = "";
     this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization);
     //console.log("handle submit");
-    event.preventDefault();
+
     var myDiv = document.getElementById("searchResult");
         for (var i = 0; i < (this.props.queryResults.length); i++) {
             var checkBox = document.createElement("input");
@@ -159,6 +159,7 @@ handleSubmit(event) {
             myDiv.appendChild(br);
         }
         console.log("MyDiv", myDiv);
+        event.preventDefault();
 }
 
 buttonClicked(event) {
