@@ -296,62 +296,6 @@ public class TestModel {
             System.exit(0);
         }
     }
-
-    // ------------------------- Test searchDatabase ----------------------------
-/*
-    @Test
-    public void testSearchDatabase() {
-        // JDBC driver name and database URL
-        final String myDriver = "com.mysql.jdbc.Driver";
-        final String myUrl = "jdbc:mysql://localhost/myDatabase";
-
-        //  Database credentials
-        final String username = "Amber Nolte";
-        final String password = "password";
-
-        try { // connect to the database
-            Class.forName(myDriver);
-            System.out.println("did class.mydriver");
-            Connection conn = DriverManager.getConnection(myUrl, username, password);
-            System.out.println("did conn = driverManager");
-            try {
-                Statement st = conn.createStatement();
-                System.out.println("did st");
-                try {
-                    System.out.println("boutta create database");
-                    String createTable = "CREATE TABLE TestData " +
-                            "(id INTEGER, " +
-                            " name STRING, " +
-                            " latitude DOUBLE, " +
-                            " longitude DOUBLE, " +
-                            " elevation DOUBLE, " +
-                            " PRIMARY KEY ( id ));";
-                    st.executeQuery(createTable);
-
-                    st = conn.createStatement();
-                    String insertInto0 = "insert into TestData values (0,denver,50,100,5280);";
-                    st.executeQuery(insertInto0);
-
-                    st = conn.createStatement();
-                    String insertInto1 = "insert into TestData values (1,fort collins,75,125,5100);";
-                    st.executeQuery(insertInto1);
-
-                    st = conn.createStatement();
-                    String insertInto2 = "insert into TestData values (2,boulder,25,150,5000);";
-                    st.executeQuery(insertInto2);
-
-                    st = conn.createStatement();
-                    Hub hD = new Hub();
-                   // assertEquals(,hD.searchDatabase(););
-
-                }finally { st.close(); }
-            }finally{ conn.close(); }
-        } catch (Exception e) { // catches all exceptions in the nested try's
-            System.err.printf("Exception: ");
-            System.err.println(e.getMessage());
-        }
-
-    }*/
-
+    
 
 }
