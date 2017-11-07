@@ -301,56 +301,30 @@ public class TestModel {
 
     @Test
     public void testSearchDatabase() {
-        // JDBC driver name and database URL
-        final String myDriver = "com.mysql.jdbc.Driver";
-        String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
+        Hub hA = new Hub();
+        Hub hB = new Hub();
+        Hub hC = new Hub();
+        String username = "alnolte";
+        String password = "830569258";
 
-        //  Database credentials
-        final String username = "alnolte";
-        final String password = "830569258";
+        String colHeaders = "airports_ID, airports_Code, airports_Type, airports_Name, airports_Latitude, airports_Longitude, airports_Elevation, airports_Continent, airports_Iso_country, airports_Iso_region, airports_Municipality, airports_Scheduled_service, airports_Gps_code, airports_Iata_code, airports_Local_code, airports_Home_link, airports_Wikipedia_link, airports_Keywords, "
+                + "regions_ID, regions_Code, regions_Local_code, regions_Name, regions_Continent, regions_Iso_country, regions_Wikipedia_link, regions_Keywords, "
+                + "countries_ID, countries_Code, countries_Name, countries_Continent, countries_Wikipedia_link, countries_Keywords, "
+                + "continents_ID, continents_Name, continents_Code, continents_Wikipedia_link";
 
-        try { // connect to the database
-            Class.forName(myDriver);
-            System.out.println("did class.mydriver");
-            Connection conn = DriverManager.getConnection(myUrl, username, password);
-            System.out.println("did conn = driverManager");
-            try {
-                Statement st = conn.createStatement();
-                System.out.println("did st");
-                try {
-                    System.out.println("boutta create database");
-                    String createTable = "CREATE TABLE TestData " +
-                            "(id INTEGER, " +
-                            " name STRING, " +
-                            " latitude DOUBLE, " +
-                            " longitude DOUBLE, " +
-                            " elevation DOUBLE, " +
-                            " PRIMARY KEY ( id ));";
-                    st.executeQuery(createTable);
+        hA.searchDatabase(username, password, "omaha");
+        assertTrue((hA.columns.toString()).equals(colHeaders));
+        assertTrue(hA.reverseC.toString().contains("Omaha Landing Site"));
 
-                    st = conn.createStatement();
-                    String insertInto0 = "insert into TestData values (0,denver,50,100,5280);";
-                    st.executeQuery(insertInto0);
+        hB.searchDatabase(username, password, "omalley");
+        assertEquals(colHeaders, hB.columns.toString());
+        assertTrue(hB.reverseC.isEmpty());
 
-                    st = conn.createStatement();
-                    String insertInto1 = "insert into TestData values (1,fort collins,75,125,5100);";
-                    st.executeQuery(insertInto1);
-
-                    st = conn.createStatement();
-                    String insertInto2 = "insert into TestData values (2,boulder,25,150,5000);";
-                    st.executeQuery(insertInto2);
-
-                    st = conn.createStatement();
-                    Hub hD = new Hub();
-                   // assertEquals(,hD.searchDatabase(););
-
-                }finally { st.close(); }
-            }finally{ conn.close(); }
-        } catch (Exception e) { // catches all exceptions in the nested try's
-            System.err.printf("Exception: ");
-            System.err.println(e.getMessage());
-        }
-
+        hC.searchDatabase(username, password, "denver colorado");
+        assertTrue(hC.reverseC.isEmpty());
+        hC.searchDatabase(username, password, "omaha");
+        assertFalse(hC.reverseC.isEmpty());
     }
+
 
 }
