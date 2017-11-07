@@ -197,7 +197,7 @@ async browseFile(file) {
         if (type === "query") {
             request = {
                 request: "query",
-                description: input,
+                description: [input],
                 unit : setUnit,
                 optSelection : opt
             };
@@ -252,7 +252,7 @@ async browseFile(file) {
                 
                 console.log("plannedTrip", this.state.plannedTrip);
                 //this will actually display it in the table
-                this.browseFile(this.state.queryResults);
+                this.browseFile(this.state.plannedTrip);
             }
             // if it's not, we assume the response field is "svg" and contains the an svg image
             else {

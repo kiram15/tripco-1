@@ -83,7 +83,7 @@ import static spark.Spark.post;
      }
      
      // TODO: called by testing method if client requests a plan 
-     private Object servePlan(String selected, boolean miles, String optimization) {
+     private Object servePlan(ArrayList<String> selected, boolean miles, String optimization) {
          Gson gson = new Gson();
          //QueryBuilder q = new QueryBuilder("user", "pass"); // Create new QueryBuilder instance and pass in credentials //TODO update credentials
          //String queryString = String.format("SELECT * FROM airports WHERE municipality LIKE '%%%s%%' OR name LIKE '%%%s%%' OR type LIKE '%%%s%%' LIMIT 10", searched, searched, searched);
@@ -138,7 +138,7 @@ import static spark.Spark.post;
          // Because both possible requests from the client have the same format,
          // we can check the "type" of request we've received: either "query" or "svg" or "unit"
          if (sRec.getRequest().equals("query")) {
-            return serveQuery(sRec.getDescription(), miles, o);
+            return serveQuery(sRec.getDescription().get(0), miles, o);
          // see if the user is looking for the map:
         } 
         else if(sRec.getRequest().equals("plan")) {

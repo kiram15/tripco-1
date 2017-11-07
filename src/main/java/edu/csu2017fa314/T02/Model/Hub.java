@@ -119,7 +119,7 @@ public class Hub {
         //moved the call to shortest Trip out of database
     }
 
-    public void finalLocationsFromWeb(String selectedLocations){
+    public void finalLocationsFromWeb(ArrayList<String> selectedLocations){
     
     };
     
