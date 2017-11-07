@@ -334,7 +334,12 @@ public class TestModel {
         hC.optimization = "NearestNeighbor";
         hC.searchDatabase("alnolte", "830569258", "denver");
         assertFalse(hC.shortestItinerary.isEmpty());
+        hC.optimization = "TwoOpt";
+        hC.searchDatabase("alnolte", "830569258", "denver");
+        assertFalse(hC.shortestItinerary.isEmpty());
+        //UNCOMMENT BELOW ONCE 3-OPT IS IMPLEMENTED IN HUB
+//        hC.optimization = "ThreeOpt";
+//        hC.searchDatabase("alnolte", "830569258", "denver");
+//        assertFalse(hC.shortestItinerary.isEmpty());
     }
-
-
 }
