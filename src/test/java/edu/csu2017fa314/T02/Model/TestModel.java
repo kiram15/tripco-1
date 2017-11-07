@@ -302,8 +302,6 @@ public class TestModel {
     @Test
     public void testSearchDatabase() {
         Hub hA = new Hub();
-        Hub hB = new Hub();
-        Hub hC = new Hub();
         String username = "alnolte";
         String password = "830569258";
 
@@ -320,11 +318,15 @@ public class TestModel {
         assertEquals(colHeaders, hA.columns.toString());
         assertTrue(hA.reverseC.isEmpty());
 
-        hB.searchDatabase(username, password, "denver colorado");
-        assertTrue(hB.reverseC.isEmpty());
-        hB.searchDatabase(username, password, "omaha");
-        assertFalse(hB.reverseC.isEmpty());
+        hA.searchDatabase(username, password, "denver colorado");
+        assertTrue(hA.reverseC.isEmpty());
+        hA.searchDatabase(username, password, "omaha");
+        assertFalse(hA.reverseC.isEmpty());
+    }
 
+    @Test
+    public void testSearchDatabaseSwitch() {
+        Hub hC = new Hub();
         LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
         info2.put("extra1", "info1");
         info2.put("extra2", "info2");
