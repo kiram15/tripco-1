@@ -243,7 +243,7 @@ async browseFile(file) {
                     queryResults: parsed.trip
                 });
 
-                console.log("queryResults", this.state.queryResults);
+                //console.log("queryResults", this.state.queryResults);
                 this.selectColumns(file);
             }   
             else if (parsed.response === "plan"){

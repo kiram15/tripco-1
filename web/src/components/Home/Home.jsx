@@ -12,7 +12,8 @@ constructor(props) {
        input : [],
        unit : "miles",
        optimization : "None",
-       selectedLocations: []
+       selectedLocations: [],
+       qRLength: 0
    };
 
 }
@@ -27,19 +28,26 @@ render() {
         options.push(ob);
     }
 
-    var myDiv = document.getElementById("searchResult");
-    for (var i = 0; i < (this.props.queryResults.length); i++) {
-        var checkBox = document.createElement("input");
-        var label = document.createElement("label");
-        var br = document.createElement("br");
-        checkBox.type = "checkbox";
-        checkBox.value = this.props.queryResults[i].name;
-        myDiv.appendChild(checkBox);
-        myDiv.appendChild(label);
-        label.appendChild(document.createTextNode(this.props.queryResults[i].name));
-        myDiv.appendChild(br);
+    if(this.state.qRLength !== this.props.queryResults.length){
+        var myDiv = document.getElementById("searchResult");
+        for (var i = 0; i < (this.props.queryResults.length); i++) {
+            var checkBox = document.createElement("input");
+            var label = document.createElement("label");
+            var br = document.createElement("br");
+            checkBox.type = "checkbox";
+            checkBox.value = this.props.queryResults[i].name;
+            myDiv.appendChild(checkBox);
+            myDiv.appendChild(label);
+            label.appendChild(document.createTextNode(this.props.queryResults[i].name));
+            myDiv.appendChild(br);
+        }
+        this.setState({
+            qRLength: this.props.queryResults.length
+        });
+        console.log("qRLength", qRLength);
+        console.log("MyDiv", myDiv);
+        console.log("queryResults", this.props.queryResults);
     }
-    console.log("MyDiv", myDiv);
 
     let total = this.props.totalDist; //update the total here
     let svg = this.props.svg;
