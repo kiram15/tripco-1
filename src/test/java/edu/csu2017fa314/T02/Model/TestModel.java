@@ -316,14 +316,26 @@ public class TestModel {
         assertTrue((hA.columns.toString()).equals(colHeaders));
         assertTrue(hA.reverseC.toString().contains("Omaha Landing Site"));
 
-        hB.searchDatabase(username, password, "omalley");
-        assertEquals(colHeaders, hB.columns.toString());
-        assertTrue(hB.reverseC.isEmpty());
+        hA.searchDatabase(username, password, "omalley");
+        assertEquals(colHeaders, hA.columns.toString());
+        assertTrue(hA.reverseC.isEmpty());
 
-        hC.searchDatabase(username, password, "denver colorado");
-        assertTrue(hC.reverseC.isEmpty());
-        hC.searchDatabase(username, password, "omaha");
-        assertFalse(hC.reverseC.isEmpty());
+        hB.searchDatabase(username, password, "denver colorado");
+        assertTrue(hB.reverseC.isEmpty());
+        hB.searchDatabase(username, password, "omaha");
+        assertFalse(hB.reverseC.isEmpty());
+
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1", "info1");
+        info2.put("extra2", "info2");
+        Location endL5 = new Location("australia", -25.28, 133.775, info2);
+        hC.finalLocations.add(endL5);
+        hC.optimization = "None";
+        assertFalse(hC.shortestItinerary.isEmpty());
+        hC.finalLocations.clear();
+        assertTrue(hC.shortestItinerary.isEmpty());
+        hC.optimization = "NearestNeighbor";
+        assertFalse(hC.shortestItinerary.isEmpty());
     }
 
 
