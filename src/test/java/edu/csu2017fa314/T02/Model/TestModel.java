@@ -261,7 +261,7 @@ public class TestModel {
 
         assertEquals(fillShortTrip3Opt(), h0.shortestItinerary);
     }
-    
+
     private ArrayList<Distance> fillShortTrip3Opt(){
         Location a = new Location("kira", 34.0, -92.0, null);
         Location b = new Location("amber", 34.0, -88.0, null);
@@ -291,7 +291,7 @@ public class TestModel {
 
     @Test
     public void Test3Opt1(){
-        System.out.println("------ TEST 1 ------");
+        System.out.println("\n------ TEST 1 ------");
         Hub h0 = new Hub();
         //test where b and c should switch
         Location a = new Location("A", 34.0, -92.0, null);
@@ -457,7 +457,7 @@ public class TestModel {
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
 
-
+//
     private ArrayList<Location> optimalShortTrip3Opt(){
         Location a = new Location("A", 34.0, -92.0, null);
         Location b = new Location("B", 34.0, -88.0, null);
