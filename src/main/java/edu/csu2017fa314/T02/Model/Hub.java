@@ -132,8 +132,8 @@ public class Hub {
                     break;
                 }
             }
-
         }
+        createItinerary();
 
     };
     

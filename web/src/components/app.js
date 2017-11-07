@@ -153,7 +153,7 @@ async browseFile(file) {
     //For loop that goes through all pairs,
     let pairs = [];
     let runTotal = 0;
-    this.selectColumns(file);
+    
     for (let i = 0; i < Object.values (file).length; i++) {
         let start = file[i].startID.name; //get start from file i
         let end = file[i].endID.name; //get end from file i
@@ -244,6 +244,7 @@ async browseFile(file) {
                 });
 
                 console.log("queryResults", this.state.queryResults);
+                this.selectColumns(file);
             }   
             else if (parsed.response === "plan"){
                 this.setState({
