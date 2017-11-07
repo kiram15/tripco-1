@@ -303,11 +303,11 @@ public class TestModel {
     public void testSearchDatabase() {
         // JDBC driver name and database URL
         final String myDriver = "com.mysql.jdbc.Driver";
-        final String myUrl = "jdbc:mysql://localhost/myDatabase";
+        String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
 
         //  Database credentials
-        final String username = "Amber Nolte";
-        final String password = "password";
+        final String username = "alnolte";
+        final String password = "830569258";
 
         try { // connect to the database
             Class.forName(myDriver);
