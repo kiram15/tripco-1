@@ -26,6 +26,7 @@ public class Hub {
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
+    ArrayList<Location> selectedLocations = new ArrayList<Location>();
     ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
     boolean miles = true;
     String optimization = "";
@@ -119,15 +120,28 @@ public class Hub {
         //moved the call to shortest Trip out of database
     }
 
-    public void finalLocationsFromWeb(ArrayList<String> selectedLocations){
-    
+    public void finalLocationsFromWeb(ArrayList<String> desiredLocations){
+        selectedLocations.clear();
+        //go through each element in the desiredLocations array list and grab the name
+        for (String name : desiredLocations){
+            //find the location object from finalLocations based on the name
+            for(Location l : finalLocations){
+                //add this location to selectedLocations
+                if(l.getName().equals(name)){
+                    selectedLocations.add(l);
+                    break;
+                }
+            }
+
+        }
+
     };
     
     public void createItinerary(){
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
-                shortestItinerary = locationsToDistances(finalLocations);
+                shortestItinerary = locationsToDistances(selectedLocations);
                 break;
             case "NearestNeighbor":
                 shortestTripNN();
@@ -139,7 +153,7 @@ public class Hub {
                 shortestTrip3Opt();
                 break;
             default:
-                shortestItinerary = locationsToDistances(finalLocations);
+                shortestItinerary = locationsToDistances(selectedLocations);
                 break;
         }
     }
@@ -196,6 +210,7 @@ public class Hub {
         Location location = new Location(objectName, doubleLat, doubleLon, info);
 
         finalLocations.add(location);
+        selectedLocations.add(location);
     }
 
     public double latLonConvert(String s) {
@@ -257,7 +272,7 @@ public class Hub {
         Object[][] gcds = calcAllGcds();
 
         //keep track of the city that the shortest trip starts from
-        Location shortestTripStart = finalLocations.get(0);
+        Location shortestTripStart = selectedLocations.get(0);
         //keep track of the shortest distance
         int shortestTripDistance = 999999999;
         //row is the current row in the adjancency matrix where the current location is
@@ -272,21 +287,21 @@ public class Hub {
         //temp array list to keep track of the cities we have been to
         ArrayList<Location> traveledTo = new ArrayList<Location>();
 
-        //for each location in the finalLocations array list: picking a starting city
-        for (Location l : finalLocations) {
-            //set the first city in the finalLocations array list to our current location
+        //for each location in the selectedLocations array list: picking a starting city
+        for (Location l : selectedLocations) {
+            //set the first city in the selectedLocations array list to our current location
             Location currentLocation = l;
             int tripDistance = 0;
 
             //while there are still more cities to travel to
-            while (traveledTo.size() < finalLocations.size()) {
-                for (int i = 0; i < finalLocations.size(); i++) {
-                    if (finalLocations.get(i).equals(currentLocation)) {
+            while (traveledTo.size() < selectedLocations.size()) {
+                for (int i = 0; i < selectedLocations.size(); i++) {
+                    if (selectedLocations.get(i).equals(currentLocation)) {
                         row = i;
                     }
                 }
                 traveledTo.add(currentLocation);
-                if (traveledTo.size() == finalLocations.size()) {
+                if (traveledTo.size() == selectedLocations.size()) {
                     break;
                 }
                 Distance shortestDistance = hugeDistance;
@@ -329,14 +344,14 @@ public class Hub {
 
         ArrayList<Location> traveledToFinal = new ArrayList<Location>();
         //while there are still more cities to travel to
-        while (traveledToFinal.size() < finalLocations.size()) {
-            for (int i = 0; i < finalLocations.size(); i++) {
-                if (finalLocations.get(i).equals(currentLocation)) {
+        while (traveledToFinal.size() < selectedLocations.size()) {
+            for (int i = 0; i < selectedLocations.size(); i++) {
+                if (selectedLocations.get(i).equals(currentLocation)) {
                     row = i;
                 }
             }
             traveledToFinal.add(currentLocation);
-            if (traveledToFinal.size() == finalLocations.size()) {
+            if (traveledToFinal.size() == selectedLocations.size()) {
                 break;
             }
             Distance shortestDistance = hugeDistance;
@@ -358,7 +373,7 @@ public class Hub {
         Object[][] gcds = calcAllGcds();
 
         //keep track of the city that the shortest trip starts from
-        Location shortestTripStart = finalLocations.get(0);
+        Location shortestTripStart = selectedLocations.get(0);
         //keep track of the shortest distance
         int shortestTripDistance = 999999999;
         //row is the current row in the adjancency matrix where the current location is
@@ -373,21 +388,21 @@ public class Hub {
         //temp array list to keep track of the cities we have been to
         ArrayList<Location> traveledTo = new ArrayList<Location>();
 
-        //for each location in the finalLocations array list: picking a starting city
-        for (Location l : finalLocations) {
-            //set the first city in the finalLocations array list to our current location
+        //for each location in the selectedLocations array list: picking a starting city
+        for (Location l : selectedLocations) {
+            //set the first city in the selectedLocations array list to our current location
             Location currentLocation = l;
             int tripDistance = 0;
 
             //while there are still more cities to travel to
-            while (traveledTo.size() < finalLocations.size()) {
-                for (int i = 0; i < finalLocations.size(); i++) {
-                    if (finalLocations.get(i).equals(currentLocation)) {
+            while (traveledTo.size() < selectedLocations.size()) {
+                for (int i = 0; i < selectedLocations.size(); i++) {
+                    if (selectedLocations.get(i).equals(currentLocation)) {
                         row = i;
                     }
                 }
                 traveledTo.add(currentLocation);
-                if (traveledTo.size() == finalLocations.size()) {
+                if (traveledTo.size() == selectedLocations.size()) {
                     break;
                 }
                 Distance shortestDistance = hugeDistance;
@@ -438,14 +453,14 @@ public class Hub {
 
         ArrayList<Location> traveledToFinal = new ArrayList<Location>();
         //while there are still more cities to travel to
-        while (traveledToFinal.size() < finalLocations.size()) {
-            for (int i = 0; i < finalLocations.size(); i++) {
-                if (finalLocations.get(i).equals(currentLocation)) {
+        while (traveledToFinal.size() < selectedLocations.size()) {
+            for (int i = 0; i < selectedLocations.size(); i++) {
+                if (selectedLocations.get(i).equals(currentLocation)) {
                     row = i;
                 }
             }
             traveledToFinal.add(currentLocation);
-            if (traveledToFinal.size() == finalLocations.size()) {
+            if (traveledToFinal.size() == selectedLocations.size()) {
                 break;
             }
             Distance shortestDistance = hugeDistance;
@@ -471,14 +486,14 @@ public class Hub {
 
     //will return an array list with each city listed once, with the shortest city as its end
     private Object[][] calcAllGcds() {
-        Object[][] GCDS = new Object[finalLocations.size()][finalLocations.size()+1];
-        for (int i = 0; i < finalLocations.size(); i++) {
+        Object[][] GCDS = new Object[selectedLocations.size()][selectedLocations.size()+1];
+        for (int i = 0; i < selectedLocations.size(); i++) {
             //get the initial Location
-            GCDS[i][0] = finalLocations.get(i);
-            for (int j = 0; j < finalLocations.size(); j++) {
+            GCDS[i][0] = selectedLocations.get(i);
+            for (int j = 0; j < selectedLocations.size(); j++) {
                 //for all the Distances in the row
-                Location startID = finalLocations.get(i);
-                Location endID = finalLocations.get(j);
+                Location startID = selectedLocations.get(i);
+                Location endID = selectedLocations.get(j);
                 Distance d = new Distance(startID, endID, miles);
                 GCDS[i][j+1] = d; //j+1 because of the Location in the first column
             }
