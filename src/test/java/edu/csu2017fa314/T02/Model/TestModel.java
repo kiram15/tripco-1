@@ -4,14 +4,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.sql.*;
-import java.util.Set;
 
 public class TestModel {
     private Model m;
@@ -342,4 +337,50 @@ public class TestModel {
 //        hC.searchDatabase("alnolte", "830569258", "denver");
 //        assertFalse(hC.shortestItinerary.isEmpty());
     }
+
+    // ------------------------- Test Global Variable getters/setters ----------------------------
+
+    @Test
+    public void testGetSetShortestItinerary() {
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1", "info1");
+        info1.put("extra2", "info2");
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1", "info1");
+        info2.put("extra2", "info2");
+        Location startL = new Location("denver", 70, 99.255556, info1);
+        Location endL = new Location("denver2", 80, 100, info2);
+        Distance dA = new Distance(startL, endL, miles);
+        Location startL1 = new Location("denver", -70, -99.255556, info1);
+        Location endL1 = new Location("denver2", 80, 100, info2);
+        Distance dA1 = new Distance(startL1, endL1, miles);
+        ArrayList<Distance> distances = new ArrayList<Distance>();
+        distances.add(dA);
+        distances.add(dA1);
+
+        Hub hA = new Hub();
+        hA.setShortestItinerary(distances);
+        assertEquals(distances, hA.shortestItinerary);
+        assertEquals(distances, hA.getShortestItinerary());
+    }
+
+    @Test
+    public void testGetSetMiles() {
+        Hub hA = new Hub();
+        hA.setMiles(false);
+        assertEquals(false, hA.miles);
+        assertFalse(hA.getMiles());
+    }
+
+    @Test
+    public void testGetSetOptimization() {
+        Hub hA = new Hub();
+        hA.setOptimization("NearestNeighbor");
+        assertEquals("NearestNeighbor", hA.optimization);
+        assertEquals("NearestNeighbor", hA.getOptimization());
+    }
+
+
+
+
 }
