@@ -35,6 +35,7 @@ render() {
                 svg={svg}
                 onClick={this.onClick.bind(this)}
                 pairs={ps}
+                getFile={this.getFile.bind(this)}
                 totalDist={this.state.total}
                 columns = {this.state.setInfo}
                 qreturn = {this.state.queryResults}
@@ -193,21 +194,31 @@ async browseFile(file) {
         if (type === "query") {
             request = {
                 request: "query",
-                description: input,
+                description: [input],
                 unit : setUnit,
                 optSelection : opt
             };
             console.log("Fetching Query");
         // if the button is clicked:
-        } else {
+        }
+        else if(type === "upload") {
+            request = {
+                request: "upload",
+                description : input.destinations,
+                unit : setUnit,
+                optSelection : opt
+            };
+            console.log("Fetching upload");
+        }
+        else {
             request = {
                 request: "svg",
-                description: "",
+                description: [],
                 unit : setUnit,
                 optSelection : opt
             }
             console.log("Fetching SVG");
-        }
+
 
         try{
             let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/testing";
@@ -220,10 +231,9 @@ async browseFile(file) {
             let ret = await jsonRet.json();
             let parsed = JSON.parse(ret);
             console.log("Got back: ", JSON.parse(ret));
-            let parse = JSON.parse(ret);
-            //console.log("THIS IS RET RESPONSE: ", parsed.response);
 
-            if (parsed.response === "query") {
+
+            if (parsed.response === "query" || parsed.response === "upload") {
                 this.setState({
                     queryResults: parsed.trip
                 });
@@ -245,6 +255,41 @@ async browseFile(file) {
             console.error(e);
         }
     }
+
+    // download a file of the array a query returns
+     async getFile() {
+         // assign all the airport codes of the displayed locations to an array
+        //  let locs = this.state.queryResults.map((location) => {
+        //      return location.code;
+        //  });
+         let locs = [];
+
+         for (var i = 0; i < (this.state.queryResults.length); i++){
+             locs.push(this.state.queryResults[i].startID.info.airports_code);
+         }
+         // send these codes back to the server to write the file
+         // Javascript does not have access to a computer's file system, so this must be done from the server
+         let clientRequest = {
+             request: "save",
+             description: locs
+         };
+
+         let response = await fetch(`http://localhost:4567/download`,
+         {
+             method: "POST",
+             body: JSON.stringify(clientRequest)
+         });
+
+         // Unlike the other responses, we don't conver this one to JSON
+        // Instead, grab the file in the response with response.blob()
+         response.blob().then(function(myBlob) {
+             // create a URL for the file
+             let fileUrl = URL.createObjectURL(myBlob);
+             // Open the file. Normally, a text file would open in the browser by default,
+             // which is why we set the content-type differently in the server code.
+             window.open(fileUrl);
+         });
+     }
 
 
 }

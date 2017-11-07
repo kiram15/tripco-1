@@ -32,10 +32,10 @@ public class Location {
   public double getLongitude() {
 	  return this.lon;
   }
-
-  public String getCode() {
-      return this.info.get(airports_code);
-  }
+  // 
+  // public String getCode() {
+  //     return this.info.get(airports_code);
+  // }
 
 //  public LinkedHashMap<String, String> getInfoMap(){
 //      return this.info;

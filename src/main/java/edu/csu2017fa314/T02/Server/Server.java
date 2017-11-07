@@ -10,9 +10,11 @@ import edu.csu2017fa314.T02.Model.Hub;
 import edu.csu2017fa314.T02.Model.Distance;
 
 import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 import static spark.Spark.post;
+
 /**
  * Created by sswensen on 10/1/17.
  * Edited for use by emcintos 10/14/17.
@@ -46,7 +48,7 @@ import static spark.Spark.post;
              download(rec, res);
              // return the raw HttpServletResponse from the Response
              return rec.raw();
-         })
+         });
      }
 
      // called by testing method if the client requests an svg
@@ -93,9 +95,9 @@ import static spark.Spark.post;
          String queryString = "SELECT * FROM airports WHERE ";
          for(int i = 0; i < locations.size(); ++i){
              if (i == locations.size() - 1) {
-                  queryString += "code LIKE '%" + locations.get(i).getCode + "%';";
+                  queryString += "code LIKE '%" + locations.get(i) + "%';";
               } else {
-                  queryString += "code LIKE '%" + locations.get(i).getCode + "%' OR ";
+                  queryString += "code LIKE '%" + locations.get(i) + "%' OR ";
               }
          }
 
@@ -117,7 +119,7 @@ import static spark.Spark.post;
          JsonElement elm = parser.parse(rec.body());
          Gson gson = new Gson();
 
-         ServerRequest sRec = gson.fromJson(elm, ServerRequest.className);
+         ServerRequest sRec = gson.fromJson(elm, ServerRequest.class);
          //need to set different headers to write the file
          setHeadersFile(res);
 
@@ -139,7 +141,7 @@ import static spark.Spark.post;
 
          // Grab the json body from POST
          JsonElement elm = parser.parse(rec.body());
-
+         System.out.println(elm);
          // Create new Gson (a Google library for creating a JSON representation of a java class)
          Gson gson = new Gson();
 
@@ -164,8 +166,8 @@ import static spark.Spark.post;
             return serveQuery(sRec.getDescription().get(0), miles, o);
          // see if the user is looking for the map:
         }
-         else if(sRec.getRequest().eqauls("upload")){
-             return serveUpload(sRec.getDescription());
+         else if(sRec.getRequest().equals("upload")){
+             return serveUpload(sRec.getDescription(),miles, o);
          }
          else {
             return serveSvg();
