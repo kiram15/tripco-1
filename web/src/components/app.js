@@ -217,7 +217,7 @@ async browseFile(file) {
         else {
             request = {
                 request: "svg",
-                description: "",
+                description: [],
                 unit : setUnit,
                 optSelection : opt
             }
