@@ -87,9 +87,7 @@ render() {
     <button type="button" onClick={this.selectAll.bind(this)}>Select All</button>
     <button type="button" onClick={this.clearAll.bind(this)}>Clear All</button>
     <button type="button" onClick={this.updateSelectedLocations.bind(this)}>Plan</button>
-    <Dropzone className="dropzone-style" onDrop={this.uploadButtonClicked.bind(this)}>
-        <button type="button" > Upload a location file</button>
-    </Dropzone>
+    
     <button type="button" onClick={this.saveButtonClicked.bind(this)}>Save these locations</button>
     <p></p>
 
@@ -209,25 +207,25 @@ saveButtonClicked(event){
 }
 
     // File reading is almost identical how you did it in Sprint 1
-     uploadButtonClicked(acceptedFiles) {
-         console.log("Accepting drop");
-         acceptedFiles.forEach(file => {
-             console.log("Filename:", file.name, "File:", file);
-             console.log(JSON.stringify(file));
-             let fr = new FileReader();
-             fr.onload = (function () {
-                 return function (e) {
-                     let JsonObj = JSON.parse(e.target.result);
-                     console.log(JsonObj);
-                     // Do something with the file:
-                     this.props.fetch("upload", JsonObj, this.state.unit, this.state.optimization);
-                     //this.props.browseFile(JsonObj);
-                 };
-             })(file).bind(this);
-
-             fr.readAsText(file);
-         });
-     }
+    //  uploadButtonClicked(acceptedFiles) {
+    //      console.log("Accepting drop");
+    //      acceptedFiles.forEach(file => {
+    //          console.log("Filename:", file.name, "File:", file);
+    //          console.log(JSON.stringify(file));
+    //          let fr = new FileReader();
+    //          fr.onload = (function () {
+    //              return function (e) {
+    //                  let JsonObj = JSON.parse(e.target.result);
+    //                  console.log(JsonObj);
+    //                  // Do something with the file:
+    //                  this.props.fetch("upload", JsonObj, this.state.unit, this.state.optimization);
+    //                  //this.props.browseFile(JsonObj);
+    //              };
+    //          })(file).bind(this);
+     //
+    //          fr.readAsText(file);
+    //      });
+    //  }
 
 updateSelectedLocations(event) {
     var parentDiv = document.getElementById("searchResult");

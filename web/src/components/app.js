@@ -218,9 +218,11 @@ async browseFile(file) {
                 optSelection : opt
             }
             console.log("Fetching SVG");
+        }
 
 
         try{
+            //console.log("in try block?");
             let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/testing";
             console.log(serverUrl);
             let jsonRet = await fetch(serverUrl,
@@ -255,6 +257,7 @@ async browseFile(file) {
             console.error(e);
         }
     }
+
 
     // download a file of the array a query returns
      async getFile() {

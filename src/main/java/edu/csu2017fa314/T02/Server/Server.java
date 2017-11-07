@@ -155,6 +155,8 @@ import static spark.Spark.post;
          String u = sRec.getUnit();
          String o = sRec.getOptSelection();
 
+        
+
          //checks if user wants km or nah
          if(u.equals("km")){
              miles = false;
@@ -163,10 +165,12 @@ import static spark.Spark.post;
          // Because both possible requests from the client have the same format,
          // we can check the "type" of request we've received: either "query" or "svg" or "unit"
          if (sRec.getRequest().equals("query")) {
+
             return serveQuery(sRec.getDescription().get(0), miles, o);
          // see if the user is looking for the map:
         }
          else if(sRec.getRequest().equals("upload")){
+
              return serveUpload(sRec.getDescription(),miles, o);
          }
          else {
