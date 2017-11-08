@@ -335,6 +335,16 @@ public class TestModel {
         assertEquals("NearestNeighbor", hA.getOptimization());
     }
 
+    @Test
+    public void testGetFinalLocations(){
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1", "info1");
+        info1.put("extra2", "info2");
+        Location startL = new Location("denver", 70, 99.255556, info1);
+        Hub hA = new Hub();
+        hA.finalLocations.add(startL);
+        assertEquals(startL, hA.getFinalLocations().get(0));
+    }
 
 
 
