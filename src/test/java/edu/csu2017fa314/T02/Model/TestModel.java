@@ -293,51 +293,6 @@ public class TestModel {
         }
     }
 
-    // ------------------------- Test searchDatabase ----------------------------
-
-    @Test
-    public void testSearchDatabase() {
-        Hub hA = new Hub();
-        String username = "alnolte";
-        String password = "830569258";
-
-        String colHeaders = "airports_id, airports_Code, airports_Type, airports_Name, airports_Latitude, airports_Longitude, airports_Elevation, airports_Continent, airports_Iso_country, airports_Iso_region, airports_Municipality, airports_Scheduled_service, airports_Gps_code, airports_Iata_code, airports_Local_code, airports_Home_link, airports_Wikipedia_link, airports_Keywords, "
-                + "regions_ID, regions_Code, regions_Local_code, regions_Name, regions_Continent, regions_Iso_country, regions_Wikipedia_link, regions_Keywords, "
-                + "countries_ID, countries_Code, countries_Name, countries_Continent, countries_Wikipedia_link, countries_Keywords, "
-                + "continents_ID, continents_Name, continents_Code, continents_Wikipedia_link";
-
-        hA.searchDatabase(username, password, "omaha");
-        assertTrue(hA.columns.toString().contains(colHeaders.substring(0,10).toLowerCase()));
-        assertTrue(hA.reverseC.toString().contains("regions_name"));
-
-        hA.searchDatabase(username, password, "omalley");
-        assertTrue(hA.columns.toString().contains(colHeaders.substring(0,10).toLowerCase()));
-        assertTrue(hA.finalLocations.size() == 0);
-
-        hA.searchDatabase(username, password, "denver colorado");
-        assertTrue(hA.finalLocations.size() == 0);
-        hA.searchDatabase(username, password, "omaha");
-        assertFalse(hA.finalLocations.size() == 0);
-    }
-
-    @Test
-    public void testSearchDatabaseSwitch() {
-        Hub hC = new Hub();
-        hC.optimization = "None";
-        hC.searchDatabase("alnolte", "830569258", "denver");
-        assertFalse(hC.shortestItinerary.isEmpty());
-        hC.optimization = "NearestNeighbor";
-        hC.searchDatabase("alnolte", "830569258", "denver");
-        assertFalse(hC.shortestItinerary.isEmpty());
-        hC.optimization = "TwoOpt";
-        hC.searchDatabase("alnolte", "830569258", "denver");
-        assertFalse(hC.shortestItinerary.isEmpty());
-        //UNCOMMENT BELOW ONCE 3-OPT IS IMPLEMENTED IN HUB
-//        hC.optimization = "ThreeOpt";
-//        hC.searchDatabase("alnolte", "830569258", "denver");
-//        assertFalse(hC.shortestItinerary.isEmpty());
-    }
-
     // ------------------------- Test Global Variable getters/setters ----------------------------
 
     @Test
