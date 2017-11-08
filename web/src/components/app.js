@@ -276,8 +276,9 @@ async browseFile(file) {
              request: "save",
              description: locs
          };
-
-         let response = await fetch(`http://localhost:4567/download`,
+         let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/download";
+         console.log(serverUrl);
+         let response = await fetch(serverUrl,
          {
              method: "POST",
              body: JSON.stringify(clientRequest)
