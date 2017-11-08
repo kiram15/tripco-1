@@ -105,16 +105,8 @@ render() {
           <button type="button" onClick={this.ThreeOptClicked.bind(this)}>3-opt</button>
     </div>
     <p></p>
-
-
-    <button type="button" onClick={this.selectAll.bind(this)}>Select All</button>
-    <button type="button" onClick={this.clearAll.bind(this)}>Clear All</button>
-
-
-    <button type="button" onClick={this.saveButtonClicked.bind(this)}>Save these locations</button>
-
     <button type="button" onClick={this.planTrip.bind(this)}>Plan</button>
-
+    <button type="button" onClick={this.saveButtonClicked.bind(this)}>Save Trip</button>
     <p></p>
 
   <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
