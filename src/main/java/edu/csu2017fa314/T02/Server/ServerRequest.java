@@ -9,6 +9,9 @@ import java.util.ArrayList;
  */
 
 
+ import java.util.ArrayList;
+
+
  public class ServerRequest {
      private String request = "";
      private ArrayList<String> description;

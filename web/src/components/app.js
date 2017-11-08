@@ -38,6 +38,7 @@ render() {
                 svg={svg}
                 onClick={this.onClick.bind(this)}
                 pairs={ps}
+                getFile={this.getFile.bind(this)}
                 totalDist={this.state.total}
                 columns = {this.state.setInfo}
                 qreturn = {this.state.queryResults}
@@ -137,7 +138,7 @@ startEndInfo(file) {
 async selectColumns(file) {
     //console.log("Got File:", file);
     console.log(file[0]);
-    console.log(file[0].startID.info);
+    console.log(file[0].info);
     var options = ["Airport ID", "Latitude", "Longitude", "Airport Code", "Type",
                     "Elevation", "Municipality", "Airport Website",
                     "Airport Wikipedia", "Country", "Continent", "Region",
@@ -153,7 +154,7 @@ async browseFile(file) {
     //For loop that goes through all pairs,
     let pairs = [];
     let runTotal = 0;
-    
+
     for (let i = 0; i < Object.values (file).length; i++) {
         let start = file[i].startID.name; //get start from file i
         let end = file[i].endID.name; //get end from file i
@@ -202,8 +203,8 @@ async browseFile(file) {
                 optSelection : opt
             };
             console.log("Fetching Query");
-        
-        }  
+
+        }
         else if (type === "plan") {
             request = {
                 request: "plan",
@@ -212,8 +213,19 @@ async browseFile(file) {
                 optSelection: opt
             };
             console.log("Fetching Plan");
-        } 
+        }
         // if the button is clicked:
+
+        else if(type === "upload") {
+            request = {
+                request: "upload",
+                description : input.destinations,
+                unit : setUnit,
+                optSelection : opt
+            };
+            console.log("Fetching upload");
+        }
+
         else {
             request = {
                 request: "svg",
@@ -224,7 +236,9 @@ async browseFile(file) {
             console.log("Fetching SVG");
         }
 
+
         try{
+            //console.log("in try block?");
             let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/testing";
             console.log(serverUrl);
             let jsonRet = await fetch(serverUrl,
@@ -235,22 +249,21 @@ async browseFile(file) {
             let ret = await jsonRet.json();
             let parsed = JSON.parse(ret);
             console.log("Got back: ", JSON.parse(ret));
-            let parse = JSON.parse(ret);
-            //console.log("THIS IS RET RESPONSE: ", parsed.response);
 
-            if (parsed.response === "query") {
+
+            if (parsed.response === "query" || parsed.response === "upload") {
                 this.setState({
                     queryResults: parsed.trip
                 });
 
                 //console.log("queryResults", this.state.queryResults);
-                this.selectColumns(file);
-            }   
+                this.selectColumns(this.state.queryResults);
+            }
             else if (parsed.response === "plan"){
                 this.setState({
-                   plannedTrip: parsed.trip 
+                   plannedTrip: parsed.trip
                 });
-                
+
                 console.log("plannedTrip", this.state.plannedTrip);
                 //this will actually display it in the table
                 this.browseFile(this.state.plannedTrip);
@@ -259,7 +272,7 @@ async browseFile(file) {
             else {
 
                 this.setState({
-                    svgResults: parse.contents
+                    svgResults: parsed.contents
                 })
             }
 
@@ -268,6 +281,43 @@ async browseFile(file) {
             console.error(e);
         }
     }
+
+
+    // download a file of the array a query returns
+     async getFile() {
+         // assign all the airport codes of the displayed locations to an array
+        //  let locs = this.state.queryResults.map((location) => {
+        //      return location.code;
+        //  });
+         let locs = [];
+         console.log(this.state.plannedTrip);
+         for (var i = 0; i < (this.state.plannedTrip.length); i++){
+             locs.push(this.state.plannedTrip[i].startID.info.airports_code);
+         }
+         // send these codes back to the server to write the file
+         // Javascript does not have access to a computer's file system, so this must be done from the server
+         let clientRequest = {
+             request: "save",
+             description: locs
+         };
+         let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/download";
+         console.log(serverUrl);
+         let response = await fetch(serverUrl,
+         {
+             method: "POST",
+             body: JSON.stringify(clientRequest)
+         });
+
+         // Unlike the other responses, we don't conver this one to JSON
+        // Instead, grab the file in the response with response.blob()
+         response.blob().then(function(myBlob) {
+             // create a URL for the file
+             let fileUrl = URL.createObjectURL(myBlob);
+             // Open the file. Normally, a text file would open in the browser by default,
+             // which is why we set the content-type differently in the server code.
+             window.open(fileUrl);
+         });
+     }
 
 
 }
