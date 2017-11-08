@@ -174,7 +174,13 @@ handleSubmit(event) {
 }
 
 planTrip(event){
-    this.props.fetch("plan", this.state.selectedLocations, this.state.unit, this.state.optimization);
+    var reorderedSL = [];
+    var dragulaDivs = document.getElementById("checkedLocations").children;
+    for(var i = 0; i < dragulaDivs.length; i++){
+        reorderedSL[i] = dragulaDivs[i].innerHTML;
+    }
+    console.log("reorderedSL", reorderedSL);
+    this.props.fetch("plan", reorderedSL, this.state.unit, this.state.optimization);
 }
 
 buttonClicked(event) {
