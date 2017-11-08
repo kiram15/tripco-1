@@ -250,14 +250,14 @@ public class TestModel {
         ArrayList<Distance> check1 = fillShortTrip3Opt();
         ArrayList<Distance> check2 = h0.shortestItinerary;
 
-        System.out.println("CHECK1");
-        for (int i = 0; i < check1.size(); i++) {
-            System.out.println("S: " + check1.get(i).getStartID().getName() + " E: " + check1.get(i).getEndID().getName());
-        }
-        System.out.println("\nCHECK2");
-        for (int i = 0; i < check2.size(); i++) {
-            System.out.println("S: " + check2.get(i).getStartID().getName()  + " E: " + check2.get(i).getEndID().getName());
-        }
+//        System.out.println("CHECK1");
+//        for (int i = 0; i < check1.size(); i++) {
+//            System.out.println("S: " + check1.get(i).getStartID().getName() + " E: " + check1.get(i).getEndID().getName());
+//        }
+//        System.out.println("\nCHECK2");
+//        for (int i = 0; i < check2.size(); i++) {
+//            System.out.println("S: " + check2.get(i).getStartID().getName()  + " E: " + check2.get(i).getEndID().getName());
+//        }
 
         assertEquals(fillShortTrip3Opt(), h0.shortestItinerary);
     }
@@ -288,10 +288,8 @@ public class TestModel {
         return checkAgainst;
     }
 
-
     @Test
     public void Test3Opt1(){
-        System.out.println("\n------ TEST 1 ------");
         Hub h0 = new Hub();
         //test where b and c should switch
         Location a = new Location("A", 34.0, -92.0, null);
@@ -315,7 +313,6 @@ public class TestModel {
 
     @Test
     public void Test3Opt2(){
-        System.out.println("------ TEST 2 ------");
         Hub h0 = new Hub();
         //test where e and d should switch
         Location a = new Location("A", 34.0, -92.0, null);
@@ -339,7 +336,6 @@ public class TestModel {
 
     @Test
     public void Test3Opt3(){
-        System.out.println("------ TEST 3 ------");
         Hub h0 = new Hub();
         //test where b through e should reverse
         Location a = new Location("A", 34.0, -92.0, null);
@@ -363,7 +359,6 @@ public class TestModel {
 
     @Test
     public void Test3Opt4(){
-        System.out.println("------ TEST 4 ------");
         Hub h0 = new Hub();
         //test where b and c should switch, and d and e should switch
         Location a = new Location("A", 34.0, -92.0, null);
@@ -387,7 +382,6 @@ public class TestModel {
 
     @Test
     public void Test3Opt5(){
-        System.out.println("------ TEST 5 ------");
         Hub h0 = new Hub();
         //test where d and e should switch, and switch two middle groups
         Location a = new Location("A", 34.0, -92.0, null);
@@ -411,7 +405,6 @@ public class TestModel {
 
     @Test
     public void Test3Opt6(){
-        System.out.println("------ TEST 6------");
         Hub h0 = new Hub();
         //test where b and c should switch, and switch two middle groups
         Location a = new Location("A", 34.0, -92.0, null);
@@ -435,7 +428,6 @@ public class TestModel {
 
     @Test
     public void Test3Opt7(){
-        System.out.println("------ TEST 7 ------");
         Hub h0 = new Hub();
         //test where b and c should switch, and switch two middle groups
         Location a = new Location("A", 34.0, -92.0, null);
