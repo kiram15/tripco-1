@@ -12,7 +12,8 @@ constructor(props) {
        input : [],
        unit : "miles",
        optimization : "None",
-       selectedLocations: []
+       selectedLocations: [],
+       qRLength: 0
    };
 
 }
@@ -27,19 +28,29 @@ render() {
         options.push(ob);
     }
 
-    var myDiv = document.getElementById("searchResult");
-    for (var i = 0; i < (this.props.queryResults.length); i++) {
-        var checkBox = document.createElement("input");
-        var label = document.createElement("label");
-        var br = document.createElement("br");
-        checkBox.type = "checkbox";
-        checkBox.value = this.props.queryResults[i].startID.name;
-        myDiv.appendChild(checkBox);
-        myDiv.appendChild(label);
-        label.appendChild(document.createTextNode(this.props.queryResults[i].startID.name));
-        myDiv.appendChild(br);
+    var dragula = require('react-dragula');
+    dragula([document.getElementById("checkedLocations")]);
+
+    if(this.state.qRLength !== this.props.queryResults.length){
+        var myDiv = document.getElementById("searchResult");
+        for (var i = 0; i < (this.props.queryResults.length); i++) {
+            var checkBox = document.createElement("input");
+            var label = document.createElement("label");
+            var br = document.createElement("br");
+            checkBox.type = "checkbox";
+            checkBox.value = this.props.queryResults[i].name;
+            myDiv.appendChild(checkBox);
+            myDiv.appendChild(label);
+            label.appendChild(document.createTextNode(this.props.queryResults[i].name));
+            myDiv.appendChild(br);
+        }
+        this.setState({
+            qRLength: this.props.queryResults.length
+        });
+        console.log("qRLength", qRLength);
+        console.log("MyDiv", myDiv);
+        console.log("queryResults", this.props.queryResults);
     }
-    console.log("MyDiv", myDiv);
 
     let total = this.props.totalDist; //update the total here
     let svg = this.props.svg;
@@ -67,8 +78,19 @@ render() {
   </div>
   <p></p>
 
+  <p className="w3-myFont">Search Results</p>
   <div id="searchResult">
   search to see results
+  </div>
+  <p></p>
+
+  <button type="button" onClick={this.updateSelectedLocations.bind(this)}>Select</button>
+  <button type="button" onClick={this.selectAll.bind(this)}>Select All</button>
+  <button type="button" onClick={this.clearAll.bind(this)}>Clear All</button>
+  <p></p>
+
+  <p className="w3-myFont">Selected Locations</p>
+  <div id="checkedLocations">
   </div>
   <p></p>
 
@@ -84,11 +106,15 @@ render() {
     </div>
     <p></p>
 
+
     <button type="button" onClick={this.selectAll.bind(this)}>Select All</button>
     <button type="button" onClick={this.clearAll.bind(this)}>Clear All</button>
     <button type="button" onClick={this.updateSelectedLocations.bind(this)}>Plan</button>
     
     <button type="button" onClick={this.saveButtonClicked.bind(this)}>Save these locations</button>
+
+    <button type="button" onClick={this.planTrip.bind(this)}>Plan</button>
+
     <p></p>
 
   <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
@@ -154,6 +180,16 @@ handleSubmit(event) {
     this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization);
     //console.log("handle submit");
     event.preventDefault();
+}
+
+planTrip(event){
+    var reorderedSL = [];
+    var dragulaDivs = document.getElementById("checkedLocations").children;
+    for(var i = 0; i < dragulaDivs.length; i++){
+        reorderedSL[i] = dragulaDivs[i].innerHTML;
+    }
+    console.log("reorderedSL", reorderedSL);
+    this.props.fetch("plan", reorderedSL, this.state.unit, this.state.optimization);
 }
 
 buttonClicked(event) {
@@ -240,6 +276,15 @@ updateSelectedLocations(event) {
         }
     }
     console.log("selectedLocations:", this.state.selectedLocations);
+    document.getElementById("checkedLocations").innerHTML = "";
+    var wrapper = document.getElementById("checkedLocations");
+        for (var i = 0; i < (this.state.selectedLocations.length); i++) {
+	    var selected = document.createElement("div");
+            var textNode = document.createTextNode(this.state.selectedLocations[i]);
+	    selected.appendChild(textNode);
+            wrapper.appendChild(selected);
+        }
+    console.log("wrapper of selected", wrapper);
 }
 
 selectAll(source) {
@@ -248,6 +293,8 @@ selectAll(source) {
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = true;
   }
+    
+  this.updateSelectedLocations(this);
 }
 
 clearAll(source) {
@@ -256,6 +303,8 @@ clearAll(source) {
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = false;
   }
+  this.updateSelectedLocations(this);
+  
 }
 
 }

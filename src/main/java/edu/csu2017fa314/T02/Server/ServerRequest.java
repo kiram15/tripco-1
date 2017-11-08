@@ -1,11 +1,16 @@
 package edu.csu2017fa314.T02.Server;
 
+
+import java.util.ArrayList;
+
 /**
  * Created by sswensen on 10/1/17.
  * Edited for use by emcintos 10/14/17.
  */
 
+
  import java.util.ArrayList;
+
 
  public class ServerRequest {
      private String request = "";
