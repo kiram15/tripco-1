@@ -47,7 +47,7 @@ render() {
         this.setState({
             qRLength: this.props.queryResults.length
         });
-        console.log("qRLength", qRLength);
+        console.log("qRLength", this.state.qRLength);
         console.log("MyDiv", myDiv);
         console.log("queryResults", this.props.queryResults);
     }
@@ -109,8 +109,8 @@ render() {
 
     <button type="button" onClick={this.selectAll.bind(this)}>Select All</button>
     <button type="button" onClick={this.clearAll.bind(this)}>Clear All</button>
-    <button type="button" onClick={this.updateSelectedLocations.bind(this)}>Plan</button>
-    
+
+
     <button type="button" onClick={this.saveButtonClicked.bind(this)}>Save these locations</button>
 
     <button type="button" onClick={this.planTrip.bind(this)}>Plan</button>
@@ -293,7 +293,7 @@ selectAll(source) {
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = true;
   }
-    
+
   this.updateSelectedLocations(this);
 }
 
@@ -304,7 +304,7 @@ clearAll(source) {
     checkboxes[i].checked = false;
   }
   this.updateSelectedLocations(this);
-  
+
 }
 
 }

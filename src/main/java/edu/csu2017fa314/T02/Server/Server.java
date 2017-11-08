@@ -89,8 +89,8 @@ import static spark.Spark.post;
          //Convert response to json
          return gson.toJson(sRes, ServerQueryResponse.class);
      }
-     
-     // TODO: called by testing method if client requests a plan 
+
+     // TODO: called by testing method if client requests a plan
      private Object servePlan(ArrayList<String> selected, boolean miles, String optimization) {
          Gson gson = new Gson();
          //QueryBuilder q = new QueryBuilder("user", "pass"); // Create new QueryBuilder instance and pass in credentials //TODO update credentials
@@ -131,7 +131,7 @@ import static spark.Spark.post;
 
          ArrayList<Distance> trip = h.getShortestItinerary();
 
-         ServerQueryResponse sRes = new ServerQueryResponse(trip);
+         ServerPlanResponse sRes = new ServerPlanResponse(trip);
 
          return gson.toJson(sRes, ServerQueryResponse.class);
      }
@@ -178,7 +178,7 @@ import static spark.Spark.post;
          String u = sRec.getUnit();
          String o = sRec.getOptSelection();
 
-        
+
 
          //checks if user wants km or nah
          if(u.equals("km")){
@@ -194,8 +194,8 @@ import static spark.Spark.post;
          else if(sRec.getRequest().equals("upload")){
 
              return serveUpload(sRec.getDescription(),miles, o);
-       
-        } 
+
+        }
         else if(sRec.getRequest().equals("plan")) {
             return servePlan(sRec.getDescription(), miles, o);
         }

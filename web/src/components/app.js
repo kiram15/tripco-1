@@ -138,7 +138,7 @@ startEndInfo(file) {
 async selectColumns(file) {
     //console.log("Got File:", file);
     console.log(file[0]);
-    console.log(file[0].startID.info);
+    console.log(file[0].info);
     var options = ["Airport ID", "Latitude", "Longitude", "Airport Code", "Type",
                     "Elevation", "Municipality", "Airport Website",
                     "Airport Wikipedia", "Country", "Continent", "Region",
@@ -154,7 +154,7 @@ async browseFile(file) {
     //For loop that goes through all pairs,
     let pairs = [];
     let runTotal = 0;
-    
+
     for (let i = 0; i < Object.values (file).length; i++) {
         let start = file[i].startID.name; //get start from file i
         let end = file[i].endID.name; //get end from file i
@@ -203,8 +203,8 @@ async browseFile(file) {
                 optSelection : opt
             };
             console.log("Fetching Query");
-        
-        }  
+
+        }
         else if (type === "plan") {
             request = {
                 request: "plan",
@@ -213,9 +213,9 @@ async browseFile(file) {
                 optSelection: opt
             };
             console.log("Fetching Plan");
-        } 
-        // if the button is clicked:
         }
+        // if the button is clicked:
+
         else if(type === "upload") {
             request = {
                 request: "upload",
@@ -257,13 +257,13 @@ async browseFile(file) {
                 });
 
                 //console.log("queryResults", this.state.queryResults);
-                this.selectColumns(file);
-            }   
+                this.selectColumns(this.state.queryResults);
+            }
             else if (parsed.response === "plan"){
                 this.setState({
-                   plannedTrip: parsed.trip 
+                   plannedTrip: parsed.trip
                 });
-                
+
                 console.log("plannedTrip", this.state.plannedTrip);
                 //this will actually display it in the table
                 this.browseFile(this.state.plannedTrip);
@@ -272,7 +272,7 @@ async browseFile(file) {
             else {
 
                 this.setState({
-                    svgResults: parse.contents
+                    svgResults: parsed.contents
                 })
             }
 
@@ -290,9 +290,9 @@ async browseFile(file) {
         //      return location.code;
         //  });
          let locs = [];
-
-         for (var i = 0; i < (this.state.queryResults.length); i++){
-             locs.push(this.state.queryResults[i].startID.info.airports_code);
+         console.log(this.state.plannedTrip);
+         for (var i = 0; i < (this.state.plannedTrip.length); i++){
+             locs.push(this.state.plannedTrip[i].startID.info.airports_code);
          }
          // send these codes back to the server to write the file
          // Javascript does not have access to a computer's file system, so this must be done from the server
