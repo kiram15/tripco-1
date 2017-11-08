@@ -28,6 +28,9 @@ render() {
         options.push(ob);
     }
 
+    var dragula = require('react-dragula');
+    dragula([document.getElementById("checkedLocations")]);
+
     if(this.state.qRLength !== this.props.queryResults.length){
         var myDiv = document.getElementById("searchResult");
         for (var i = 0; i < (this.props.queryResults.length); i++) {
@@ -171,7 +174,13 @@ handleSubmit(event) {
 }
 
 planTrip(event){
-    this.props.fetch("plan", this.state.selectedLocations, this.state.unit, this.state.optimization);
+    var reorderedSL = [];
+    var dragulaDivs = document.getElementById("checkedLocations").children;
+    for(var i = 0; i < dragulaDivs.length; i++){
+        reorderedSL[i] = dragulaDivs[i].innerHTML;
+    }
+    console.log("reorderedSL", reorderedSL);
+    this.props.fetch("plan", reorderedSL, this.state.unit, this.state.optimization);
 }
 
 buttonClicked(event) {
@@ -234,14 +243,14 @@ updateSelectedLocations(event) {
     }
     console.log("selectedLocations:", this.state.selectedLocations);
     document.getElementById("checkedLocations").innerHTML = "";
-    var selected = document.getElementById("checkedLocations");
+    var wrapper = document.getElementById("checkedLocations");
         for (var i = 0; i < (this.state.selectedLocations.length); i++) {
-            var brSL = document.createElement("br");
+	    var selected = document.createElement("div");
             var textNode = document.createTextNode(this.state.selectedLocations[i]);
-            selected.appendChild(textNode);
-            selected.appendChild(brSL);
+	    selected.appendChild(textNode);
+            wrapper.appendChild(selected);
         }
-        console.log("selected Div", selected);
+    console.log("wrapper of selected", wrapper);
 }
 
 selectAll(source) {

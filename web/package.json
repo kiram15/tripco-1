@@ -22,13 +22,15 @@
   ],
   "dependencies": {
     "babel": "^6.23.0",
+    "dragula": "^3.7.2",
     "express": "^4.15.2",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-dragula": "^1.1.17",
     "react-dropzone": "^4.1.0",
     "react-select": "^1.0.0-rc.10",
-    "svg-inline-react": "^3.0.0",
-    "reactstrap": "^4.0.0"
+    "reactstrap": "^4.0.0",
+    "svg-inline-react": "^3.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
