@@ -6,23 +6,17 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.lang.Math;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.lang.ClassLoader;
 import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
-//import java.io.IOUtils;
 
 public class Hub {
-    //String[] infoArray;
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
@@ -75,7 +69,7 @@ public class Hub {
             Connection conn = DriverManager.getConnection(myUrl, username, password);
             try { // create a statement
                 Statement st = conn.createStatement();
-                try{
+                try {
                     //give order of column header to storeColumnHeaders
                     String colHeaders = "airports_ID, airports_Code, airports_Type, airports_Name, airports_Latitude, airports_Longitude, airports_Elevation, airports_Continent, airports_Iso_country, airports_Iso_region, airports_Municipality, airports_Scheduled_service, airports_Gps_code, airports_Iata_code, airports_Local_code, airports_Home_link, airports_Wikipedia_link, airports_Keywords, "
                             + "regions_ID, regions_Code, regions_Local_code, regions_Name, regions_Continent, regions_Iso_country, regions_Wikipedia_link, regions_Keywords, "
@@ -83,48 +77,46 @@ public class Hub {
                             + "continents_ID, continents_Name, continents_Code, continents_Wikipedia_link";
                     storeColumnHeaders(colHeaders);
                     String allTblsSearchQ;
-
-                    if(!upload){
+                if(!searchingFor.contains(" ")){
+                    if (!upload) {
                         allTblsSearchQ = "select airports.id as airports_ID, airports.code as airports_Code, airports.type as airports_Type, airports.name as airports_Name, airports.latitude as airports_Latitude, airports.longitude as airports_Longitude, airports.elevation as airports_Elevation, airports.continent as airports_Continent, airports.iso_country as airports_Iso_country, airports.iso_region as airports_Iso_region, airports.municipality as airports_Municipality, airports.scheduled_service as airports_Scheduled_service, airports.gps_code as airports_Gps_code, airports.iata_code as airports_Iata_code, airports.local_code as airports_Local_code, airports.home_link as airports_Home_link, airports.wikipedia_link as airports_Wikipedia_link, airports.keywords as airports_Keywords, "
-                            + "regions.id as regions_ID, regions.code as regions_Code, regions.local_code as regions_Local_code, regions.name as regions_Name, regions.continent as regions_Continent, regions.iso_country as regions_Iso_country, regions.wikipedia_link as regions_Wikipedia_link, regions.keywords as regions_Keywords, "
-                            + "countries.id as countries_ID, countries.code as countries_Code, countries.name as countries_Name, countries.continent as countries_Continent, countries.wikipedia_link as countries_Wikipedia_link, countries.keywords as countries_Keywords, "
-                            + "continents.id as continents_ID, continents.name as continents_Name, continents.code as continents_Code, continents.wikipedia_link as continents_Wikipedia_link "
-                            + "from continents "
-                            + "inner join countries on countries.continent = continents.code "
-                            + "inner join regions on regions.iso_country = countries.code "
-                            + "inner join airports on airports.iso_region = regions.code "
-                            + "where "
-                            + "airports.id like '%" + searchingFor + "%' or airports.code like '%" + searchingFor + "%' or airports.type like '%" + searchingFor + "%' or airports.name like '%" + searchingFor + "%' or airports.latitude like '%" + searchingFor + "%' or airports.longitude like '%" + searchingFor + "%' or airports.elevation like '%" + searchingFor + "%' or airports.continent like '%" + searchingFor + "%' or airports.iso_country like '%" + searchingFor + "%' or airports.iso_region like '%" + searchingFor + "%' or airports.municipality like '%" + searchingFor + "%' or airports.scheduled_service like '%" + searchingFor + "%' or airports.gps_code like '%" + searchingFor + "%' or airports.iata_code like '%" + searchingFor + "%' or airports.local_code like '%" + searchingFor + "%' or airports.home_link like '%" + searchingFor + "%' or airports.wikipedia_link like '%" + searchingFor + "%' or airports.keywords like '%" + searchingFor + "%' or "
-                            + "regions.id like '%" + searchingFor + "%' or regions.code like '%" + searchingFor + "%' or regions.local_code like '%" + searchingFor + "%' or regions.name like '%" + searchingFor + "%' or regions.continent like '%" + searchingFor + "%' or regions.iso_country like '%" + searchingFor + "%' or regions.wikipedia_link like '%" + searchingFor + "%' or regions.keywords like '%" + searchingFor + "%' or "
-                            + "countries.id like '%" + searchingFor + "%' or countries.code like '%" + searchingFor + "%' or countries.name like '%" + searchingFor + "%' or countries.continent like '%" + searchingFor + "%' or countries.wikipedia_link like '%" + searchingFor + "%' or countries.keywords like '%" + searchingFor + "%' or "
-                            + "continents.id like '%" + searchingFor + "%' or continents.name like '%" + searchingFor + "%' or continents.code like '%" + searchingFor + "%' or continents.wikipedia_link like '%" + searchingFor + "%' "
-                            + "limit 100;";
-                    }
-                    else {
+                                + "regions.id as regions_ID, regions.code as regions_Code, regions.local_code as regions_Local_code, regions.name as regions_Name, regions.continent as regions_Continent, regions.iso_country as regions_Iso_country, regions.wikipedia_link as regions_Wikipedia_link, regions.keywords as regions_Keywords, "
+                                + "countries.id as countries_ID, countries.code as countries_Code, countries.name as countries_Name, countries.continent as countries_Continent, countries.wikipedia_link as countries_Wikipedia_link, countries.keywords as countries_Keywords, "
+                                + "continents.id as continents_ID, continents.name as continents_Name, continents.code as continents_Code, continents.wikipedia_link as continents_Wikipedia_link "
+                                + "from continents "
+                                + "inner join countries on countries.continent = continents.code "
+                                + "inner join regions on regions.iso_country = countries.code "
+                                + "inner join airports on airports.iso_region = regions.code "
+                                + "where "
+                                + "airports.id like '%" + searchingFor + "%' or airports.code like '%" + searchingFor + "%' or airports.type like '%" + searchingFor + "%' or airports.name like '%" + searchingFor + "%' or airports.latitude like '%" + searchingFor + "%' or airports.longitude like '%" + searchingFor + "%' or airports.elevation like '%" + searchingFor + "%' or airports.continent like '%" + searchingFor + "%' or airports.iso_country like '%" + searchingFor + "%' or airports.iso_region like '%" + searchingFor + "%' or airports.municipality like '%" + searchingFor + "%' or airports.scheduled_service like '%" + searchingFor + "%' or airports.gps_code like '%" + searchingFor + "%' or airports.iata_code like '%" + searchingFor + "%' or airports.local_code like '%" + searchingFor + "%' or airports.home_link like '%" + searchingFor + "%' or airports.wikipedia_link like '%" + searchingFor + "%' or airports.keywords like '%" + searchingFor + "%' or "
+                                + "regions.id like '%" + searchingFor + "%' or regions.code like '%" + searchingFor + "%' or regions.local_code like '%" + searchingFor + "%' or regions.name like '%" + searchingFor + "%' or regions.continent like '%" + searchingFor + "%' or regions.iso_country like '%" + searchingFor + "%' or regions.wikipedia_link like '%" + searchingFor + "%' or regions.keywords like '%" + searchingFor + "%' or "
+                                + "countries.id like '%" + searchingFor + "%' or countries.code like '%" + searchingFor + "%' or countries.name like '%" + searchingFor + "%' or countries.continent like '%" + searchingFor + "%' or countries.wikipedia_link like '%" + searchingFor + "%' or countries.keywords like '%" + searchingFor + "%' or "
+                                + "continents.id like '%" + searchingFor + "%' or continents.name like '%" + searchingFor + "%' or continents.code like '%" + searchingFor + "%' or continents.wikipedia_link like '%" + searchingFor + "%' "
+                                + "limit 100;";
+                    } else {
                         allTblsSearchQ = searchingFor;
                     }
-
-
                     ResultSet allTblsSearchRS = st.executeQuery(allTblsSearchQ);
-                    try{ //parse matched rows
-                        while(allTblsSearchRS.next()){ //for each row
+                    try { //parse matched rows
+                        while (allTblsSearchRS.next()) { //for each row
                             String matchedRow = "";
-                            for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
+                            for (int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
                                 String rowCol = allTblsSearchRS.getString(i);
                                 rowCol = rowCol + ",";
                                 matchedRow += rowCol;
                             }
                             parseRow(matchedRow);
                         }
-                    } finally { allTblsSearchRS.close(); }
+                    } finally {
+                        allTblsSearchRS.close();
+                    }
+                }
                 } finally{ st.close(); }
             } finally { conn.close(); }
         } catch (Exception e) { // catches all exceptions in the nested try's
             System.err.printf("Exception: ");
             System.err.println(e.getMessage());
         }
-
-        //moved the call to shortest Trip out of database
     }
 
     public void finalLocationsFromWeb(ArrayList<String> desiredLocations){
@@ -141,8 +133,7 @@ public class Hub {
             }
         }
         createItinerary();
-
-    };
+    }
     
     public void createItinerary(){
         //switch statement that calls the specific shortest trip method based on selected optimization
