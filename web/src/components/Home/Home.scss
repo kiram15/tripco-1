@@ -53,6 +53,7 @@
   .w3-myFont {
     font-family: Tahoma, Geneva, sans-serif;
     color: #4644AB;
+    font-size: 90%;
 
     h2 {
         text-align: center;
@@ -96,6 +97,15 @@
         width:350px;
         height: 200px;
         overflow-y: scroll;
+	padding: 3px;
+  }
+
+  #checkedLocations {
+        border:2px solid #3532BE;
+        width:350px;
+        height: 200px;
+        overflow-y: scroll;
+	padding: 3px;  
   }
 
 }
