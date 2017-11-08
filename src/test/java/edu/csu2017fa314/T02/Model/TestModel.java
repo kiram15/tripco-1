@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -344,6 +343,49 @@ public class TestModel {
         Hub hA = new Hub();
         hA.finalLocations.add(startL);
         assertEquals(startL, hA.getFinalLocations().get(0));
+    }
+
+    // ------------------------- Test createItinerary/finalLocationsFromWeb ----------------------------
+
+    @Test
+    public void testFinalLocationsFromWeb(){
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1", "info1");
+        info1.put("extra2", "info2");
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1", "info1");
+        info2.put("extra2", "info2");
+        Hub hA =  new Hub();
+        ArrayList<String> arr = new ArrayList<String>();
+        arr.add("Denver");
+        arr.add("New Hampshire");
+        Location startL = new Location("Denver", 70, 99.255556, info1);
+        Location endL = new Location("New Hampshire", 80, 100, info2);
+        hA.finalLocations.add(startL);
+        hA.finalLocations.add(endL);
+        hA.finalLocationsFromWeb(arr);
+        assertTrue(hA.selectedLocations.contains(startL));
+        assertTrue(hA.selectedLocations.contains(endL));
+    }
+
+    @Test
+    public void testCreateItinerary(){
+        Hub hC = new Hub();
+        hC.optimization = "None";
+        hC.searchDatabase("alnolte", "830569258", "denver");
+
+        assertFalse(hC.shortestItinerary.isEmpty());//?
+
+        hC.optimization = "NearestNeighbor";
+        hC.searchDatabase("alnolte", "830569258", "denver");
+        assertFalse(hC.shortestItinerary.isEmpty());
+        hC.optimization = "TwoOpt";
+        hC.searchDatabase("alnolte", "830569258", "denver");
+        assertFalse(hC.shortestItinerary.isEmpty());
+        //UNCOMMENT BELOW ONCE 3-OPT IS IMPLEMENTED IN HUB
+        hC.optimization = "ThreeOpt";
+        hC.searchDatabase("alnolte", "830569258", "denver");
+        assertFalse(hC.shortestItinerary.isEmpty());
     }
 
 
