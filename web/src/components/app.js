@@ -12,7 +12,8 @@ export default class App extends React.Component {
             setInfo : [],
             selColumns : [],
             queryResults : [],
-            svgResults : null
+            svgResults : null,
+            plannedTrip: []
         }
     };
 
@@ -24,6 +25,7 @@ render() {
     });
     let svg = this.state.svgResults;
     let query = this.state.queryResults;
+    let plan = this.state.plannedTrip;
     return (
 
         <div className="app-container">
@@ -32,6 +34,7 @@ render() {
                 selectColumns={this.selectColumns.bind(this)}
                 startEndInfo={this.startEndInfo.bind(this)}
                 query={query}
+                plan={plan}
                 svg={svg}
                 onClick={this.onClick.bind(this)}
                 pairs={ps}
@@ -40,6 +43,7 @@ render() {
                 qreturn = {this.state.queryResults}
                 fetch={this.fetch.bind(this)}
                 queryResults={this.state.queryResults}
+                plannedTrip={this.state.plannedTrip}
             />
         </div>
 
@@ -149,7 +153,7 @@ async browseFile(file) {
     //For loop that goes through all pairs,
     let pairs = [];
     let runTotal = 0;
-    this.selectColumns(file);
+    
     for (let i = 0; i < Object.values (file).length; i++) {
         let start = file[i].startID.name; //get start from file i
         let end = file[i].endID.name; //get end from file i
@@ -193,16 +197,27 @@ async browseFile(file) {
         if (type === "query") {
             request = {
                 request: "query",
-                description: input,
+                description: [input],
                 unit : setUnit,
                 optSelection : opt
             };
             console.log("Fetching Query");
+        
+        }  
+        else if (type === "plan") {
+            request = {
+                request: "plan",
+                description: input,
+                unit: setUnit,
+                optSelection: opt
+            };
+            console.log("Fetching Plan");
+        } 
         // if the button is clicked:
-        } else {
+        else {
             request = {
                 request: "svg",
-                description: "",
+                description: [],
                 unit : setUnit,
                 optSelection : opt
             }
@@ -228,12 +243,20 @@ async browseFile(file) {
                     queryResults: parsed.trip
                 });
 
-                console.log("queryResults", this.state.queryResults);
-
+                //console.log("queryResults", this.state.queryResults);
+                this.selectColumns(file);
+            }   
+            else if (parsed.response === "plan"){
+                this.setState({
+                   plannedTrip: parsed.trip 
+                });
+                
+                console.log("plannedTrip", this.state.plannedTrip);
                 //this will actually display it in the table
-                this.browseFile(this.state.queryResults);
+                this.browseFile(this.state.plannedTrip);
+            }
             // if it's not, we assume the response field is "svg" and contains the an svg image
-            } else {
+            else {
 
                 this.setState({
                     svgResults: parse.contents
