@@ -105,7 +105,7 @@ render() {
           <button type="button" onClick={this.ThreeOptClicked.bind(this)}>3-opt</button>
     </div>
     <p></p>
-  
+
     <Dropzone className="dropzone-style" onDrop={this.uploadButtonClicked.bind(this)}>
         <button type="button" > Upload a location file</button>
     </Dropzone>
@@ -241,6 +241,7 @@ saveButtonClicked(event){
 
 //File reading is almost identical how you did it in Sprint 1
 uploadButtonClicked(acceptedFiles) {
+    document.getElementById("searchResult").innerHTML = "";
     console.log("Accepting drop");
     acceptedFiles.forEach(file => {
         console.log("Filename:", file.name, "File:", file);
