@@ -126,7 +126,7 @@ import static spark.Spark.post;
 
 
          h.setMiles(miles);
-         h.setOptimization("None");
+         h.setOptimization(optimization);
 
          h.searchDatabase(this.user, this.password, queryString, true);
          ArrayList<Distance> trip = h.getShortestItinerary();
