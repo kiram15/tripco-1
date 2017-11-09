@@ -641,159 +641,197 @@ public class Hub {
             for (int i = 0; i <= traveled.size() - 5; i++) {
                 for (int j = i + 2; j < traveled.size() - 3; j++) //starts at i+2 because i, i+1, start at j
                     for (int k = j + 2; k < traveled.size() - 1; k++) { //starts at j+2 because i, i+1, j, j+1, start at k
+                        // SWAP 1 - reverse all of the elements between i+1 and j
+                        improvement = opt3Swap1(i, j, k, traveled, improvement);
 
-                        // ------------- SWAP 1 -------------
-                        // (i, j) (i+1, j+1) (k, k+1)
+                        // SWAP 2 - reverse all of the elements between j+1 and k
+                        improvement = opt3Swap2(i, j, k, traveled, improvement);
 
-                        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-                        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-                        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+                        // SWAP 3 - reverse i+1 through k
+                        improvement = opt3Swap3(i, j, k, traveled, improvement);
 
-                        Distance ij = new Distance(traveled.get(i), traveled.get(j), miles);
-                        Distance i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
+                        // SWAP 4 - reverse i+1 through j, then reverse j+1 through k
+                        improvement = opt3Swap4(i, j, k, traveled, improvement);
 
-                        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-                        // distance than the proposed change (i, j) (i+1, j+1) (k, k+1)
-                        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ij.getGcd() + i1j1.getGcd() + kk1.getGcd();
+                        // SWAP 5 - reverse j+1 through k, then swap segments
+                        improvement = opt3Swap5(i, j, k, traveled, improvement);
 
-                        // if delta < 0, than the proposed change is an improvement
-                        if (delta < 0) {
-                            optSwap(traveled, i + 1, j); // reverse all of the elements between i+1 and j
-                            improvement = true;
-                        }
+                        // SWAP 6 - reverse elements from i+1 through j, then swap segments
+                        improvement = opt3Swap6(i, j, k, traveled, improvement);
 
-                        // ------------- SWAP 2 -------------
-                        // (i, i+1) (j, k) (j+1, k+1)
-
-                        // you have to create new Distance objects for every swap, because the objects
-                        // at the indicies might have changed if any of the swap previous were successful
-                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-                        Distance jk = new Distance(traveled.get(j), traveled.get(k), miles);
-                        Distance j1k1 = new Distance(traveled.get(j+1), traveled.get(k+1), miles);
-
-                        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-                        // distance than the proposed change (i, i+1) (j, k) (j+1, k+1)
-                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ii1.getGcd() + jk.getGcd() + j1k1.getGcd();
-
-                        if (delta < 0) { //improvement?
-                            optSwap(traveled, j + 1, k); // reverse all of the elements between j+1 and k
-                            improvement = true;
-                        }
-
-                        // ------------- SWAP 3 -------------
-                        // (i, k) (j+1, j) (i+1, k+1)
-
-                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-                        Distance ik = new Distance(traveled.get(i), traveled.get(k), miles);
-                        Distance i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
-
-                        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-                        // distance than the proposed change (i, k) (j+1, j) (i+1, k+1)
-                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ik.getGcd() + jj1.getGcd() + i1k1.getGcd();
-
-                        if (delta < 0) { //improvement?
-                            optSwap(traveled, i + 1, k); //reverse i+1 through k
-                            improvement = true;
-                        }
-
-                        // ------------- SWAP 4 -------------
-                        // (i, j) (i+1, k) (j+1, k+1)
-
-                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-                        ij = new Distance(traveled.get(i), traveled.get(j), miles);
-                        Distance i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
-                        j1k1 = new Distance(traveled.get(j+1), traveled.get(k+1), miles);
-
-                        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-                        // distance than the proposed change (i, j) (i+1, k) (j+1, k+1)
-                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ij.getGcd() + i1k.getGcd() + j1k1.getGcd();
-
-                        if (delta < 0) { //improvement?
-                            optSwap(traveled, i + 1, j); //reverse i+1 through j
-                            optSwap(traveled, j + 1, k); //reverse j+1 through k
-                            improvement = true;
-                        }
-
-                        // ------------- SWAP 5 -------------
-                        // (i, k) (j+1, i+1) (j, k+1)  --- swap j+1 and k, switch two middle groups
-
-                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-                        ik = new Distance(traveled.get(i), traveled.get(k), miles);
-                        i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
-                        Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
-
-                        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-                        // distance than the proposed change (i, k) (j+1, i+1) (j, k+1)
-                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ik.getGcd() + i1j1.getGcd() + jk1.getGcd();
-
-                        if (delta < 0) { //improvement?
-                            optSwap(traveled, j + 1, k); //reverse j+1 through k
-                            replaceSegment(i + 1, j + 1, k, traveled); // swap segment 1 and 2
-                            improvement = true;
-                        }
-
-                        // ------------- SWAP 6 -------------
-                        // (i, j+1) (k, j) (i+1, k+1)  --- swap i+1 and j, switch two middle groups
-
-                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-                        Distance ij1 = new Distance(traveled.get(i), traveled.get(j+1), miles);
-                        jk = new Distance(traveled.get(j), traveled.get(k), miles);
-                        i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
-
-                        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-                        // distance than the proposed change (i, j+1) (k, j) (i+1, k+1)
-                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ij1.getGcd() + jk.getGcd() + i1k1.getGcd();
-
-                        if (delta < 0) { //improvement?
-                            optSwap(traveled, i+1, j);
-                            replaceSegment(i + 1, j + 1, k, traveled);
-                            improvement = true;
-                        }
-
-                        // ------------- SWAP 7 -------------
-                        // (i, j+1) (k, i+1) (j, k+1)  --- switch two middle groups
-                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-                        ij1 = new Distance(traveled.get(i), traveled.get(j+1), miles);
-                        i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
-                        jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
-
-                        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-                        // distance than the proposed change (i, j+1) (k, i+1) (j, k+1)
-                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                                + ij1.getGcd() + i1k.getGcd() + jk1.getGcd();
-
-                        if (delta < 0) { //improvement?
-                            replaceSegment(i + 1, j + 1, k, traveled);
-                            improvement = true;
-                        }
+                        // SWAP 7 - swap middle segments
+                        improvement = opt3Swap7(i, j, k, traveled, improvement);
                     }
             }
         }
         return traveled;
+    }
+
+    // ------------- SWAP 1 -------------
+    private boolean opt3Swap1(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+        // (i, j) (i+1, j+1) (k, k+1)
+        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+
+        Distance ij = new Distance(traveled.get(i), traveled.get(j), miles);
+        Distance i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
+
+        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
+        // distance than the proposed change (i, j) (i+1, j+1) (k, k+1)
+        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                + ij.getGcd() + i1j1.getGcd() + kk1.getGcd();
+
+        // if delta < 0, than the proposed change is an improvement
+        if (delta < 0) {
+            optSwap(traveled, i + 1, j); // reverse all of the elements between i+1 and j
+            improvement = true;
+        }
+        return improvement;
+    }
+
+    // ------------- SWAP 2 -------------
+    private boolean opt3Swap2(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+        // (i, i+1) (j, k) (j+1, k+1)
+
+        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+
+        Distance jk = new Distance(traveled.get(j), traveled.get(k), miles);
+        Distance j1k1 = new Distance(traveled.get(j+1), traveled.get(k+1), miles);
+
+        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
+        // distance than the proposed change (i, i+1) (j, k) (j+1, k+1)
+        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                + ii1.getGcd() + jk.getGcd() + j1k1.getGcd();
+
+        if (delta < 0) { //improvement?
+            optSwap(traveled, j + 1, k); // reverse all of the elements between j+1 and k
+            improvement = true;
+        }
+        return improvement;
+    }
+
+    // ------------- SWAP 3 -------------
+    private boolean opt3Swap3(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+        // (i, k) (j+1, j) (i+1, k+1)
+
+        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+
+        Distance ik = new Distance(traveled.get(i), traveled.get(k), miles);
+        Distance i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
+
+        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
+        // distance than the proposed change (i, k) (j+1, j) (i+1, k+1)
+        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                + ik.getGcd() + jj1.getGcd() + i1k1.getGcd();
+
+        if (delta < 0) { //improvement?
+            optSwap(traveled, i + 1, k); //reverse i+1 through k
+            improvement = true;
+        }
+        return improvement;
+    }
+
+    // ------------- SWAP 4 -------------
+    private boolean opt3Swap4(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+        // (i, j) (i+1, k) (j+1, k+1)
+
+        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+
+        Distance ij = new Distance(traveled.get(i), traveled.get(j), miles);
+        Distance i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
+        Distance j1k1 = new Distance(traveled.get(j+1), traveled.get(k+1), miles);
+
+        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
+        // distance than the proposed change (i, j) (i+1, k) (j+1, k+1)
+        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                + ij.getGcd() + i1k.getGcd() + j1k1.getGcd();
+
+        if (delta < 0) { //improvement?
+            optSwap(traveled, i + 1, j); //reverse i+1 through j
+            optSwap(traveled, j + 1, k); //reverse j+1 through k
+            improvement = true;
+        }
+        return improvement;
+    }
+
+    // ------------- SWAP 5 -------------
+    private boolean opt3Swap5(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+        // (i, k) (j+1, i+1) (j, k+1)  --- swap j+1 and k, switch two middle groups
+
+        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+
+        Distance ik = new Distance(traveled.get(i), traveled.get(k), miles);
+        Distance i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
+        Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
+
+        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
+        // distance than the proposed change (i, k) (j+1, i+1) (j, k+1)
+        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                + ik.getGcd() + i1j1.getGcd() + jk1.getGcd();
+
+        if (delta < 0) { //improvement?
+            optSwap(traveled, j + 1, k); //reverse j+1 through k
+            replaceSegment(i + 1, j + 1, k, traveled); // swap segment 1 and 2
+            improvement = true;
+        }
+        return improvement;
+    }
+
+    // ------------- SWAP 6 -------------
+    private boolean opt3Swap6(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+        // (i, j+1) (k, j) (i+1, k+1)  --- swap i+1 and j, switch two middle groups
+
+        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+
+        Distance ij1 = new Distance(traveled.get(i), traveled.get(j+1), miles);
+        Distance jk = new Distance(traveled.get(j), traveled.get(k), miles);
+        Distance i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
+
+        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
+        // distance than the proposed change (i, j+1) (k, j) (i+1, k+1)
+        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                + ij1.getGcd() + jk.getGcd() + i1k1.getGcd();
+
+        if (delta < 0) { //improvement?
+            optSwap(traveled, i+1, j); //reverse elements from i+1 through j
+            replaceSegment(i + 1, j + 1, k, traveled); //swap two middle groups
+            improvement = true;
+        }
+        return improvement;
+    }
+
+    // ------------- SWAP 7 -------------
+    private boolean opt3Swap7(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+        // (i, j+1) (k, i+1) (j, k+1)  --- switch two middle groups
+        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+
+        Distance ij1 = new Distance(traveled.get(i), traveled.get(j+1), miles);
+        Distance i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
+        Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
+
+        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
+        // distance than the proposed change (i, j+1) (k, i+1) (j, k+1)
+        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                + ij1.getGcd() + i1k.getGcd() + jk1.getGcd();
+
+        if (delta < 0) { //improvement?
+            replaceSegment(i + 1, j + 1, k, traveled);
+            improvement = true;
+        }
+        return improvement;
     }
 
     //preforms the swap method for 2opt and 3opt
@@ -812,8 +850,6 @@ public class Hub {
 
     // replaceSegment takes all of the elements from the first segment (i+1 through j)
     // and swaps it with the second segment k through j+1
-    //(i, i+1) (j, j+1) (k, k+1) BEFORE
-    //(i,j+1) (k, i+1) (j, k+1) AFTER
     public void replaceSegment(int i1, int j1, int k, ArrayList<Location> traveled) {
         ArrayList <Location> list2 = new ArrayList<Location>();
         for(int x = k; x >= j1; x--) { //for all the elements from j+1 to k
@@ -822,6 +858,8 @@ public class Hub {
         for (int i = 0; i < list2.size(); i++) {
             traveled.add(i1, list2.get(i)); // add them back to this list at the i+1 index
         }
+        //(i, i+1) (j, j+1) (k, k+1) BEFORE
+        //(i,j+1) (k, i+1) (j, k+1) AFTER
     }
 
     //transforms an arrayList of location objects into an arrayList of distance objects using the
