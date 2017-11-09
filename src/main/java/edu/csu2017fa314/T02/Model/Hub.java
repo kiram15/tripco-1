@@ -172,8 +172,6 @@ public class Hub {
     private boolean equalsWithoutAmp(String name, String l){
         int index = name.indexOf('&');
 
-        System.out.println("THIS IS THE AMP String name::: " + name);
-        System.out.println("THIS IS THE AMP String LLL::: " + l);
 
         String subName = name.substring(index + 5);
         String subL = l.substring(index + 1);
