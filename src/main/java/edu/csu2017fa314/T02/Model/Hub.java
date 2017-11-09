@@ -584,7 +584,7 @@ public class Hub {
         }
 
         //apply 3opt
-        checkImprovement3(traveledTo);
+        checkImprovement3(traveledToFinal);
         //convert traveledToFinal location array to a distance array
         shortestItinerary = locationsToDistances(traveledToFinal);
     }
