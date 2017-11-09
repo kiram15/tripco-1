@@ -6,23 +6,17 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.lang.Math;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.lang.ClassLoader;
 import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
-//import java.io.IOUtils;
 
 public class Hub {
-    //String[] infoArray;
     Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
     Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
     ArrayList<Location> finalLocations = new ArrayList<Location>();
@@ -84,7 +78,7 @@ public class Hub {
             Connection conn = DriverManager.getConnection(myUrl, username, password);
             try { // create a statement
                 Statement st = conn.createStatement();
-                try{
+                try {
                     //give order of column header to storeColumnHeaders
                     String colHeaders = "airports_ID, airports_Code, airports_Type, airports_Name, airports_Latitude, airports_Longitude, airports_Elevation, airports_Continent, airports_Iso_country, airports_Iso_region, airports_Municipality, airports_Scheduled_service, airports_Gps_code, airports_Iata_code, airports_Local_code, airports_Home_link, airports_Wikipedia_link, airports_Keywords, "
                             + "regions_ID, regions_Code, regions_Local_code, regions_Name, regions_Continent, regions_Iso_country, regions_Wikipedia_link, regions_Keywords, "
@@ -92,33 +86,30 @@ public class Hub {
                             + "continents_ID, continents_Name, continents_Code, continents_Wikipedia_link";
                     storeColumnHeaders(colHeaders);
                     String allTblsSearchQ;
-
-                    if(!upload){
+                if(!searchingFor.contains(" ")){
+                    if (!upload) {
                         allTblsSearchQ = "select airports.id as airports_ID, airports.code as airports_Code, airports.type as airports_Type, airports.name as airports_Name, airports.latitude as airports_Latitude, airports.longitude as airports_Longitude, airports.elevation as airports_Elevation, airports.continent as airports_Continent, airports.iso_country as airports_Iso_country, airports.iso_region as airports_Iso_region, airports.municipality as airports_Municipality, airports.scheduled_service as airports_Scheduled_service, airports.gps_code as airports_Gps_code, airports.iata_code as airports_Iata_code, airports.local_code as airports_Local_code, airports.home_link as airports_Home_link, airports.wikipedia_link as airports_Wikipedia_link, airports.keywords as airports_Keywords, "
-                            + "regions.id as regions_ID, regions.code as regions_Code, regions.local_code as regions_Local_code, regions.name as regions_Name, regions.continent as regions_Continent, regions.iso_country as regions_Iso_country, regions.wikipedia_link as regions_Wikipedia_link, regions.keywords as regions_Keywords, "
-                            + "countries.id as countries_ID, countries.code as countries_Code, countries.name as countries_Name, countries.continent as countries_Continent, countries.wikipedia_link as countries_Wikipedia_link, countries.keywords as countries_Keywords, "
-                            + "continents.id as continents_ID, continents.name as continents_Name, continents.code as continents_Code, continents.wikipedia_link as continents_Wikipedia_link "
-                            + "from continents "
-                            + "inner join countries on countries.continent = continents.code "
-                            + "inner join regions on regions.iso_country = countries.code "
-                            + "inner join airports on airports.iso_region = regions.code "
-                            + "where "
-                            + "airports.id like '%" + searchingFor + "%' or airports.code like '%" + searchingFor + "%' or airports.type like '%" + searchingFor + "%' or airports.name like '%" + searchingFor + "%' or airports.latitude like '%" + searchingFor + "%' or airports.longitude like '%" + searchingFor + "%' or airports.elevation like '%" + searchingFor + "%' or airports.continent like '%" + searchingFor + "%' or airports.iso_country like '%" + searchingFor + "%' or airports.iso_region like '%" + searchingFor + "%' or airports.municipality like '%" + searchingFor + "%' or airports.scheduled_service like '%" + searchingFor + "%' or airports.gps_code like '%" + searchingFor + "%' or airports.iata_code like '%" + searchingFor + "%' or airports.local_code like '%" + searchingFor + "%' or airports.home_link like '%" + searchingFor + "%' or airports.wikipedia_link like '%" + searchingFor + "%' or airports.keywords like '%" + searchingFor + "%' or "
-                            + "regions.id like '%" + searchingFor + "%' or regions.code like '%" + searchingFor + "%' or regions.local_code like '%" + searchingFor + "%' or regions.name like '%" + searchingFor + "%' or regions.continent like '%" + searchingFor + "%' or regions.iso_country like '%" + searchingFor + "%' or regions.wikipedia_link like '%" + searchingFor + "%' or regions.keywords like '%" + searchingFor + "%' or "
-                            + "countries.id like '%" + searchingFor + "%' or countries.code like '%" + searchingFor + "%' or countries.name like '%" + searchingFor + "%' or countries.continent like '%" + searchingFor + "%' or countries.wikipedia_link like '%" + searchingFor + "%' or countries.keywords like '%" + searchingFor + "%' or "
-                            + "continents.id like '%" + searchingFor + "%' or continents.name like '%" + searchingFor + "%' or continents.code like '%" + searchingFor + "%' or continents.wikipedia_link like '%" + searchingFor + "%' "
-                            + "limit 100;";
-                    }
-                    else {
+                                + "regions.id as regions_ID, regions.code as regions_Code, regions.local_code as regions_Local_code, regions.name as regions_Name, regions.continent as regions_Continent, regions.iso_country as regions_Iso_country, regions.wikipedia_link as regions_Wikipedia_link, regions.keywords as regions_Keywords, "
+                                + "countries.id as countries_ID, countries.code as countries_Code, countries.name as countries_Name, countries.continent as countries_Continent, countries.wikipedia_link as countries_Wikipedia_link, countries.keywords as countries_Keywords, "
+                                + "continents.id as continents_ID, continents.name as continents_Name, continents.code as continents_Code, continents.wikipedia_link as continents_Wikipedia_link "
+                                + "from continents "
+                                + "inner join countries on countries.continent = continents.code "
+                                + "inner join regions on regions.iso_country = countries.code "
+                                + "inner join airports on airports.iso_region = regions.code "
+                                + "where "
+                                + "airports.id like '%" + searchingFor + "%' or airports.code like '%" + searchingFor + "%' or airports.type like '%" + searchingFor + "%' or airports.name like '%" + searchingFor + "%' or airports.latitude like '%" + searchingFor + "%' or airports.longitude like '%" + searchingFor + "%' or airports.elevation like '%" + searchingFor + "%' or airports.continent like '%" + searchingFor + "%' or airports.iso_country like '%" + searchingFor + "%' or airports.iso_region like '%" + searchingFor + "%' or airports.municipality like '%" + searchingFor + "%' or airports.scheduled_service like '%" + searchingFor + "%' or airports.gps_code like '%" + searchingFor + "%' or airports.iata_code like '%" + searchingFor + "%' or airports.local_code like '%" + searchingFor + "%' or airports.home_link like '%" + searchingFor + "%' or airports.wikipedia_link like '%" + searchingFor + "%' or airports.keywords like '%" + searchingFor + "%' or "
+                                + "regions.id like '%" + searchingFor + "%' or regions.code like '%" + searchingFor + "%' or regions.local_code like '%" + searchingFor + "%' or regions.name like '%" + searchingFor + "%' or regions.continent like '%" + searchingFor + "%' or regions.iso_country like '%" + searchingFor + "%' or regions.wikipedia_link like '%" + searchingFor + "%' or regions.keywords like '%" + searchingFor + "%' or "
+                                + "countries.id like '%" + searchingFor + "%' or countries.code like '%" + searchingFor + "%' or countries.name like '%" + searchingFor + "%' or countries.continent like '%" + searchingFor + "%' or countries.wikipedia_link like '%" + searchingFor + "%' or countries.keywords like '%" + searchingFor + "%' or "
+                                + "continents.id like '%" + searchingFor + "%' or continents.name like '%" + searchingFor + "%' or continents.code like '%" + searchingFor + "%' or continents.wikipedia_link like '%" + searchingFor + "%' "
+                                + "limit 100;";
+                    } else {
                         allTblsSearchQ = searchingFor;
                     }
-
-
                     ResultSet allTblsSearchRS = st.executeQuery(allTblsSearchQ);
-                    try{ //parse matched rows
-                        while(allTblsSearchRS.next()){ //for each row
+                    try { //parse matched rows
+                        while (allTblsSearchRS.next()) { //for each row
                             String matchedRow = "";
-                            for(int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
+                            for (int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
                                 String rowCol = allTblsSearchRS.getString(i);
                                 rowCol = rowCol + ",";
                                 matchedRow += rowCol;
@@ -138,15 +129,16 @@ public class Hub {
                             this.selectedLocations.addAll(saveSelect);
                             this.finalLocations.addAll(saveFinal);
                         }
-                    } finally { allTblsSearchRS.close(); }
+                    } finally {
+                        allTblsSearchRS.close();
+                    }
+                }
                 } finally{ st.close(); }
             } finally { conn.close(); }
         } catch (Exception e) { // catches all exceptions in the nested try's
             System.err.printf("Exception: ");
             System.err.println(e.getMessage());
         }
-
-        //moved the call to shortest Trip out of database
     }
 
     public void finalLocationsFromWeb(ArrayList<String> desiredLocations){
@@ -166,6 +158,7 @@ public class Hub {
         createItinerary();
 
     }
+
 
     public void createItinerary(){
         //switch statement that calls the specific shortest trip method based on selected optimization
@@ -509,9 +502,116 @@ public class Hub {
         shortestItinerary = locationsToDistances(traveledToFinal);
     }
 
-    //master method for when user selects 2opt optimization (calls all helpers)
-    public void shortestTrip3Opt(){
+    //master method for when user selects 3opt optimization (calls all helpers)
+    public void shortestTrip3Opt() {
+        //Adjacency matrix that holds all gcds
+        Object[][] gcds = calcAllGcds();
 
+        //keep track of the city that the shortest trip starts from
+        Location shortestTripStart = selectedLocations.get(0);
+        //keep track of the shortest distance
+        int shortestTripDistance = 999999999;
+        //row is the current row in the adjancency matrix where the current location is
+        int row = 0;
+
+        //Create a huge distance to use for inital comparison
+        LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
+        Location bigD1 = new Location("New Zealand", -41.28650, 174.77620, info);
+        Location bigD2 = new Location("Madrid", 40.41680, -3.70380, info);
+        Distance hugeDistance = new Distance(bigD1, bigD2, miles);
+
+        //temp array list to keep track of the cities we have been to
+        ArrayList<Location> traveledTo = new ArrayList<Location>();
+
+        //for each location in the selectedLocations array list: picking a starting city
+        for (Location l : selectedLocations) {
+            //set the first city in the selectedLocations array list to our current location
+            Location currentLocation = l;
+            int tripDistance = 0;
+
+            //while there are still more cities to travel to
+            while (traveledTo.size() < selectedLocations.size()) {
+                for (int i = 0; i < selectedLocations.size(); i++) {
+                    if (selectedLocations.get(i).equals(currentLocation)) {
+                        row = i;
+                    }
+                }
+                traveledTo.add(currentLocation);
+                if (traveledTo.size() == selectedLocations.size()) {
+                    break;
+                }
+                Distance shortestDistance = hugeDistance;
+                for (int i = 1; i < gcds[0].length; i++) { //because we aren't including initial location
+                    Distance d = (Distance) gcds[row][i];
+                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
+                        shortestDistance = d;
+                    }
+                }
+                currentLocation = shortestDistance.getEndID();
+            }
+
+            //add the distance back to the original cit
+            Object[] backAround = gcds[row];
+            //grab the distance from the current city to original city
+            Distance temp = new Distance(currentLocation, l, miles);
+            for (int i = 1; i < backAround.length; i++) {
+                Distance d = (Distance) backAround[i];
+                //add to tripDistance
+                if (temp.equals(d)) {
+                    tripDistance += d.getGcd();
+                }
+            }
+
+            //apply 3opt
+            checkImprovement3(traveledTo);
+
+            //get the updated trip distance after 2opt
+            ArrayList<Distance> traveledDistances = locationsToDistances(traveledTo);
+            for (int i = 0; i < traveledDistances.size(); i++) {
+                tripDistance += traveledDistances.get(i).getGcd();
+            }
+
+            //making traveledTo empty again
+            traveledTo = new ArrayList<Location>();
+
+            //compare the final distance to the stored shortest distance
+            if (tripDistance < shortestTripDistance) {
+                //if the trip was shorter then store distance and starting city
+                shortestTripDistance = tripDistance;
+                shortestTripStart = l;
+            }
+        }
+
+
+        //start final trip at the predetermined shortest trip start
+        Location currentLocation = shortestTripStart;
+
+        ArrayList<Location> traveledToFinal = new ArrayList<Location>();
+        //while there are still more cities to travel to
+        while (traveledToFinal.size() < selectedLocations.size()) {
+            for (int i = 0; i < selectedLocations.size(); i++) {
+                if (selectedLocations.get(i).equals(currentLocation)) {
+                    row = i;
+                }
+            }
+            traveledToFinal.add(currentLocation);
+            if (traveledToFinal.size() == selectedLocations.size()) {
+                break;
+            }
+            Distance shortestDistance = hugeDistance;
+            for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
+                Distance d = (Distance) gcds[row][i];
+                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
+                    shortestDistance = d;
+                }
+            }
+            currentLocation = shortestDistance.getEndID();
+        }
+
+        //apply 3opt
+        checkImprovement3(traveledToFinal);
+        //convert traveledToFinal location array to a distance array
+        shortestItinerary = locationsToDistances(traveledToFinal);
     }
 
     //will return an array list with each city listed once, with the shortest city as its end
@@ -532,7 +632,7 @@ public class Hub {
     }
 
     //determines all the possible areas that 2opt could improve in a given arraylist of locations
-    private void checkImprovement2(ArrayList<Location> traveled) {
+    public void checkImprovement2(ArrayList<Location> traveled) {
         boolean improvement = true;
         //while there is still possible improvements to be made
         while (improvement) {
@@ -553,8 +653,8 @@ public class Hub {
         }
     }
 
-    //determines all the possible areas that 2opt could improve in a given arraylist of locations
-    private void checkImprovement3(ArrayList<Location> traveled) {
+    //determines all the possible areas that 3opt could improve in a given arraylist of locations
+    public ArrayList<Location> checkImprovement3(ArrayList<Location> traveled) {
         boolean improvement = true;
         //while there is still possible improvements to be made
         while (improvement) {
@@ -563,78 +663,208 @@ public class Hub {
                 //starts at i+2 because i, i+1, start at j
                 for (int j = i + 2; j < traveled.size() - 3; j++)
                     //starts at i+4 because i, i+1, j, j+1, start at k
-                    for (int k = i + 4; k < traveled.size() - 1; k++) {
+                    for (int k = j + 2; k < traveled.size() - 1; k++) {
+                        int ogDistance = 0;
+                        ArrayList<Distance> ogDistances = locationsToDistances(traveled);
+                        for (int a = 0; a < ogDistances.size(); a++) {
+                            ogDistance += ogDistances.get(a).getGcd();
+                        }
+
+                        // ------------- SWAP 1 ------------- (orange 1)
+                        // (i, j) (i+1, j+1) (k, k+1)
                         Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-                        Distance ij = new Distance(traveled.get(i), traveled.get(j), miles);
-                        Distance ij1 = new Distance(traveled.get(i), traveled.get(j+1), miles);
-                        Distance ik = new Distance(traveled.get(i), traveled.get(k), miles);
-                        Distance ik1 = new Distance(traveled.get(i), traveled.get(k+1), miles);
-
-                        Distance i1j = new Distance(traveled.get(i+1), traveled.get(j), miles);
-                        Distance i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
-                        Distance i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
-                        Distance i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
-
                         Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-                        Distance jk = new Distance(traveled.get(j), traveled.get(k), miles);
-                        Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
-
-                        Distance j1k = new Distance(traveled.get(j+1), traveled.get(k), miles);
-                        Distance j1k1 = new Distance(traveled.get(j+1), traveled.get(k+1), miles);
-
                         Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
 
+                        Distance ij = new Distance(traveled.get(i), traveled.get(j), miles);
+                        Distance i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
 
-                        //won't the arraylist be changing after everyone of these swaps?
-                        //create a temp for each one? complexity?
+                        double delta1 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ij.getGcd() + i1j1.getGcd() + kk1.getGcd();
 
-                        // --- SWAP 1 --- (orange 1)
-                        // (i, j) (i+1, j+1) (k, k+1)
-//                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-//                                + ij.getGcd() + i1j1.getGcd() + kk1.getGcd();
+                        if (delta1 < 0) { //improvement?
+                            optSwap(traveled, i + 1, j); //swap i+1 and j
+                            improvement = true;
 
-                        // --- SWAP 2 --- (orange 2)
+                            int updatedDistance1 = 0;
+                            ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
+                            for (int a = 0; a < traveledDistances.size(); a++) {
+                                updatedDistance1 += traveledDistances.get(a).getGcd();
+                            }
+                            assert ogDistance + delta1 == updatedDistance1 : "Swap 1 Failed";
+                            ogDistance = updatedDistance1;
+                        }
+
+                        // ------------- SWAP 2 ------------- (orange 2)
                         // (i, i+1) (j, k) (j+1, k+1)
 
-                        //delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                        //  + ii1.getGcd() + jk.getGcd() + j1k1.getGcd();
+                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
 
+                        Distance jk = new Distance(traveled.get(j), traveled.get(k), miles);
+                        Distance j1k1 = new Distance(traveled.get(j+1), traveled.get(k+1), miles);
 
-                        // --- SWAP 3 --- (orange 3)
+                        double delta2 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ii1.getGcd() + jk.getGcd() + j1k1.getGcd();
+
+                        if (delta2 < 0) { //improvement?
+
+                            optSwap(traveled, j + 1, k); //swap j+1 and k
+                            improvement = true;
+
+                            int updatedDistance2 = 0;
+                            ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
+                            for (int a = 0; a < traveledDistances.size(); a++) {
+                                updatedDistance2 += traveledDistances.get(a).getGcd();
+                            }
+                            assert ogDistance + delta2 == updatedDistance2 : "Swap 2 Failed";
+                            ogDistance = updatedDistance2;
+                        }
+
+                        // ------------- SWAP 3 ------------- (orange 3)
                         // (i, k) (j+1, j) (i+1, k+1)
 
-//                        delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-//                                + ik.getGcd() + jj1.getGcd() + i1k1.getGcd();
+                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
 
+                        Distance ik = new Distance(traveled.get(i), traveled.get(k), miles);
+                        Distance i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
 
+                        double delta3 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ik.getGcd() + jj1.getGcd() + i1k1.getGcd();
 
-                        // --- SWAP 4 --- (blue 1)
+                        if (delta3 < 0) { //improvement?
+                            optSwap(traveled, i + 1, k); //reverse i+1 through k
+                            improvement = true;
+
+                            int updatedDistance3 = 0;
+                            ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
+                            for (int a = 0; a < traveledDistances.size(); a++) {
+                                updatedDistance3 += traveledDistances.get(a).getGcd();
+                            }
+                            assert ogDistance + delta3 == updatedDistance3 : "Swap 3 Failed";
+                            ogDistance = updatedDistance3;
+                        }
+
+                        // ------------- SWAP 4 ------------- (blue 1)
                         // (i, j) (i+1, k) (j+1, k+1)
 
-//                        delta4 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-//                                + ij.getGcd() + i1k.getGcd() + k1;
+                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
 
+                        ij = new Distance(traveled.get(i), traveled.get(j), miles);
+                        Distance i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
+                        j1k1 = new Distance(traveled.get(j+1), traveled.get(k+1), miles);
 
-                        // --- SWAP 5 --- (blue 2)
-                        // (i, k) (j+1, i+1) (j, k+1) -- switch two parts, then swap j+1 and k
+                        double delta4 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ij.getGcd() + i1k.getGcd() + j1k1.getGcd();
 
+                        if (delta4 < 0) { //improvement?
+                            optSwap(traveled, i + 1, j); //swap i+1 and j
+                            optSwap(traveled, j + 1, k); //swap j+1 and k
+                            improvement = true;
 
+                            int updatedDistance4 = 0;
+                            ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
+                            for (int a = 0; a < traveledDistances.size(); a++) {
+                                updatedDistance4 += traveledDistances.get(a).getGcd();
+                            }
 
-                        // --- SWAP 6 --- (blue 3)
-                        // (i, j+1) (k, j) (i+1, k+1)
+                            assert ogDistance + delta4 == updatedDistance4 : "Swap 4 Failed";
+                            ogDistance = updatedDistance4;
+                        }
 
+                        // ------------- SWAP 5 ------------- (blue 2)
+                        // (i, k) (j+1, i+1) (j, k+1)  --- swap j+1 and k, switch two middle groups
 
-                        // --- SWAP 7 --- (green 1)
-                        // (i, j+1) (k, i+1) (j, k+1)
+                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
 
-                        //assert that the old distance - delta = new distance
-                        //possible infinite loop
+                        ik = new Distance(traveled.get(i), traveled.get(k), miles);
+                        i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
+                        Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
 
+                        double delta5 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ik.getGcd() + i1j1.getGcd() + jk1.getGcd();
+
+                        if (delta5 < 0) { //improvement?
+                            optSwap(traveled, j + 1, k); //swap j+1 and k
+                            replaceSegment(i + 1, j + 1, k, traveled);
+                            improvement = true;
+
+                            int updatedDistance5 = 0;
+                            ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
+                            for (int a = 0; a < traveledDistances.size(); a++) {
+                                updatedDistance5 += traveledDistances.get(a).getGcd();
+                            }
+                            assert ogDistance + delta5 == updatedDistance5 : "Swap 5 Failed";
+                            ogDistance = updatedDistance5;
+                        }
+
+                        // ------------- SWAP 6 ------------- (blue 3)
+                        // (i, j+1) (k, j) (i+1, k+1)  --- swap i+1 and j, switch two middle groups
+
+                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+
+                        Distance ij1 = new Distance(traveled.get(i), traveled.get(j+1), miles);
+                        jk = new Distance(traveled.get(j), traveled.get(k), miles);
+                        i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
+
+                        double delta6 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ij1.getGcd() + jk.getGcd() + i1k1.getGcd();
+
+                        if (delta6 < 0) { //improvement?
+                            optSwap(traveled, i+1, j);
+                            replaceSegment(i + 1, j + 1, k, traveled);
+
+                            improvement = true;
+
+                            int updatedDistance6 = 0;
+                            ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
+                            for (int a = 0; a < traveledDistances.size(); a++) {
+                                updatedDistance6 += traveledDistances.get(a).getGcd();
+                            }
+
+                            assert ogDistance + delta6 == updatedDistance6 : "Swap 6 Failed";
+                            ogDistance = updatedDistance6;
+                        }
+
+                        // ------------- SWAP 7 ------------- (green 1)
+                        // (i, j+1) (k, i+1) (j, k+1)  --- switch two middle groups
+                        ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
+                        jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
+                        kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
+
+                        ij1 = new Distance(traveled.get(i), traveled.get(j+1), miles);
+                        i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
+                        jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
+
+                        double delta7 = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
+                                + ij1.getGcd() + i1k.getGcd() + jk1.getGcd();
+
+                        if (delta7 < 0) { //improvement?
+                            replaceSegment(i + 1, j + 1, k, traveled);
+
+                            int updatedDistance7 = 0;
+                            ArrayList<Distance> traveledDistances = locationsToDistances(traveled);
+                            for (int a = 0; a < traveledDistances.size(); a++) {
+                                updatedDistance7 += traveledDistances.get(a).getGcd();
+                            }
+
+                            assert ogDistance + delta7 == updatedDistance7 : "Swap 7 Failed";
+                            ogDistance = updatedDistance7;
+                        }
                     }
             }
         }
+        return traveled;
     }
-
 
     //preforms the swap method for 2opt and 3opt
     private void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
@@ -645,6 +875,18 @@ public class Hub {
             traveledTo.set(k, temp);
             i1++;
             k--;
+        }
+    }
+
+    //switches all the elements from (i+1 to j) with the elements from (j+1 to k)
+    public void replaceSegment(int i1, int j1, int k, ArrayList<Location> traveled) {
+        ArrayList <Location> list2 = new ArrayList<Location>();
+        for(int x = k; x >= j1; x--) { //for all the elements from j+1 to k
+            list2.add(traveled.remove(x)); //remove them from the original list in backwards order
+        }
+
+        for (int i = 0; i < list2.size(); i++) {
+            traveled.add(i1, list2.get(i)); // add them back to thsi list at the i+1 index
         }
     }
 
