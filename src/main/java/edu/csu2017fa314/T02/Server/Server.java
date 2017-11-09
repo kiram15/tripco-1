@@ -129,11 +129,11 @@ import static spark.Spark.post;
          h.setOptimization(optimization);
 
          h.searchDatabase(this.user, this.password, queryString, true);
-         ArrayList<Distance> trip = h.getShortestItinerary();
-         System.out.println(trip);
-         ServerPlanResponse sRes = new ServerPlanResponse(trip);
+         ArrayList<Location> trip = h.getFinalLocations();
+         System.out.println("Upload Trip: " + trip);
+         ServerQueryResponse sRes = new ServerQueryResponse(trip);
 
-         return gson.toJson(sRes, ServerPlanResponse.class);
+         return gson.toJson(sRes, ServerQueryResponse.class);
      }
 
      private Object download(Request rec, Response res){
