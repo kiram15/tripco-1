@@ -130,7 +130,7 @@ import static spark.Spark.post;
 
          h.searchDatabase(this.user, this.password, queryString, true);
          ArrayList<Location> trip = h.getFinalLocations();
-         System.out.println("Upload Trip: " + trip);
+         
          ServerQueryResponse sRes = new ServerQueryResponse(trip);
 
          return gson.toJson(sRes, ServerQueryResponse.class);

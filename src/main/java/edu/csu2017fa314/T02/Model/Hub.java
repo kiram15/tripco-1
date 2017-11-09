@@ -86,7 +86,7 @@ public class Hub {
                             + "continents_ID, continents_Name, continents_Code, continents_Wikipedia_link";
                     storeColumnHeaders(colHeaders);
                     String allTblsSearchQ = "";
-                //if(!searchingFor.contains(" ")){
+
                     if (!upload) {
                         allTblsSearchQ = "select airports.id as airports_ID, airports.code as airports_Code, airports.type as airports_Type, airports.name as airports_Name, airports.latitude as airports_Latitude, airports.longitude as airports_Longitude, airports.elevation as airports_Elevation, airports.continent as airports_Continent, airports.iso_country as airports_Iso_country, airports.iso_region as airports_Iso_region, airports.municipality as airports_Municipality, airports.scheduled_service as airports_Scheduled_service, airports.gps_code as airports_Gps_code, airports.iata_code as airports_Iata_code, airports.local_code as airports_Local_code, airports.home_link as airports_Home_link, airports.wikipedia_link as airports_Wikipedia_link, airports.keywords as airports_Keywords, "
                                 + "regions.id as regions_ID, regions.code as regions_Code, regions.local_code as regions_Local_code, regions.name as regions_Name, regions.continent as regions_Continent, regions.iso_country as regions_Iso_country, regions.wikipedia_link as regions_Wikipedia_link, regions.keywords as regions_Keywords, "
@@ -105,7 +105,7 @@ public class Hub {
                     } else {
                         allTblsSearchQ = searchingFor;
                     }
-                    System.out.println(allTblsSearchQ);
+                    
                     ResultSet allTblsSearchRS = st.executeQuery(allTblsSearchQ);
                     try { //parse matched rows
                         while (allTblsSearchRS.next()) { //for each row
@@ -121,19 +121,11 @@ public class Hub {
                             parseRow(matchedRow);
 
                         }
-                        // if(upload){
-                        //     this.selectedLocations.clear();
-                        //     this.selectedLocations.addAll(this.finalLocations);
-                        //     createItinerary();
-                        //     this.selectedLocations.clear();
-                        //     this.finalLocations.clear();
-                        //     this.selectedLocations.addAll(saveSelect);
-                        //     this.finalLocations.addAll(saveFinal);
-                        // }
+
                     } finally {
                         allTblsSearchRS.close();
                     }
-                //}
+
                 } finally{ st.close(); }
             } finally { conn.close(); }
         } catch (Exception e) { // catches all exceptions in the nested try's
