@@ -45,6 +45,7 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 11/2 | #242 #246 #298 | #243 #255 #240 #297 | Same as last daily scrum | Low
 11/3 | #75 #240 #243 #249 #297 | #255 #276 #216 #244 #250 | Same as last daily scrum | Medium
 11/5 | #255 #285 #216 #268 #307 #245 #313 | #276 #244 #259 #250 #311 | Tests, 320 program (Amber, Kira, Nicole), stress | Medium high
+11/8 | #244 #245 #250 #251 #256 #259 #320 #324 #325 #328 #330 #331 #336| #338 #343 #217| 320 program and exam (Amber, Kira, Nicole) | Medium
  
 
 ## Review
