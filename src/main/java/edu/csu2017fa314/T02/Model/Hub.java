@@ -105,7 +105,7 @@ public class Hub {
                     } else {
                         allTblsSearchQ = searchingFor;
                     }
-                    
+
                     ResultSet allTblsSearchRS = st.executeQuery(allTblsSearchQ);
                     try { //parse matched rows
                         while (allTblsSearchRS.next()) { //for each row
@@ -248,7 +248,7 @@ public class Hub {
         double doubleLon = latLonConvert(objectLongitude);
 
         Location location = new Location(objectName, doubleLat, doubleLon, info);
-        System.out.println(location);
+        
 
         finalLocations.add(location);
         selectedLocations.add(location);
