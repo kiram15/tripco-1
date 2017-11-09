@@ -100,7 +100,6 @@ import static spark.Spark.post;
          h.setOptimization(optimization);
 
          h.finalLocationsFromWeb(selected);
-
          //System.out.println("after search database");
          ArrayList<Distance> trip = h.getShortestItinerary();
          // Create object with svg file path and array of matching database entries to return to server
@@ -114,6 +113,7 @@ import static spark.Spark.post;
 
      private Object serveUpload(ArrayList<String> locations, boolean miles, String optimization){
          Gson gson = new Gson();
+         System.out.println("Serving Upload");
 
          String queryString = "SELECT * FROM airports WHERE ";
          for(int i = 0; i < locations.size(); ++i){
@@ -124,16 +124,16 @@ import static spark.Spark.post;
               }
          }
 
+
          h.setMiles(miles);
          h.setOptimization(optimization);
 
          h.searchDatabase(this.user, this.password, queryString, true);
-
          ArrayList<Distance> trip = h.getShortestItinerary();
-
+         System.out.println(trip);
          ServerPlanResponse sRes = new ServerPlanResponse(trip);
 
-         return gson.toJson(sRes, ServerQueryResponse.class);
+         return gson.toJson(sRes, ServerPlanResponse.class);
      }
 
      private Object download(Request rec, Response res){

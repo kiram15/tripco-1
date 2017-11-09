@@ -127,16 +127,14 @@ startEndInfo(file) {
         else if ("Region Code" ==columnNames[j]) {
             finalStr = finalStr + "Region Code: " + seCol.regions_code + "\n";
         }
-        // else{
-        //     finalStr = finalStr + "Scheduled Service: " + seCol.scheduled_service + "\n";
-        // }
+
     }
     console.log("FINAL: ", finalStr);
     return finalStr;
 }
 
 async selectColumns(file) {
-    //console.log("Got File:", file);
+
     console.log(file[0]);
     console.log(file[0].info);
     var options = ["Airport ID", "Latitude", "Longitude", "Airport Code", "Type",
@@ -187,8 +185,8 @@ async browseFile(file) {
 
     // This function sends `input` the server and updates the state with whatever is returned
     async fetch(type, input, setUnit, opt){
-        //input.preventDefault();
-        //console.log("THIS IS TYPE::: ", type);
+
+
         console.log("Fetching... ", input);
         console.log("Using Unit: ", setUnit);
         console.log("Using Optimization: ", opt);
@@ -238,7 +236,7 @@ async browseFile(file) {
 
 
         try{
-            //console.log("in try block?");
+
             let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/testing";
             console.log(serverUrl);
             let jsonRet = await fetch(serverUrl,
@@ -256,7 +254,7 @@ async browseFile(file) {
                     queryResults: parsed.trip
                 });
 
-                //console.log("queryResults", this.state.queryResults);
+
                 this.selectColumns(this.state.queryResults);
             }
             else if (parsed.response === "plan"){
