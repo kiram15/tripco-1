@@ -477,13 +477,13 @@ public class Hub {
         shortestItinerary = locationsToDistances(traveledToFinal);
     }
 
-    //master method for when user selects 2opt optimization (calls all helpers)
-    public void shortestTrip3Opt(){
+    //master method for when user selects 3opt optimization (calls all helpers)
+    public void shortestTrip3Opt() {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds();
 
         //keep track of the city that the shortest trip starts from
-        Location shortestTripStart = finalLocations.get(0);
+        Location shortestTripStart = selectedLocations.get(0);
         //keep track of the shortest distance
         int shortestTripDistance = 999999999;
         //row is the current row in the adjancency matrix where the current location is
@@ -498,21 +498,21 @@ public class Hub {
         //temp array list to keep track of the cities we have been to
         ArrayList<Location> traveledTo = new ArrayList<Location>();
 
-        //for each location in the finalLocations array list: picking a starting city
-        for (Location l : finalLocations) {
-            //set the first city in the finalLocations array list to our current location
+        //for each location in the selectedLocations array list: picking a starting city
+        for (Location l : selectedLocations) {
+            //set the first city in the selectedLocations array list to our current location
             Location currentLocation = l;
             int tripDistance = 0;
 
             //while there are still more cities to travel to
-            while (traveledTo.size() < finalLocations.size()) {
-                for (int i = 0; i < finalLocations.size(); i++) {
-                    if (finalLocations.get(i).equals(currentLocation)) {
+            while (traveledTo.size() < selectedLocations.size()) {
+                for (int i = 0; i < selectedLocations.size(); i++) {
+                    if (selectedLocations.get(i).equals(currentLocation)) {
                         row = i;
                     }
                 }
                 traveledTo.add(currentLocation);
-                if (traveledTo.size() == finalLocations.size()) {
+                if (traveledTo.size() == selectedLocations.size()) {
                     break;
                 }
                 Distance shortestDistance = hugeDistance;
@@ -557,19 +557,20 @@ public class Hub {
             }
         }
 
+
         //start final trip at the predetermined shortest trip start
         Location currentLocation = shortestTripStart;
 
         ArrayList<Location> traveledToFinal = new ArrayList<Location>();
         //while there are still more cities to travel to
-        while (traveledToFinal.size() < finalLocations.size()) {
-            for (int i = 0; i < finalLocations.size(); i++) {
-                if (finalLocations.get(i).equals(currentLocation)) {
+        while (traveledToFinal.size() < selectedLocations.size()) {
+            for (int i = 0; i < selectedLocations.size(); i++) {
+                if (selectedLocations.get(i).equals(currentLocation)) {
                     row = i;
                 }
             }
             traveledToFinal.add(currentLocation);
-            if (traveledToFinal.size() == finalLocations.size()) {
+            if (traveledToFinal.size() == selectedLocations.size()) {
                 break;
             }
             Distance shortestDistance = hugeDistance;
@@ -581,6 +582,7 @@ public class Hub {
             }
             currentLocation = shortestDistance.getEndID();
         }
+
         //apply 3opt
         checkImprovement3(traveledToFinal);
         //convert traveledToFinal location array to a distance array
