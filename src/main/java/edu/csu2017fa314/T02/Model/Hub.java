@@ -144,19 +144,45 @@ public class Hub {
     public void finalLocationsFromWeb(ArrayList<String> desiredLocations){
         selectedLocations.clear();
         //go through each element in the desiredLocations array list and grab the name
-
         for (String name : desiredLocations){
             //find the location object from finalLocations based on the name
             for(Location l : finalLocations){
                 //add this location to selectedLocations
-                if(l.getName().equals(name)){
-                    selectedLocations.add(l);
-                    break;
+                if(l.getName().contains("&") && name.contains("&")){
+                    boolean equals = equalsWithoutAmp(name, l.getName());
+                    if(equals){
+                        selectedLocations.add(l);
+                        break;
+                    }
+
+                }
+                else{
+                    if(l.getName().matches(name)){
+                        selectedLocations.add(l);
+                        break;
+                    }
                 }
             }
         }
         createItinerary();
 
+    }
+
+    //deals with extra characters added with ampersands
+    private boolean equalsWithoutAmp(String name, String l){
+        int index = name.indexOf('&');
+
+        System.out.println("THIS IS THE AMP String name::: " + name);
+        System.out.println("THIS IS THE AMP String LLL::: " + l);
+
+        String subName = name.substring(index + 5);
+        String subL = l.substring(index + 1);
+
+        if(subName.equals(subL)){
+            return true;
+        } else{
+            return false;
+        }
     }
 
 
