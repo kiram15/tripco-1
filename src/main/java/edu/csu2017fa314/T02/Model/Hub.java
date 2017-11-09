@@ -62,6 +62,15 @@ public class Hub {
     }
 
     public void searchDatabase(String username, String password, String searchingFor, boolean upload){
+
+        ArrayList<Location> saveSelect = new ArrayList<Location>();
+        ArrayList<Location> saveFinal = new ArrayList<Location>();
+
+        if(upload){
+            saveSelect.addAll(this.selectedLocations);
+            saveFinal.addAll(this.finalLocations);
+        }
+
         finalLocations.clear();
         shortestItinerary.clear();
         columns.clear();
@@ -113,8 +122,21 @@ public class Hub {
                                 String rowCol = allTblsSearchRS.getString(i);
                                 rowCol = rowCol + ",";
                                 matchedRow += rowCol;
+                                if(upload && i == 18){
+                                    break;
+                                }
                             }
                             parseRow(matchedRow);
+
+                        }
+                        if(upload){
+                            this.selectedLocations.clear();
+                            this.selectedLocations.addAll(this.finalLocations);
+                            createItinerary();
+                            this.selectedLocations.clear();
+                            this.finalLocations.clear();
+                            this.selectedLocations.addAll(saveSelect);
+                            this.finalLocations.addAll(saveFinal);
                         }
                     } finally { allTblsSearchRS.close(); }
                 } finally{ st.close(); }
@@ -130,6 +152,7 @@ public class Hub {
     public void finalLocationsFromWeb(ArrayList<String> desiredLocations){
         selectedLocations.clear();
         //go through each element in the desiredLocations array list and grab the name
+
         for (String name : desiredLocations){
             //find the location object from finalLocations based on the name
             for(Location l : finalLocations){
@@ -142,8 +165,8 @@ public class Hub {
         }
         createItinerary();
 
-    };
-    
+    }
+
     public void createItinerary(){
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
@@ -651,7 +674,7 @@ public class Hub {
             File WorldMapFile;
 
 
-            //System.out.println(this.getClass().getResourceAsStream("/WorldMap.svg"));
+
             // copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
             LinkedList<String> ll = new LinkedList<String>();
 

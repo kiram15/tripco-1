@@ -109,7 +109,9 @@ render() {
 
     <button type="button" onClick={this.selectAll.bind(this)}>Select All</button>
     <button type="button" onClick={this.clearAll.bind(this)}>Clear All</button>
-
+    <Dropzone className="dropzone-style" onDrop={this.uploadButtonClicked.bind(this)}>
+        <button type="button" > Upload a location file</button>
+    </Dropzone>
 
     <button type="button" onClick={this.saveButtonClicked.bind(this)}>Save these locations</button>
 
@@ -166,19 +168,19 @@ render() {
 keyUp(event) {
     if (event.which === 13) { // Waiting for enter to be pressed. Enter is key 13: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
         this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization); // Call fetch and pass whatever text is in the input box
-        //console.log("event 13 thing");
+
     } else {
         this.setState({
             input: event.target.value
         });
-        //console.log("casual else block");
+
     }
 }
 
 handleSubmit(event) {
     document.getElementById("searchResult").innerHTML = "";
     this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization);
-    //console.log("handle submit");
+
     event.preventDefault();
 }
 
@@ -242,26 +244,26 @@ saveButtonClicked(event){
     this.props.getFile();
 }
 
-    // File reading is almost identical how you did it in Sprint 1
-    //  uploadButtonClicked(acceptedFiles) {
-    //      console.log("Accepting drop");
-    //      acceptedFiles.forEach(file => {
-    //          console.log("Filename:", file.name, "File:", file);
-    //          console.log(JSON.stringify(file));
-    //          let fr = new FileReader();
-    //          fr.onload = (function () {
-    //              return function (e) {
-    //                  let JsonObj = JSON.parse(e.target.result);
-    //                  console.log(JsonObj);
-    //                  // Do something with the file:
-    //                  this.props.fetch("upload", JsonObj, this.state.unit, this.state.optimization);
-    //                  //this.props.browseFile(JsonObj);
-    //              };
-    //          })(file).bind(this);
-     //
-    //          fr.readAsText(file);
-    //      });
-    //  }
+//File reading is almost identical how you did it in Sprint 1
+uploadButtonClicked(acceptedFiles) {
+    console.log("Accepting drop");
+    acceptedFiles.forEach(file => {
+        console.log("Filename:", file.name, "File:", file);
+        console.log(JSON.stringify(file));
+        let fr = new FileReader();
+        fr.onload = (function () {
+            return function (e) {
+                let JsonObj = JSON.parse(e.target.result);
+                console.log(JsonObj);
+                // Do something with the file:
+                this.props.fetch("upload", JsonObj, this.state.unit, this.state.optimization);
+                //this.props.browseFile(JsonObj);
+            };
+        })(file).bind(this);
+
+        fr.readAsText(file);
+    });
+}
 
 updateSelectedLocations(event) {
     var parentDiv = document.getElementById("searchResult");
