@@ -51,28 +51,30 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 ## Review
 
 #### Completed user stories (epics) in Sprint Backlog 
-* *user story*:  *comments*
-* 
+* *75*:   *Worldwide*
+* *232*:  *Trip Destination Selection*
+* *233*:  *Optimization and Selection*
+* *234*:  *Select a starting Location*
+* *239*:  *Website Transition*
 
-Completed *number of issues completed* issues associated with these user stories.
+Completed *55* issues associated with these user stories.
 
 #### Incomplete user stories / epics in Sprint Backlog 
-* *user story*: *Explanation...*
 *
 
 #### What went well
-* *something*
+* *Website transition, worldwide application*
 *
 
 #### Problems encountered and resolutions
-* *something*
-*
+* *Issue #250 (save itinerary) was shown to have bugs in the demo, and therefore needs fixing before completed*
+* *All optimizations were reveled to have a small bug at the end of the itinierary which adds to overall distance*
 
 ## Retrospective
 
 Topic | Teamwork | Process | Tools
 :--- | :--- | :--- | :---
-What we will change this time |  |  | 
-What we did well |  |  | 
-What we need to work on |  |  |
-What we will change next time |  |  | 
+What we will change this time | We definetly started work earlier | We improved and planned a ton of the issues upfront | Code coverage is up to aroun 85% with our JUnit tests
+What we did well |  We collaborated well, asked for help, and met 3 times a week |  We started really early and consistenly worked | We are more comfortable with the technology and new languages, and were able to add the url stuff
+What we need to work on | Communicating and being familiar with all sides, so we can all help | Doing the same amount of work every week | Code Climate and saving state on javascript
+What we will change next time | Get more familiar with all parts of the system to allow for team collaboration | Try to get big issues finished before the last minute | Continue on Code Climate and JSX, react, CSS, and SQL
