@@ -155,15 +155,9 @@ public class Hub {
     public void finalLocationsFromWeb(ArrayList<String> desiredLocations){
         selectedLocations.clear();
         //go through each element in the desiredLocations array list and grab the name
-        System.out.println("finalLocations: " + finalLocations);
-        System.out.println("desiredLocations: " + desiredLocations);
-
         for (String name : desiredLocations){
             //find the location object from finalLocations based on the name
             for(Location l : finalLocations){
-
-                //String name_replace = name.replaceAll("[?]"," ");
-                //String l_name_replace = l.getName().replaceAll("[?]"," ");
 
                 //add this location to selectedLocations
                 if(l.getName().contains("&") && name.contains("&")){
@@ -182,8 +176,6 @@ public class Hub {
                 }
             }
         }
-
-        System.out.println("selectedLocations: " + selectedLocations);
         createItinerary();
 
     }
