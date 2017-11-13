@@ -65,7 +65,7 @@ public class Hub {
         //     saveFinal.addAll(this.finalLocations);
         // }
 
-        finalLocations.clear();
+        //finalLocations.clear();
         shortestItinerary.clear();
         columns.clear();
         reverseC.clear();

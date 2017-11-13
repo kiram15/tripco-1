@@ -267,7 +267,7 @@ updateSelectedLocations(event) {
     var tempSLIndex = this.state.selectedLocations.length;
     for (var i = 0; i < locations.length; i++) {
         //do something with the checked location - add to selected locations array??
-        if (locations[i].checked && (this.state.selectedLocations.includes(locations[i].value) === false) {
+        if (locations[i].checked && (this.state.selectedLocations.includes(locations[i].value) === false)) {
             this.state.selectedLocations[tempSLIndex] = locations[i].value;
             tempSLIndex++;
         }
@@ -281,7 +281,6 @@ updateSelectedLocations(event) {
 	    selected.appendChild(textNode);
             wrapper.appendChild(selected);
         }
-    console.log("wrapper of selected", wrapper);
 }
 
 selectAll(source) {
