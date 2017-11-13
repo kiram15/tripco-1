@@ -158,6 +158,7 @@ public class Hub {
         for (String name : desiredLocations){
             //find the location object from finalLocations based on the name
             for(Location l : finalLocations){
+
                 //add this location to selectedLocations
                 if(l.getName().contains("&") && name.contains("&")){
                     boolean equals = equalsWithoutAmp(name, l.getName());
@@ -168,7 +169,7 @@ public class Hub {
 
                 }
                 else{
-                    if(l.getName().matches(name)){
+                    if(l.getName().equals(name)){
                         selectedLocations.add(l);
                         break;
                     }
