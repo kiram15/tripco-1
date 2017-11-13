@@ -264,8 +264,8 @@ uploadButtonClicked(acceptedFiles) {
 updateSelectedLocations(event) {
     var parentDiv = document.getElementById("searchResult");
     var locations = parentDiv.getElementsByTagName("input");
-    var tempSLIndex = 0;
-    this.state.selectedLocations = [];
+    var tempSLIndex = this.state.selectedLocations.length;
+    //this.state.selectedLocations = [];
     for (var i = 0; i < locations.length; i++) {
         //do something with the checked location - add to selected locations array??
         if (locations[i].checked) {
