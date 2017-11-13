@@ -200,6 +200,7 @@ public class Hub {
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
+                selectedLocations.add(selectedLocations.get(0));
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
             case "NearestNeighbor":
@@ -212,6 +213,7 @@ public class Hub {
                 shortestTrip3Opt();
                 break;
             default:
+                selectedLocations.add(selectedLocations.get(0));
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
         }

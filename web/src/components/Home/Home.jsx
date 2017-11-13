@@ -13,6 +13,7 @@ constructor(props) {
        unit : "miles",
        optimization : "None",
        selectedLocations: [],
+       pastQuery: "",
        qRLength: 0
    };
 
@@ -31,7 +32,8 @@ render() {
     var dragula = require('react-dragula');
     dragula([document.getElementById("checkedLocations")]);
 
-    if(this.state.qRLength !== this.props.queryResults.length){
+    //different query if there is a different search string
+    if(this.state.pastQuery !== this.props.currentQuery){
         var myDiv = document.getElementById("searchResult");
         for (var i = 0; i < (this.props.queryResults.length); i++) {
             var checkBox = document.createElement("input");
@@ -44,12 +46,7 @@ render() {
             label.appendChild(document.createTextNode(this.props.queryResults[i].name));
             myDiv.appendChild(br);
         }
-        this.setState({
-            qRLength: this.props.queryResults.length
-        });
-        console.log("qRLength", this.state.qRLength);
-        console.log("MyDiv", myDiv);
-        console.log("queryResults", this.props.queryResults);
+        this.state.pastQuery = this.props.currentQuery;
     }
 
     let total = this.props.totalDist; //update the total here
