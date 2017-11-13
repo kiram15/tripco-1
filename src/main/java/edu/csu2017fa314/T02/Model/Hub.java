@@ -20,6 +20,7 @@ public class Hub {
     Map<String, Integer> columns;
     Map<Integer, String> reverseC;
     ArrayList<Location> finalLocations;
+    ArrayList<Location> searchedLocations;
     ArrayList<Location> selectedLocations;
     ArrayList<Distance> shortestItinerary;
     boolean miles;
@@ -30,6 +31,7 @@ public class Hub {
         this.columns = new LinkedHashMap<String, Integer>();
         this.reverseC = new LinkedHashMap<Integer, String>();
         this.finalLocations = new ArrayList<Location>();
+        this.searchedLocations = new ArrayList<Location>();
         this.selectedLocations = new ArrayList<Location>();
         this.shortestItinerary = new ArrayList<Distance>();
         this.miles = true;
@@ -43,6 +45,10 @@ public class Hub {
 
     public ArrayList<Location> getFinalLocations(){
         return this.finalLocations;
+    }
+
+    public ArrayList<Location> getSearchedLocations(){
+        return this.searchedLocations;
     }
 
     public boolean getMiles(){
@@ -66,6 +72,8 @@ public class Hub {
         this.optimization = opt;
     }
 
+    public void clearFinalLocations(){ finalLocations.clear(); }
+
     public void searchDatabase(String username, String password, String searchingFor, boolean upload){
 
         // ArrayList<Location> saveSelect = new ArrayList<Location>();
@@ -75,8 +83,7 @@ public class Hub {
         //     saveSelect.addAll(this.selectedLocations);
         //     saveFinal.addAll(this.finalLocations);
         // }
-
-        //finalLocations.clear();
+        searchedLocations.clear();
         shortestItinerary.clear();
         columns.clear();
         reverseC.clear();
@@ -262,6 +269,7 @@ public class Hub {
         
 
         finalLocations.add(location);
+        searchedLocations.add(location);
         selectedLocations.add(location);
     }
 
