@@ -264,11 +264,10 @@ uploadButtonClicked(acceptedFiles) {
 updateSelectedLocations(event) {
     var parentDiv = document.getElementById("searchResult");
     var locations = parentDiv.getElementsByTagName("input");
-    var tempSLIndex = 0;
-    this.state.selectedLocations = [];
+    var tempSLIndex = this.state.selectedLocations.length;
     for (var i = 0; i < locations.length; i++) {
         //do something with the checked location - add to selected locations array??
-        if (locations[i].checked) {
+        if (locations[i].checked && (this.state.selectedLocations.includes(locations[i].value) === false)) {
             this.state.selectedLocations[tempSLIndex] = locations[i].value;
             tempSLIndex++;
         }
@@ -282,7 +281,6 @@ updateSelectedLocations(event) {
 	    selected.appendChild(textNode);
             wrapper.appendChild(selected);
         }
-    console.log("wrapper of selected", wrapper);
 }
 
 selectAll(source) {
@@ -291,7 +289,6 @@ selectAll(source) {
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = true;
   }
-
   this.updateSelectedLocations(this);
 }
 
@@ -301,8 +298,8 @@ clearAll(source) {
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = false;
   }
-  this.updateSelectedLocations(this);
-
+    this.state.selectedLocations = [];
+    this.updateSelectedLocations(this);
 }
 
 }
