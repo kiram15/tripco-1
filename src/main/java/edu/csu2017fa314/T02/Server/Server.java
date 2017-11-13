@@ -80,7 +80,7 @@ import static spark.Spark.post;
          h.searchDatabase(this.user, this.password, searched, false);
 
          //System.out.println("after search database");
-         ArrayList<Location> trip = h.getFinalLocations();
+         ArrayList<Location> trip = h.getSearchedLocations();
          // Create object with svg file path and array of matching database entries to return to server
          ServerQueryResponse sRes = new ServerQueryResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image
 

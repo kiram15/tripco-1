@@ -17,13 +17,26 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Hub {
-    Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
-    Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
-    ArrayList<Location> finalLocations = new ArrayList<Location>();
-    ArrayList<Location> selectedLocations = new ArrayList<Location>();
-    ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
-    boolean miles = true;
-    String optimization = "";
+    Map<String, Integer> columns;
+    Map<Integer, String> reverseC;
+    ArrayList<Location> finalLocations;
+    ArrayList<Location> searchedLocations;
+    ArrayList<Location> selectedLocations;
+    ArrayList<Distance> shortestItinerary;
+    boolean miles;
+    String optimization;
+
+    //constructor
+    public Hub(){
+        this.columns = new LinkedHashMap<String, Integer>();
+        this.reverseC = new LinkedHashMap<Integer, String>();
+        this.finalLocations = new ArrayList<Location>();
+        this.searchedLocations = new ArrayList<Location>();
+        this.selectedLocations = new ArrayList<Location>();
+        this.shortestItinerary = new ArrayList<Distance>();
+        this.miles = true;
+        this.optimization = "";
+    }
 
     //three necessary getters
     public ArrayList<Distance> getShortestItinerary(){
@@ -32,6 +45,10 @@ public class Hub {
 
     public ArrayList<Location> getFinalLocations(){
         return this.finalLocations;
+    }
+
+    public ArrayList<Location> getSearchedLocations(){
+        return this.searchedLocations;
     }
 
     public boolean getMiles(){
@@ -55,6 +72,8 @@ public class Hub {
         this.optimization = opt;
     }
 
+    public void clearFinalLocations(){ finalLocations.clear(); }
+
     public void searchDatabase(String username, String password, String searchingFor, boolean upload){
 
         // ArrayList<Location> saveSelect = new ArrayList<Location>();
@@ -64,8 +83,7 @@ public class Hub {
         //     saveSelect.addAll(this.selectedLocations);
         //     saveFinal.addAll(this.finalLocations);
         // }
-
-        finalLocations.clear();
+        searchedLocations.clear();
         shortestItinerary.clear();
         columns.clear();
         reverseC.clear();
@@ -140,6 +158,7 @@ public class Hub {
         for (String name : desiredLocations){
             //find the location object from finalLocations based on the name
             for(Location l : finalLocations){
+
                 //add this location to selectedLocations
                 if(l.getName().contains("&") && name.contains("&")){
                     boolean equals = equalsWithoutAmp(name, l.getName());
@@ -150,7 +169,7 @@ public class Hub {
 
                 }
                 else{
-                    if(l.getName().matches(name)){
+                    if(l.getName().equals(name)){
                         selectedLocations.add(l);
                         break;
                     }
@@ -253,6 +272,7 @@ public class Hub {
         
 
         finalLocations.add(location);
+        searchedLocations.add(location);
         selectedLocations.add(location);
     }
 
