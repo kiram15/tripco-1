@@ -14,8 +14,10 @@ constructor(props) {
        optimization : "None",
        selectedLocations: [],
        pastQuery: "",
-       qRLength: 0
+       qRLength: 0,
+       saveIDList : []
    };
+
 
 }
 
@@ -44,8 +46,10 @@ render() {
             myDiv.appendChild(checkBox);
             myDiv.appendChild(label);
             label.appendChild(document.createTextNode(this.props.queryResults[i].name));
+            this.state.saveIDList.push({name : this.props.queryResults[i].name, id : this.props.queryResults[i].info.airports_code})
             myDiv.appendChild(br);
         }
+        console.log("Save list: ", this.state.saveIDList);
         this.state.pastQuery = this.props.currentQuery;
     }
 
@@ -233,7 +237,15 @@ ThreeOptClicked(event){
 }
 
 saveButtonClicked(event){
-    this.props.getFile();
+    var airportIDs = [];
+    for(var i = 0; i < this.state.saveIDList.length; i++){
+        for(var j = 0; j < this.state.selectedLocations.length; j++){
+            if(this.state.saveIDList[i].name === this.state.selectedLocations[j]){
+                airportIDs.push(this.state.saveIDList[i].id);
+            }
+        }
+    }
+    this.props.getFile(airportIDs);
 }
 
 //File reading is almost identical how you did it in Sprint 1

@@ -137,8 +137,8 @@ startEndInfo(file) {
 
 async selectColumns(file) {
 
-    console.log(file[0]);
-    console.log(file[0].info);
+
+
     var options = ["Airport ID", "Latitude", "Longitude", "Airport Code", "Type",
                     "Elevation", "Municipality", "Airport Website",
                     "Airport Wikipedia", "Country", "Continent", "Region",
@@ -285,15 +285,15 @@ async browseFile(file) {
 
 
     // download a file of the array a query returns
-     async getFile() {
+     async getFile(file) {
          // assign all the airport codes of the displayed locations to an array
         //  let locs = this.state.queryResults.map((location) => {
         //      return location.code;
         //  });
          let locs = [];
-         console.log(this.state.plannedTrip);
-         for (var i = 0; i < (this.state.plannedTrip.length); i++){
-             locs.push(this.state.plannedTrip[i].startID.info.airports_code);
+         console.log(file);
+         for (var i = 0; i < file.length; i++){
+             locs.push(file[i]);
          }
          // send these codes back to the server to write the file
          // Javascript does not have access to a computer's file system, so this must be done from the server
