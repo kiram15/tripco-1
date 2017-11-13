@@ -265,7 +265,6 @@ updateSelectedLocations(event) {
     var parentDiv = document.getElementById("searchResult");
     var locations = parentDiv.getElementsByTagName("input");
     var tempSLIndex = this.state.selectedLocations.length;
-    //this.state.selectedLocations = [];
     for (var i = 0; i < locations.length; i++) {
         //do something with the checked location - add to selected locations array??
         if (locations[i].checked) {
@@ -300,8 +299,8 @@ clearAll(source) {
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = false;
   }
-  //this.updateSelectedLocations(this);
     this.state.selectedLocations = [];
+    this.updateSelectedLocations(this);
 }
 
 }
