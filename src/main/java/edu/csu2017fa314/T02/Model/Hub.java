@@ -178,6 +178,8 @@ public class Hub {
                 }
             }
         }
+
+        System.out.println("selectedLocations: " + selectedLocations);
         createItinerary();
 
     }
