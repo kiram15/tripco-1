@@ -48,7 +48,7 @@ render() {
         //this.state.qRLength = this.props.queryResults.length;
         //console.log("qRLength", this.state.qRLength);
         //console.log("queryResults", this.props.queryResults);
-    }
+    //}
 
     let total = this.props.totalDist; //update the total here
     let svg = this.props.svg;
