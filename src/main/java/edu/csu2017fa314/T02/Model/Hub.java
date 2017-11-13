@@ -17,13 +17,24 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Hub {
-    Map<String, Integer> columns = new LinkedHashMap<String, Integer>();
-    Map<Integer, String> reverseC = new LinkedHashMap<Integer, String>();
-    ArrayList<Location> finalLocations = new ArrayList<Location>();
-    ArrayList<Location> selectedLocations = new ArrayList<Location>();
-    ArrayList<Distance> shortestItinerary = new ArrayList<Distance>();
-    boolean miles = true;
-    String optimization = "";
+    Map<String, Integer> columns;
+    Map<Integer, String> reverseC;
+    ArrayList<Location> finalLocations;
+    ArrayList<Location> selectedLocations;
+    ArrayList<Distance> shortestItinerary;
+    boolean miles;
+    String optimization;
+
+    //constructor
+    public Hub(){
+        this.columns = new LinkedHashMap<String, Integer>();
+        this.reverseC = new LinkedHashMap<Integer, String>();
+        this.finalLocations = new ArrayList<Location>();
+        this.selectedLocations = new ArrayList<Location>();
+        this.shortestItinerary = new ArrayList<Distance>();
+        this.miles = true;
+        this.optimization = "";
+    }
 
     //three necessary getters
     public ArrayList<Distance> getShortestItinerary(){
