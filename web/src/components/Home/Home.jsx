@@ -291,7 +291,6 @@ selectAll(source) {
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = true;
   }
-
   this.updateSelectedLocations(this);
 }
 
@@ -301,8 +300,8 @@ clearAll(source) {
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = false;
   }
-  this.updateSelectedLocations(this);
-
+  //this.updateSelectedLocations(this);
+    this.state.selectedLocations = [];
 }
 
 }
