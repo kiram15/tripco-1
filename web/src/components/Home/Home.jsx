@@ -13,6 +13,7 @@ constructor(props) {
        unit : "miles",
        optimization : "None",
        selectedLocations: [],
+       pastQuery: "",
        qRLength: 0
    };
 
@@ -33,6 +34,9 @@ render() {
 
     //different query if there is a different search string (or the length isn't the same)
     //if(this.state.qRLength !== this.props.queryResults.length){
+    console.log("this.state.pastQuery", this.state.pastQuery);
+    console.log("this.props.currentQuery", this.props.currentQuery);
+    if(this.state.pastQuery !== this.props.currentQuery){
         var myDiv = document.getElementById("searchResult");
         for (var i = 0; i < (this.props.queryResults.length); i++) {
             var checkBox = document.createElement("input");
@@ -45,10 +49,11 @@ render() {
             label.appendChild(document.createTextNode(this.props.queryResults[i].name));
             myDiv.appendChild(br);
         }
+        this.state.pastQuery = this.props.currentQuery;
         //this.state.qRLength = this.props.queryResults.length;
         //console.log("qRLength", this.state.qRLength);
         //console.log("queryResults", this.props.queryResults);
-    //}
+    }
 
     let total = this.props.totalDist; //update the total here
     let svg = this.props.svg;

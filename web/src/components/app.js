@@ -13,7 +13,8 @@ export default class App extends React.Component {
             selColumns : [],
             queryResults : [],
             svgResults : null,
-            plannedTrip: []
+            plannedTrip: [],
+            currentQuery: ""
         }
     };
 
@@ -45,6 +46,7 @@ render() {
                 fetch={this.fetch.bind(this)}
                 queryResults={this.state.queryResults}
                 plannedTrip={this.state.plannedTrip}
+                currentQuery={this.state.currentQuery}
             />
         </div>
 
@@ -201,6 +203,7 @@ async browseFile(file) {
                 optSelection : opt
             };
             console.log("Fetching Query");
+            this.state.currentQuery = input;
 
         }
         else if (type === "plan") {
