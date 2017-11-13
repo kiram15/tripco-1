@@ -44,11 +44,8 @@ render() {
             label.appendChild(document.createTextNode(this.props.queryResults[i].name));
             myDiv.appendChild(br);
         }
-        this.setState({
-            qRLength: this.props.queryResults.length
-        });
+        this.state.qRLength = this.props.queryResults.length;
         console.log("qRLength", this.state.qRLength);
-        console.log("MyDiv", myDiv);
         console.log("queryResults", this.props.queryResults);
     }
 
