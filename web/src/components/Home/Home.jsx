@@ -32,10 +32,7 @@ render() {
     var dragula = require('react-dragula');
     dragula([document.getElementById("checkedLocations")]);
 
-    //different query if there is a different search string (or the length isn't the same)
-    //if(this.state.qRLength !== this.props.queryResults.length){
-    console.log("this.state.pastQuery", this.state.pastQuery);
-    console.log("this.props.currentQuery", this.props.currentQuery);
+    //different query if there is a different search string
     if(this.state.pastQuery !== this.props.currentQuery){
         var myDiv = document.getElementById("searchResult");
         for (var i = 0; i < (this.props.queryResults.length); i++) {
@@ -50,9 +47,6 @@ render() {
             myDiv.appendChild(br);
         }
         this.state.pastQuery = this.props.currentQuery;
-        //this.state.qRLength = this.props.queryResults.length;
-        //console.log("qRLength", this.state.qRLength);
-        //console.log("queryResults", this.props.queryResults);
     }
 
     let total = this.props.totalDist; //update the total here
