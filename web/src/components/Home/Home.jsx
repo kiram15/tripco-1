@@ -31,7 +31,8 @@ render() {
     var dragula = require('react-dragula');
     dragula([document.getElementById("checkedLocations")]);
 
-    if(this.state.qRLength !== this.props.queryResults.length){
+    //different query if there is a different search string (or the length isn't the same)
+    //if(this.state.qRLength !== this.props.queryResults.length){
         var myDiv = document.getElementById("searchResult");
         for (var i = 0; i < (this.props.queryResults.length); i++) {
             var checkBox = document.createElement("input");
@@ -44,9 +45,9 @@ render() {
             label.appendChild(document.createTextNode(this.props.queryResults[i].name));
             myDiv.appendChild(br);
         }
-        this.state.qRLength = this.props.queryResults.length;
-        console.log("qRLength", this.state.qRLength);
-        console.log("queryResults", this.props.queryResults);
+        //this.state.qRLength = this.props.queryResults.length;
+        //console.log("qRLength", this.state.qRLength);
+        //console.log("queryResults", this.props.queryResults);
     }
 
     let total = this.props.totalDist; //update the total here
