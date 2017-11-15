@@ -254,10 +254,11 @@ async browseFile(file) {
 
             if (parsed.response === "query" || parsed.response === "upload") {
                 this.setState({
-                    queryResults: parsed.trip
+                    queryResults: parsed.trip,
+                    currentQuery : this.state.currentQuery + 'a'
                 });
-
-
+                console.log("Set Query Results");
+                console.log("Query: ", this.state.currentQuery);
                 this.selectColumns(this.state.queryResults);
             }
             else if (parsed.response === "plan"){

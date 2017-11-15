@@ -40,6 +40,7 @@ public class Hub {
 
     //three necessary getters
     public ArrayList<Distance> getShortestItinerary(){
+        //System.out.println("shortestItinerary: " + this.shortestItinerary);
         return this.shortestItinerary;
     }
 
@@ -200,7 +201,7 @@ public class Hub {
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
-                selectedLocations.add(selectedLocations.get(0));
+                //selectedLocations.add(selectedLocations.get(0));
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
             case "NearestNeighbor":
@@ -213,7 +214,7 @@ public class Hub {
                 shortestTrip3Opt();
                 break;
             default:
-                selectedLocations.add(selectedLocations.get(0));
+                //selectedLocations.add(selectedLocations.get(0));
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
         }
@@ -269,7 +270,7 @@ public class Hub {
         double doubleLon = latLonConvert(objectLongitude);
 
         Location location = new Location(objectName, doubleLat, doubleLon, info);
-        
+
 
         finalLocations.add(location);
         searchedLocations.add(location);
