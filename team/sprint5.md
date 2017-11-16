@@ -31,7 +31,7 @@
 Statistic | Planned | Completed
 --- | ---: | ---:
 Tasks |  *value*   | *value* 
-Story Points |  *value*  | *value* 
+Story Points |  5  | *value* 
 
 
 Statistic | Start | End
@@ -45,8 +45,11 @@ Technical Debt Ratio | *value* | *value*
 
 Epics planned for this release.
 
-* *## title*
-*
+* #363 Clean Code
+* #362 Test Coverage
+* #235 Online map with zoom and pan
+* #72 Fast Response
+* #236 Mobile User Experience
 
 ## Daily Scrums
 
