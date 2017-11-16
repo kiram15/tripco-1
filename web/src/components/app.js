@@ -286,7 +286,7 @@ async browseFile(file) {
 
 
     // download a file of the array a query returns
-     async getFile(file) {
+     async getFile(file, type) {
          // assign all the airport codes of the displayed locations to an array
         //  let locs = this.state.queryResults.map((location) => {
         //      return location.code;
@@ -298,10 +298,18 @@ async browseFile(file) {
          }
          // send these codes back to the server to write the file
          // Javascript does not have access to a computer's file system, so this must be done from the server
-         let clientRequest = {
-             request: "save",
-             description: locs
-         };
+         if(type === "json"){
+             let clientRequest = {
+                 request: "save",
+                 description: locs
+             };
+         }
+         else{
+             let clientRequest = {
+                 request : "saveKML",
+                 description : locs
+             };
+         }
          let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/download";
          console.log(serverUrl);
          let response = await fetch(serverUrl,

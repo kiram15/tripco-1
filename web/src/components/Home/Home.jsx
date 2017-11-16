@@ -15,7 +15,9 @@ constructor(props) {
        selectedLocations: [],
        pastQuery: "",
        qRLength: 0,
-       saveIDList : []
+       saveIDList : [],
+       saveLats : [],
+       saveLons : []
    };
 
 
@@ -46,7 +48,9 @@ render() {
             myDiv.appendChild(checkBox);
             myDiv.appendChild(label);
             label.appendChild(document.createTextNode(this.props.queryResults[i].name));
-            this.state.saveIDList.push({name : this.props.queryResults[i].name, id : this.props.queryResults[i].info.airports_code})
+            this.state.saveIDList.push({name : this.props.queryResults[i].name, id : this.props.queryResults[i].info.airports_code});
+            this.state.saveLats.push({name : this.props.queryResults[i].name, lat : this.props.queryResults[i].lat});
+            this.state.saveLons.push({name : this.props.queryResults[i].name, lon : this.props.queryResults[i].lon});
             myDiv.appendChild(br);
         }
         console.log("Save list: ", this.state.saveIDList);
@@ -112,6 +116,7 @@ render() {
     </Dropzone>
 
     <button type="button" onClick={this.saveButtonClicked.bind(this)}>Save Trip</button>
+    <button type="button" onClick={this.saveKMLClicked.bind(this)}>Save Map File</button>
     <button type="button" onClick={this.planTrip.bind(this)}>Plan</button>
     <p></p>
 
@@ -245,7 +250,33 @@ saveButtonClicked(event){
             }
         }
     }
-    this.props.getFile(airportIDs);
+    this.props.getFile(airportIDs, "json");
+}
+
+saveKMLClicked(event){
+    var lats = [];
+    var lons = [];
+    for(var i = 0; i < this.state.saveLats.length; i++){
+        for(var j = 0; j < this.state.selectedLocations.length; j++){
+            if(this.state.saveLats[i].name === this.state.selectedLocations[j]){
+                lats.push(this.state.saveLats[i].lat);
+            }
+        }
+    }
+    for(var i = 0; i < this.state.saveLons.length; i++){
+        for(var j = 0; j < this.state.selectedLocations.length; j++){
+            if(this.state.saveLons[i].name === this.state.selectedLocations[j]){
+                lons.push(this.state.saveLons[i].lon);
+            }
+        }
+    }
+    var both = []
+    both.push(lats);
+    both.push(lons);
+    console.log("Latitudes: ", lats);
+    console.log("longitudes: ", lons);
+    console.log("both ", both);
+    //for(var i = 0; i < this.state.)
 }
 
 //File reading is almost identical how you did it in Sprint 1
