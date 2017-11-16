@@ -93,15 +93,14 @@ import static spark.Spark.post;
      // TODO: called by testing method if client requests a plan
      private Object servePlan(ArrayList<String> selected, boolean miles, String optimization) {
          Gson gson = new Gson();
-         //QueryBuilder q = new QueryBuilder("user", "pass"); // Create new QueryBuilder instance and pass in credentials //TODO update credentials
-         //String queryString = String.format("SELECT * FROM airports WHERE municipality LIKE '%%%s%%' OR name LIKE '%%%s%%' OR type LIKE '%%%s%%' LIMIT 10", searched, searched, searched);
-         //ArrayList<Location> queryResults = q.query(queryString);
+
          h.setMiles(miles);
          h.setOptimization(optimization);
 
          h.finalLocationsFromWeb(selected);
          //System.out.println("after search database");
          ArrayList<Distance> trip = h.getShortestItinerary();
+         System.out.println("Trip: " + trip);
          // Create object with svg file path and array of matching database entries to return to server
          ServerPlanResponse sRes = new ServerPlanResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image
 
@@ -113,7 +112,7 @@ import static spark.Spark.post;
 
      private Object serveUpload(ArrayList<String> locations, boolean miles, String optimization){
          Gson gson = new Gson();
-         System.out.println("Serving Upload");
+         System.out.println("Serving Upload: " + locations);
 
          String queryString = "SELECT * FROM airports WHERE ";
          for(int i = 0; i < locations.size(); ++i){
@@ -127,10 +126,10 @@ import static spark.Spark.post;
 
          h.setMiles(miles);
          h.setOptimization(optimization);
-
+         h.clearFinalLocations();
          h.searchDatabase(this.user, this.password, queryString, true);
-         ArrayList<Location> trip = h.getFinalLocations();
-         
+         ArrayList<Location> trip = h.getSearchedLocations();
+
          ServerQueryResponse sRes = new ServerQueryResponse(trip);
 
          return gson.toJson(sRes, ServerQueryResponse.class);
