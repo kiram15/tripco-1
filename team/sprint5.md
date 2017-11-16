@@ -30,7 +30,7 @@
 
 Statistic | Planned | Completed
 --- | ---: | ---:
-Tasks |  *value*   | *value* 
+Tasks |  11  | *value* 
 Story Points |  5  | *value* 
 
 
