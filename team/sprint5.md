@@ -54,7 +54,7 @@ Epics planned for this release.
 ## Daily Scrums
 
 Date | Tasks done now | Tasks done next | Impediments | Coverage | Smells | Duplication | Technical Debt Ratio | Confidence
-:--- | :--- | :--- | :--- | :--- | :--- | :--- | :---
+:--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---
 11/13 | #355 #356 #358 | #353 #250 #349 | CS320 Exam Wednesday, GRE | *73* | *40* | *40* | *33.5* | Feeling great
  | | | | | | | |
  
