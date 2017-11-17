@@ -57,12 +57,7 @@ import static spark.Spark.post;
          Gson gson = new Gson();
          String content = "";
          // Instead of writing the SVG to a file, we send it in plaintext back to the client to be rendered inline
-         try {
-             //System.out.println("SVG Try:: " + h.shortestItinerary);
-             content = h.drawSVG();
-         } catch(IOException e){
-             System.exit(0);
-         }
+         content = h.drawSVG();
          ServerSvgResponse ssres = new ServerSvgResponse(120, 100, content);
 
          return gson.toJson(ssres, ServerSvgResponse.class);
