@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Home from "./Home.jsx"
 
 // This imports all of the external functionality we want from react-google-maps
 import {GoogleMap, Polyline, withGoogleMap} from 'react-google-maps';
@@ -16,11 +17,10 @@ class Map extends Component {
            From my testing polyline will not draw a line if the path is invalid.
            Ie lat and lng must be valid cooridantes to work
         */
+
+        var svg = Home.props.svg
         const exampleCoordinates = [
-            {lat: 37.772, lng: -122.214},
-            {lat: 21.291, lng: -157.821},
-            {lat: -18.142, lng: 178.431},
-            {lat: -27.467, lng: 153.027}
+            svg
         ];
 
         // Return the stuff we actually want rendered on the page
