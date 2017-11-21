@@ -291,23 +291,35 @@ async browseFile(file) {
         //  let locs = this.state.queryResults.map((location) => {
         //      return location.code;
         //  });
-         let locs = [];
-         console.log(file);
-         for (var i = 0; i < file.length; i++){
-             locs.push(file[i]);
-         }
+
          // send these codes back to the server to write the file
          // Javascript does not have access to a computer's file system, so this must be done from the server
          if(type === "json"){
+
+             let locs = [];
+             console.log(file);
+             for (var i = 0; i < file.length; i++){
+                 locs.push(file[i]);
+             }
+
              let clientRequest = {
                  request: "save",
                  description: locs
              };
          }
          else{
+
+             let lats = file[0];
+             let lons = file[1];
+
+             //creates an array with the lats listed in order
+             //followed by los in same order
+             //ex: [lat1, lat2, lon1, lon2]
+             let coordinates = lats.concat(lons);
+
              let clientRequest = {
                  request : "saveKML",
-                 description : locs
+                 description : coordinates
              };
          }
          let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/download";

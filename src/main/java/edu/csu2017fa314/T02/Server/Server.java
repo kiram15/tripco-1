@@ -145,7 +145,25 @@ import static spark.Spark.post;
          //need to set different headers to write the file
          setHeadersFile(res);
 
-         writeFile(res, sRec.getDescription());
+         if(sRec.getRequest().equals("saveKML")){
+             ArrayList<String> allCoordinates = sRec.getDescription();
+             int half = allCoordinates.size() / 2;
+             String[] lats = new String[half];
+             String[] lons = new String[half];
+             for(int i = 0; i < half; ++i){
+                 lats[i] = allCoordinates.get(i);
+             }
+             int index = 0;
+             for(int i = half; i < allCoordinates.size(); ++i){
+                 lons[index] = allCoordinates.get(i);
+                 ++index;
+             }
+
+             writeKml(res, lats, lons);
+         }
+         else{
+             writeFile(res, sRec.getDescription());
+         }
 
          return res;
 
@@ -223,6 +241,40 @@ import static spark.Spark.post;
               fileWriter.close();
 
           } catch (IOException e) {
+              e.printStackTrace();
+          }
+      }
+
+      private void writeKml(Response res, String[] lats, String[] lons){
+
+          int latIndex = 0;
+          int lonInndex = 0;
+          int[] intLat = new int[lats.length];
+          int[] intLon = new int[lons.length];
+          for(int i = 0; i < lats.length; ++i){
+              intLat[i] = Integer.parseInt(lats[i]);
+              intLon[i] = Integer.parseInt(lons[i]);
+          }
+
+          try{
+              PrintWriter fileWriter = new PrintWriter(res.raw().getOutputStream());
+
+              fileWriter.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                    "<kml xmlns=\"http://www.opengis.net/kml/2.2\">");
+
+              for(int i = 0; i < intLons.length; ++i){
+                  fileWriter.println("\t<Placemark> \n \t\t <Point>");
+                  fileWriter.println("\t\t\t<coordinates>" + intLats[i] + "," +
+                        intLons[i] + ",0</coordinates>");
+                  fileWriter.println("\t\t</Point>\n\t</Placemark>");
+              }
+
+              fileWriter.print("</kml>");
+
+              fileWriter.flush();
+              fileWriter.close();
+
+          } catch(IOException e){
               e.printStackTrace();
           }
       }
