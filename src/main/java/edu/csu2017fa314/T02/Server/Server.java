@@ -249,11 +249,11 @@ import static spark.Spark.post;
 
           int latIndex = 0;
           int lonInndex = 0;
-          int[] intLat = new int[lats.length];
-          int[] intLon = new int[lons.length];
+          double[] intLat = new double[lats.length];
+          double[] intLon = new double[lons.length];
           for(int i = 0; i < lats.length; ++i){
-              intLat[i] = Integer.parseInt(lats[i]);
-              intLon[i] = Integer.parseInt(lons[i]);
+              intLat[i] = Double.parseDouble(lats[i]);
+              intLon[i] = Double.parseDouble(lons[i]);
           }
 
           try{
@@ -262,10 +262,10 @@ import static spark.Spark.post;
               fileWriter.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                     "<kml xmlns=\"http://www.opengis.net/kml/2.2\">");
 
-              for(int i = 0; i < intLons.length; ++i){
+              for(int i = 0; i < intLon.length; ++i){
                   fileWriter.println("\t<Placemark> \n \t\t <Point>");
-                  fileWriter.println("\t\t\t<coordinates>" + intLats[i] + "," +
-                        intLons[i] + ",0</coordinates>");
+                  fileWriter.println("\t\t\t<coordinates>" + intLat[i] + "," +
+                        intLon[i] + ",0</coordinates>");
                   fileWriter.println("\t\t</Point>\n\t</Placemark>");
               }
 

@@ -273,9 +273,9 @@ saveKMLClicked(event){
     var both = []
     both.push(lats);
     both.push(lons);
-    console.log("Latitudes: ", lats);
-    console.log("longitudes: ", lons);
-    console.log("both ", both);
+    // console.log("Latitudes: ", lats);
+    // console.log("longitudes: ", lons);
+    // console.log("both ", both);
     this.props.getFile(both, "kml");
     //for(var i = 0; i < this.state.)
 }

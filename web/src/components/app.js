@@ -292,8 +292,11 @@ async browseFile(file) {
         //      return location.code;
         //  });
 
+
          // send these codes back to the server to write the file
          // Javascript does not have access to a computer's file system, so this must be done from the server
+         let clientRequest;
+
          if(type === "json"){
 
              let locs = [];
@@ -302,10 +305,11 @@ async browseFile(file) {
                  locs.push(file[i]);
              }
 
-             let clientRequest = {
+             clientRequest = {
                  request: "save",
                  description: locs
              };
+             console.log("Getting trip file");
          }
          else{
 
@@ -317,28 +321,36 @@ async browseFile(file) {
              //ex: [lat1, lat2, lon1, lon2]
              let coordinates = lats.concat(lons);
 
-             let clientRequest = {
+             clientRequest = {
                  request : "saveKML",
                  description : coordinates
              };
+             console.log("Getting KML file");
          }
-         let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/download";
-         console.log(serverUrl);
-         let response = await fetch(serverUrl,
-         {
-             method: "POST",
-             body: JSON.stringify(clientRequest)
-         });
 
-         // Unlike the other responses, we don't conver this one to JSON
-        // Instead, grab the file in the response with response.blob()
-         response.blob().then(function(myBlob) {
-             // create a URL for the file
-             let fileUrl = URL.createObjectURL(myBlob);
-             // Open the file. Normally, a text file would open in the browser by default,
-             // which is why we set the content-type differently in the server code.
-             window.open(fileUrl);
-         });
+         try{
+             let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/download";
+             console.log(serverUrl);
+             let response = await fetch(serverUrl,
+                 {
+                    method: "POST",
+                    body: JSON.stringify(clientRequest)
+                });
+
+            // Unlike the other responses, we don't conver this one to JSON
+            // Instead, grab the file in the response with response.blob()
+            response.blob().then(function(myBlob) {
+                // create a URL for the file
+                let fileUrl = URL.createObjectURL(myBlob);
+                // Open the file. Normally, a text file would open in the browser by default,
+                // which is why we set the content-type differently in the server code.
+                window.open(fileUrl);
+            });
+        }catch(e) {
+            console.error("Error talking to server");
+            console.error(e);
+        }
+
      }
 
 
