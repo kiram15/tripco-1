@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import Dropzone from 'react-dropzone'
 import Select from 'react-select';
 import InlineSVG from 'svg-inline-react';
-import Map from "./SampleMap.jsx"
+
 
 class Home extends React.Component {
 constructor(props) {
@@ -115,10 +115,7 @@ render() {
     <button type="button" onClick={this.planTrip.bind(this)}>Plan</button>
     <p></p>
 
-  <Map
-    containerElement={<div style={{ height: `100%` }} />}
-    mapElement={<div style={{ height: `100%` }} />}
-  />
+    {this.props.map}
 
   <div className="Itinerary">
     <div id="Itin" >

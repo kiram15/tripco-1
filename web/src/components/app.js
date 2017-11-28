@@ -1,6 +1,7 @@
 import React from 'react';
 import Home from './Home/Home.jsx';
 import Pair from './Home/Pair/Pair.jsx';
+import Map from "./Home/SampleMap.jsx";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -14,7 +15,8 @@ export default class App extends React.Component {
             queryResults : [],
             svgResults : null,
             plannedTrip: [],
-            currentQuery: ""
+            currentQuery: "",
+            gMapCoords: []
         }
     };
 
@@ -27,6 +29,13 @@ render() {
     let svg = this.state.svgResults;
     let query = this.state.queryResults;
     let plan = this.state.plannedTrip;
+    let map =  <Map
+                   containerElement={<div style={{ height: `100%` }} />}
+                   mapElement={<div style={{ height: `100%` }} />}
+                   svg = {this.state.gMapCoords}
+                 />;
+
+
     return (
 
         <div className="app-container">
@@ -47,6 +56,8 @@ render() {
                 queryResults={this.state.queryResults}
                 plannedTrip={this.state.plannedTrip}
                 currentQuery={this.state.currentQuery}
+                map = {map}
+
             />
         </div>
 
@@ -249,6 +260,7 @@ async browseFile(file) {
                 });
             let ret = await jsonRet.json();
             let parsed = JSON.parse(ret);
+
             console.log("Got back: ", JSON.parse(ret));
 
 
@@ -262,9 +274,12 @@ async browseFile(file) {
                 this.selectColumns(this.state.queryResults);
             }
             else if (parsed.response === "plan"){
+            console.log("--------APP.JS PARSED CONTENTS:", parsed.contents)
                 this.setState({
-                   plannedTrip: parsed.trip
+                   plannedTrip: parsed.trip,
+                   gMapCoords: parsed.contents
                 });
+
 
                 console.log("plannedTrip", this.state.plannedTrip);
                 //this will actually display it in the table
@@ -272,10 +287,10 @@ async browseFile(file) {
             }
             // if it's not, we assume the response field is "svg" and contains the an svg image
             else {
-
-                this.setState({
-                    svgResults: parsed.contents
-                })
+                //console.log("--------APP.JS PARSED CONTENTS:", parsed.contents)
+//                this.setState({
+//                    svgResults: parsed.contents
+//                })
             }
 
         }catch(e) {

@@ -9,9 +9,11 @@ import spark.Response;
 import edu.csu2017fa314.T02.Model.Hub;
 import edu.csu2017fa314.T02.Model.Distance;
 import edu.csu2017fa314.T02.Model.Location;
+import edu.csu2017fa314.T02.Model.gMap;
 
 import java.io.IOException;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static spark.Spark.post;
@@ -53,15 +55,15 @@ import static spark.Spark.post;
      }
 
      // called by testing method if the client requests an svg
-     private Object serveSvg() {
+     /*private Object serveSvg() {
+         System.out.println("calling serveSVG");
          Gson gson = new Gson();
-         String content = "";
+         ArrayList<gMap> content = h.drawSVG();
          // Instead of writing the SVG to a file, we send it in plaintext back to the client to be rendered inline
-         content = h.drawSVG();
-         ServerSvgResponse ssres = new ServerSvgResponse(120, 100, content);
-
+         //System.out.println("*******------------******* SVG STRING: " + content + "*******------------*******");
+         //ServerSvgResponse ssres = new ServerSvgResponse(120, 100, content);
          return gson.toJson(ssres, ServerSvgResponse.class);
-     }
+     }*/
 
      // called by testing method if client requests a search
      private Object serveQuery(String searched, boolean miles, String optimization) {
@@ -97,7 +99,9 @@ import static spark.Spark.post;
          ArrayList<Distance> trip = h.getShortestItinerary();
          System.out.println("Trip: " + trip);
          // Create object with svg file path and array of matching database entries to return to server
-         ServerPlanResponse sRes = new ServerPlanResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image
+         ArrayList<gMap> content = h.drawSVG();
+         System.out.println("*******------------******* SVG STRING: " + content + "*******------------*******");
+         ServerPlanResponse sRes = new ServerPlanResponse(trip, 120, 100, content); //TODO update file path to your svg, change to "./testing.png" for a sample image
 
          //System.out.println("Sending \"" + sRes.toString() + "\" to server.");
 
@@ -194,7 +198,7 @@ import static spark.Spark.post;
             return servePlan(sRec.getDescription(), miles, o);
         }
         else {
-            return serveSvg();
+            return null;
         }
 
      }
