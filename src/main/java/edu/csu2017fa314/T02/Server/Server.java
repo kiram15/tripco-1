@@ -68,7 +68,7 @@ import static spark.Spark.post;
      // called by testing method if client requests a search
      private Object serveQuery(String searched, boolean miles, String optimization) {
          Gson gson = new Gson();
-         //QueryBuilder q = new QueryBuilder("user", "pass"); // Create new QueryBuilder instance and pass in credentials //TODO update credentials
+         //QueryBuilder q = new QueryBuilder("user", "pass"); // Create new QueryBuilder instance and pass in credentials
          //String queryString = String.format("SELECT * FROM airports WHERE municipality LIKE '%%%s%%' OR name LIKE '%%%s%%' OR type LIKE '%%%s%%' LIMIT 10", searched, searched, searched);
          //ArrayList<Location> queryResults = q.query(queryString);
          h.setMiles(miles);
@@ -79,7 +79,7 @@ import static spark.Spark.post;
          //System.out.println("after search database");
          ArrayList<Location> trip = h.getSearchedLocations();
          // Create object with svg file path and array of matching database entries to return to server
-         ServerQueryResponse sRes = new ServerQueryResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image
+         ServerQueryResponse sRes = new ServerQueryResponse(trip);
 
          //System.out.println("Sending \"" + sRes.toString() + "\" to server.");
 
@@ -87,7 +87,6 @@ import static spark.Spark.post;
          return gson.toJson(sRes, ServerQueryResponse.class);
      }
 
-     // TODO: called by testing method if client requests a plan
      private Object servePlan(ArrayList<String> selected, boolean miles, String optimization) {
          Gson gson = new Gson();
 
@@ -100,8 +99,7 @@ import static spark.Spark.post;
          System.out.println("Trip: " + trip);
          // Create object with svg file path and array of matching database entries to return to server
          ArrayList<gMap> content = h.drawSVG();
-         //System.out.println("*******------------******* SVG STRING: " + content + "*******------------*******");
-         ServerPlanResponse sRes = new ServerPlanResponse(trip, 120, 100, content); //TODO update file path to your svg, change to "./testing.png" for a sample image
+         ServerPlanResponse sRes = new ServerPlanResponse(trip, 120, 100, content);
 
          //System.out.println("Sending \"" + sRes.toString() + "\" to server.");
 
