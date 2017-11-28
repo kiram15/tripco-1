@@ -467,7 +467,7 @@ public class TestModel {
 
     // ------------------------- Test drawSVG ----------------------------
 
-    @Test
+    /*@Test
     public void testDrawSVG() {
         LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
         info1.put("extra1", "info1");
@@ -535,7 +535,7 @@ public class TestModel {
         } catch (IOException e) {
             System.exit(0);
         }
-    }
+    }*/
 
     // ------------------------- Test Global Variable getters/setters ----------------------------
 
