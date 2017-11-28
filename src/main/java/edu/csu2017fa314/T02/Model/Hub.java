@@ -945,7 +945,6 @@ public class Hub {
     }
 
     public ArrayList<gMap> drawSVG(){
-        String coordinate = "";
         double firstLocationLat = 0.0;
         double firstLocationLon = 0.0;
         boolean first = true;
@@ -958,17 +957,14 @@ public class Hub {
             }
             double startLat = d.getStartID().getLatitude();
             double startLon = d.getStartID().getLongitude();
-            coordinate += "{lat: " + startLat + ", lng: " + startLon + "},"; //convert gMap object
             gMap gm = new gMap(startLat, startLon);
             finalGMap.add(gm);
         }
 
         double lastEndLat = (shortestItinerary.get(shortestItinerary.size()-1)).getEndID().getLatitude();
         double lastEndLon = (shortestItinerary.get(shortestItinerary.size()-1)).getEndID().getLongitude();
-        coordinate += "{lat: " + lastEndLat + ", lng: " + lastEndLon + "},";
         gMap gmLast = new gMap(lastEndLat, lastEndLon);
         finalGMap.add(gmLast);
-        coordinate += "{lat: " + firstLocationLat + ", lng: " + firstLocationLon + "}";
         gMap gmFirst = new gMap(firstLocationLat, firstLocationLon);
         finalGMap.add(gmFirst);
         return finalGMap;

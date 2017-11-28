@@ -34,8 +34,6 @@ render() {
                    mapElement={<div style={{ height: `100%` }} />}
                    svg = {this.state.gMapCoords}
                  />;
-
-
     return (
 
         <div className="app-container">
@@ -274,7 +272,7 @@ async browseFile(file) {
                 this.selectColumns(this.state.queryResults);
             }
             else if (parsed.response === "plan"){
-            console.log("--------APP.JS PARSED CONTENTS:", parsed.contents)
+            //console.log("--------APP.JS PARSED CONTENTS:", parsed.contents)
                 this.setState({
                    plannedTrip: parsed.trip,
                    gMapCoords: parsed.contents

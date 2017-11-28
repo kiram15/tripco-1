@@ -27,7 +27,7 @@ class Map extends Component {
         for(let i = 0; i < svg.length; i++){
             exampleCoordinates.push({lat:svg[i].lat, lng:svg[i].lon});
         }
-        console.log(exampleCoordinates)
+        //console.log(exampleCoordinates)
 
         /*const exampleCoordinates = [
             svg

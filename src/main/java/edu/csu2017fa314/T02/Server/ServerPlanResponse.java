@@ -15,7 +15,7 @@ public class ServerPlanResponse {
     private String response = "plan";
     private ArrayList<Distance> trip;
 
-    //REMOVE
+    //from svgResponse so they're 'called' together
     private ArrayList<gMap> contents;
     private int width;
     private int height;

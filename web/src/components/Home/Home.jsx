@@ -3,7 +3,6 @@ import Dropzone from 'react-dropzone'
 import Select from 'react-select';
 import InlineSVG from 'svg-inline-react';
 
-
 class Home extends React.Component {
 constructor(props) {
    super(props);
@@ -17,7 +16,6 @@ constructor(props) {
        qRLength: 0,
        saveIDList : []
    };
-
 
 }
 

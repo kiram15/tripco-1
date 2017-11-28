@@ -100,7 +100,7 @@ import static spark.Spark.post;
          System.out.println("Trip: " + trip);
          // Create object with svg file path and array of matching database entries to return to server
          ArrayList<gMap> content = h.drawSVG();
-         System.out.println("*******------------******* SVG STRING: " + content + "*******------------*******");
+         //System.out.println("*******------------******* SVG STRING: " + content + "*******------------*******");
          ServerPlanResponse sRes = new ServerPlanResponse(trip, 120, 100, content); //TODO update file path to your svg, change to "./testing.png" for a sample image
 
          //System.out.println("Sending \"" + sRes.toString() + "\" to server.");
