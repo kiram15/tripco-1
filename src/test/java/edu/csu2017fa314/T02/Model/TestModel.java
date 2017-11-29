@@ -467,7 +467,7 @@ public class TestModel {
 
     // ------------------------- Test drawSVG ----------------------------
 
-    /*@Test
+    @Test
     public void testDrawSVG() {
         LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
         info1.put("extra1", "info1");
@@ -494,48 +494,96 @@ public class TestModel {
         Location startL5 = new Location("california", 36.77, -199.41, info1);
         Location endL5 = new Location("australia", -25.28, 133.775, info2);
         Distance dA5 = new Distance(startL5, endL5, miles);
-        String dSVG = "";
+        ArrayList<gMap> dSVG;
 
-        try {
-            dSVG = hA.drawSVG();
-            assertNotEquals("", dSVG);
+        //empty shortestItinerary
+        dSVG = hA.drawSVG();
+        assertEquals(0, dSVG.size());
 
-            hA.shortestItinerary.add(dA4);
-            dSVG = hA.drawSVG();
-            assertNotEquals("", dSVG);
-            assertTrue(dSVG.contains("y1=\"256.0\""));
-            assertTrue(dSVG.contains("y2=\"256.0\""));
-            assertTrue(dSVG.contains("x1=\"512.0\""));
-            assertTrue(dSVG.contains("x2=\"512.0\""));
-
-            hA.shortestItinerary.add(dA);
-            dSVG = hA.drawSVG();
-            assertNotEquals("", dSVG);
-
-            hA.shortestItinerary.add(dA1);
-            dSVG = hA.drawSVG();
-            assertNotEquals("", dSVG);
-
-            hA.shortestItinerary.add(dA2);
-            dSVG = hA.drawSVG();
-            assertNotEquals("", dSVG);
-
-            hA.shortestItinerary.add(dA3);
-            dSVG = hA.drawSVG();
-            assertNotEquals("", dSVG);
-
-            hA.shortestItinerary.add(dA4);
-            dSVG = hA.drawSVG();
-            assertNotEquals("", dSVG);
-
-            hA.shortestItinerary.add(dA5);
-            dSVG = hA.drawSVG();
-            assertNotEquals("", dSVG);
-
-        } catch (IOException e) {
-            System.exit(0);
+        hA.shortestItinerary.add(dA4);
+        dSVG = hA.drawSVG();
+        assertNotEquals(0, dSVG.size());
+        gMap gm1 = new gMap(0.0,0.0);
+        boolean match = false;
+        for(gMap a : dSVG){
+            double gmLon = a.lon;
+            double gmLat = a.lat;
+            if(gm1.lon == gmLon && gm1.lat == gmLat){
+                match = true;
+            }
         }
-    }*/
+        assertTrue(match);
+
+        hA.shortestItinerary.add(dA);
+        dSVG = hA.drawSVG();
+        assertNotEquals(0, dSVG.size());
+        gMap gm2 = new gMap(70, 99.255556);
+        match = false;
+        for(gMap a : dSVG){
+            double gmLon = a.lon;
+            double gmLat = a.lat;
+            if(gm2.lon == gmLon && gm2.lat == gmLat){
+                match = true;
+            }
+        }
+        assertTrue(match);
+
+        hA.shortestItinerary.add(dA1);
+        assertNotEquals(0, dSVG.size());
+        gMap gm3 = new gMap(-70, -99.255556);
+        match = false;
+        for(gMap a : dSVG){
+            double gmLon = a.lon;
+            double gmLat = a.lat;
+            if(gm3.lon == gmLon && gm3.lat == gmLat){
+                match = true;
+            }
+        }
+        assertTrue(match);
+
+        hA.shortestItinerary.add(dA2);
+        dSVG = hA.drawSVG();
+        assertNotEquals(0, dSVG.size());
+        gMap gm4 = new gMap(-80, -100);
+        match = false;
+        for(gMap a : dSVG){
+            double gmLon = a.lon;
+            double gmLat = a.lat;
+            if(gm4.lon == gmLon && gm4.lat == gmLat){
+                match = true;
+            }
+        }
+        assertTrue(match);
+
+        hA.shortestItinerary.add(dA3);
+        dSVG = hA.drawSVG();
+        assertNotEquals(0, dSVG.size());
+        gMap gm5 = new gMap(-70, 99.255556);
+        match = false;
+        for(gMap a : dSVG){
+            double gmLon = a.lon;
+            double gmLat = a.lat;
+            if(gm5.lon == gmLon && gm5.lat == gmLat){
+                match = true;
+            }
+        }
+        assertTrue(match);
+
+        hA.shortestItinerary.add(dA5);
+        dSVG = hA.drawSVG();
+        assertNotEquals(0, dSVG.size());
+        gMap gm6 = new gMap(-25.28, 133.775);
+        match = false;
+        for(gMap a : dSVG){
+            double gmLon = a.lon;
+            double gmLat = a.lat;
+            if(gm6.lon == gmLon && gm6.lat == gmLat){
+                match = true;
+            }
+        }
+        assertTrue(match);
+
+    }
 
     // ------------------------- Test Global Variable getters/setters ----------------------------
 

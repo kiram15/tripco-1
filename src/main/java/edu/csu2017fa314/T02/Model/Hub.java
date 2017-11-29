@@ -949,24 +949,26 @@ public class Hub {
         double firstLocationLon = 0.0;
         boolean first = true;
         ArrayList<gMap> finalGMap = new ArrayList<gMap>();
-        for(Distance d : shortestItinerary){
-            if(first){
-                firstLocationLat = d.getStartID().getLatitude();
-                firstLocationLon = d.getStartID().getLongitude();
-                first = false;
+        if(shortestItinerary.size() > 0) {
+            for (Distance d : shortestItinerary) {
+                if (first) {
+                    firstLocationLat = d.getStartID().getLatitude();
+                    firstLocationLon = d.getStartID().getLongitude();
+                    first = false;
+                }
+                double startLat = d.getStartID().getLatitude();
+                double startLon = d.getStartID().getLongitude();
+                gMap gm = new gMap(startLat, startLon);
+                finalGMap.add(gm);
             }
-            double startLat = d.getStartID().getLatitude();
-            double startLon = d.getStartID().getLongitude();
-            gMap gm = new gMap(startLat, startLon);
-            finalGMap.add(gm);
-        }
 
-        double lastEndLat = (shortestItinerary.get(shortestItinerary.size()-1)).getEndID().getLatitude();
-        double lastEndLon = (shortestItinerary.get(shortestItinerary.size()-1)).getEndID().getLongitude();
-        gMap gmLast = new gMap(lastEndLat, lastEndLon);
-        finalGMap.add(gmLast);
-        gMap gmFirst = new gMap(firstLocationLat, firstLocationLon);
-        finalGMap.add(gmFirst);
+            double lastEndLat = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndID().getLatitude();
+            double lastEndLon = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndID().getLongitude();
+            gMap gmLast = new gMap(lastEndLat, lastEndLon);
+            finalGMap.add(gmLast);
+            gMap gmFirst = new gMap(firstLocationLat, firstLocationLon);
+            finalGMap.add(gmFirst);
+        }
         return finalGMap;
     }
 
