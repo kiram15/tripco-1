@@ -38,6 +38,18 @@ public class Hub {
         this.optimization = "";
     }
 
+    //constructor
+    public Hub(String optimization){
+        this.columns = new LinkedHashMap<String, Integer>();
+        this.reverseC = new LinkedHashMap<Integer, String>();
+        this.finalLocations = new ArrayList<Location>();
+        this.searchedLocations = new ArrayList<Location>();
+        this.selectedLocations = new ArrayList<Location>();
+        this.shortestItinerary = new ArrayList<Distance>();
+        this.miles = true;
+        this.optimization = optimization;
+    }
+
     //three necessary getters
     public ArrayList<Distance> getShortestItinerary(){
         //System.out.println("shortestItinerary: " + this.shortestItinerary);
@@ -76,14 +88,6 @@ public class Hub {
     public void clearFinalLocations(){ finalLocations.clear(); }
 
     public void searchDatabase(String username, String password, String searchingFor, boolean upload){
-
-        // ArrayList<Location> saveSelect = new ArrayList<Location>();
-        // ArrayList<Location> saveFinal = new ArrayList<Location>();
-        //
-        // if(upload){
-        //     saveSelect.addAll(this.selectedLocations);
-        //     saveFinal.addAll(this.finalLocations);
-        // }
         searchedLocations.clear();
         shortestItinerary.clear();
         columns.clear();
@@ -124,7 +128,6 @@ public class Hub {
                     } else {
                         allTblsSearchQ = searchingFor;
                     }
-
                     ResultSet allTblsSearchRS = st.executeQuery(allTblsSearchQ);
                     try { //parse matched rows
                         while (allTblsSearchRS.next()) { //for each row
@@ -138,9 +141,7 @@ public class Hub {
                                 }
                             }
                             parseRow(matchedRow);
-
                         }
-
                     } finally {
                         allTblsSearchRS.close();
                     }
@@ -159,7 +160,6 @@ public class Hub {
         for (String name : desiredLocations){
             //find the location object from finalLocations based on the name
             for(Location l : finalLocations){
-
                 //add this location to selectedLocations
                 if(l.getName().contains("&") && name.contains("&")){
                     boolean equals = equalsWithoutAmp(name, l.getName());
@@ -167,7 +167,6 @@ public class Hub {
                         selectedLocations.add(l);
                         break;
                     }
-
                 }
                 else{
                     if(l.getName().equals(name)){
@@ -178,7 +177,6 @@ public class Hub {
             }
         }
         createItinerary();
-
     }
 
     //deals with extra characters added with ampersands
@@ -201,24 +199,27 @@ public class Hub {
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
-                //selectedLocations.add(selectedLocations.get(0));
+                System.out.println("NONE");
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
             case "NearestNeighbor":
-                shortestTripNN();
+                NearestNeighbor n = new NearestNeighbor();
+                setShortestItinerary(n.shortestTrip(selectedLocations));
                 break;
             case "TwoOpt":
-                shortestTrip2Opt();
+                Opt2 o2 = new Opt2();
+                shortestItinerary = o2.shortestTrip(selectedLocations);
                 break;
             case "ThreeOpt":
-                shortestTrip3Opt();
+                Opt3 o3 = new Opt3();
+                shortestItinerary = o3.shortestTrip(selectedLocations);
                 break;
             default:
-                //selectedLocations.add(selectedLocations.get(0));
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
         }
     }
+
 
     public void storeColumnHeaders(String firstLine){
         String s = firstLine.toLowerCase();
@@ -270,7 +271,6 @@ public class Hub {
         double doubleLon = latLonConvert(objectLongitude);
 
         Location location = new Location(objectName, doubleLat, doubleLon, info);
-
 
         finalLocations.add(location);
         searchedLocations.add(location);
@@ -330,333 +330,8 @@ public class Hub {
         }
     }
 
-    //master method for when user selects Nearest Neighbor optimization (calls all helpers)
-    public void shortestTripNN(){
-        //Adjacency matrix that holds all gcds
-        Object[][] gcds = calcAllGcds();
-
-        //keep track of the city that the shortest trip starts from
-        Location shortestTripStart = selectedLocations.get(0);
-        //keep track of the shortest distance
-        int shortestTripDistance = 999999999;
-        //row is the current row in the adjancency matrix where the current location is
-        int row = 0;
-
-        //Create a huge distance to use for inital comparison
-        LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
-        Location bigD1 = new Location("New Zealand", -41.28650, 174.77620, info);
-        Location bigD2 = new Location("Madrid", 40.41680, -3.70380, info);
-        Distance hugeDistance = new Distance(bigD1, bigD2, miles);
-
-        //temp array list to keep track of the cities we have been to
-        ArrayList<Location> traveledTo = new ArrayList<Location>();
-
-        //for each location in the selectedLocations array list: picking a starting city
-        for (Location l : selectedLocations) {
-            //set the first city in the selectedLocations array list to our current location
-            Location currentLocation = l;
-            int tripDistance = 0;
-
-            //while there are still more cities to travel to
-            while (traveledTo.size() < selectedLocations.size()) {
-                for (int i = 0; i < selectedLocations.size(); i++) {
-                    if (selectedLocations.get(i).equals(currentLocation)) {
-                        row = i;
-                    }
-                }
-                traveledTo.add(currentLocation);
-                if (traveledTo.size() == selectedLocations.size()) {
-                    break;
-                }
-                Distance shortestDistance = hugeDistance;
-                for (int i = 1; i < gcds[0].length; i++) { //because we aren't including initial location
-                    Distance d = (Distance) gcds[row][i];
-                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
-                        shortestDistance = d;
-                    }
-                }
-                currentLocation = shortestDistance.getEndID();
-                tripDistance += shortestDistance.getGcd();
-            }
-
-            //add the distance back to the original city
-            Object[] backAround = gcds[row];
-
-            //grab the distance from the current city to original city
-            Distance temp = new Distance(currentLocation, l, miles);
-            for (int i = 1; i < backAround.length; i++) {
-                Distance d = (Distance) backAround[i];
-                //add to tripDistance
-                if (temp.equals(d)) {
-                    tripDistance += d.getGcd();
-                }
-            }
-
-            //making traveledTo empty again
-            traveledTo = new ArrayList<Location>();
-
-            //compare the final distance to the stored shortest distance
-            if (tripDistance < shortestTripDistance) {
-                //if the trip was shorter then store distance and starting city
-                shortestTripDistance = tripDistance;
-                shortestTripStart = l;
-            }
-        }
-
-        //start final trip at the predetermined shortest trip start
-        Location currentLocation = shortestTripStart;
-
-        ArrayList<Location> traveledToFinal = new ArrayList<Location>();
-        //while there are still more cities to travel to
-        while (traveledToFinal.size() < selectedLocations.size()) {
-            for (int i = 0; i < selectedLocations.size(); i++) {
-                if (selectedLocations.get(i).equals(currentLocation)) {
-                    row = i;
-                }
-            }
-            traveledToFinal.add(currentLocation);
-            if (traveledToFinal.size() == selectedLocations.size()) {
-                break;
-            }
-            Distance shortestDistance = hugeDistance;
-            for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
-                Distance d = (Distance) gcds[row][i];
-                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
-                    shortestDistance = d;
-                }
-            }
-            currentLocation = shortestDistance.getEndID();
-        }
-        //convert traveledToFinal location array to a distance array
-        shortestItinerary = locationsToDistances(traveledToFinal);
-    }
-
-    //master method for when user selects 2opt optimization (calls all helpers)
-    public void shortestTrip2Opt() {
-        //Adjacency matrix that holds all gcds
-        Object[][] gcds = calcAllGcds();
-
-        //keep track of the city that the shortest trip starts from
-        Location shortestTripStart = selectedLocations.get(0);
-        //keep track of the shortest distance
-        int shortestTripDistance = 999999999;
-        //row is the current row in the adjancency matrix where the current location is
-        int row = 0;
-
-        //Create a huge distance to use for inital comparison
-        LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
-        Location bigD1 = new Location("New Zealand", -41.28650, 174.77620, info);
-        Location bigD2 = new Location("Madrid", 40.41680, -3.70380, info);
-        Distance hugeDistance = new Distance(bigD1, bigD2, miles);
-
-        //temp array list to keep track of the cities we have been to
-        ArrayList<Location> traveledTo = new ArrayList<Location>();
-
-        //for each location in the selectedLocations array list: picking a starting city
-        for (Location l : selectedLocations) {
-            //set the first city in the selectedLocations array list to our current location
-            Location currentLocation = l;
-            int tripDistance = 0;
-
-            //while there are still more cities to travel to
-            while (traveledTo.size() < selectedLocations.size()) {
-                for (int i = 0; i < selectedLocations.size(); i++) {
-                    if (selectedLocations.get(i).equals(currentLocation)) {
-                        row = i;
-                    }
-                }
-                traveledTo.add(currentLocation);
-                if (traveledTo.size() == selectedLocations.size()) {
-                    break;
-                }
-                Distance shortestDistance = hugeDistance;
-                for (int i = 1; i < gcds[0].length; i++) { //because we aren't including initial location
-                    Distance d = (Distance) gcds[row][i];
-                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
-                        shortestDistance = d;
-                    }
-                }
-                currentLocation = shortestDistance.getEndID();
-            }
-
-            //add the distance back to the original cit
-            Object[] backAround = gcds[row];
-            //grab the distance from the current city to original city
-            Distance temp = new Distance(currentLocation, l, miles);
-            for (int i = 1; i < backAround.length; i++) {
-                Distance d = (Distance) backAround[i];
-                //add to tripDistance
-                if (temp.equals(d)) {
-                    tripDistance += d.getGcd();
-                }
-            }
-
-            //apply 2opt
-            checkImprovement2(traveledTo);
-
-            //get the updated trip distance after 2opt
-            ArrayList<Distance> traveledDistances = locationsToDistances(traveledTo);
-            for (int i = 0; i < traveledDistances.size(); i++) {
-                tripDistance += traveledDistances.get(i).getGcd();
-            }
-
-            //making traveledTo empty again
-            traveledTo = new ArrayList<Location>();
-
-            //compare the final distance to the stored shortest distance
-            if (tripDistance < shortestTripDistance) {
-                //if the trip was shorter then store distance and starting city
-                shortestTripDistance = tripDistance;
-                shortestTripStart = l;
-            }
-        }
-
-
-        //start final trip at the predetermined shortest trip start
-        Location currentLocation = shortestTripStart;
-
-        ArrayList<Location> traveledToFinal = new ArrayList<Location>();
-        //while there are still more cities to travel to
-        while (traveledToFinal.size() < selectedLocations.size()) {
-            for (int i = 0; i < selectedLocations.size(); i++) {
-                if (selectedLocations.get(i).equals(currentLocation)) {
-                    row = i;
-                }
-            }
-            traveledToFinal.add(currentLocation);
-            if (traveledToFinal.size() == selectedLocations.size()) {
-                break;
-            }
-            Distance shortestDistance = hugeDistance;
-            for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
-                Distance d = (Distance) gcds[row][i];
-                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
-                    shortestDistance = d;
-                }
-            }
-            currentLocation = shortestDistance.getEndID();
-        }
-
-        //apply 2opt
-        checkImprovement2(traveledToFinal);
-        //convert traveledToFinal location array to a distance array
-        shortestItinerary = locationsToDistances(traveledToFinal);
-    }
-
-    //master method for when user selects 3opt optimization (calls all helpers)
-    public void shortestTrip3Opt() {
-        //Adjacency matrix that holds all gcds
-        Object[][] gcds = calcAllGcds();
-
-        //keep track of the city that the shortest trip starts from
-        Location shortestTripStart = selectedLocations.get(0);
-        //keep track of the shortest distance
-        int shortestTripDistance = 999999999;
-        //row is the current row in the adjancency matrix where the current location is
-        int row = 0;
-
-        //Create a huge distance to use for inital comparison
-        LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
-        Location bigD1 = new Location("New Zealand", -41.28650, 174.77620, info);
-        Location bigD2 = new Location("Madrid", 40.41680, -3.70380, info);
-        Distance hugeDistance = new Distance(bigD1, bigD2, miles);
-
-        //temp array list to keep track of the cities we have been to
-        ArrayList<Location> traveledTo = new ArrayList<Location>();
-
-        //for each location in the selectedLocations array list: picking a starting city
-        for (Location l : selectedLocations) {
-            //set the first city in the selectedLocations array list to our current location
-            Location currentLocation = l;
-            int tripDistance = 0;
-
-            //while there are still more cities to travel to
-            while (traveledTo.size() < selectedLocations.size()) {
-                for (int i = 0; i < selectedLocations.size(); i++) {
-                    if (selectedLocations.get(i).equals(currentLocation)) {
-                        row = i;
-                    }
-                }
-                traveledTo.add(currentLocation);
-                if (traveledTo.size() == selectedLocations.size()) {
-                    break;
-                }
-                Distance shortestDistance = hugeDistance;
-                for (int i = 1; i < gcds[0].length; i++) { //because we aren't including initial location
-                    Distance d = (Distance) gcds[row][i];
-                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
-                        shortestDistance = d;
-                    }
-                }
-                currentLocation = shortestDistance.getEndID();
-            }
-
-            //add the distance back to the original cit
-            Object[] backAround = gcds[row];
-            //grab the distance from the current city to original city
-            Distance temp = new Distance(currentLocation, l, miles);
-            for (int i = 1; i < backAround.length; i++) {
-                Distance d = (Distance) backAround[i];
-                //add to tripDistance
-                if (temp.equals(d)) {
-                    tripDistance += d.getGcd();
-                }
-            }
-
-            //apply 3opt
-            checkImprovement3(traveledTo);
-
-            //get the updated trip distance after 2opt
-            ArrayList<Distance> traveledDistances = locationsToDistances(traveledTo);
-            for (int i = 0; i < traveledDistances.size(); i++) {
-                tripDistance += traveledDistances.get(i).getGcd();
-            }
-
-            //making traveledTo empty again
-            traveledTo = new ArrayList<Location>();
-
-            //compare the final distance to the stored shortest distance
-            if (tripDistance < shortestTripDistance) {
-                //if the trip was shorter then store distance and starting city
-                shortestTripDistance = tripDistance;
-                shortestTripStart = l;
-            }
-        }
-
-
-        //start final trip at the predetermined shortest trip start
-        Location currentLocation = shortestTripStart;
-
-        ArrayList<Location> traveledToFinal = new ArrayList<Location>();
-        //while there are still more cities to travel to
-        while (traveledToFinal.size() < selectedLocations.size()) {
-            for (int i = 0; i < selectedLocations.size(); i++) {
-                if (selectedLocations.get(i).equals(currentLocation)) {
-                    row = i;
-                }
-            }
-            traveledToFinal.add(currentLocation);
-            if (traveledToFinal.size() == selectedLocations.size()) {
-                break;
-            }
-            Distance shortestDistance = hugeDistance;
-            for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
-                Distance d = (Distance) gcds[row][i];
-                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
-                    shortestDistance = d;
-                }
-            }
-            currentLocation = shortestDistance.getEndID();
-        }
-
-        //apply 3opt
-        checkImprovement3(traveledToFinal);
-        //convert traveledToFinal location array to a distance array
-        shortestItinerary = locationsToDistances(traveledToFinal);
-    }
-
     //will return an array list with each city listed once, with the shortest city as its end
-    private Object[][] calcAllGcds() {
+    public Object[][] calcAllGcds(ArrayList<Location> selectedLocations) {
         Object[][] GCDS = new Object[selectedLocations.size()][selectedLocations.size()+1];
         for (int i = 0; i < selectedLocations.size(); i++) {
             //get the initial Location
@@ -672,265 +347,9 @@ public class Hub {
         return GCDS;
     }
 
-    //determines all the possible areas that 2opt could improve in a given arraylist of locations
-    public void checkImprovement2(ArrayList<Location> traveled) {
-        boolean improvement = true;
-        //while there is still possible improvements to be made
-        while (improvement) {
-            improvement = false;
-            for (int i = 0; i <= traveled.size() - 3; i++) { // check n>4
-                for (int k = i + 2; k < traveled.size() - 1; k++) {
-                    Distance ii1 = new Distance(traveled.get(i), traveled.get(i + 1), miles);
-                    Distance kk1 = new Distance(traveled.get(k), traveled.get(k + 1), miles);
-                    Distance ik = new Distance(traveled.get(i), traveled.get(k), miles);
-                    Distance i1k1 = new Distance(traveled.get(i + 1), traveled.get(k + 1), miles);
-                    double delta = (-ii1.getGcd()) - kk1.getGcd() + ik.getGcd() + i1k1.getGcd();
-                    if (delta < 0) { //improvement?
-                        optSwap(traveled, i + 1, k);
-                        improvement = true;
-                    }
-                }
-            }
-        }
-    }
-
-    //determines all the possible areas that 3opt could improve in a given arraylist of locations
-    public ArrayList<Location> checkImprovement3(ArrayList<Location> traveled) {
-        boolean improvement = true;
-        //while there is still possible improvements to be made
-        while (improvement) {
-            improvement = false;
-            // Original 3 opt method has three groups (i, i+1) (j, j+1) (k, k+1), there can be many objects
-            // in between these groups, and the letters correspond to the loop variables. These swaps attempt
-            // to see if switching the location objects at various indicies results in an overall improvment
-            // to distance
-            for (int i = 0; i <= traveled.size() - 5; i++) {
-                for (int j = i + 2; j < traveled.size() - 3; j++) //starts at i+2 because i, i+1, start at j
-                    for (int k = j + 2; k < traveled.size() - 1; k++) { //starts at j+2 because i, i+1, j, j+1, start at k
-                        // SWAP 1 - reverse all of the elements between i+1 and j
-                        improvement = opt3Swap1(i, j, k, traveled, improvement);
-
-                        // SWAP 2 - reverse all of the elements between j+1 and k
-                        improvement = opt3Swap2(i, j, k, traveled, improvement);
-
-                        // SWAP 3 - reverse i+1 through k
-                        improvement = opt3Swap3(i, j, k, traveled, improvement);
-
-                        // SWAP 4 - reverse i+1 through j, then reverse j+1 through k
-                        improvement = opt3Swap4(i, j, k, traveled, improvement);
-
-                        // SWAP 5 - reverse j+1 through k, then swap segments
-                        improvement = opt3Swap5(i, j, k, traveled, improvement);
-
-                        // SWAP 6 - reverse elements from i+1 through j, then swap segments
-                        improvement = opt3Swap6(i, j, k, traveled, improvement);
-
-                        // SWAP 7 - swap middle segments
-                        improvement = opt3Swap7(i, j, k, traveled, improvement);
-                    }
-            }
-        }
-        return traveled;
-    }
-
-    // ------------- SWAP 1 -------------
-    private boolean opt3Swap1(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
-        // (i, j) (i+1, j+1) (k, k+1)
-        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-        Distance ij = new Distance(traveled.get(i), traveled.get(j), miles);
-        Distance i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
-
-        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-        // distance than the proposed change (i, j) (i+1, j+1) (k, k+1)
-        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                + ij.getGcd() + i1j1.getGcd() + kk1.getGcd();
-
-        // if delta < 0, than the proposed change is an improvement
-        if (delta < 0) {
-            optSwap(traveled, i + 1, j); // reverse all of the elements between i+1 and j
-            improvement = true;
-        }
-        return improvement;
-    }
-
-    // ------------- SWAP 2 -------------
-    private boolean opt3Swap2(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
-        // (i, i+1) (j, k) (j+1, k+1)
-
-        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-        Distance jk = new Distance(traveled.get(j), traveled.get(k), miles);
-        Distance j1k1 = new Distance(traveled.get(j+1), traveled.get(k+1), miles);
-
-        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-        // distance than the proposed change (i, i+1) (j, k) (j+1, k+1)
-        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                + ii1.getGcd() + jk.getGcd() + j1k1.getGcd();
-
-        if (delta < 0) { //improvement?
-            optSwap(traveled, j + 1, k); // reverse all of the elements between j+1 and k
-            improvement = true;
-        }
-        return improvement;
-    }
-
-    // ------------- SWAP 3 -------------
-    private boolean opt3Swap3(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
-        // (i, k) (j+1, j) (i+1, k+1)
-
-        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-        Distance ik = new Distance(traveled.get(i), traveled.get(k), miles);
-        Distance i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
-
-        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-        // distance than the proposed change (i, k) (j+1, j) (i+1, k+1)
-        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                + ik.getGcd() + jj1.getGcd() + i1k1.getGcd();
-
-        if (delta < 0) { //improvement?
-            optSwap(traveled, i + 1, k); //reverse i+1 through k
-            improvement = true;
-        }
-        return improvement;
-    }
-
-    // ------------- SWAP 4 -------------
-    private boolean opt3Swap4(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
-        // (i, j) (i+1, k) (j+1, k+1)
-
-        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-        Distance ij = new Distance(traveled.get(i), traveled.get(j), miles);
-        Distance i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
-        Distance j1k1 = new Distance(traveled.get(j+1), traveled.get(k+1), miles);
-
-        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-        // distance than the proposed change (i, j) (i+1, k) (j+1, k+1)
-        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                + ij.getGcd() + i1k.getGcd() + j1k1.getGcd();
-
-        if (delta < 0) { //improvement?
-            optSwap(traveled, i + 1, j); //reverse i+1 through j
-            optSwap(traveled, j + 1, k); //reverse j+1 through k
-            improvement = true;
-        }
-        return improvement;
-    }
-
-    // ------------- SWAP 5 -------------
-    private boolean opt3Swap5(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
-        // (i, k) (j+1, i+1) (j, k+1)  --- swap j+1 and k, switch two middle groups
-
-        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-        Distance ik = new Distance(traveled.get(i), traveled.get(k), miles);
-        Distance i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
-        Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
-
-        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-        // distance than the proposed change (i, k) (j+1, i+1) (j, k+1)
-        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                + ik.getGcd() + i1j1.getGcd() + jk1.getGcd();
-
-        if (delta < 0) { //improvement?
-            optSwap(traveled, j + 1, k); //reverse j+1 through k
-            replaceSegment(i + 1, j + 1, k, traveled); // swap segment 1 and 2
-            improvement = true;
-        }
-        return improvement;
-    }
-
-    // ------------- SWAP 6 -------------
-    private boolean opt3Swap6(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
-        // (i, j+1) (k, j) (i+1, k+1)  --- swap i+1 and j, switch two middle groups
-
-        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-        Distance ij1 = new Distance(traveled.get(i), traveled.get(j+1), miles);
-        Distance jk = new Distance(traveled.get(j), traveled.get(k), miles);
-        Distance i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
-
-        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-        // distance than the proposed change (i, j+1) (k, j) (i+1, k+1)
-        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                + ij1.getGcd() + jk.getGcd() + i1k1.getGcd();
-
-        if (delta < 0) { //improvement?
-            optSwap(traveled, i+1, j); //reverse elements from i+1 through j
-            replaceSegment(i + 1, j + 1, k, traveled); //swap two middle groups
-            improvement = true;
-        }
-        return improvement;
-    }
-
-    // ------------- SWAP 7 -------------
-    private boolean opt3Swap7(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
-        // (i, j+1) (k, i+1) (j, k+1)  --- switch two middle groups
-        Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
-        Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
-        Distance kk1 = new Distance(traveled.get(k), traveled.get(k+1), miles);
-
-        Distance ij1 = new Distance(traveled.get(i), traveled.get(j+1), miles);
-        Distance i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
-        Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
-
-        // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
-        // distance than the proposed change (i, j+1) (k, i+1) (j, k+1)
-        double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
-                + ij1.getGcd() + i1k.getGcd() + jk1.getGcd();
-
-        if (delta < 0) { //improvement?
-            replaceSegment(i + 1, j + 1, k, traveled);
-            improvement = true;
-        }
-        return improvement;
-    }
-
-    //preforms the swap method for 2opt and 3opt
-    private void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
-        while (i1 < k) {
-            // reverses all the elements from i+1 to k
-            // (i, i+1) a b c (k, k+1) BEFORE
-            // (i, k) c b a (i+1, k+1) AFTER
-            Location temp = traveledTo.get(i1);
-            traveledTo.set(i1, traveledTo.get(k));
-            traveledTo.set(k, temp);
-            i1++;
-            k--;
-        }
-    }
-
-    // replaceSegment takes all of the elements from the first segment (i+1 through j)
-    // and swaps it with the second segment k through j+1
-    public void replaceSegment(int i1, int j1, int k, ArrayList<Location> traveled) {
-        ArrayList <Location> list2 = new ArrayList<Location>();
-        for(int x = k; x >= j1; x--) { //for all the elements from j+1 to k
-            list2.add(traveled.remove(x)); //remove them from the original list in backwards order
-        }
-        for (int i = 0; i < list2.size(); i++) {
-            traveled.add(i1, list2.get(i)); // add them back to this list at the i+1 index
-        }
-        //(i, i+1) (j, j+1) (k, k+1) BEFORE
-        //(i,j+1) (k, i+1) (j, k+1) AFTER
-    }
-
     //transforms an arrayList of location objects into an arrayList of distance objects using the
     //location objects in the order they are passed in
-    private ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
+    public ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
         ArrayList<Distance> finalDistances = new ArrayList<Distance>();
         for (int i = 0; i < locations.size(); i++) {
             if (i == locations.size() - 1) { //distance of last back to first
@@ -1156,5 +575,4 @@ public class Hub {
         aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x2 + "\" y1=\"" + y2 + "\" x2=\"" + newRightX + "\" y2=\"" + midY + "\" id=\"svg_1\"/>";
         return aroundBackLines;
     }
-
 }
