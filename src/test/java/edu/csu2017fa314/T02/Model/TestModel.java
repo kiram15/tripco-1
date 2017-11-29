@@ -510,6 +510,7 @@ public class TestModel {
             double gmLat = a.lat;
             if(gm1.lon == gmLon && gm1.lat == gmLat){
                 match = true;
+                break;
             }
         }
         assertTrue(match);
@@ -517,26 +518,29 @@ public class TestModel {
         hA.shortestItinerary.add(dA);
         dSVG = hA.drawSVG();
         assertNotEquals(0, dSVG.size());
-        gMap gm2 = new gMap(70, 99.255556);
+        gMap gm2 = new gMap(70.0, 99.255556);
         match = false;
         for(gMap a : dSVG){
             double gmLon = a.lon;
             double gmLat = a.lat;
             if(gm2.lon == gmLon && gm2.lat == gmLat){
                 match = true;
+                break;
             }
         }
         assertTrue(match);
 
         hA.shortestItinerary.add(dA1);
+        dSVG = hA.drawSVG();
         assertNotEquals(0, dSVG.size());
-        gMap gm3 = new gMap(-70, -99.255556);
+        gMap gm3 = new gMap(-70.0, -99.255556);
         match = false;
         for(gMap a : dSVG){
             double gmLon = a.lon;
             double gmLat = a.lat;
             if(gm3.lon == gmLon && gm3.lat == gmLat){
                 match = true;
+                break;
             }
         }
         assertTrue(match);
@@ -544,13 +548,14 @@ public class TestModel {
         hA.shortestItinerary.add(dA2);
         dSVG = hA.drawSVG();
         assertNotEquals(0, dSVG.size());
-        gMap gm4 = new gMap(-80, -100);
+        gMap gm4 = new gMap(-80.0, -100.0);
         match = false;
         for(gMap a : dSVG){
             double gmLon = a.lon;
             double gmLat = a.lat;
             if(gm4.lon == gmLon && gm4.lat == gmLat){
                 match = true;
+                break;
             }
         }
         assertTrue(match);
@@ -558,13 +563,14 @@ public class TestModel {
         hA.shortestItinerary.add(dA3);
         dSVG = hA.drawSVG();
         assertNotEquals(0, dSVG.size());
-        gMap gm5 = new gMap(-70, 99.255556);
+        gMap gm5 = new gMap(-70.0, 99.255556);
         match = false;
         for(gMap a : dSVG){
             double gmLon = a.lon;
             double gmLat = a.lat;
             if(gm5.lon == gmLon && gm5.lat == gmLat){
                 match = true;
+                break;
             }
         }
         assertTrue(match);
@@ -579,6 +585,7 @@ public class TestModel {
             double gmLat = a.lat;
             if(gm6.lon == gmLon && gm6.lat == gmLat){
                 match = true;
+                break;
             }
         }
         assertTrue(match);
