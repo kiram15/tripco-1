@@ -403,46 +403,4 @@ public class Hub {
         }
         return finalGMap;
     }
-
-    private String wrapAround(double x1, double y1, double x2, double y2){
-        String aroundBackLines = "";
-        //reflect both points across the y axis
-        //do midpoint formula to get the point in the middle
-        // M = ( (x1 + x2)/2 ,  (y1 + y2)/2  )
-        double midX = (x1 + x2) / 2;
-        double midY = (y1 + y2) / 2;
-        //now have two points that make a line and can be reflected across and axis
-        //To reflect: Go one point at a time:
-        //the point is the new axis
-        //figure out the distance between the mid point's x and the og point's x
-        //then add/subtract that distance (depending on which direction you're going) for your new x
-        // you will keep the same y value
-
-
-        //left point first - (x1, y1)
-        double leftDFromAxis = midX - x1;
-        double newLeftX = x1 - leftDFromAxis;
-        if(newLeftX < 512){
-            newLeftX = 0;
-        }
-        else{
-            newLeftX = 1024;
-        }
-
-        //new line needs to be drawn from (new left x to x1)
-        aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + newLeftX + "\" y1=\"" + midY + "\" x2=\"" + x1 + "\" y2=\"" + y1 + "\" id=\"svg_1\"/>";
-        //right point next - (x2, y2)
-        double rightDFromAxis = x2 - midX;
-        double newRightX = x2 + rightDFromAxis;
-        if(newRightX < 512){
-            newRightX = 0;
-        }
-        else {
-            newRightX = 1024;
-        }
-
-        //new line needs to be drawn from (new left x to x1)
-        aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x2 + "\" y1=\"" + y2 + "\" x2=\"" + newRightX + "\" y2=\"" + midY + "\" id=\"svg_1\"/>";
-        return aroundBackLines;
-    }
 }
