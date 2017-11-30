@@ -15,6 +15,11 @@ import java.sql.ResultSet;
 import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Hub {
     Map<String, Integer> columns;
@@ -194,12 +199,41 @@ public class Hub {
         }
     }
 
-
+    public void createCallables(){
+        //Create thread pool
+        ExecutorService pool = Executors.newFixedThreadPool(5);
+        
+        //List to store distances returned from 
+        List<Future<Integer>> results = new ArrayList<>();
+        
+        //List to store all of the callables from singleTripDistance
+        List<Callable<Integer>> callables = new ArrayList<>();
+        
+        //for every distance, add a singleTripDistance object
+        for(int i = 0; i <= this.selectedLocations.size(); i++){
+            callables.add(singleTripDistance());
+        }
+        
+        //get the distance of the shortest Trip from each starting location 
+        results = pool.invokeAll(callables);
+        pool.shutdown();
+    }
+    
+    private Callable<Integer> singleTripDistance(){
+        Callable<Integer> returnValue = new Callable<Integer>(){
+            @Override
+            public Integer call(){
+                //this will call the optimizaton method that returns the distance of the single trip
+                return createItinerary();
+            }
+        };
+        return returnValue;
+    }
+    
     public void createItinerary(){
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
-                System.out.println("NONE");
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
             case "NearestNeighbor":
@@ -404,45 +438,4 @@ public class Hub {
         return finalGMap;
     }
 
-    private String wrapAround(double x1, double y1, double x2, double y2){
-        String aroundBackLines = "";
-        //reflect both points across the y axis
-        //do midpoint formula to get the point in the middle
-        // M = ( (x1 + x2)/2 ,  (y1 + y2)/2  )
-        double midX = (x1 + x2) / 2;
-        double midY = (y1 + y2) / 2;
-        //now have two points that make a line and can be reflected across and axis
-        //To reflect: Go one point at a time:
-        //the point is the new axis
-        //figure out the distance between the mid point's x and the og point's x
-        //then add/subtract that distance (depending on which direction you're going) for your new x
-        // you will keep the same y value
-
-
-        //left point first - (x1, y1)
-        double leftDFromAxis = midX - x1;
-        double newLeftX = x1 - leftDFromAxis;
-        if(newLeftX < 512){
-            newLeftX = 0;
-        }
-        else{
-            newLeftX = 1024;
-        }
-
-        //new line needs to be drawn from (new left x to x1)
-        aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + newLeftX + "\" y1=\"" + midY + "\" x2=\"" + x1 + "\" y2=\"" + y1 + "\" id=\"svg_1\"/>";
-        //right point next - (x2, y2)
-        double rightDFromAxis = x2 - midX;
-        double newRightX = x2 + rightDFromAxis;
-        if(newRightX < 512){
-            newRightX = 0;
-        }
-        else {
-            newRightX = 1024;
-        }
-
-        //new line needs to be drawn from (new left x to x1)
-        aroundBackLines += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x2 + "\" y1=\"" + y2 + "\" x2=\"" + newRightX + "\" y2=\"" + midY + "\" id=\"svg_1\"/>";
-        return aroundBackLines;
-    }
 }
