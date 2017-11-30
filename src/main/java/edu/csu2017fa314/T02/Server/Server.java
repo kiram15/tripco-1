@@ -150,6 +150,7 @@ import static spark.Spark.post;
              int half = allCoordinates.size() / 2;
              String[] lats = new String[half];
              String[] lons = new String[half];
+             String[] names = new String[half];
              for(int i = 0; i < half; ++i){
                  lats[i] = allCoordinates.get(i);
              }
@@ -158,8 +159,11 @@ import static spark.Spark.post;
                  lons[index] = allCoordinates.get(i);
                  ++index;
              }
+             for(int i = 0; i < names.length; ++i){
+                 names[i] = sRec.getNames().get(i);
+             }
 
-             writeKml(res, lats, lons);
+             writeKml(res, lats, lons, names);
          }
          else{
              writeFile(res, sRec.getDescription());
@@ -245,7 +249,7 @@ import static spark.Spark.post;
           }
       }
 
-      private void writeKml(Response res, String[] lats, String[] lons){
+      private void writeKml(Response res, String[] lats, String[] lons, String[] names){
 
           int latIndex = 0;
           int lonInndex = 0;
@@ -260,16 +264,21 @@ import static spark.Spark.post;
               PrintWriter fileWriter = new PrintWriter(res.raw().getOutputStream());
 
               fileWriter.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                    "<kml xmlns=\"http://www.opengis.net/kml/2.2\">");
+                    "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n" +
+                    "<Document>");
 
               for(int i = 0; i < intLon.length; ++i){
-                  fileWriter.println("\t<Placemark> \n \t\t <Point>");
-                  fileWriter.println("\t\t\t<coordinates>" + intLat[i] + "," +
-                        intLon[i] + ",0</coordinates>");
+                  if(names[i].contains("&")){
+                      int spec = names[i].indexOf("&");
+                      names[i] = names[i].substring(0,spec) + "and" + names[i].substring(spec+1);
+                  }
+                  fileWriter.println("\t<Placemark> \n \t\t <name>" + names[i] + "</name>\n\t\t <Point>");
+                  fileWriter.println("\t\t\t<coordinates>" + intLon[i] + "," +
+                        intLat[i] + ",0</coordinates>");
                   fileWriter.println("\t\t</Point>\n\t</Placemark>");
               }
 
-              fileWriter.print("</kml>");
+              fileWriter.print("</Document>\n</kml>");
 
               fileWriter.flush();
               fileWriter.close();

@@ -250,7 +250,7 @@ saveButtonClicked(event){
             }
         }
     }
-    this.props.getFile(airportIDs, "json");
+    this.props.getFile(airportIDs, "json", this.state.selectedLocations);
 }
 
 saveKMLClicked(event){
@@ -276,7 +276,7 @@ saveKMLClicked(event){
     // console.log("Latitudes: ", lats);
     // console.log("longitudes: ", lons);
     // console.log("both ", both);
-    this.props.getFile(both, "kml");
+    this.props.getFile(both, "kml", this.state.selectedLocations);
     //for(var i = 0; i < this.state.)
 }
 

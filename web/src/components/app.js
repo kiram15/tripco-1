@@ -286,7 +286,7 @@ async browseFile(file) {
 
 
     // download a file of the array a query returns
-     async getFile(file, type) {
+     async getFile(file, type, names) {
          // assign all the airport codes of the displayed locations to an array
         //  let locs = this.state.queryResults.map((location) => {
         //      return location.code;
@@ -323,7 +323,8 @@ async browseFile(file) {
 
              clientRequest = {
                  request : "saveKML",
-                 description : coordinates
+                 description : coordinates,
+                 names : names
              };
              console.log("Getting KML file");
          }
