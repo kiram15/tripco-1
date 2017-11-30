@@ -45,9 +45,9 @@ public class Opt2 extends Hub {
                 Distance shortestDis = hugeDistance;
                 //because we aren't including initial location
                 for (int i = 1; i < gcds[0].length; i++) {
-                    Distance d = (Distance) gcds[row][i];
-                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDis.getGcd())){
-                        shortestDis = d;
+                    Distance dis = (Distance) gcds[row][i];
+                    if (!traveledTo.contains(dis.getEndID()) && (dis.getGcd() < shortestDis.getGcd())){
+                        shortestDis = dis;
                     }
                 }
                 currentLocation = shortestDis.getEndID();
@@ -104,9 +104,9 @@ public class Opt2 extends Hub {
             Distance shortestDis = hugeDistance;
             //because we aren't including first Location
             for (int i = 1; i < gcds[0].length; i++) {
-                Distance d = (Distance) gcds[row][i];
-                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDis.getGcd())) {
-                    shortestDis = d;
+                Distance dis = (Distance) gcds[row][i];
+                if (!traveledToFinal.contains(dis.getEndID()) && (dis.getGcd() < shortestDis.getGcd())) {
+                    shortestDis = dis;
                 }
             }
             currentLocation = shortestDis.getEndID();
@@ -133,7 +133,7 @@ public class Opt2 extends Hub {
                     Distance i1k1 = new Distance(traveled.get(i + 1), traveled.get(k + 1), miles);
                     double delta = (-ii1.getGcd()) - kk1.getGcd() + ik.getGcd() + i1k1.getGcd();
                     if (delta < 0) { //improvement?
-                        optSwap(traveled, i + 1, k);
+                        super.optSwap(traveled, i + 1, k);
                         improvement = true;
                     }
                 }

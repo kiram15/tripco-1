@@ -329,8 +329,8 @@ public class Hub {
         }
     }
 
-    /* preforms the swap method for 2opt and 3opt */
-    private void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
+    //preforms the swap method for 2opt and 3opt
+    public void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
         while (i1 < k) {
             // reverses all the elements from i+1 to k
             // (i, i+1) a b c (k, k+1) BEFORE
@@ -343,7 +343,7 @@ public class Hub {
         }
     }
 
-    /* will return an array list with each city listed once, with the shortest city as its end */
+    //will return an array list with each city listed once, with the shortest city as its end
     public Object[][] calcAllGcds(ArrayList<Location> selectedLocations) {
         Object[][] GCDS = new Object[selectedLocations.size()][selectedLocations.size()+1];
         for (int i = 0; i < selectedLocations.size(); i++) {
@@ -360,8 +360,8 @@ public class Hub {
         return GCDS;
     }
 
-    /* transforms an arrayList of location objects into an arrayList of distance objects using the
-    location objects in the order they are passed in */
+    //transforms an arrayList of location objects into an arrayList of distance objects using the
+    //location objects in the order they are passed in
     public ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
         ArrayList<Distance> finalDistances = new ArrayList<Distance>();
         for (int i = 0; i < locations.size(); i++) {

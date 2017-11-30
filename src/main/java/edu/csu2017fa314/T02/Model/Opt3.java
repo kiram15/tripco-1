@@ -43,10 +43,11 @@ public class Opt3 extends Hub {
                     break;
                 }
                 Distance shortestDis = hugeDistance;
-                for (int i = 1; i < gcds[0].length; i++) { //because we aren't including initial location
+                //because we aren't including initial location
+                for (int i = 1; i < gcds[0].length; i++) {
                     Distance dis = (Distance) gcds[row][i];
-                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDis.getGcd())) {
-                        shortestDis = d;
+                    if (!traveledTo.contains(dis.getEndID()) && (dis.getGcd() < shortestDis.getGcd())) {
+                        shortestDis = dis;
                     }
                 }
                 currentLocation = shortestDis.getEndID();
@@ -57,10 +58,10 @@ public class Opt3 extends Hub {
             //grab the distance from the current city to original city
             Distance temp = new Distance(currentLocation, l, miles);
             for (int i = 1; i < backAround.length; i++) {
-                Distance d = (Distance) backAround[i];
+                Distance dis = (Distance) backAround[i];
                 //add to tripDistance
-                if (temp.equals(d)) {
-                    tripDistance += d.getGcd();
+                if (temp.equals(dis)) {
+                    tripDistance += dis.getGcd();
                 }
             }
 
@@ -102,9 +103,9 @@ public class Opt3 extends Hub {
             }
             Distance shortestDis = hugeDistance;
             for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
-                Distance d = (Distance) gcds[row][i];
-                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDis.getGcd())) {
-                    shortestDis = d;
+                Distance dis = (Distance) gcds[row][i];
+                if (!traveledToFinal.contains(dis.getEndID()) && (dis.getGcd() < shortestDis.getGcd())) {
+                    shortestDis = dis;
                 }
             }
             currentLocation = shortestDis.getEndID();
@@ -129,7 +130,7 @@ public class Opt3 extends Hub {
             // at various indicies results in an overall improvment to distance
             for (int i = 0; i <= traveled.size() - 5; i++) {
                 //starts at i+2 because i, i+1, start at j
-                for (int j = i + 2; j < traveled.size() - 3; j++)
+                for (int j = i + 2; j < traveled.size() - 3; j++) {
                     //starts at j+2 because i, i+1, j, j+1, start at k
                     for (int k = j + 2; k < traveled.size() - 1; k++) {
                         // SWAP 1 - reverse all of the elements between i+1 and j
@@ -153,13 +154,14 @@ public class Opt3 extends Hub {
                         // SWAP 7 - swap middle segments
                         improvement = swap7(i, j, k, traveled, improvement);
                     }
+                }
             }
         }
         return traveled;
     }
 
     // ------------- SWAP 1 -------------
-    private boolean swap1(int i, int j, int k, ArrayList<Location> traveled, boolean improvment) {
+    private boolean swap1(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
         // (i, j) (i+1, j+1) (k, k+1)
         Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
         Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
@@ -175,7 +177,7 @@ public class Opt3 extends Hub {
 
         // if delta < 0, than the proposed change is an improvement
         if (delta < 0) {
-            optSwap(traveled, i + 1, j); // reverse all of the elements between i+1 and j
+            super.optSwap(traveled, i + 1, j); // reverse all of the elements between i+1 and j
             improvement = true;
         }
         return improvement;
@@ -198,7 +200,7 @@ public class Opt3 extends Hub {
                 + ii1.getGcd() + jk.getGcd() + j1k1.getGcd();
 
         if (delta < 0) { //improvement?
-            optSwap(traveled, j + 1, k); // reverse all of the elements between j+1 and k
+            super.optSwap(traveled, j + 1, k); // reverse all of the elements between j+1 and k
             improvement = true;
         }
         return improvement;
@@ -221,7 +223,7 @@ public class Opt3 extends Hub {
                 + ik.getGcd() + jj1.getGcd() + i1k1.getGcd();
 
         if (delta < 0) { //improvement?
-            optSwap(traveled, i + 1, k); //reverse i+1 through k
+            super.optSwap(traveled, i + 1, k); //reverse i+1 through k
             improvement = true;
         }
         return improvement;
@@ -245,8 +247,8 @@ public class Opt3 extends Hub {
                 + ij.getGcd() + i1k.getGcd() + j1k1.getGcd();
 
         if (delta < 0) { //improvement?
-            optSwap(traveled, i + 1, j); //reverse i+1 through j
-            optSwap(traveled, j + 1, k); //reverse j+1 through k
+            super.optSwap(traveled, i + 1, j); //reverse i+1 through j
+            super.optSwap(traveled, j + 1, k); //reverse j+1 through k
             improvement = true;
         }
         return improvement;
@@ -270,7 +272,7 @@ public class Opt3 extends Hub {
                 + ik.getGcd() + i1j1.getGcd() + jk1.getGcd();
 
         if (delta < 0) { //improvement?
-            optSwap(traveled, j + 1, k); //reverse j+1 through k
+            super.optSwap(traveled, j + 1, k); //reverse j+1 through k
             replaceSegment(i + 1, j + 1, k, traveled); // swap segment 1 and 2
             improvement = true;
         }
@@ -295,7 +297,7 @@ public class Opt3 extends Hub {
                 + ij1.getGcd() + jk.getGcd() + i1k1.getGcd();
 
         if (delta < 0) { //improvement?
-            optSwap(traveled, i+1, j); //reverse elements from i+1 through j
+            super.optSwap(traveled, i+1, j); //reverse elements from i+1 through j
             replaceSegment(i + 1, j + 1, k, traveled); //swap two middle groups
             improvement = true;
         }

@@ -642,69 +642,69 @@ public class TestModel {
     }
 
     // ------------------------- Test createItinerary/finalLocationsFromWeb ----------------------------
-//
-//    @Test
-//    public void testFinalLocationsFromWeb(){
-//        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
-//        info1.put("extra1", "info1");
-//        info1.put("extra2", "info2");
-//        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
-//        info2.put("extra1", "info1");
-//        info2.put("extra2", "info2");
-//        Hub hA =  new Hub();
-//        ArrayList<String> arr = new ArrayList<String>();
-//        arr.add("Denver");
-//        arr.add("New Hampshire");
-//        Location startL = new Location("Denver", 70, 99.255556, info1);
-//        Location endL = new Location("New Hampshire", 80, 100, info2);
-//        hA.finalLocations.add(startL);
-//        hA.finalLocations.add(endL);
-//        hA.finalLocationsFromWeb(arr);
-//
-//        assertTrue(hA.selectedLocations.contains(startL));
-//        assertTrue(hA.selectedLocations.contains(endL));
-//    }
-//
-//    @Test
-//    public void testCreateItinerary(){
-//        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
-//        info1.put("extra1", "info1");
-//        info1.put("extra2", "info2");
-//        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
-//        info2.put("extra1", "info1");
-//        info2.put("extra2", "info2");
-//        Location startL = new Location("Denver", 70, 99.255556, info1);
-//        Location endL = new Location("New Hampshire", 80, 100, info2);
-//        Hub hC = new Hub();
-//        hC.selectedLocations.add(startL);
-//        hC.selectedLocations.add(endL);
-//        hC.finalLocations.add(startL);
-//        hC.finalLocations.add(endL);
-//
-//        hC.optimization = "None";
-//        hC.createItinerary();
-//        assertFalse(hC.shortestItinerary.isEmpty());
-//
-//        hC.shortestItinerary.clear();
-//        hC.optimization = "NearestNeighbor";
-//        hC.createItinerary();
-//        assertFalse(hC.shortestItinerary.isEmpty());
-//
-//        hC.shortestItinerary.clear();
-//        hC.optimization = "TwoOpt";
-//        hC.createItinerary();
-//        assertFalse(hC.shortestItinerary.isEmpty());
-//
-//        hC.shortestItinerary.clear();
-//        hC.optimization = "ThreeOpt";
-//        hC.createItinerary();
-//        assertFalse(hC.shortestItinerary.isEmpty());
-//
-//        hC.shortestItinerary.clear();
-//        hC.optimization = "DefaultChoice";
-//        hC.createItinerary();
-//        assertFalse(hC.shortestItinerary.isEmpty());
-//    }
+
+    @Test
+    public void testFinalLocationsFromWeb(){
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1", "info1");
+        info1.put("extra2", "info2");
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1", "info1");
+        info2.put("extra2", "info2");
+        Hub hA =  new Hub();
+        ArrayList<String> arr = new ArrayList<String>();
+        arr.add("Denver");
+        arr.add("New Hampshire");
+        Location startL = new Location("Denver", 70, 99.255556, info1);
+        Location endL = new Location("New Hampshire", 80, 100, info2);
+        hA.finalLocations.add(startL);
+        hA.finalLocations.add(endL);
+        hA.finalLocationsFromWeb(arr);
+
+        assertTrue(hA.selectedLocations.contains(startL));
+        assertTrue(hA.selectedLocations.contains(endL));
+    }
+
+    @Test
+    public void testCreateItinerary(){
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1", "info1");
+        info1.put("extra2", "info2");
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1", "info1");
+        info2.put("extra2", "info2");
+        Location startL = new Location("Denver", 70, 99.255556, info1);
+        Location endL = new Location("New Hampshire", 80, 100, info2);
+        Hub hC = new Hub();
+        hC.selectedLocations.add(startL);
+        hC.selectedLocations.add(endL);
+        hC.finalLocations.add(startL);
+        hC.finalLocations.add(endL);
+
+        hC.optimization = "None";
+        hC.createItinerary();
+        assertFalse(hC.shortestItinerary.isEmpty());
+
+        hC.shortestItinerary.clear();
+        hC.optimization = "NearestNeighbor";
+        hC.createItinerary();
+        assertFalse(hC.shortestItinerary.isEmpty());
+
+        hC.shortestItinerary.clear();
+        hC.optimization = "TwoOpt";
+        hC.createItinerary();
+        assertFalse(hC.shortestItinerary.isEmpty());
+
+        hC.shortestItinerary.clear();
+        hC.optimization = "ThreeOpt";
+        hC.createItinerary();
+        assertFalse(hC.shortestItinerary.isEmpty());
+
+        hC.shortestItinerary.clear();
+        hC.optimization = "DefaultChoice";
+        hC.createItinerary();
+        assertFalse(hC.shortestItinerary.isEmpty());
+    }
 
 
 
