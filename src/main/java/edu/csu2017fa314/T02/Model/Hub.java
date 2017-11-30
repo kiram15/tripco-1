@@ -362,175 +362,32 @@ public class Hub {
         return finalDistances;
     }
 
-    public String drawSVG() throws FileNotFoundException {
-        String SVG = "";
-
-        try {
-            InputStream in = getClass().getResourceAsStream("/WorldMap.svg");
-            BufferedReader buf = new BufferedReader(new InputStreamReader(in));
-
-            File WorldMapFile;
-
-
-
-            // copy COmap svg into CoMapTripCo svg (dont read last two line [</g> </svg>])
-            LinkedList<String> ll = new LinkedList<String>();
-
-            String line;
-            while ((line = buf.readLine()) != null) {
-
-                ll.addLast(line);
-            }
-            for (int i = 0; i < (ll.size() - 3); i++) {
-                SVG += ll.get(i);
-            }
-            buf.close();
-        } catch (IOException e) {
-            System.out.println("ERROR: FAILED TO WRITE SVG. Caught after trying to create a scanner");
-            System.out.println("Exception: " + e);
-            System.exit(0);
-        }
-        SVG += "</g>";
-
-        //draw lines from start to end locations
-        double originStartLat = 0.0;
-        double originStartLon = 0.0;
-        double finalEndLat = 0.0;
-        double finalEndLon = 0.0;
-        boolean first = false;
-        double unit = 2.84444444444444;
-
-        if (!shortestItinerary.isEmpty()) {
+    public ArrayList<gMap> drawSVG(){
+        double firstLocationLat = 0.0;
+        double firstLocationLon = 0.0;
+        boolean first = true;
+        ArrayList<gMap> finalGMap = new ArrayList<gMap>();
+        if(shortestItinerary.size() > 0) {
             for (Distance d : shortestItinerary) {
-                if (!first) {
-                    originStartLat = d.getStartID().getLatitude();
-                    originStartLon = d.getStartID().getLongitude();
-                    first = true;
+                if (first) {
+                    firstLocationLat = d.getStartID().getLatitude();
+                    firstLocationLon = d.getStartID().getLongitude();
+                    first = false;
                 }
                 double startLat = d.getStartID().getLatitude();
                 double startLon = d.getStartID().getLongitude();
-                double endLat = d.getEndID().getLatitude();
-                double endLon = d.getEndID().getLongitude();
-
-                if (startLat < 0) { //lat is negative
-                    startLat = 512 - (Math.abs(-90-startLat) * unit);
-                }
-                else if (startLat > 0) { //lat is positive
-                    startLat = (90-startLat) * unit;
-                }
-                else{
-                    startLat = 256;
-                }
-
-                if (endLat < 0) { //lat is negative
-                    endLat = 512 - (Math.abs(-90-endLat) * unit);
-                }
-                else if (endLat > 0) { //lat is positive
-                    endLat = (90-endLat) * unit;
-                }
-                else{
-                    endLat = 256;
-                }
-
-                if (startLon < 0) { //lon is neg
-                    startLon = (Math.abs(-180-startLon) * unit);
-                }
-                else if (startLon > 0) { //lon is positive
-                    startLon = 1024 - (180-startLon) * unit;
-                }
-                else{
-                    startLon = 512;
-                }
-
-                if (endLon < 0) { //lon is neg
-                    endLon = (Math.abs(-180-endLon) * unit);
-                }
-                else if (endLon > 0) { //lon is positive
-                    endLon = 1024 - (180-endLon) * unit;
-                }
-                else{
-                    endLon = 512;
-                }
-
-
-                finalEndLat = d.getEndID().getLatitude();
-                finalEndLon = d.getEndID().getLongitude();
-
-                //compute the length of the line in pixels
-                //use basic distance formula to compute the distance between the two points
-                //distance = sqr((x2-x1)^2 + (y2-y1)^2))
-                double distance =Math.sqrt((Math.pow((endLon-startLon),2)) + (Math.pow((endLat-startLat),2)));
-
-                //if longer than 512 pixels, then you need to draw it around the back
-                if(distance < 512){
-                    double x1 = startLon;
-                    double y1 = startLat;
-                    double x2 = endLon;
-                    double y2 = endLat;
-                    SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + x1 + "\" y1=\"" + y1 + "\" x2=\"" + x2 + "\" y2=\"" + y2 + "\" id=\"svg_1\"/>";
-                }
-                else{
-                    //call helper method to get the two lines that need to wrap around the map
-                    SVG += wrapAround(startLon, startLat, endLon, endLat);
-                }
+                gMap gm = new gMap(startLat, startLon);
+                finalGMap.add(gm);
             }
 
-            if (finalEndLat < 0) { //lat is negative
-                finalEndLat = 512 - (Math.abs(-90-finalEndLat) * unit);
-            }
-            else if (finalEndLat > 0) { //lat is positive
-                finalEndLat = (90-finalEndLat) * unit;
-            }
-            else {
-                finalEndLat = 256;
-            }
-
-            if (originStartLat < 0) { //lat is negative
-                originStartLat = 512 - (Math.abs(-90-originStartLat) * unit);
-            }
-            else if (originStartLat > 0) { //lat is positive
-                originStartLat = (90-originStartLat) * unit;
-            }
-            else{
-                originStartLat = 256;
-            }
-
-            if (originStartLon < 0) { //lon is neg
-                originStartLon = (Math.abs(-180-originStartLon) * unit);
-            }
-            else if (originStartLon > 0) { //lon is positive
-                originStartLon = 1024 - (180-originStartLon) * unit;
-            }
-            else{
-                originStartLon = 512;
-            }
-
-            if (finalEndLon < 0) { //lon is neg
-                finalEndLon = (Math.abs(-180-finalEndLon) * unit);
-            }
-            else if (finalEndLon > 0) { //lon is positive
-                finalEndLon = 1024 - (180-finalEndLon) * unit;
-            }
-            else{
-                finalEndLon = 512;
-            }
-
-            double distancefinal =Math.sqrt((Math.pow((originStartLon-finalEndLon),2)) + (Math.pow((originStartLat-finalEndLat),2)));
-            if(distancefinal < 512) {
-                //draw last line connected end point with start
-                double endX1 = finalEndLon;
-                double endY1 = finalEndLat;
-                double endX2 = originStartLon;
-                double endY2 = originStartLat;
-                SVG += "  <line fill=\"none\" stroke=\"#0000ff\" stroke-width=\"2\" stroke-dasharray=\"null\" stroke-linejoin=\"null\" stroke-linecap=\"null\" x1=\"" + endX1 + "\" y1=\"" + endY1 + "\" x2=\"" + endX2 + "\" y2=\"" + endY2 + "\" id=\"svg_1\"/>";
-            }
-            else{
-                SVG += wrapAround(finalEndLon, finalEndLat, originStartLon, originStartLat);
-            }
-            SVG += "</svg>";
+            double lastEndLat = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndID().getLatitude();
+            double lastEndLon = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndID().getLongitude();
+            gMap gmLast = new gMap(lastEndLat, lastEndLon);
+            finalGMap.add(gmLast);
+            gMap gmFirst = new gMap(firstLocationLat, firstLocationLon);
+            finalGMap.add(gmFirst);
         }
-        return SVG;
-
+        return finalGMap;
     }
 
     private String wrapAround(double x1, double y1, double x2, double y2){

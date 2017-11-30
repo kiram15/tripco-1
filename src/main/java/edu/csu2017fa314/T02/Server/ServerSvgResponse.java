@@ -10,6 +10,7 @@ public class ServerSvgResponse {
         this.contents = contents;
         this.width = width;
         this.height = height;
+
         //System.out.println(this.toString());
     }
 
