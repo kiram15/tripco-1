@@ -150,13 +150,15 @@ public class TestModel {
         //tests shorterTrip by making a call to storeColumnHeaders and parseRow which then calls the
         //shorter trip method. The shorterTrip method does not return anything, but does set the value
         //of hub's shortestItinerary
-        Hub h0 = new Hub();
+        Hub h0 = new Hub("NearestNeighbor");
         h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
         h0.parseRow("kiram15,kira,fort collins, 45.0, 45.0, 10");
         h0.parseRow("alnolte,amber,denver, 22.5, 135.0, 10");
         h0.parseRow("nkacirek,nicole,boulder, 85.0, 175.0, 10");
         h0.parseRow("emictosh,emerson,littleton, 25.0, 90.0, 10");
-        h0.shortestTripNN();
+        h0.createItinerary();
+        NearestNeighbor nn = new NearestNeighbor();
+        nn.shortestTrip(h0.selectedLocations);
         assertEquals(fillShortTripNN(), h0.shortestItinerary);
     }
 
@@ -187,23 +189,17 @@ public class TestModel {
         //tests shorterTrip by making a call to storeColumnHeaders and parseRow which then calls the
         //shorter trip method. The shorterTrip method does not return anything, but does set the value
         //of hub's shortestItinerary
-        Hub h0 = new Hub();
+        Hub h0 = new Hub("TwoOpt");
         h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
         h0.parseRow("kiram15,kira,fort collins, 40.0, 50.0, 10");
         h0.parseRow("alnolte,amber,denver, 60.0, 70.5, 10");
         h0.parseRow("nkacirek,nicole,boulder, 100.0, 60.0, 10");
         h0.parseRow("emictosh,emerson,littleton, 45.0, 55.0, 10");
-        h0.shortestTrip2Opt();
+        h0.createItinerary();
+        Opt2 o2 = new Opt2();
+        o2.shortestTrip(h0.selectedLocations);
         assertEquals(fillShortTrip2Opt(), h0.shortestItinerary);
     }
-
-    //        40, -88  - TOP RIGHT kira
-    //        40, -92  - TOP LEFT amber
-
-    //        34, -92  - BOTTOM LEFT nicole
-    //        34, -88  - BOTTOM RIGHT emerson
-
-    // top left, bottom right top right bottom left
 
     private ArrayList<Distance> fillShortTrip2Opt(){
         Location n0 = new Location("kira", 40.0, 50.0, null);
@@ -232,7 +228,7 @@ public class TestModel {
         //tests shorterTrip3Opt by making a call to storeColumnHeaders and parseRow which then calls the
         //shorter trip method. The shorterTrip method does not return anything, but does set the value
         //of hub's shortestItinerary
-        Hub h0 = new Hub();
+        Hub h0 = new Hub("ThreeOpt");
         h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
         h0.parseRow("kiram15,kira,fort collins, 34.0, -92.0, 10");    //A
         h0.parseRow("alnolte,amber,denver, 34.0, -88, 10");           //B
@@ -240,19 +236,12 @@ public class TestModel {
         h0.parseRow("emictosh,emerson,littleton, 40.0, -88.0, 10");   //D
         h0.parseRow("maddic, maddi, loveland, 40.0, -92.0, 10");      //E
         h0.parseRow("jamesp, james, godrics hollow, 37.0, -95.0, 10");//F
-        h0.shortestTrip3Opt();
+        h0.createItinerary();
+        Opt3 o3 = new Opt3();
+        o3.shortestTrip(h0.selectedLocations);
 
         ArrayList<Distance> check1 = fillShortTrip3Opt();
         ArrayList<Distance> check2 = h0.shortestItinerary;
-
-//        System.out.println("CHECK1");
-//        for (int i = 0; i < check1.size(); i++) {
-//            System.out.println("S: " + check1.get(i).getStartID().getName() + " E: " + check1.get(i).getEndID().getName());
-//        }
-//        System.out.println("\nCHECK2");
-//        for (int i = 0; i < check2.size(); i++) {
-//            System.out.println("S: " + check2.get(i).getStartID().getName()  + " E: " + check2.get(i).getEndID().getName());
-//        }
 
         assertEquals(fillShortTrip3Opt(), h0.shortestItinerary);
     }
@@ -302,7 +291,8 @@ public class TestModel {
         checkOne.add(e);
         checkOne.add(f);
 
-        ArrayList<Location> after3opt = h0.checkImprovement3(checkOne);
+        Opt3 o3 = new Opt3();
+        ArrayList<Location> after3opt = o3.checkImprovement3(checkOne);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
 
@@ -325,7 +315,8 @@ public class TestModel {
         checkTwo.add(d);
         checkTwo.add(f);
 
-        ArrayList<Location> after3opt = h0.checkImprovement3(checkTwo);
+        Opt3 o3 = new Opt3();
+        ArrayList<Location> after3opt = o3.checkImprovement3(checkTwo);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
 
@@ -348,7 +339,8 @@ public class TestModel {
         checkThree.add(b);
         checkThree.add(f);
 
-        ArrayList<Location> after3opt = h0.checkImprovement3(checkThree);
+        Opt3 o3 = new Opt3();
+        ArrayList<Location> after3opt = o3.checkImprovement3(checkThree);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
 
@@ -371,7 +363,8 @@ public class TestModel {
         checkFour.add(d);
         checkFour.add(f);
 
-        ArrayList<Location> after3opt = h0.checkImprovement3(checkFour);
+        Opt3 o3 = new Opt3();
+        ArrayList<Location> after3opt = o3.checkImprovement3(checkFour);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
 
@@ -394,7 +387,8 @@ public class TestModel {
         checkFive.add(b);
         checkFive.add(f);
 
-        ArrayList<Location> after3opt = h0.checkImprovement3(checkFive);
+        Opt3 o3 = new Opt3();
+        ArrayList<Location> after3opt = o3.checkImprovement3(checkFive);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
 
@@ -417,7 +411,8 @@ public class TestModel {
         checkSix.add(c);
         checkSix.add(f);
 
-        ArrayList<Location> after3opt = h0.checkImprovement3(checkSix);
+        Opt3 o3 = new Opt3();
+        ArrayList<Location> after3opt = o3.checkImprovement3(checkSix);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
 
@@ -440,11 +435,12 @@ public class TestModel {
         checkSeven.add(c);
         checkSeven.add(f);
 
-        ArrayList<Location> after3opt = h0.checkImprovement3(checkSeven);
+        Opt3 o3 = new Opt3();
+        ArrayList<Location> after3opt = o3.checkImprovement3(checkSeven);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
 
-//
+
     private ArrayList<Location> optimalShortTrip3Opt(){
         Location a = new Location("A", 34.0, -92.0, null);
         Location b = new Location("B", 34.0, -88.0, null);
