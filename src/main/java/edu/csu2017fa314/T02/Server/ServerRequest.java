@@ -17,12 +17,15 @@ import java.util.ArrayList;
      private ArrayList<String> description;
      private String unit = "";
      private String optSelection = "";
+     private ArrayList<String> names;
 
-     public ServerRequest(String request, ArrayList<String> description, String unit, String optSelection) {
+     //constructor
+     public ServerRequest(String request, ArrayList<String> description, String unit, String optSelection, ArrayList<String> names) {
          this.request = request;
          this.description = description;
          this.unit = unit;
          this.optSelection = optSelection;
+         this.names = names;
      }
 
      public String getRequest() {
@@ -43,6 +46,10 @@ import java.util.ArrayList;
 
      public String getOptSelection(){
          return this.optSelection;
+     }
+
+     public ArrayList<String> getNames(){
+         return names;
      }
 
      public void setDescription(ArrayList<String> description) {
