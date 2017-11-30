@@ -210,7 +210,7 @@ public class Hub {
         List<Callable<Integer>> callables = new ArrayList<>();
         
         //for every distance, add a singleTripDistance object
-        for(int i = 0; i <= this.selectedLocations.size(); i++){
+        for(int i = 0; i < this.selectedLocations.size(); i++){
             callables.add(singleTripDistance());
         }
         
@@ -252,6 +252,20 @@ public class Hub {
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
         }
+    }
+    
+    //loops through results and finds the shortest distance
+    //then returns the starting location that corresponds to this distance
+    public Location findStartLocation(List<Future<Integer>> results){
+        int minVal = Integer.MAX_VALUE;
+        int minIndex = -1;
+        for(int i = 0; i < results.size(); i++){
+            if(results.get(i) < minVal){
+                minVal = results.get(i);
+                minIndex = i;
+            }
+        }
+        return this.selectedLocations.get(i);
     }
 
     public void storeColumnHeaders(String firstLine){

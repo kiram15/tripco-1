@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 public class NearestNeighbor extends Hub {
+    
     //master method for when user selects Nearest Neighbor optimization (calls all helpers)
     public ArrayList<Distance> shortestTrip(ArrayList<Location> selectedLocations){
         //Adjacency matrix that holds all gcds
