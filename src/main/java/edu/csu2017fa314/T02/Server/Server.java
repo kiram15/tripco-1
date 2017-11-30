@@ -9,9 +9,11 @@ import spark.Response;
 import edu.csu2017fa314.T02.Model.Hub;
 import edu.csu2017fa314.T02.Model.Distance;
 import edu.csu2017fa314.T02.Model.Location;
+import edu.csu2017fa314.T02.Model.gMap;
 
 import java.io.IOException;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static spark.Spark.post;
@@ -53,25 +55,20 @@ import static spark.Spark.post;
      }
 
      // called by testing method if the client requests an svg
-     private Object serveSvg() {
+     /*private Object serveSvg() {
+         System.out.println("calling serveSVG");
          Gson gson = new Gson();
-         String content = "";
+         ArrayList<gMap> content = h.drawSVG();
          // Instead of writing the SVG to a file, we send it in plaintext back to the client to be rendered inline
-         try {
-             //System.out.println("SVG Try:: " + h.shortestItinerary);
-             content = h.drawSVG();
-         } catch(IOException e){
-             System.exit(0);
-         }
-         ServerSvgResponse ssres = new ServerSvgResponse(120, 100, content);
-
+         //System.out.println("*******------------******* SVG STRING: " + content + "*******------------*******");
+         //ServerSvgResponse ssres = new ServerSvgResponse(120, 100, content);
          return gson.toJson(ssres, ServerSvgResponse.class);
-     }
+     }*/
 
      // called by testing method if client requests a search
      private Object serveQuery(String searched, boolean miles, String optimization) {
          Gson gson = new Gson();
-         //QueryBuilder q = new QueryBuilder("user", "pass"); // Create new QueryBuilder instance and pass in credentials //TODO update credentials
+         //QueryBuilder q = new QueryBuilder("user", "pass"); // Create new QueryBuilder instance and pass in credentials
          //String queryString = String.format("SELECT * FROM airports WHERE municipality LIKE '%%%s%%' OR name LIKE '%%%s%%' OR type LIKE '%%%s%%' LIMIT 10", searched, searched, searched);
          //ArrayList<Location> queryResults = q.query(queryString);
          h.setMiles(miles);
@@ -82,7 +79,7 @@ import static spark.Spark.post;
          //System.out.println("after search database");
          ArrayList<Location> trip = h.getSearchedLocations();
          // Create object with svg file path and array of matching database entries to return to server
-         ServerQueryResponse sRes = new ServerQueryResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image
+         ServerQueryResponse sRes = new ServerQueryResponse(trip);
 
          //System.out.println("Sending \"" + sRes.toString() + "\" to server.");
 
@@ -90,7 +87,6 @@ import static spark.Spark.post;
          return gson.toJson(sRes, ServerQueryResponse.class);
      }
 
-     // TODO: called by testing method if client requests a plan
      private Object servePlan(ArrayList<String> selected, boolean miles, String optimization) {
          Gson gson = new Gson();
 
@@ -102,7 +98,8 @@ import static spark.Spark.post;
          ArrayList<Distance> trip = h.getShortestItinerary();
          System.out.println("Trip: " + trip);
          // Create object with svg file path and array of matching database entries to return to server
-         ServerPlanResponse sRes = new ServerPlanResponse(trip); //TODO update file path to your svg, change to "./testing.png" for a sample image
+         ArrayList<gMap> content = h.drawSVG();
+         ServerPlanResponse sRes = new ServerPlanResponse(trip, 120, 100, content);
 
          //System.out.println("Sending \"" + sRes.toString() + "\" to server.");
 
@@ -199,7 +196,7 @@ import static spark.Spark.post;
             return servePlan(sRec.getDescription(), miles, o);
         }
         else {
-            return serveSvg();
+            return null;
         }
 
      }

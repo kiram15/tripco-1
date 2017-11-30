@@ -28,6 +28,7 @@
     "react-dom": "^15.5.4",
     "react-dragula": "^1.1.17",
     "react-dropzone": "^4.1.0",
+    "react-google-maps": "^9.2.2",
     "react-select": "^1.0.0-rc.10",
     "reactstrap": "^4.0.0",
     "svg-inline-react": "^3.0.0"

@@ -3,7 +3,6 @@ import Dropzone from 'react-dropzone'
 import Select from 'react-select';
 import InlineSVG from 'svg-inline-react';
 
-
 class Home extends React.Component {
 constructor(props) {
    super(props);
@@ -17,7 +16,6 @@ constructor(props) {
        qRLength: 0,
        saveIDList : []
    };
-
 
 }
 
@@ -115,10 +113,7 @@ render() {
     <button type="button" onClick={this.planTrip.bind(this)}>Plan</button>
     <p></p>
 
-  <button type="button" onClick={this.buttonClicked.bind(this)}>Click here for an SVG</button>
-  <p></p>
-  {displaySVG}
-  <p></p>
+    {this.props.map}
 
   <div className="Itinerary">
     <div id="Itin" >
