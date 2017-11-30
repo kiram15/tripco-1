@@ -46,17 +46,17 @@ public class NearestNeighbor extends Hub {
                 if (traveledTo.size() == selectedLocations.size()) {
                     break;
                 }
-                Distance shortestDistance = hugeDistance;
+                Distance shortestDis = hugeDistance;
 
                 //because we aren't including initial location
                 for (int i = 1; i < gcds[0].length; i++) {
                     Distance dis = (Distance) gcds[row][i];
-                    if (!traveledTo.contains(dis.getEndID()) && (dis.getGcd() < shortestDistance.getGcd())) {
-                        shortestDistance = dis;
+                    if (!traveledTo.contains(dis.getEndID()) && (dis.getGcd() < shortestDis.getGcd())) {
+                        shortestDis = dis;
                     }
                 }
-                currentLocation = shortestDistance.getEndID();
-                tripDistance += shortestDistance.getGcd();
+                currentLocation = shortestDis.getEndID();
+                tripDistance += shortestDis.getGcd();
             }
 
             //add the distance back to the original city
@@ -98,14 +98,14 @@ public class NearestNeighbor extends Hub {
             if (traveledToFinal.size() == selectedLocations.size()) {
                 break;
             }
-            Distance shortestDistance = hugeDistance;
+            Distance shortestDis = hugeDistance;
             for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
                 Distance dis = (Distance) gcds[row][i];
-                if (!traveledToFinal.contains(dis.getEndID()) && (dis.getGcd() < shortestDistance.getGcd())) {
-                    shortestDistance = dis;
+                if (!traveledToFinal.contains(dis.getEndID()) && (dis.getGcd() < shortestDis.getGcd())) {
+                    shortestDis = dis;
                 }
             }
-            currentLocation = shortestDistance.getEndID();
+            currentLocation = shortestDis.getEndID();
         }
 
         //convert traveledToFinal location array to a distance array

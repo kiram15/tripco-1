@@ -339,8 +339,8 @@ public class Hub {
                 //for all the Distances in the row
                 Location startID = selectedLocations.get(i);
                 Location endID = selectedLocations.get(j);
-                Distance d = new Distance(startID, endID, miles);
-                GCDS[i][j+1] = d; //j+1 because of the Location in the first column
+                Distance dis = new Distance(startID, endID, miles);
+                GCDS[i][j+1] = dis; //j+1 because of the Location in the first column
             }
         }
         return GCDS;
@@ -355,8 +355,8 @@ public class Hub {
                 Distance base = new Distance(locations.get(i), locations.get(0), miles);
                 finalDistances.add(base);
             } else {
-                Distance d = new Distance(locations.get(i), locations.get(i + 1), miles);
-                finalDistances.add(d);
+                Distance dis = new Distance(locations.get(i), locations.get(i + 1), miles);
+                finalDistances.add(dis);
             }
         }
         return finalDistances;

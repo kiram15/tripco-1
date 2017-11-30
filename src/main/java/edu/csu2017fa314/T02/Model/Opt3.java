@@ -42,14 +42,14 @@ public class Opt3 extends Hub {
                 if (traveledTo.size() == selectedLocations.size()) {
                     break;
                 }
-                Distance shortestDistance = hugeDistance;
+                Distance shortestDis = hugeDistance;
                 for (int i = 1; i < gcds[0].length; i++) { //because we aren't including initial location
-                    Distance d = (Distance) gcds[row][i];
-                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
-                        shortestDistance = d;
+                    Distance dis = (Distance) gcds[row][i];
+                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDis.getGcd())) {
+                        shortestDis = d;
                     }
                 }
-                currentLocation = shortestDistance.getEndID();
+                currentLocation = shortestDis.getEndID();
             }
 
             //add the distance back to the original cit
@@ -100,14 +100,14 @@ public class Opt3 extends Hub {
             if (traveledToFinal.size() == selectedLocations.size()) {
                 break;
             }
-            Distance shortestDistance = hugeDistance;
+            Distance shortestDis = hugeDistance;
             for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
                 Distance d = (Distance) gcds[row][i];
-                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
-                    shortestDistance = d;
+                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDis.getGcd())) {
+                    shortestDis = d;
                 }
             }
-            currentLocation = shortestDistance.getEndID();
+            currentLocation = shortestDis.getEndID();
         }
 
         //apply 3opt
