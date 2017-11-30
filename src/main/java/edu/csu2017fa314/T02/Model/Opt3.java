@@ -325,20 +325,6 @@ public class Opt3 extends Hub {
         return improvement;
     }
 
-    //preforms the swap method for 2opt
-    private void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
-        while (i1 < k) {
-            // reverses all the elements from i+1 to k
-            // (i, i+1) a b c (k, k+1) BEFORE
-            // (i, k) c b a (i+1, k+1) AFTER
-            Location temp = traveledTo.get(i1);
-            traveledTo.set(i1, traveledTo.get(k));
-            traveledTo.set(k, temp);
-            i1++;
-            k--;
-        }
-    }
-
     // replaceSegment takes all of the elements from the first segment (i+1 through j)
     // and swaps it with the second segment k through j+1
     public void replaceSegment(int i1, int j1, int k, ArrayList<Location> traveled) {

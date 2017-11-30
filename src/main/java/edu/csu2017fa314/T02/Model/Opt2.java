@@ -140,18 +140,4 @@ public class Opt2 extends Hub {
             }
         }
     }
-
-    //preforms the swap method for 2opt
-    private void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
-        while (i1 < k) {
-            // reverses all the elements from i+1 to k
-            // (i, i+1) a b c (k, k+1) BEFORE
-            // (i, k) c b a (i+1, k+1) AFTER
-            Location temp = traveledTo.get(i1);
-            traveledTo.set(i1, traveledTo.get(k));
-            traveledTo.set(k, temp);
-            i1++;
-            k--;
-        }
-    }
 }
