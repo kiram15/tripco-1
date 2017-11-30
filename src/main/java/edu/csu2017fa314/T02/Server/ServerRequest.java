@@ -19,6 +19,7 @@ import java.util.ArrayList;
      private String optSelection = "";
      private ArrayList<String> names;
 
+     //constructor
      public ServerRequest(String request, ArrayList<String> description, String unit, String optSelection, ArrayList<String> names) {
          this.request = request;
          this.description = description;

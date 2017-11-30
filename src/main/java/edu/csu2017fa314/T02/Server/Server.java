@@ -136,15 +136,11 @@ import static spark.Spark.post;
      }
 
      private Object download(Request rec, Response res){
-         // As before, parse the request and convert it to a Java class with Gson:
          JsonParser parser = new JsonParser();
          JsonElement elm = parser.parse(rec.body());
          Gson gson = new Gson();
-
          ServerRequest sRec = gson.fromJson(elm, ServerRequest.class);
-         //need to set different headers to write the file
          setHeadersFile(res);
-
          if(sRec.getRequest().equals("saveKML")){
              ArrayList<String> allCoordinates = sRec.getDescription();
              int half = allCoordinates.size() / 2;
@@ -168,9 +164,7 @@ import static spark.Spark.post;
          else{
              writeFile(res, sRec.getDescription());
          }
-
          return res;
-
      }
 
      private Object testing(Request rec, Response res) {
@@ -231,8 +225,8 @@ import static spark.Spark.post;
               // Write our file directly to the response rather than to a file
               PrintWriter fileWriter = new PrintWriter(res.raw().getOutputStream());
               // Ideally, the user will be able to name their own trips. We hard code it here:
-              fileWriter.println("{ \"title\" : \"The Coolest Trip\",\n" +
-                      "  \"destinations\" : [");
+              fileWriter.println("{ \"title\" : \"The Coolest Trip\",\n"
+                      + "  \"destinations\" : [");
               for (int i = 0; i < locations.size(); i++) {
                   if (i < locations.size() - 1) {
                       fileWriter.println("\"" + locations.get(i) + "\",");
@@ -263,18 +257,19 @@ import static spark.Spark.post;
           try{
               PrintWriter fileWriter = new PrintWriter(res.raw().getOutputStream());
 
-              fileWriter.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                    "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n" +
-                    "<Document>");
+              fileWriter.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                    + "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n"
+                    + "<Document>");
 
               for(int i = 0; i < intLon.length; ++i){
                   if(names[i].contains("&")){
                       int spec = names[i].indexOf("&");
                       names[i] = names[i].substring(0,spec) + "and" + names[i].substring(spec+1);
                   }
-                  fileWriter.println("\t<Placemark> \n \t\t <name>" + names[i] + "</name>\n\t\t <Point>");
-                  fileWriter.println("\t\t\t<coordinates>" + intLon[i] + "," +
-                        intLat[i] + ",0</coordinates>");
+                  fileWriter.println("\t<Placemark> \n \t\t <name>" + names[i]
+                                    + "</name>\n\t\t <Point>");
+                  fileWriter.println("\t\t\t<coordinates>" + intLon[i] + ","
+                                    + intLat[i] + ",0</coordinates>");
                   fileWriter.println("\t\t</Point>\n\t</Placemark>");
               }
 
