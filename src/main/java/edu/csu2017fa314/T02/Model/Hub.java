@@ -217,6 +217,11 @@ public class Hub {
         //get the distance of the shortest Trip from each starting location 
         results = pool.invokeAll(callables);
         pool.shutdown();
+        
+        //grab the start location that corresponds with shortest distance
+        Location startLocation = findStartLocation(results);
+        
+        //rebuild the trip using the startLocation
     }
     
     private Callable<Integer> singleTripDistance(){
