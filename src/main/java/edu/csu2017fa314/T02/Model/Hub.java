@@ -242,11 +242,11 @@ public class Hub {
                 break;
             case "TwoOpt":
                 Opt2 twoOpt = new Opt2();
-                shortestItinerary = twoOpt.shortestTrip(selectedLocations);
+                setShortestItinerary(twoOpt.shortestTrip(selectedLocations));
                 break;
             case "ThreeOpt":
                 Opt3 threeOpt = new Opt3();
-                shortestItinerary = threeOpt.shortestTrip(selectedLocations);
+                setShortestItinerary(threeOpt.shortestTrip(selectedLocations));
                 break;
             default:
                 shortestItinerary = locationsToDistances(selectedLocations);
