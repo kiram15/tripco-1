@@ -42,14 +42,15 @@ public class Opt2 extends Hub {
                 if (traveledTo.size() == selectedLocations.size()) {
                     break;
                 }
-                Distance shortestDistance = hugeDistance;
-                for (int i = 1; i < gcds[0].length; i++) { //because we aren't including initial location
+                Distance shortestDis = hugeDistance;
+                //because we aren't including initial location
+                for (int i = 1; i < gcds[0].length; i++) {
                     Distance d = (Distance) gcds[row][i];
-                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
-                        shortestDistance = d;
+                    if (!traveledTo.contains(d.getEndID()) && (d.getGcd() < shortestDis.getGcd())){
+                        shortestDis = d;
                     }
                 }
-                currentLocation = shortestDistance.getEndID();
+                currentLocation = shortestDis.getEndID();
             }
 
             //add the distance back to the original cit
@@ -57,10 +58,10 @@ public class Opt2 extends Hub {
             //grab the distance from the current city to original city
             Distance temp = new Distance(currentLocation, l, miles);
             for (int i = 1; i < backAround.length; i++) {
-                Distance d = (Distance) backAround[i];
+                Distance dis = (Distance) backAround[i];
                 //add to tripDistance
-                if (temp.equals(d)) {
-                    tripDistance += d.getGcd();
+                if (temp.equals(dis)) {
+                    tripDistance += dis.getGcd();
                 }
             }
 
@@ -100,14 +101,15 @@ public class Opt2 extends Hub {
             if (traveledToFinal.size() == selectedLocations.size()) {
                 break;
             }
-            Distance shortestDistance = hugeDistance;
-            for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
+            Distance shortestDis = hugeDistance;
+            //because we aren't including first Location
+            for (int i = 1; i < gcds[0].length; i++) {
                 Distance d = (Distance) gcds[row][i];
-                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDistance.getGcd())) {
-                    shortestDistance = d;
+                if (!traveledToFinal.contains(d.getEndID()) && (d.getGcd() < shortestDis.getGcd())) {
+                    shortestDis = d;
                 }
             }
-            currentLocation = shortestDistance.getEndID();
+            currentLocation = shortestDis.getEndID();
         }
 
         //apply 2opt

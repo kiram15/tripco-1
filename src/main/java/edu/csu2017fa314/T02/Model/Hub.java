@@ -203,23 +203,22 @@ public class Hub {
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
             case "NearestNeighbor":
-                NearestNeighbor n = new NearestNeighbor();
-                setShortestItinerary(n.shortestTrip(selectedLocations));
+                NearestNeighbor nearestOpt = new NearestNeighbor();
+                setShortestItinerary(nearestOpt.shortestTrip(selectedLocations));
                 break;
             case "TwoOpt":
-                Opt2 o2 = new Opt2();
-                shortestItinerary = o2.shortestTrip(selectedLocations);
+                Opt2 twoOpt = new Opt2();
+                shortestItinerary = twoOpt.shortestTrip(selectedLocations);
                 break;
             case "ThreeOpt":
-                Opt3 o3 = new Opt3();
-                shortestItinerary = o3.shortestTrip(selectedLocations);
+                Opt3 threeOpt = new Opt3();
+                shortestItinerary = threeOpt.shortestTrip(selectedLocations);
                 break;
             default:
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
         }
     }
-
 
     public void storeColumnHeaders(String firstLine){
         String s = firstLine.toLowerCase();

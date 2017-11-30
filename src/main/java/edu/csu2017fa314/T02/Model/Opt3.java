@@ -123,33 +123,35 @@ public class Opt3 extends Hub {
         //while there is still possible improvements to be made
         while (improvement) {
             improvement = false;
-            // Original 3 opt method has three groups (i, i+1) (j, j+1) (k, k+1), there can be many objects
-            // in between these groups, and the letters correspond to the loop variables. These swaps attempt
-            // to see if switching the location objects at various indicies results in an overall improvment
-            // to distance
+            // Original 3 opt method has three groups (i, i+1) (j, j+1) (k, k+1), there can
+            // be many objects in between these groups, and the letters correspond to the
+            // loop variables. These swaps attempt to see if switching the location objects
+            // at various indicies results in an overall improvment to distance
             for (int i = 0; i <= traveled.size() - 5; i++) {
-                for (int j = i + 2; j < traveled.size() - 3; j++) //starts at i+2 because i, i+1, start at j
-                    for (int k = j + 2; k < traveled.size() - 1; k++) { //starts at j+2 because i, i+1, j, j+1, start at k
+                //starts at i+2 because i, i+1, start at j
+                for (int j = i + 2; j < traveled.size() - 3; j++)
+                    //starts at j+2 because i, i+1, j, j+1, start at k
+                    for (int k = j + 2; k < traveled.size() - 1; k++) {
                         // SWAP 1 - reverse all of the elements between i+1 and j
-                        improvement = opt3Swap1(i, j, k, traveled, improvement);
+                        improvement = swap1(i, j, k, traveled, improvement);
 
                         // SWAP 2 - reverse all of the elements between j+1 and k
-                        improvement = opt3Swap2(i, j, k, traveled, improvement);
+                        improvement = swap2(i, j, k, traveled, improvement);
 
                         // SWAP 3 - reverse i+1 through k
-                        improvement = opt3Swap3(i, j, k, traveled, improvement);
+                        improvement = swap3(i, j, k, traveled, improvement);
 
                         // SWAP 4 - reverse i+1 through j, then reverse j+1 through k
-                        improvement = opt3Swap4(i, j, k, traveled, improvement);
+                        improvement = swap4(i, j, k, traveled, improvement);
 
                         // SWAP 5 - reverse j+1 through k, then swap segments
-                        improvement = opt3Swap5(i, j, k, traveled, improvement);
+                        improvement = swap5(i, j, k, traveled, improvement);
 
                         // SWAP 6 - reverse elements from i+1 through j, then swap segments
-                        improvement = opt3Swap6(i, j, k, traveled, improvement);
+                        improvement = swap6(i, j, k, traveled, improvement);
 
                         // SWAP 7 - swap middle segments
-                        improvement = opt3Swap7(i, j, k, traveled, improvement);
+                        improvement = swap7(i, j, k, traveled, improvement);
                     }
             }
         }
@@ -157,7 +159,7 @@ public class Opt3 extends Hub {
     }
 
     // ------------- SWAP 1 -------------
-    private boolean opt3Swap1(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+    private boolean swap1(int i, int j, int k, ArrayList<Location> traveled, boolean improvment) {
         // (i, j) (i+1, j+1) (k, k+1)
         Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
         Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
@@ -180,7 +182,7 @@ public class Opt3 extends Hub {
     }
 
     // ------------- SWAP 2 -------------
-    private boolean opt3Swap2(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+    private boolean swap2(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
         // (i, i+1) (j, k) (j+1, k+1)
 
         Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
@@ -203,7 +205,7 @@ public class Opt3 extends Hub {
     }
 
     // ------------- SWAP 3 -------------
-    private boolean opt3Swap3(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+    private boolean swap3(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
         // (i, k) (j+1, j) (i+1, k+1)
 
         Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
@@ -226,7 +228,7 @@ public class Opt3 extends Hub {
     }
 
     // ------------- SWAP 4 -------------
-    private boolean opt3Swap4(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+    private boolean swap4(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
         // (i, j) (i+1, k) (j+1, k+1)
 
         Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
@@ -251,7 +253,7 @@ public class Opt3 extends Hub {
     }
 
     // ------------- SWAP 5 -------------
-    private boolean opt3Swap5(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+    private boolean swap5(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
         // (i, k) (j+1, i+1) (j, k+1)  --- swap j+1 and k, switch two middle groups
 
         Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
@@ -276,7 +278,7 @@ public class Opt3 extends Hub {
     }
 
     // ------------- SWAP 6 -------------
-    private boolean opt3Swap6(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+    private boolean swap6(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
         // (i, j+1) (k, j) (i+1, k+1)  --- swap i+1 and j, switch two middle groups
 
         Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
@@ -301,7 +303,7 @@ public class Opt3 extends Hub {
     }
 
     // ------------- SWAP 7 -------------
-    private boolean opt3Swap7(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
+    private boolean swap7(int i, int j, int k, ArrayList<Location> traveled, boolean improvement) {
         // (i, j+1) (k, i+1) (j, k+1)  --- switch two middle groups
         Distance ii1 = new Distance(traveled.get(i), traveled.get(i+1), miles);
         Distance jj1 = new Distance(traveled.get(j), traveled.get(j+1), miles);
