@@ -10,8 +10,8 @@ import static org.junit.Assert.assertEquals;
 public class Test2opt {
     private Model mm;
     private Hub hh;
-    private Location L1;
-    private Location L2;
+    private Location l1;
+    private Location l2;
     private ArrayList<Distance> shortTrip;
     private boolean miles = true;
 
@@ -19,8 +19,8 @@ public class Test2opt {
     public void setUp() throws Exception {
         mm = new Model();
         hh = new Hub();
-        L1 = new Location("test", 37, -102, null);
-        L2 = new Location("test2", 41, -109, null);
+        l1 = new Location("test", 37, -102, null);
+        l2 = new Location("test2", 41, -109, null);
         shortTrip = new ArrayList<Distance>();
     }
 

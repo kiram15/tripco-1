@@ -24,7 +24,7 @@ public class TestNearest {
     // ------------------- Test Shorter Trip Nearest Neighbor -------------------
 
     @Test
-    public void testShorterTripNN(){
+    public void testShorterTripNn(){
         //tests shorterTrip by making a call to storeColumnHeaders and parseRow
         //which then calls the shorter trip method. The shorterTrip method does
         //not return anything, but does set the value of hub's shortestItinerary
@@ -38,10 +38,10 @@ public class TestNearest {
         h0.createItinerary();
         NearestNeighbor nn = new NearestNeighbor();
         nn.shortestTrip(h0.selectedLocations);
-        assertEquals(fillShortTripNN(), h0.shortestItinerary);
+        assertEquals(fillShortTripNn(), h0.shortestItinerary);
     }
 
-    private ArrayList<Distance> fillShortTripNN(){
+    private ArrayList<Distance> fillShortTripNn(){
         Location n0 = new Location("kira", 45.0, 45.0, null);
         Location n1 = new Location("amber", 22.5, 135.0, null);
         Location n2 = new Location("nicole", 85.0, 175.0, null);
