@@ -270,9 +270,12 @@ public class Hub {
         //List to store all of the callables from singleTripDistance
         List<Callable<Integer>> callables = new ArrayList<>();
         
+        //creates the OG GCD array based on the current selectedLocations
+        Object[][] gcds = calcAllGcds(selectedLocations);
+
         //for every distance, add a singleTripDistance object
         for(int i = 0; i < this.selectedLocations.size(); i++){
-            callables.add(singleTripDistance(this.selectedLocations.get(i)));
+            callables.add(singleTripDistance(gcds, this.selectedLocations.get(i)));
         }
         
         //get the distance of the shortest Trip from each starting location 
@@ -284,21 +287,21 @@ public class Hub {
         //System.out.println("StartLocation: " + startLocation.getName());
 
         //rebuild the trip using the startLocation
-        createItinerary(startLocation);
+        createItinerary(gcds, startLocation);
     }
 
-    private Callable<Integer> singleTripDistance(Location currentLocation){
+    private Callable<Integer> singleTripDistance(Object[][] gcds, Location currentLocation){
         Callable<Integer> returnValue = new Callable<Integer>(){
             @Override
             public Integer call() throws Exception{
                 //this will call the optimizaton method that returns the distance of the single trip
-                return tripDistance(currentLocation);
+                return tripDistance(gcds, currentLocation);
             }
         };
         return returnValue;
     }
 
-    private int tripDistance(Location currentLoc){
+    private int tripDistance(Object[][] gcds, Location currentLoc){
         int singleTripDist = 0;
         //switch statement that calls the specific shortest trip method
         //based on selected optimization
@@ -315,7 +318,7 @@ public class Hub {
                 singleTripDist = twoOpt.shortestTripDistance(selectedLocations, currentLoc);
                 break;
             case "ThreeOpt":
-                Opt3 threeOpt = new Opt3();
+                Opt3 threeOpt = new Opt3(gcds);
                 singleTripDist = threeOpt.shortestTripDistance(selectedLocations, currentLoc);
                 break;
             default:
@@ -342,7 +345,7 @@ public class Hub {
 
     /** fills shortestItinerary based on shortest startLocation and opt
      */
-    public void createItinerary(Location startLocation){
+    public void createItinerary(Object[][] gcds, Location startLocation){
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
@@ -357,7 +360,7 @@ public class Hub {
                 setShortestItinerary(twoOpt.buildShortestTrip(selectedLocations,startLocation));
                 break;
             case "ThreeOpt":
-                Opt3 threeOpt = new Opt3();
+                Opt3 threeOpt = new Opt3(gcds);
                 setShortestItinerary(threeOpt.buildShortestTrip(selectedLocations,startLocation));
                 break;
             default:
