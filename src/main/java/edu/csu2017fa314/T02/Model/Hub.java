@@ -366,7 +366,9 @@ public class Hub {
         }
     }
 
-    //stores the info about each airport in the location lists
+    /*
+    *stores the info about each airport in the location lists
+    */
     public void storeColumnHeaders(String firstLine){
         String ss = firstLine.toLowerCase();
         String[] infoArray = ss.split(",");
@@ -394,7 +396,9 @@ public class Hub {
         }
     }
 
-    //splits up rows to add the
+    /*
+    * splits up rows to add to the selected locations
+    */
     public void parseRow(String row){
         row = row.toLowerCase();
         String[] props = row.split(",");
@@ -425,7 +429,9 @@ public class Hub {
         selectedLocations.add(location);
     }
 
-    //conerts string latitude or longitude (s) to double
+    /*
+    *converts string latitude or longitude (s) to double
+    */
     public double latLonConvert(String s) {
         String copyS = s;
         int end;
@@ -479,7 +485,9 @@ public class Hub {
         }
     }
 
-    //preforms the swap method for 2opt and 3opt
+    /*
+    * preforms the swap method for 2opt and 3opt
+    */
     public void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
         while (i1 < k) {
             // reverses all the elements from i+1 to k
@@ -493,7 +501,9 @@ public class Hub {
         }
     }
 
-    //will return an array list with each city listed once, with the shortest city as its end
+    /*
+    *will return an array list with each city listed once, with the shortest city as its end
+    */
     public Object[][] calcAllGcds(ArrayList<Location> selectedLocations) {
         Object[][] gcds = new Object[selectedLocations.size()][selectedLocations.size()+1];
         for (int i = 0; i < selectedLocations.size(); i++) {
@@ -510,8 +520,9 @@ public class Hub {
         return gcds;
     }
 
-    //transforms an arrayList of location objects into an arrayList of distance objects using the
-    //location objects in the order they are passed in
+    /*transforms an arrayList of location objects into an arrayList of distance objects using the
+    * location objects in the order they are passed in
+    */
     public ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
         ArrayList<Distance> finalDistances = new ArrayList<Distance>();
         for (int i = 0; i < locations.size(); i++) {
