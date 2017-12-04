@@ -1,20 +1,18 @@
 package edu.csu2017fa314.T02.Model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.lang.Math;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.io.InputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Hub {
     Map<String, Integer> columns;
@@ -92,16 +90,18 @@ public class Hub {
 
     public void clearFinalLocations(){ finalLocations.clear(); }
 
+
     /** searches the data base for the keyword searchingFor, unless upload
     * is flagged as true, which causes searchingFor to be treated as a
     * complete query
     */
-    public void searchDatabase(String username, String password, String searchingFor, boolean upload){
+    public void searchDatabase(String username, String password, String searchFor, boolean upload){
+
         searchedLocations.clear();
         shortestItinerary.clear();
         columns.clear();
         reverseC.clear();
-        searchingFor = searchingFor.toLowerCase();
+        searchFor = searchFor.toLowerCase();
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
         //String myUrl = "jdbc:mysql://localhost/cs314"; use if tunneling
@@ -112,37 +112,95 @@ public class Hub {
                 Statement st = conn.createStatement();
                 try {
                     //give order of column header to storeColumnHeaders
-                    String colHeaders = "airports_ID, airports_Code, airports_Type, airports_Name, airports_Latitude, airports_Longitude, airports_Elevation, airports_Continent, airports_Iso_country, airports_Iso_region, airports_Municipality, airports_Scheduled_service, airports_Gps_code, airports_Iata_code, airports_Local_code, airports_Home_link, airports_Wikipedia_link, airports_Keywords, "
-                            + "regions_ID, regions_Code, regions_Local_code, regions_Name, regions_Continent, regions_Iso_country, regions_Wikipedia_link, regions_Keywords, "
-                            + "countries_ID, countries_Code, countries_Name, countries_Continent, countries_Wikipedia_link, countries_Keywords, "
+                    String colHeaders = "airports_ID, airports_Code, airports_Type, airports_Name,"
+                            + " airports_Latitude, airports_Longitude, airports_Elevation, "
+                            + "airports_Continent, airports_Iso_country, airports_Iso_region, "
+                            + "airports_Municipality, airports_Scheduled_service, "
+                            + "airports_Gps_code, airports_Iata_code, airports_Local_code, "
+                            + "airports_Home_link, airports_Wikipedia_link, airports_Keywords, "
+                            + "regions_ID, regions_Code, regions_Local_code, regions_Name, "
+                            + "regions_Continent, regions_Iso_country, regions_Wikipedia_link, "
+                            + "regions_Keywords, countries_ID, countries_Code, countries_Name, "
+                            + "countries_Continent, countries_Wikipedia_link, countries_Keywords, "
                             + "continents_ID, continents_Name, continents_Code, continents_Wikipedia_link";
                     storeColumnHeaders(colHeaders);
                     String allTblsSearchQ = "";
 
                     if (!upload) {
-                        allTblsSearchQ = "select airports.id as airports_ID, airports.code as airports_Code, airports.type as airports_Type, airports.name as airports_Name, airports.latitude as airports_Latitude, airports.longitude as airports_Longitude, airports.elevation as airports_Elevation, airports.continent as airports_Continent, airports.iso_country as airports_Iso_country, airports.iso_region as airports_Iso_region, airports.municipality as airports_Municipality, airports.scheduled_service as airports_Scheduled_service, airports.gps_code as airports_Gps_code, airports.iata_code as airports_Iata_code, airports.local_code as airports_Local_code, airports.home_link as airports_Home_link, airports.wikipedia_link as airports_Wikipedia_link, airports.keywords as airports_Keywords, "
-                                + "regions.id as regions_ID, regions.code as regions_Code, regions.local_code as regions_Local_code, regions.name as regions_Name, regions.continent as regions_Continent, regions.iso_country as regions_Iso_country, regions.wikipedia_link as regions_Wikipedia_link, regions.keywords as regions_Keywords, "
-                                + "countries.id as countries_ID, countries.code as countries_Code, countries.name as countries_Name, countries.continent as countries_Continent, countries.wikipedia_link as countries_Wikipedia_link, countries.keywords as countries_Keywords, "
-                                + "continents.id as continents_ID, continents.name as continents_Name, continents.code as continents_Code, continents.wikipedia_link as continents_Wikipedia_link "
+                        allTblsSearchQ = "select airports.id as airports_ID, airports.code as "
+                                + "airports_Code, airports.type as airports_Type, airports.name "
+                                + "as airports_Name, airports.latitude as airports_Latitude, "
+                                + "airports.longitude as airports_Longitude, airports.elevation as "
+                                + "airports_Elevation, airports.continent as airports_Continent, "
+                                + "airports.iso_country as airports_Iso_country, airports."
+                                + "iso_region as airports_Iso_region, airports.municipality "
+                                + "as airports_Municipality, airports.scheduled_service as "
+                                + "airports_Scheduled_service, airports.gps_code as "
+                                + "airports_Gps_code, airports.iata_code as "
+                                + "airports_Iata_code, airports.local_code as airports_Local_code, "
+                                + "airports.home_link as airports_Home_link, airports_"
+                                + "Wikipedia_link, airports.keywords as airports_Keywords, "
+                                + "regions.id as regions_ID, regions.code "
+                                + "as regions_Code, regions.local_code as regions_Local_code,"
+                                + " regions.name as regions_Name, regions.continent"
+                                + " as regions_Continent, regions.iso_country"
+                                + " as regions_Iso_country, regions.wikipedia_link as "
+                                + "regions_Wikipedia_link, regions.keywords as regions_Keywords, "
+                                + "countries.id as countries_ID, countries.code as countries_Code, "
+                                + "countries.name as countries_Name, countries.continent as "
+                                + "countries_Continent, countries.wikipedia_link as "
+                                + "countries_Wikipedia_link, countries.keywords as "
+                                + "countries_Keywords, continents.id as continents_ID"
+                                + ", continents.name as continents_Name,"
+                                + " continents.code as continents_Code, continents."
+                                + "wikipedia_link as continents_Wikipedia_link "
                                 + "from continents "
                                 + "inner join countries on countries.continent = continents.code "
                                 + "inner join regions on regions.iso_country = countries.code "
                                 + "inner join airports on airports.iso_region = regions.code "
                                 + "where "
-                                + "airports.id like '%" + searchingFor + "%' or airports.code like '%" + searchingFor + "%' or airports.type like '%" + searchingFor + "%' or airports.name like '%" + searchingFor + "%' or airports.latitude like '%" + searchingFor + "%' or airports.longitude like '%" + searchingFor + "%' or airports.elevation like '%" + searchingFor + "%' or airports.continent like '%" + searchingFor + "%' or airports.iso_country like '%" + searchingFor + "%' or airports.iso_region like '%" + searchingFor + "%' or airports.municipality like '%" + searchingFor + "%' or airports.scheduled_service like '%" + searchingFor + "%' or airports.gps_code like '%" + searchingFor + "%' or airports.iata_code like '%" + searchingFor + "%' or airports.local_code like '%" + searchingFor + "%' or airports.home_link like '%" + searchingFor + "%' or airports.wikipedia_link like '%" + searchingFor + "%' or airports.keywords like '%" + searchingFor + "%' or "
-                                + "regions.id like '%" + searchingFor + "%' or regions.code like '%" + searchingFor + "%' or regions.local_code like '%" + searchingFor + "%' or regions.name like '%" + searchingFor + "%' or regions.continent like '%" + searchingFor + "%' or regions.iso_country like '%" + searchingFor + "%' or regions.wikipedia_link like '%" + searchingFor + "%' or regions.keywords like '%" + searchingFor + "%' or "
-                                + "countries.id like '%" + searchingFor + "%' or countries.code like '%" + searchingFor + "%' or countries.name like '%" + searchingFor + "%' or countries.continent like '%" + searchingFor + "%' or countries.wikipedia_link like '%" + searchingFor + "%' or countries.keywords like '%" + searchingFor + "%' or "
-                                + "continents.id like '%" + searchingFor + "%' or continents.name like '%" + searchingFor + "%' or continents.code like '%" + searchingFor + "%' or continents.wikipedia_link like '%" + searchingFor + "%' "
+                                + "airports.id like '%" + searchFor + "%' or airports.code like '%"
+                                + searchFor + "%' or airports.type like '%" + searchFor + "%' or "
+                                + "airports.name like '%" + searchFor + "%' or airports.latitude "
+                                + "like '%" + searchFor + "%' or airports.longitude like '%"
+                                + searchFor + "%' or airports.elevation like '%"
+                                + searchFor + "%' or " + "airports.continent like '%"
+                                + searchFor + "%' or airports.iso_country"
+                                + " like '%" + searchFor + "%' or airports.iso_region like '%"
+                                + searchFor + "%' or airports.municipality like '%" + searchFor
+                                + "%' or " + "airports.scheduled_service like '%" + searchFor
+                                + "%' or airports.gps_code" + " like '%" + searchFor
+                                + "%' or airports.iata_code like '%" + searchFor
+                                + "%' or airports.local_code like '%" + searchFor
+                                + "%' or airports.home_link like '%" + searchFor + "%' or airports."
+                                + "wikipedia_link like '%" + searchFor + "%' or airports."
+                                + "keywords like '%" + searchFor
+                                + "%' or regions.id like '%" + searchFor + "%' or "
+                                + "regions.code like '%" + searchFor + "%' or regions.local_code "
+                                + "like '%" + searchFor + "%' or regions.name like '%" + searchFor
+                                + "%' or regions.continent like '%" + searchFor + "%' or "
+                                + "regions.iso_country like '%" + searchFor + "%' or regions."
+                                + "wikipedia_link like '%" + searchFor + "%' or regions.keywords "
+                                + "like '%" + searchFor + "%' or countries.id like '%" + searchFor
+                                + "%' or countries.code like '%" + searchFor
+                                + "%' or countries.name like '%" + searchFor
+                                + "%' or countries.continent like '%" + searchFor
+                                + "%' or countries.wikipedia_link like '%" + searchFor
+                                + "%' or countries.keywords like '%" + searchFor + "%' or "
+                                + "continents.id like '%" + searchFor + "%' or continents.name like '%"
+                                + searchFor + "%' or continents.code like '%" + searchFor
+                                + "%' or continents.wikipedia_link like '%" + searchFor + "%' "
                                 + "limit 100;";
                     } else {
-                        allTblsSearchQ = searchingFor;
+                        allTblsSearchQ = searchFor;
                     }
-                    ResultSet allTblsSearchRS = st.executeQuery(allTblsSearchQ);
+                    ResultSet allTblsSearchRs = st.executeQuery(allTblsSearchQ);
                     try { //parse matched rows
-                        while (allTblsSearchRS.next()) { //for each row
+                        while (allTblsSearchRs.next()) { //for each row
                             String matchedRow = "";
-                            for (int i = 1; i <= columns.size(); i++) { //traverse row by incrementing columns and storing in a string
-                                String rowCol = allTblsSearchRS.getString(i);
+                            //traverse row by incrementing columns and storing in a string
+                            for (int i = 1; i <= columns.size(); i++) {
+                                String rowCol = allTblsSearchRs.getString(i);
                                 rowCol = rowCol + ",";
                                 matchedRow += rowCol;
                                 if(upload && i == 18){
@@ -152,7 +210,7 @@ public class Hub {
                             parseRow(matchedRow);
                         }
                     } finally {
-                        allTblsSearchRS.close();
+                        allTblsSearchRs.close();
                     }
 
                 } finally{ st.close(); }
@@ -160,6 +218,20 @@ public class Hub {
         } catch (Exception e) { // catches all exceptions in the nested try's
             System.err.printf("Exception: ");
             System.err.println(e.getMessage());
+        }
+    }
+  
+    //deals with extra characters added with ampersands
+    private boolean equalsWithoutAmp(String name, String ll){
+        int index = name.indexOf('&');
+
+        String subName = name.substring(index + 5);
+        String subL = ll.substring(index + 1);
+
+        if(subName.equals(subL)){
+            return true;
+        } else{
+            return false;
         }
     }
 
@@ -188,7 +260,13 @@ public class Hub {
                 }
             }
         }
-        createItinerary();
+        try{
+            createCallables();
+        } catch(InterruptedException ie){
+            System.exit(1);
+        } catch(ExecutionException ee){
+            System.exit(1);
+        }
     }
 
     /** Deals with special characters that cause problems with the
@@ -208,27 +286,107 @@ public class Hub {
         }
     }
 
+
+    private void createCallables() throws InterruptedException, ExecutionException {
+        //Create thread pool
+        ExecutorService pool = Executors.newFixedThreadPool(6);
+        
+        //List to store distances returned from 
+        List<Future<Integer>> results = new ArrayList<>();
+        
+        //List to store all of the callables from singleTripDistance
+        List<Callable<Integer>> callables = new ArrayList<>();
+        
+        //for every distance, add a singleTripDistance object
+        for(int i = 0; i < this.selectedLocations.size(); i++){
+            callables.add(singleTripDistance(this.selectedLocations.get(i)));
+        }
+        
+        //get the distance of the shortest Trip from each starting location 
+        results = pool.invokeAll(callables);
+        pool.shutdown();
+        
+        //grab the start location that corresponds with shortest distance
+        Location startLocation = findStartLocation(results);
+        //System.out.println("StartLocation: " + startLocation.getName());
+
+        //rebuild the trip using the startLocation
+        createItinerary(startLocation);
+    }
+
+    private Callable<Integer> singleTripDistance(Location currentLocation){
+        Callable<Integer> returnValue = new Callable<Integer>(){
+            @Override
+            public Integer call() throws Exception{
+                //this will call the optimizaton method that returns the distance of the single trip
+                return tripDistance(currentLocation);
+            }
+        };
+        return returnValue;
+    }
+
+    private int tripDistance(Location currentLoc){
+        int singleTripDist = 0;
+        //switch statement that calls the specific shortest trip method
+        //based on selected optimization
+        switch(optimization){
+            case "None":
+                singleTripDist = 0;
+                break;
+            case "NearestNeighbor":
+                NearestNeighbor nearestOpt = new NearestNeighbor();
+                singleTripDist = nearestOpt.shortestTripDistance(selectedLocations, currentLoc);
+                break;
+            case "TwoOpt":
+                Opt2 twoOpt = new Opt2();
+                singleTripDist = twoOpt.shortestTripDistance(selectedLocations, currentLoc);
+                break;
+            case "ThreeOpt":
+                Opt3 threeOpt = new Opt3();
+                singleTripDist = threeOpt.shortestTripDistance(selectedLocations, currentLoc);
+                break;
+            default:
+                singleTripDist = 0;
+                break;
+        }
+        return singleTripDist;
+    }
+  
+    //loops through results and finds the shortest distance
+    //then returns the starting location that corresponds to this distance
+    private Location findStartLocation(List<Future<Integer>> results)
+            throws InterruptedException, ExecutionException {
+        int minVal = Integer.MAX_VALUE;
+        int minIndex = -1;
+        for(int i = 0; i < results.size(); i++){
+            if(results.get(i).get() < minVal){
+                minVal = results.get(i).get();
+                minIndex = i;
+            }
+        }
+        return this.selectedLocations.get(minIndex);
+    }
+
     /**
     * creates itinerary list order based on the optimization global
     */
-    public void createItinerary(){
+    public void createItinerary(Location startLocation){
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
-                System.out.println("NONE");
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
             case "NearestNeighbor":
                 NearestNeighbor nearestOpt = new NearestNeighbor();
-                setShortestItinerary(nearestOpt.shortestTrip(selectedLocations));
+                setShortestItinerary(nearestOpt.buildShortestTrip(selectedLocations,startLocation));
                 break;
             case "TwoOpt":
                 Opt2 twoOpt = new Opt2();
-                shortestItinerary = twoOpt.shortestTrip(selectedLocations);
+                setShortestItinerary(twoOpt.buildShortestTrip(selectedLocations,startLocation));
                 break;
             case "ThreeOpt":
                 Opt3 threeOpt = new Opt3();
-                shortestItinerary = threeOpt.shortestTrip(selectedLocations);
+                setShortestItinerary(threeOpt.buildShortestTrip(selectedLocations,startLocation));
                 break;
             default:
                 shortestItinerary = locationsToDistances(selectedLocations);
@@ -240,11 +398,12 @@ public class Hub {
     * stores the info about each airport in the location lists
     */
     public void storeColumnHeaders(String firstLine){
-        String s = firstLine.toLowerCase();
-        String[] infoArray = s.split(",");
+        String ss = firstLine.toLowerCase();
+        String[] infoArray = ss.split(",");
         for (int i = 0; i < infoArray.length; i++) {
             String infoString = infoArray[i];
-            switch (infoString.trim()) { // associating column titles with column num, putting it in map
+            // associating column titles with column num, putting it in map
+            switch (infoString.trim()) {
                 case "airports_name":
                     columns.put("airports_name", i);
                     reverseC.put(i, "airports_name");
@@ -302,7 +461,7 @@ public class Hub {
     * converts string latitude or longitude (s) to double
     */
     public double latLonConvert(String s) {
-        String sCopy = s;
+        String copyS = s;
         int end;
         String symbol;
         double retVal;
@@ -318,12 +477,12 @@ public class Hub {
                 } else {
                     symbol = "\"";
                 }
-                end = sCopy.indexOf(symbol);
-                values.add(Double.parseDouble(sCopy.substring(0, end)));
-                sCopy = sCopy.substring(end + 1);
+                end = copyS.indexOf(symbol);
+                values.add(Double.parseDouble(copyS.substring(0, end)));
+                copyS = copyS.substring(end + 1);
             }
             retVal = (values.get(0) + (values.get(1) / 60) + (values.get(2) / 3600));
-            if (sCopy.equals("W") || sCopy.equals("S")) {
+            if (copyS.equals("W") || copyS.equals("S")) {
                 return (retVal * (-1));
             } else {
                 return retVal;
@@ -335,20 +494,20 @@ public class Hub {
                 } else {
                     symbol = "'";
                 }
-                end = sCopy.indexOf(symbol);
-                values.add(Double.parseDouble(sCopy.substring(0, end)));
-                sCopy = sCopy.substring(end + 1);
+                end = copyS.indexOf(symbol);
+                values.add(Double.parseDouble(copyS.substring(0, end)));
+                copyS = copyS.substring(end + 1);
             }
             retVal = (values.get(0) + (values.get(1) / 60));
-            if (sCopy.equals("W") || sCopy.equals("S")) {
+            if (copyS.equals("W") || copyS.equals("S")) {
                 return (retVal * (-1));
             } else {
                 return retVal;
             }
 
         } else if (s.contains("°")) { // case for 106.24° format
-            end = sCopy.indexOf("°");
-            return (Double.parseDouble(sCopy.substring(0, end)));
+            end = copyS.indexOf("°");
+            return (Double.parseDouble(copyS.substring(0, end)));
         } else { // case for -106.24 format
             return Double.parseDouble(s);
         }
@@ -374,19 +533,19 @@ public class Hub {
     * will return an array list with each city listed once, with the shortest city as its end
     */
     public Object[][] calcAllGcds(ArrayList<Location> selectedLocations) {
-        Object[][] GCDS = new Object[selectedLocations.size()][selectedLocations.size()+1];
+        Object[][] gcds = new Object[selectedLocations.size()][selectedLocations.size()+1];
         for (int i = 0; i < selectedLocations.size(); i++) {
             //get the initial Location
-            GCDS[i][0] = selectedLocations.get(i);
+            gcds[i][0] = selectedLocations.get(i);
             for (int j = 0; j < selectedLocations.size(); j++) {
                 //for all the Distances in the row
-                Location startID = selectedLocations.get(i);
-                Location endID = selectedLocations.get(j);
-                Distance dis = new Distance(startID, endID, miles);
-                GCDS[i][j+1] = dis; //j+1 because of the Location in the first column
+                Location startId = selectedLocations.get(i);
+                Location endId = selectedLocations.get(j);
+                Distance dis = new Distance(startId, endId, miles);
+                gcds[i][j+1] = dis; //j+1 because of the Location in the first column
             }
         }
-        return GCDS;
+        return gcds;
     }
 
     /** transforms an arrayList of location objects into an arrayList of distance objects using the
@@ -436,4 +595,5 @@ public class Hub {
         }
         return finalGMap;
     }
+
 }
