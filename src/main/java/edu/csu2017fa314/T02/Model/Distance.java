@@ -71,6 +71,7 @@ public class Distance implements Comparable<Distance>{
         return this.gcd - other.gcd;
     }
 
+    //prints out the properties of the distance object
     public String toString(){
         return "Distance{" +
                 "StartID= '" + startID.toString() + '\'' +
