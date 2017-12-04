@@ -26,8 +26,9 @@ public class TestNearest {
 
     @Test
     public void testShorterTripNN(){
-        //tests shorterTrip by making a call to storeColumnHeaders and parseRow which then calls the
-        //shorter trip method. The shorterTrip method does not return anything, but does set the value
+        //tests shorterTrip by making a call to storeColumnHeaders and
+        //parseRow which then calls the shorter trip method.
+        //The shorterTrip method does not return anything, but does set the value
         //of hub's shortestItinerary
         Hub h0 = new Hub("NearestNeighbor");
         h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
