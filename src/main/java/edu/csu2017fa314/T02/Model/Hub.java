@@ -203,7 +203,7 @@ public class Hub {
 
     public void createCallables() throws InterruptedException, ExecutionException {
         //Create thread pool
-        ExecutorService pool = Executors.newFixedThreadPool(5);
+        ExecutorService pool = Executors.newFixedThreadPool(8);
         
         //List to store distances returned from 
         List<Future<Integer>> results = new ArrayList<>();
