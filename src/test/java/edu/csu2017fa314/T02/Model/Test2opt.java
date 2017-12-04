@@ -29,19 +29,19 @@ public class Test2opt {
     @Test
     public void testShorterTrip2Opt(){
         //tests shorterTrip by making a call to storeColumnHeaders
-        //and parseRow which then calls the shorter trip method.
-        //The shorterTrip method does not return anything, but does
-        //set the value of hub's shortestItinerary
+        // and parseRow which then calls the shorter trip method.
+        // The shorterTrip method does not return anything,
+        // but does set the valu of hub's shortestItinerary
         Hub h0 = new Hub("TwoOpt");
-        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,"
-                + "airports_Longitude,elevation,");
+        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
         h0.parseRow("kiram15,kira,fort collins, 40.0, 50.0, 10");
         h0.parseRow("alnolte,amber,denver, 60.0, 70.5, 10");
         h0.parseRow("nkacirek,nicole,boulder, 100.0, 60.0, 10");
         h0.parseRow("emictosh,emerson,littleton, 45.0, 55.0, 10");
-        h0.createItinerary();
+        Location n1 = new Location("amber", 60.0, 70.5, null);
+        h0.createItinerary(n1);
         Opt2 o2 = new Opt2();
-        o2.shortestTrip(h0.selectedLocations);
+        o2.buildShortestTrip(h0.selectedLocations, n1);
         assertEquals(fillShortTrip2Opt(), h0.shortestItinerary);
     }
 
@@ -64,4 +64,5 @@ public class Test2opt {
 
         return checkAgainst;
     }
+
 }

@@ -21,27 +21,29 @@ public class TestNearest {
         l2 = new Location("test2", 41, -109, null);
         shortTrip = new ArrayList<Distance>();
     }
+
     // ------------------- Test Shorter Trip Nearest Neighbor -------------------
 
     @Test
-    public void testShorterTripNn(){
-        //tests shorterTrip by making a call to storeColumnHeaders and parseRow
-        //which then calls the shorter trip method. The shorterTrip method does
-        //not return anything, but does set the value of hub's shortestItinerary
+    public void testShorterTripNN(){
+        //tests shorterTrip by making a call to storeColumnHeaders and
+        //parseRow which then calls the shorter trip method.
+        //The shorterTrip method does not return anything, but does set the value
+        //of hub's shortestItinerary
         Hub h0 = new Hub("NearestNeighbor");
-        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,"
-                + "airports_Longitude,elevation,");
+        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
         h0.parseRow("kiram15,kira,fort collins, 45.0, 45.0, 10");
         h0.parseRow("alnolte,amber,denver, 22.5, 135.0, 10");
         h0.parseRow("nkacirek,nicole,boulder, 85.0, 175.0, 10");
         h0.parseRow("emictosh,emerson,littleton, 25.0, 90.0, 10");
-        h0.createItinerary();
+        Location n0 = new Location("kira", 45.0, 45.0, null);
+        h0.createItinerary(n0);
         NearestNeighbor nn = new NearestNeighbor();
-        nn.shortestTrip(h0.selectedLocations);
-        assertEquals(fillShortTripNn(), h0.shortestItinerary);
+        nn.buildShortestTrip(h0.selectedLocations, n0);
+        assertEquals(fillShortTripNN(), h0.shortestItinerary);
     }
 
-    private ArrayList<Distance> fillShortTripNn(){
+    private ArrayList<Distance> fillShortTripNN(){
         Location n0 = new Location("kira", 45.0, 45.0, null);
         Location n1 = new Location("amber", 22.5, 135.0, null);
         Location n2 = new Location("nicole", 85.0, 175.0, null);

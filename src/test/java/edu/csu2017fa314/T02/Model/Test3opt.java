@@ -27,23 +27,22 @@ public class Test3opt {
 
     @Test
     public void testShorterTrip3Opt(){
-        //tests shorterTrip3Opt by making a call to storeColumnHeaders
-        //and parseRow which then calls the shorter trip method. The
-        //shorterTrip method does not return anything, but does set the value
-        //of hub's shortestItinerary
-
+        //tests shorterTrip3Opt by making a call to storeColumnHeaders and
+        //parseRow which then calls the shorter trip method.
+        // The shorterTrip method does not return anything,
+        // but does set the value of hub's shortestItinerary
         Hub h0 = new Hub("ThreeOpt");
-        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,"
-                + "airports_Longitude,elevation,");
+        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
         h0.parseRow("kiram15,kira,fort collins, 34.0, -92.0, 10");    //A
         h0.parseRow("alnolte,amber,denver, 34.0, -88, 10");           //B
         h0.parseRow("nkacirek,nicole,boulder, 37.0, -85.0, 10");      //C
         h0.parseRow("emictosh,emerson,littleton, 40.0, -88.0, 10");   //D
         h0.parseRow("maddic, maddi, loveland, 40.0, -92.0, 10");      //E
         h0.parseRow("jamesp, james, godrics hollow, 37.0, -95.0, 10");//F
-        h0.createItinerary();
+        Location dd1 = new Location("emerson", 40.0, -88.0, null);
+        h0.createItinerary(dd1);
         Opt3 o3 = new Opt3();
-        o3.shortestTrip(h0.selectedLocations);
+        o3.buildShortestTrip(h0.selectedLocations, dd1);
 
         ArrayList<Distance> check1 = fillShortTrip3Opt();
         ArrayList<Distance> check2 = h0.shortestItinerary;
@@ -263,4 +262,5 @@ public class Test3opt {
 
         return checkAgainst;
     }
+
 }

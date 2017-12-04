@@ -142,7 +142,8 @@ public class TestModel {
         assertEquals(-106.24, h.latLonConvert("-106.24"), 0.01);
     }
 
-    // ------------------------- Test drawSVG -------------------------
+    // ------------------------- Test drawSVG ----------------------------
+
 
     @Test
     public void testDrawSVG() {
@@ -362,27 +363,27 @@ public class TestModel {
         hC.finalLocations.add(endL);
 
         hC.optimization = "None";
-        hC.createItinerary();
+        hC.createItinerary(startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "NearestNeighbor";
-        hC.createItinerary();
+        hC.createItinerary(startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "TwoOpt";
-        hC.createItinerary();
+        hC.createItinerary(startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "ThreeOpt";
-        hC.createItinerary();
+        hC.createItinerary(startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "DefaultChoice";
-        hC.createItinerary();
+        hC.createItinerary(startL);
         assertFalse(hC.shortestItinerary.isEmpty());
     }
 }
