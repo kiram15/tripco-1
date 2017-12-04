@@ -14,6 +14,7 @@ public class TripCo {
       return name;
    }
 
+   //returns the message global
    public String getMessage() {
       if (name == "") {
          return "Hello!";
@@ -26,6 +27,7 @@ public class TripCo {
       this.name = name;
    }
 
+   //executes all the things!
    public static void main(String[] args) {
       System.out.println("Welcome to TripCo");
 

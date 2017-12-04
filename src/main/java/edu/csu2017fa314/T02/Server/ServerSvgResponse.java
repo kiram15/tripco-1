@@ -6,6 +6,7 @@ public class ServerSvgResponse {
     private int width;
     private int height;
 
+    //creates a response for an SVG query
     public ServerSvgResponse(int width, int height, String contents) {
         this.contents = contents;
         this.width = width;
