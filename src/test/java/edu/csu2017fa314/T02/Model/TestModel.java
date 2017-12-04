@@ -199,7 +199,7 @@ public class TestModel {
         Location n1 = new Location("amber", 60.0, 70.5, null);
         h0.createItinerary(n1);
         Opt2 o2 = new Opt2();
-        o2.shortestTrip(h0.selectedLocations);
+        o2.buildShortestTrip(h0.selectedLocations, n1);
         assertEquals(fillShortTrip2Opt(), h0.shortestItinerary);
     }
 
