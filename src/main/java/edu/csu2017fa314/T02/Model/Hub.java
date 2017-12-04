@@ -361,8 +361,8 @@ public class Hub {
         }
     }
 
-    /*
-    *will return an array list with each city listed once, with the shortest city as its end
+    /**
+    * will return an array list with each city listed once, with the shortest city as its end
     */
     public Object[][] calcAllGcds(ArrayList<Location> selectedLocations) {
         Object[][] GCDS = new Object[selectedLocations.size()][selectedLocations.size()+1];
@@ -380,7 +380,7 @@ public class Hub {
         return GCDS;
     }
 
-    /*transforms an arrayList of location objects into an arrayList of distance objects using the
+    /**transforms an arrayList of location objects into an arrayList of distance objects using the
     * location objects in the order they are passed in
     */
     public ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
