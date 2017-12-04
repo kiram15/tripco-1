@@ -346,7 +346,7 @@ public class Hub {
     }
 
     /*
-    * preforms the swap method for 2opt and 3opt
+    * performs the swap method for 2opt and 3opt
     */
     public void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
         while (i1 < k) {
@@ -397,6 +397,9 @@ public class Hub {
         return finalDistances;
     }
 
+    /** Draws the lines on the google map as an svg overlay
+    *
+    */
     public ArrayList<gMap> drawSVG(){
         double firstLocationLat = 0.0;
         double firstLocationLon = 0.0;
