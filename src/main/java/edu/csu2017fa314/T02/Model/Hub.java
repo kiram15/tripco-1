@@ -215,16 +215,15 @@ public class Hub {
         for(int i = 0; i < this.selectedLocations.size(); i++){
             callables.add(singleTripDistance(this.selectedLocations.get(i)));
         }
-        System.out.println("successfully added selectedLocations to callables: " + callables.toString());
         
         //get the distance of the shortest Trip from each starting location 
         results = pool.invokeAll(callables);
-        System.out.println("InvokedAll");
         pool.shutdown();
         
         //grab the start location that corresponds with shortest distance
         Location startLocation = findStartLocation(results);
-        
+        System.out.println("StartLocation: " + startLocation.getName());
+
         //rebuild the trip using the startLocation
         createItinerary();
     }

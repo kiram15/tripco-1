@@ -35,7 +35,6 @@ public class NearestNeighbor extends Hub {
                 }
             }
             traveledTo.add(currentLocation);
-            System.out.println("adds current location to traveled to");
             if (traveledTo.size() == selectedLocations.size()) {
                 break;
             }
@@ -50,7 +49,6 @@ public class NearestNeighbor extends Hub {
             }
             currentLocation = shortestDis.getEndID();
             tripDistance += shortestDis.getGcd();
-            System.out.println("currentLocation is set to shortestDist and tripDistance is updated");
         }
 
             //add the distance back to the original city
@@ -65,7 +63,6 @@ public class NearestNeighbor extends Hub {
                     tripDistance += dis.getGcd();
                 }
             }
-            System.out.println("Trip Distance: " + tripDistance + " for " + startLocation);
         return tripDistance;
     }
     
