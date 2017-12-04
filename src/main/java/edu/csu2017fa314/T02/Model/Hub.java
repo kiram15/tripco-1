@@ -281,8 +281,8 @@ public class Hub {
         return this.selectedLocations.get(minIndex);
     }
 
+    //fills shortestItinerary based on shortest startLocation and opt
     public void createItinerary(Location startLocation){
-    //creates itinerary list order based on the optimization global
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":

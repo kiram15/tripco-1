@@ -5,7 +5,8 @@ import java.util.LinkedHashMap;
 
 public class Opt3 extends Hub {
 
-    //method that will return a distance for a single location
+    //takes the selected location and start location
+    //calculates the trip distance with that starting location and returns it
     public int shortestTripDistance(ArrayList<Location> selectedLocations, Location startLocation){
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds(selectedLocations);
@@ -72,7 +73,9 @@ public class Opt3 extends Hub {
         return tripDistance;
     }
 
-    //master method for when user selects 3opt optimization (calls all helpers)
+    //master method for when user selects 2opt optimization (calls all helpers)
+    //takes the shortestTrip starting point and rebuilds the trip
+    //returns the shortest itinerary
     public ArrayList<Distance> buildShortestTrip(
             ArrayList<Location> selectedLocations, Location startLocation) {
         //Adjacency matrix that holds all gcds
