@@ -25,8 +25,6 @@ public class NearestNeighbor extends Hub {
         int tripDistance = 0;
         Location currentLocation = startLocation;
 
-        System.out.println("selectedLocations Size: " + selectedLocations.size());
-        System.out.println("traveledTo size" + traveledTo.size());
         //while there are still more cities to travel to
         while (traveledTo.size() < selectedLocations.size()) {
             for (int i = 0; i < selectedLocations.size(); i++) {

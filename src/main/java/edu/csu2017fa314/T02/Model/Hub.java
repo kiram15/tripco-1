@@ -252,17 +252,16 @@ public class Hub {
                 break;
             case "TwoOpt":
                 Opt2 twoOpt = new Opt2();
-                sTripD = twoOpt.shortestTripDistance(currentLocation);
+                sTripD = twoOpt.shortestTripDistance(selectedLocations, currentLocation);
                 break;
             case "ThreeOpt":
                 Opt3 threeOpt = new Opt3();
-                sTripD = threeOpt.shortestTripDistance(currentLocation);
+                sTripD = threeOpt.shortestTripDistance(selectedLocations, currentLocation);
                 break;
             default:
                 sTripD = 0;
                 break;
         }
-        System.out.println("got a sTripD result: " + sTripD);
         return sTripD;
     }
 
