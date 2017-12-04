@@ -7,10 +7,9 @@ import java.util.LinkedHashMap;
 public class NearestNeighbor extends Hub {
     
     //method that will return a distance for a single location
-    public int shortestTripDistance(Location startLocation){
+    public int shortestTripDistance(ArrayList<Location> selectedLocations, Location startLocation){
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds(selectedLocations);
-        System.out.println("gcds: " + gcds);
 
         //row is the current row in the adjancency matrix where the current location is
         int row = 0;
@@ -26,6 +25,8 @@ public class NearestNeighbor extends Hub {
         int tripDistance = 0;
         Location currentLocation = startLocation;
 
+        System.out.println("selectedLocations Size: " + selectedLocations.size());
+        System.out.println("traveledTo size" + traveledTo.size());
         //while there are still more cities to travel to
         while (traveledTo.size() < selectedLocations.size()) {
             for (int i = 0; i < selectedLocations.size(); i++) {

@@ -202,7 +202,6 @@ public class Hub {
     }
 
     public void createCallables() throws InterruptedException, ExecutionException {
-        System.out.println("begining of createCallables");
         //Create thread pool
         ExecutorService pool = Executors.newFixedThreadPool(5);
         
@@ -216,10 +215,11 @@ public class Hub {
         for(int i = 0; i < this.selectedLocations.size(); i++){
             callables.add(singleTripDistance(this.selectedLocations.get(i)));
         }
-        System.out.println("successfully added selectedLocations to callables: " + callables);
+        System.out.println("successfully added selectedLocations to callables: " + callables.toString());
         
         //get the distance of the shortest Trip from each starting location 
         results = pool.invokeAll(callables);
+        System.out.println("InvokedAll");
         pool.shutdown();
         
         //grab the start location that corresponds with shortest distance
@@ -234,7 +234,6 @@ public class Hub {
             @Override
             public Integer call() throws Exception{
                 //this will call the optimizaton method that returns the distance of the single trip
-                System.out.println("inside call method");
                 return TripD(currentLocation);
             }
         };
@@ -250,7 +249,7 @@ public class Hub {
                 break;
             case "NearestNeighbor":
                 NearestNeighbor nearestOpt = new NearestNeighbor();
-                sTripD = nearestOpt.shortestTripDistance(currentLocation);
+                sTripD = nearestOpt.shortestTripDistance(selectedLocations, currentLocation);
                 break;
             case "TwoOpt":
                 Opt2 twoOpt = new Opt2();
