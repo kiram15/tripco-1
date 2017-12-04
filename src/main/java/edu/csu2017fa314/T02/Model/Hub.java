@@ -1,20 +1,18 @@
 package edu.csu2017fa314.T02.Model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.lang.Math;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.io.InputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Hub {
     Map<String, Integer> columns;
@@ -157,6 +155,20 @@ public class Hub {
             System.err.println(e.getMessage());
         }
     }
+  
+    //deals with extra characters added with ampersands
+    private boolean equalsWithoutAmp(String name, String l){
+        int index = name.indexOf('&');
+
+        String subName = name.substring(index + 5);
+        String subL = l.substring(index + 1);
+
+        if(subName.equals(subL)){
+            return true;
+        } else{
+            return false;
+        }
+    }
 
     //creates the itinerary given the list of selectedLocations
     public void finalLocationsFromWeb(ArrayList<String> desiredLocations){
@@ -181,45 +193,113 @@ public class Hub {
                 }
             }
         }
-        createItinerary();
-    }
-
-    //deals with extra characters added with ampersands
-    private boolean equalsWithoutAmp(String name, String l){
-        int index = name.indexOf('&');
-
-
-        String subName = name.substring(index + 5);
-        String subL = l.substring(index + 1);
-
-        if(subName.equals(subL)){
-            return true;
-        } else{
-            return false;
+        try{
+            createCallables();
+        } catch(InterruptedException ie){
+            System.exit(1);
+        } catch(ExecutionException ee){
+            System.exit(1);
         }
     }
 
-    /*
-    * creates itinerary list order based on the optimization global
-    */
-    public void createItinerary(){
+    private void createCallables() throws InterruptedException, ExecutionException {
+        //Create thread pool
+        ExecutorService pool = Executors.newFixedThreadPool(6);
+        
+        //List to store distances returned from 
+        List<Future<Integer>> results = new ArrayList<>();
+        
+        //List to store all of the callables from singleTripDistance
+        List<Callable<Integer>> callables = new ArrayList<>();
+        
+        //for every distance, add a singleTripDistance object
+        for(int i = 0; i < this.selectedLocations.size(); i++){
+            callables.add(singleTripDistance(this.selectedLocations.get(i)));
+        }
+        
+        //get the distance of the shortest Trip from each starting location 
+        results = pool.invokeAll(callables);
+        pool.shutdown();
+        
+        //grab the start location that corresponds with shortest distance
+        Location startLocation = findStartLocation(results);
+        //System.out.println("StartLocation: " + startLocation.getName());
+
+        //rebuild the trip using the startLocation
+        createItinerary(startLocation);
+    }
+
+    private Callable<Integer> singleTripDistance(Location currentLocation){
+        Callable<Integer> returnValue = new Callable<Integer>(){
+            @Override
+            public Integer call() throws Exception{
+                //this will call the optimizaton method that returns the distance of the single trip
+                return tripDistance(currentLocation);
+            }
+        };
+        return returnValue;
+    }
+
+    private int tripDistance(Location currentLoc){
+        int singleTripDist = 0;
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
-                System.out.println("NONE");
+                singleTripDist = 0;
+                break;
+            case "NearestNeighbor":
+                NearestNeighbor nearestOpt = new NearestNeighbor();
+                singleTripDist = nearestOpt.shortestTripDistance(selectedLocations, currentLoc);
+                break;
+            case "TwoOpt":
+                Opt2 twoOpt = new Opt2();
+                singleTripDist = twoOpt.shortestTripDistance(selectedLocations, currentLoc);
+                break;
+            case "ThreeOpt":
+                Opt3 threeOpt = new Opt3();
+                singleTripDist = threeOpt.shortestTripDistance(selectedLocations, currentLoc);
+                break;
+            default:
+                singleTripDist = 0;
+                break;
+        }
+        return singleTripDist;
+    }
+  
+    //loops through results and finds the shortest distance
+    //then returns the starting location that corresponds to this distance
+    private Location findStartLocation(List<Future<Integer>> results)
+            throws InterruptedException, ExecutionException {
+        int minVal = Integer.MAX_VALUE;
+        int minIndex = -1;
+        for(int i = 0; i < results.size(); i++){
+            if(results.get(i).get() < minVal){
+                minVal = results.get(i).get();
+                minIndex = i;
+            }
+        }
+        return this.selectedLocations.get(minIndex);
+    }
+
+    /** fills shortestItinerary based on shortest startLocation and opt
+     */
+    public void createItinerary(Location startLocation){
+        //switch statement that calls the specific shortest trip method based on selected optimization
+        switch(optimization){
+            case "None":
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
             case "NearestNeighbor":
                 NearestNeighbor nearestOpt = new NearestNeighbor();
-                setShortestItinerary(nearestOpt.shortestTrip(selectedLocations));
+                setShortestItinerary(nearestOpt.buildShortestTrip(selectedLocations,startLocation));
                 break;
             case "TwoOpt":
                 Opt2 twoOpt = new Opt2();
-                shortestItinerary = twoOpt.shortestTrip(selectedLocations);
+                setShortestItinerary(twoOpt.buildShortestTrip(selectedLocations,startLocation));
                 break;
             case "ThreeOpt":
                 Opt3 threeOpt = new Opt3();
-                shortestItinerary = threeOpt.shortestTrip(selectedLocations);
+                setShortestItinerary(threeOpt.buildShortestTrip(selectedLocations,startLocation));
                 break;
             default:
                 shortestItinerary = locationsToDistances(selectedLocations);
@@ -424,4 +504,5 @@ public class Hub {
         }
         return finalGMap;
     }
+
 }
