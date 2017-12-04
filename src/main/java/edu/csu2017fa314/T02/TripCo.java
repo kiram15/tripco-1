@@ -27,7 +27,10 @@ public class TripCo {
       this.name = name;
    }
 
-   //executes all the things!
+   /** The main method to the whole backend code.
+   * Creates the server, and a hub object to execute
+   * all actions required
+   */
    public static void main(String[] args) {
       System.out.println("Welcome to TripCo");
 
