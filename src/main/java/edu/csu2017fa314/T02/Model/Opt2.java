@@ -72,7 +72,8 @@ public class Opt2 extends Hub {
     }
 
     //master method for when user selects 2opt optimization (calls all helpers)
-    public ArrayList<Distance> buildShortestTrip(ArrayList<Location> selectedLocations, Location startLocation) {
+    public ArrayList<Distance> buildShortestTrip(
+            ArrayList<Location> selectedLocations, Location startLocation) {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds(selectedLocations);
         int row = 0;

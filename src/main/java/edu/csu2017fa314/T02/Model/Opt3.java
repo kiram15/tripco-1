@@ -73,22 +73,19 @@ public class Opt3 extends Hub {
     }
 
     //master method for when user selects 3opt optimization (calls all helpers)
-    public ArrayList<Distance> buildShortestTrip(ArrayList<Location> selectedLocations, Location startLocation) {
+    public ArrayList<Distance> buildShortestTrip(
+            ArrayList<Location> selectedLocations, Location startLocation) {
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds(selectedLocations);
-
         //row is the current row in the adjancency matrix where the current location is
         int row = 0;
-
         //Create a huge distance to use for inital comparison
         LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
         Location bigD1 = new Location("New Zealand", -41.28650, 174.77620, info);
         Location bigD2 = new Location("Madrid", 40.41680, -3.70380, info);
         Distance hugeDistance = new Distance(bigD1, bigD2, miles);
-
         //start final trip at the predetermined shortest trip start
         Location currentLocation = startLocation;
-
         ArrayList<Location> traveledToFinal = new ArrayList<Location>();
         //while there are still more cities to travel to
         while (traveledToFinal.size() < selectedLocations.size()) {
@@ -110,7 +107,6 @@ public class Opt3 extends Hub {
             }
             currentLocation = shortestDis.getEndID();
         }
-
         //apply 3opt
         checkImprovement3(traveledToFinal);
         //convert traveledToFinal location array to a distance array

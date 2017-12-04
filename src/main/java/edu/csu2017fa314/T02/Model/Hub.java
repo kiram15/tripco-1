@@ -191,11 +191,8 @@ public class Hub {
         try{
             createCallables();
         } catch(InterruptedException ie){
-            System.out.println("InterruptedException: " + ie);
             System.exit(1);
-        }
-        catch(ExecutionException ee){
-            System.out.println("ExecutionException: " + ee);
+        } catch(ExecutionException ee){
             System.exit(1);
         }
     }
@@ -232,36 +229,36 @@ public class Hub {
             @Override
             public Integer call() throws Exception{
                 //this will call the optimizaton method that returns the distance of the single trip
-                return TripD(currentLocation);
+                return tripDistance(currentLocation);
             }
         };
         return returnValue;
     }
 
-    private int TripD(Location currentLocation){
-        int sTripD = 0;
+    private int tripDistance(Location currentLocation){
+        int singleTripDist = 0;
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
-                sTripD = 0;
+                singleTripDist = 0;
                 break;
             case "NearestNeighbor":
                 NearestNeighbor nearestOpt = new NearestNeighbor();
-                sTripD = nearestOpt.shortestTripDistance(selectedLocations, currentLocation);
+                singleTripDist = nearestOpt.shortestTripDistance(selectedLocations, currentLocation);
                 break;
             case "TwoOpt":
                 Opt2 twoOpt = new Opt2();
-                sTripD = twoOpt.shortestTripDistance(selectedLocations, currentLocation);
+                singleTripDist = twoOpt.shortestTripDistance(selectedLocations, currentLocation);
                 break;
             case "ThreeOpt":
                 Opt3 threeOpt = new Opt3();
-                sTripD = threeOpt.shortestTripDistance(selectedLocations, currentLocation);
+                singleTripDist = threeOpt.shortestTripDistance(selectedLocations, currentLocation);
                 break;
             default:
-                sTripD = 0;
+                singleTripDist = 0;
                 break;
         }
-        return sTripD;
+        return singleTripDist;
     }
 
     //loops through results and finds the shortest distance
@@ -287,15 +284,15 @@ public class Hub {
                 break;
             case "NearestNeighbor":
                 NearestNeighbor nearestOpt = new NearestNeighbor();
-                setShortestItinerary(nearestOpt.buildShortestTrip(selectedLocations, startLocation));
+                setShortestItinerary(nearestOpt.buildShortestTrip(selectedLocations,startLocation));
                 break;
             case "TwoOpt":
                 Opt2 twoOpt = new Opt2();
-                setShortestItinerary(twoOpt.buildShortestTrip(selectedLocations, startLocation));
+                setShortestItinerary(twoOpt.buildShortestTrip(selectedLocations,startLocation));
                 break;
             case "ThreeOpt":
                 Opt3 threeOpt = new Opt3();
-                setShortestItinerary(threeOpt.buildShortestTrip(selectedLocations, startLocation));
+                setShortestItinerary(threeOpt.buildShortestTrip(selectedLocations,startLocation));
                 break;
             default:
                 shortestItinerary = locationsToDistances(selectedLocations);
