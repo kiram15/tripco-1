@@ -240,7 +240,7 @@ public class Hub {
         return returnValue;
     }
 
-    private int tripDistance(Location currentLocation){
+    private int tripDistance(Location currentLoc){
         int singleTripDist = 0;
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
@@ -249,15 +249,15 @@ public class Hub {
                 break;
             case "NearestNeighbor":
                 NearestNeighbor nearestOpt = new NearestNeighbor();
-                singleTripDist = nearestOpt.shortestTripDistance(selectedLocations, currentLocation);
+                singleTripDist = nearestOpt.shortestTripDistance(selectedLocations, currentLoc);
                 break;
             case "TwoOpt":
                 Opt2 twoOpt = new Opt2();
-                singleTripDist = twoOpt.shortestTripDistance(selectedLocations, currentLocation);
+                singleTripDist = twoOpt.shortestTripDistance(selectedLocations, currentLoc);
                 break;
             case "ThreeOpt":
                 Opt3 threeOpt = new Opt3();
-                singleTripDist = threeOpt.shortestTripDistance(selectedLocations, currentLocation);
+                singleTripDist = threeOpt.shortestTripDistance(selectedLocations, currentLoc);
                 break;
             default:
                 singleTripDist = 0;

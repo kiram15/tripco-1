@@ -27,9 +27,10 @@ public class Test3opt {
 
     @Test
     public void testShorterTrip3Opt(){
-        //tests shorterTrip3Opt by making a call to storeColumnHeaders and parseRow which then calls the
-        //shorter trip method. The shorterTrip method does not return anything, but does set the value
-        //of hub's shortestItinerary
+        //tests shorterTrip3Opt by making a call to storeColumnHeaders and
+        //parseRow which then calls the shorter trip method.
+        // The shorterTrip method does not return anything,
+        // but does set the value of hub's shortestItinerary
         Hub h0 = new Hub("ThreeOpt");
         h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
         h0.parseRow("kiram15,kira,fort collins, 34.0, -92.0, 10");    //A
@@ -76,7 +77,7 @@ public class Test3opt {
     }
 
     @Test
-    public void Test3Opt1(){
+    public void test3Opt1(){
         Hub h0 = new Hub();
         //test where b and c should switch
         Location a = new Location("A", 34.0, -92.0, null);
@@ -100,7 +101,7 @@ public class Test3opt {
     }
 
     @Test
-    public void Test3Opt2(){
+    public void test3Opt2(){
         Hub h0 = new Hub();
         //test where e and d should switch
         Location a = new Location("A", 34.0, -92.0, null);
@@ -124,7 +125,7 @@ public class Test3opt {
     }
 
     @Test
-    public void Test3Opt3(){
+    public void test3Opt3(){
         Hub h0 = new Hub();
         //test where b through e should reverse
         Location a = new Location("A", 34.0, -92.0, null);
@@ -148,7 +149,7 @@ public class Test3opt {
     }
 
     @Test
-    public void Test3Opt4(){
+    public void test3Opt4(){
         Hub h0 = new Hub();
         //test where b and c should switch, and d and e should switch
         Location a = new Location("A", 34.0, -92.0, null);
@@ -172,7 +173,7 @@ public class Test3opt {
     }
 
     @Test
-    public void Test3Opt5(){
+    public void test3Opt5(){
         Hub h0 = new Hub();
         //test where d and e should switch, and switch two middle groups
         Location a = new Location("A", 34.0, -92.0, null);
@@ -196,7 +197,7 @@ public class Test3opt {
     }
 
     @Test
-    public void Test3Opt6(){
+    public void test3Opt6(){
         Hub h0 = new Hub();
         //test where b and c should switch, and switch two middle groups
         Location a = new Location("A", 34.0, -92.0, null);
@@ -220,7 +221,7 @@ public class Test3opt {
     }
 
     @Test
-    public void Test3Opt7(){
+    public void test3Opt7(){
         Hub h0 = new Hub();
         //test where b and c should switch, and switch two middle groups
         Location a = new Location("A", 34.0, -92.0, null);
