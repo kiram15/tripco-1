@@ -104,7 +104,6 @@ public class NearestNeighbor extends Hub {
                     break;
                 }
                 Distance shortestDis = hugeDistance;
-
                 //because we aren't including initial location
                 for (int i = 1; i < gcds[0].length; i++) {
                     Distance dis = (Distance) gcds[row][i];

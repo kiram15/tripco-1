@@ -45,7 +45,6 @@ public class Opt3 extends Hub {
                 }
             }
             currentLocation = shortestDis.getEndID();
-            tripDistance += shortestDis.getGcd();
         }
 
         //add the distance back to the original city

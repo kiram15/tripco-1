@@ -45,12 +45,10 @@ public class Opt2 extends Hub {
                 }
             }
             currentLocation = shortestDis.getEndID();
-            tripDistance += shortestDis.getGcd();
         }
 
-        //add the distance back to the original city
+        //add the distance back to the original cit
         Object[] backAround = gcds[row];
-
         //grab the distance from the current city to original city
         Distance temp = new Distance(currentLocation, startLocation, miles);
         for (int i = 1; i < backAround.length; i++) {
