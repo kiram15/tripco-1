@@ -258,12 +258,12 @@ public class Hub {
     /** Deals with special characters that cause problems with the
     * searching and selection in uploads
     */
-    private boolean equalsWithoutAmp(String name, String l){
+    private boolean equalsWithoutAmp(String name, String ll){
         int index = name.indexOf('&');
 
 
         String subName = name.substring(index + 5);
-        String subL = l.substring(index + 1);
+        String subL = ll.substring(index + 1);
 
         if(subName.equals(subL)){
             return true;
