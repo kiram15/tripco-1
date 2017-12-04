@@ -23,6 +23,7 @@ public class Distance implements Comparable<Distance>{
       return this.gcd;
   }
 
+  //computes the distance between the two locations in the distance object
   public int computeGCD(Location loc1, Location loc2, boolean miles) {
 
       double lat1 = loc1.getLatitude();
@@ -71,6 +72,7 @@ public class Distance implements Comparable<Distance>{
         return this.gcd - other.gcd;
     }
 
+    //prints out the properties of the distance object
     public String toString(){
         return "Distance{" +
                 "StartID= '" + startID.toString() + '\'' +

@@ -24,7 +24,7 @@ public class Hub {
     boolean miles;
     String optimization;
 
-    //constructor
+    //creates a hub object that stores itinerary, and shortest trips
     public Hub(){
         this.columns = new LinkedHashMap<String, Integer>();
         this.reverseC = new LinkedHashMap<Integer, String>();
@@ -36,7 +36,8 @@ public class Hub {
         this.optimization = "";
     }
 
-    //constructor
+    //creates a hub object that stores itinerary, and shortest trips,
+    //with passed in optimization choice
     public Hub(String optimization){
         this.columns = new LinkedHashMap<String, Integer>();
         this.reverseC = new LinkedHashMap<Integer, String>();
@@ -85,6 +86,9 @@ public class Hub {
 
     public void clearFinalLocations(){ finalLocations.clear(); }
 
+    //searches the data base for the keyword searchingFor, unless upload
+    //is flagged as true, which causes searchingFor to be treated as a
+    //complete query
     public void searchDatabase(String username, String password, String searchingFor, boolean upload){
         searchedLocations.clear();
         shortestItinerary.clear();
@@ -93,7 +97,7 @@ public class Hub {
         searchingFor = searchingFor.toLowerCase();
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
-        //String myUrl = "jdbc:mysql://localhost/cs314"; // Use this line if tunneling 3306 traffic through shell
+        //String myUrl = "jdbc:mysql://localhost/cs314"; use if tunneling
         try { // connect to the database
             Class.forName(myDriver);
             Connection conn = DriverManager.getConnection(myUrl, username, password);
@@ -151,7 +155,7 @@ public class Hub {
             System.err.println(e.getMessage());
         }
     }
-
+  
     //deals with extra characters added with ampersands
     private boolean equalsWithoutAmp(String name, String l){
         int index = name.indexOf('&');
@@ -166,6 +170,7 @@ public class Hub {
         }
     }
 
+    //creates the itinerary given the list of selectedLocations
     public void finalLocationsFromWeb(ArrayList<String> desiredLocations){
         selectedLocations.clear();
         //go through each element in the desiredLocations array list and grab the name
@@ -260,7 +265,7 @@ public class Hub {
         }
         return singleTripDist;
     }
-
+  
     //loops through results and finds the shortest distance
     //then returns the starting location that corresponds to this distance
     private Location findStartLocation(List<Future<Integer>> results)
@@ -277,6 +282,7 @@ public class Hub {
     }
 
     public void createItinerary(Location startLocation){
+    //creates itinerary list order based on the optimization global
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
@@ -300,6 +306,7 @@ public class Hub {
         }
     }
 
+    //stores the info about each airport in the location lists
     public void storeColumnHeaders(String firstLine){
         String s = firstLine.toLowerCase();
         String[] infoArray = s.split(",");
@@ -326,6 +333,7 @@ public class Hub {
         }
     }
 
+    //splits up rows to add the
     public void parseRow(String row){
         row = row.toLowerCase();
         String[] props = row.split(",");
@@ -356,6 +364,7 @@ public class Hub {
         selectedLocations.add(location);
     }
 
+    //conerts string latitude or longitude (s) to double
     public double latLonConvert(String s) {
         String sCopy = s;
         int end;

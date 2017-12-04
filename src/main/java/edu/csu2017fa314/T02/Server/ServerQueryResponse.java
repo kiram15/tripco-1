@@ -15,6 +15,7 @@ public class ServerQueryResponse {
     private String response = "query";
     private ArrayList<Location> trip;
 
+    //creates a respose for a query
     public ServerQueryResponse(ArrayList<Location> trip) {
 
         this.trip = trip;

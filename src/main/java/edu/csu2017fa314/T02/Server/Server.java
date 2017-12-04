@@ -29,18 +29,21 @@ import static spark.Spark.post;
      private String password = "";
      private static Hub h = new Hub();
 
+     //test main method
      public static void main(String[] args) {
          //Hub test = h;
          //Server s = new Server(this.user, this.password, test);
          //s.serve();
      }
 
+     //server ctor
      public Server(String user, String pass, Hub h){
          this.user = user;
          this.password = pass;
          this.h = h;
      }
 
+     //creates the listeners
      public void serve() {
          Gson g = new Gson();
          post("/testing", (rec, res) -> {
@@ -68,9 +71,6 @@ import static spark.Spark.post;
      // called by testing method if client requests a search
      private Object serveQuery(String searched, boolean miles, String optimization) {
          Gson gson = new Gson();
-         //QueryBuilder q = new QueryBuilder("user", "pass"); // Create new QueryBuilder instance and pass in credentials
-         //String queryString = String.format("SELECT * FROM airports WHERE municipality LIKE '%%%s%%' OR name LIKE '%%%s%%' OR type LIKE '%%%s%%' LIMIT 10", searched, searched, searched);
-         //ArrayList<Location> queryResults = q.query(queryString);
          h.setMiles(miles);
          h.setOptimization(optimization);
 
@@ -97,11 +97,9 @@ import static spark.Spark.post;
          //System.out.println("after search database");
          ArrayList<Distance> trip = h.getShortestItinerary();
          System.out.println("Trip: " + trip);
-         // Create object with svg file path and array of matching database entries to return to server
+         // Create object with svg file path and array
          ArrayList<gMap> content = h.drawSVG();
          ServerPlanResponse sRes = new ServerPlanResponse(trip, 120, 100, content);
-
-         //System.out.println("Sending \"" + sRes.toString() + "\" to server.");
 
          //Convert response to json
          return gson.toJson(sRes, ServerPlanResponse.class);
