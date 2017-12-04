@@ -156,9 +156,10 @@ public class TestModel {
         h0.parseRow("alnolte,amber,denver, 22.5, 135.0, 10");
         h0.parseRow("nkacirek,nicole,boulder, 85.0, 175.0, 10");
         h0.parseRow("emictosh,emerson,littleton, 25.0, 90.0, 10");
-        h0.createItinerary();
+        Location n0 = new Location("kira", 45.0, 45.0, null);
+        h0.createItinerary(n0);
         NearestNeighbor nn = new NearestNeighbor();
-        nn.shortestTrip(h0.selectedLocations);
+        nn.buildShortestTrip(h0.selectedLocations, n0);
         assertEquals(fillShortTripNN(), h0.shortestItinerary);
     }
 
@@ -195,7 +196,8 @@ public class TestModel {
         h0.parseRow("alnolte,amber,denver, 60.0, 70.5, 10");
         h0.parseRow("nkacirek,nicole,boulder, 100.0, 60.0, 10");
         h0.parseRow("emictosh,emerson,littleton, 45.0, 55.0, 10");
-        h0.createItinerary();
+        Location n1 = new Location("amber", 60.0, 70.5, null);
+        h0.createItinerary(n1);
         Opt2 o2 = new Opt2();
         o2.shortestTrip(h0.selectedLocations);
         assertEquals(fillShortTrip2Opt(), h0.shortestItinerary);
@@ -236,7 +238,8 @@ public class TestModel {
         h0.parseRow("emictosh,emerson,littleton, 40.0, -88.0, 10");   //D
         h0.parseRow("maddic, maddi, loveland, 40.0, -92.0, 10");      //E
         h0.parseRow("jamesp, james, godrics hollow, 37.0, -95.0, 10");//F
-        h0.createItinerary();
+        Location d = new Location("emerson", 40.0, -88.0, null);
+        h0.createItinerary(d);
         Opt3 o3 = new Opt3();
         o3.shortestTrip(h0.selectedLocations);
 
@@ -682,27 +685,27 @@ public class TestModel {
         hC.finalLocations.add(endL);
 
         hC.optimization = "None";
-        hC.createItinerary();
+        hC.createItinerary(startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "NearestNeighbor";
-        hC.createItinerary();
+        hC.createItinerary(startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "TwoOpt";
-        hC.createItinerary();
+        hC.createItinerary(startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "ThreeOpt";
-        hC.createItinerary();
+        hC.createItinerary(startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "DefaultChoice";
-        hC.createItinerary();
+        hC.createItinerary(startL);
         assertFalse(hC.shortestItinerary.isEmpty());
     }
 

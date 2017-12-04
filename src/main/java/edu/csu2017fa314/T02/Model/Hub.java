@@ -222,10 +222,10 @@ public class Hub {
         
         //grab the start location that corresponds with shortest distance
         Location startLocation = findStartLocation(results);
-        System.out.println("StartLocation: " + startLocation.getName());
+        //System.out.println("StartLocation: " + startLocation.getName());
 
         //rebuild the trip using the startLocation
-        createItinerary();
+        createItinerary(startLocation);
     }
     
     private Callable<Integer> singleTripDistance(Location currentLocation){
@@ -265,7 +265,7 @@ public class Hub {
         return sTripD;
     }
 
-    public void createItinerary(){
+    public void createItinerary(Location startLocation){
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
             case "None":
@@ -273,7 +273,7 @@ public class Hub {
                 break;
             case "NearestNeighbor":
                 NearestNeighbor nearestOpt = new NearestNeighbor();
-                setShortestItinerary(nearestOpt.shortestTrip(selectedLocations));
+                setShortestItinerary(nearestOpt.buildShortestTrip(selectedLocations, startLocation));
                 break;
             case "TwoOpt":
                 Opt2 twoOpt = new Opt2();
