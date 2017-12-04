@@ -220,20 +220,6 @@ public class Hub {
             System.err.println(e.getMessage());
         }
     }
-  
-    //deals with extra characters added with ampersands
-    private boolean equalsWithoutAmp(String name, String ll){
-        int index = name.indexOf('&');
-
-        String subName = name.substring(index + 5);
-        String subL = ll.substring(index + 1);
-
-        if(subName.equals(subL)){
-            return true;
-        } else{
-            return false;
-        }
-    }
 
     /** converts the desired selected locations into the array list specified
     *
@@ -290,22 +276,22 @@ public class Hub {
     private void createCallables() throws InterruptedException, ExecutionException {
         //Create thread pool
         ExecutorService pool = Executors.newFixedThreadPool(6);
-        
-        //List to store distances returned from 
+
+        //List to store distances returned from
         List<Future<Integer>> results = new ArrayList<>();
-        
+
         //List to store all of the callables from singleTripDistance
         List<Callable<Integer>> callables = new ArrayList<>();
-        
+
         //for every distance, add a singleTripDistance object
         for(int i = 0; i < this.selectedLocations.size(); i++){
             callables.add(singleTripDistance(this.selectedLocations.get(i)));
         }
-        
-        //get the distance of the shortest Trip from each starting location 
+
+        //get the distance of the shortest Trip from each starting location
         results = pool.invokeAll(callables);
         pool.shutdown();
-        
+
         //grab the start location that corresponds with shortest distance
         Location startLocation = findStartLocation(results);
         //System.out.println("StartLocation: " + startLocation.getName());
@@ -351,7 +337,7 @@ public class Hub {
         }
         return singleTripDist;
     }
-  
+
     //loops through results and finds the shortest distance
     //then returns the starting location that corresponds to this distance
     private Location findStartLocation(List<Future<Integer>> results)
