@@ -281,7 +281,7 @@ public class Hub {
                 break;
             case "ThreeOpt":
                 Opt3 threeOpt = new Opt3();
-                setShortestItinerary(threeOpt.shortestTrip(selectedLocations));
+                setShortestItinerary(threeOpt.buildShortestTrip(selectedLocations, startLocation));
                 break;
             default:
                 shortestItinerary = locationsToDistances(selectedLocations);

@@ -241,7 +241,7 @@ public class TestModel {
         Location d = new Location("emerson", 40.0, -88.0, null);
         h0.createItinerary(d);
         Opt3 o3 = new Opt3();
-        o3.shortestTrip(h0.selectedLocations);
+        o3.buildShortestTrip(h0.selectedLocations, d);
 
         ArrayList<Distance> check1 = fillShortTrip3Opt();
         ArrayList<Distance> check2 = h0.shortestItinerary;
