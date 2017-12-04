@@ -55,8 +55,10 @@ Epics planned for this release.
 
 Date | Tasks done now | Tasks done next | Impediments | Coverage | Smells | Duplication | Technical Debt Ratio | Confidence
 :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :---
-11/13 | #355 #356 #358 | #353 #250 #349 | CS320 Exam Wednesday, GRE | *73* | *40* | *40* | *33.5* | Feeling great
+11/13 | #355 #356 #358 | #353 #250 #349 | CS320 Exam Wednesday, GRE | *70* | *40* | *40* | *33.5* | Feeling great
 11/29 | #378 #353 #368 #374 #250 #349 #254 #217 | #342 #370 #375 #191 | Nicole is a busy bee | *72* | *33* | *6* | *18.3* | Feeling good
+11/30 | #375 #342 #382 | #191 #372 #370 #369 | Nicole's sorority stuff, studying for finals | *72* | *20* | *2* | *9.1* | Feeling lit
+
  
 
 ## Review

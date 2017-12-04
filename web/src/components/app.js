@@ -299,39 +299,72 @@ async browseFile(file) {
 
 
     // download a file of the array a query returns
-     async getFile(file) {
+     async getFile(file, type, names) {
          // assign all the airport codes of the displayed locations to an array
         //  let locs = this.state.queryResults.map((location) => {
         //      return location.code;
         //  });
-         let locs = [];
-         console.log(file);
-         for (var i = 0; i < file.length; i++){
-             locs.push(file[i]);
-         }
+
+
          // send these codes back to the server to write the file
          // Javascript does not have access to a computer's file system, so this must be done from the server
-         let clientRequest = {
-             request: "save",
-             description: locs
-         };
-         let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/download";
-         console.log(serverUrl);
-         let response = await fetch(serverUrl,
-         {
-             method: "POST",
-             body: JSON.stringify(clientRequest)
-         });
+         let clientRequest;
 
-         // Unlike the other responses, we don't conver this one to JSON
-        // Instead, grab the file in the response with response.blob()
-         response.blob().then(function(myBlob) {
-             // create a URL for the file
-             let fileUrl = URL.createObjectURL(myBlob);
-             // Open the file. Normally, a text file would open in the browser by default,
-             // which is why we set the content-type differently in the server code.
-             window.open(fileUrl);
-         });
+         if(type === "json"){
+
+             let locs = [];
+             console.log(file);
+             for (var i = 0; i < file.length; i++){
+                 locs.push(file[i]);
+             }
+
+             clientRequest = {
+                 request: "save",
+                 description: locs
+             };
+             console.log("Getting trip file");
+         }
+         else{
+
+             let lats = file[0];
+             let lons = file[1];
+
+             //creates an array with the lats listed in order
+             //followed by los in same order
+             //ex: [lat1, lat2, lon1, lon2]
+             let coordinates = lats.concat(lons);
+
+             clientRequest = {
+                 request : "saveKML",
+                 description : coordinates,
+                 names : names
+             };
+             console.log("Getting KML file");
+         }
+
+         try{
+             let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/download";
+             console.log(serverUrl);
+             let response = await fetch(serverUrl,
+                 {
+                    method: "POST",
+                    body: JSON.stringify(clientRequest)
+                });
+
+            // Unlike the other responses, we don't conver this one to JSON
+            // Instead, grab the file in the response with response.blob()
+            response.blob().then(function(myBlob) {
+                // create a URL for the file
+                let fileUrl = URL.createObjectURL(myBlob);
+                // Open the file. Normally, a text file would open in the browser by default,
+                // which is why we set the content-type differently in the server code.
+                window.open(fileUrl);
+            });
+        }catch(e) {
+            console.error("Error talking to server");
+            console.error(e);
+        }
+
      }
 
 
