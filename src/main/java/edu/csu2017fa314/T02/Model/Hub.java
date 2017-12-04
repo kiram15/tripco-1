@@ -152,6 +152,20 @@ public class Hub {
         }
     }
 
+    //deals with extra characters added with ampersands
+    private boolean equalsWithoutAmp(String name, String l){
+        int index = name.indexOf('&');
+
+        String subName = name.substring(index + 5);
+        String subL = l.substring(index + 1);
+
+        if(subName.equals(subL)){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
     public void finalLocationsFromWeb(ArrayList<String> desiredLocations){
         selectedLocations.clear();
         //go through each element in the desiredLocations array list and grab the name
@@ -184,26 +198,11 @@ public class Hub {
             System.out.println("ExecutionException: " + ee);
             System.exit(1);
         }
-        //createItinerary();
     }
 
-    //deals with extra characters added with ampersands
-    private boolean equalsWithoutAmp(String name, String l){
-        int index = name.indexOf('&');
-
-        String subName = name.substring(index + 5);
-        String subL = l.substring(index + 1);
-
-        if(subName.equals(subL)){
-            return true;
-        } else{
-            return false;
-        }
-    }
-
-    public void createCallables() throws InterruptedException, ExecutionException {
+    private void createCallables() throws InterruptedException, ExecutionException {
         //Create thread pool
-        ExecutorService pool = Executors.newFixedThreadPool(8);
+        ExecutorService pool = Executors.newFixedThreadPool(6);
         
         //List to store distances returned from 
         List<Future<Integer>> results = new ArrayList<>();
@@ -227,7 +226,7 @@ public class Hub {
         //rebuild the trip using the startLocation
         createItinerary(startLocation);
     }
-    
+
     private Callable<Integer> singleTripDistance(Location currentLocation){
         Callable<Integer> returnValue = new Callable<Integer>(){
             @Override
@@ -239,7 +238,7 @@ public class Hub {
         return returnValue;
     }
 
-    public int TripD(Location currentLocation){
+    private int TripD(Location currentLocation){
         int sTripD = 0;
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
@@ -265,6 +264,21 @@ public class Hub {
         return sTripD;
     }
 
+    //loops through results and finds the shortest distance
+    //then returns the starting location that corresponds to this distance
+    private Location findStartLocation(List<Future<Integer>> results)
+            throws InterruptedException, ExecutionException {
+        int minVal = Integer.MAX_VALUE;
+        int minIndex = -1;
+        for(int i = 0; i < results.size(); i++){
+            if(results.get(i).get() < minVal){
+                minVal = results.get(i).get();
+                minIndex = i;
+            }
+        }
+        return this.selectedLocations.get(minIndex);
+    }
+
     public void createItinerary(Location startLocation){
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
@@ -287,21 +301,6 @@ public class Hub {
                 shortestItinerary = locationsToDistances(selectedLocations);
                 break;
         }
-    }
-    
-    //loops through results and finds the shortest distance
-    //then returns the starting location that corresponds to this distance
-    public Location findStartLocation(List<Future<Integer>> results)
-            throws InterruptedException, ExecutionException {
-        int minVal = Integer.MAX_VALUE;
-        int minIndex = -1;
-        for(int i = 0; i < results.size(); i++){
-            if(results.get(i).get() < minVal){
-                minVal = results.get(i).get();
-                minIndex = i;
-            }
-        }
-        return this.selectedLocations.get(minIndex);
     }
 
     public void storeColumnHeaders(String firstLine){
