@@ -362,28 +362,29 @@ public class TestModel {
         hC.finalLocations.add(startL);
         hC.finalLocations.add(endL);
 
+        Object[][] gcds = hC.calcAllGcds(hC.selectedLocations);
         hC.optimization = "None";
-        hC.createItinerary(startL);
+        hC.createItinerary(gcds, startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "NearestNeighbor";
-        hC.createItinerary(startL);
+        hC.createItinerary(gcds, startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "TwoOpt";
-        hC.createItinerary(startL);
+        hC.createItinerary(gcds, startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "ThreeOpt";
-        hC.createItinerary(startL);
+        hC.createItinerary(gcds, startL);
         assertFalse(hC.shortestItinerary.isEmpty());
 
         hC.shortestItinerary.clear();
         hC.optimization = "DefaultChoice";
-        hC.createItinerary(startL);
+        hC.createItinerary(gcds, startL);
         assertFalse(hC.shortestItinerary.isEmpty());
     }
 }

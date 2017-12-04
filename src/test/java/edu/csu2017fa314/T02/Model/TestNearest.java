@@ -37,7 +37,7 @@ public class TestNearest {
         h0.parseRow("nkacirek,nicole,boulder, 85.0, 175.0, 10");
         h0.parseRow("emictosh,emerson,littleton, 25.0, 90.0, 10");
         Location n0 = new Location("kira", 45.0, 45.0, null);
-        h0.createItinerary(n0);
+        h0.createItinerary(h0.calcAllGcds(h0.selectedLocations), n0);
         NearestNeighbor nn = new NearestNeighbor();
         nn.buildShortestTrip(h0.selectedLocations, n0);
         assertEquals(fillShortTripNN(), h0.shortestItinerary);

@@ -39,7 +39,7 @@ public class Test2opt {
         h0.parseRow("nkacirek,nicole,boulder, 100.0, 60.0, 10");
         h0.parseRow("emictosh,emerson,littleton, 45.0, 55.0, 10");
         Location n1 = new Location("amber", 60.0, 70.5, null);
-        h0.createItinerary(n1);
+        h0.createItinerary(h0.calcAllGcds(h0.selectedLocations), n1);
         Opt2 o2 = new Opt2();
         o2.buildShortestTrip(h0.selectedLocations, n1);
         assertEquals(fillShortTrip2Opt(), h0.shortestItinerary);
