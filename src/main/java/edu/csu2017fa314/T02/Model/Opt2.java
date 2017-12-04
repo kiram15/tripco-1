@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class Opt2 extends Hub {
+
+    public int shortestTripDistance(Location startLocation){
+        return -1;
+    }
+
     //master method for when user selects 2opt optimization (calls all helpers)
     public ArrayList<Distance> shortestTrip(ArrayList<Location> selectedLocations) {
         //Adjacency matrix that holds all gcds

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.lang.Math;
@@ -199,7 +200,7 @@ public class Hub {
         }
     }
 
-    public void createCallables(){
+    public void createCallables() throws InterruptedException, ExecutionException {
         //Create thread pool
         ExecutorService pool = Executors.newFixedThreadPool(5);
         
@@ -224,17 +225,43 @@ public class Hub {
         //rebuild the trip using the startLocation
     }
     
-    private Callable<Integer> singleTripDistance(){
+    private Callable<Integer> singleTripDistance(Location currentLocation){
         Callable<Integer> returnValue = new Callable<Integer>(){
             @Override
             public Integer call(){
                 //this will call the optimizaton method that returns the distance of the single trip
-                return createItinerary();
+                return TripD(currentLocation);
             }
         };
         return returnValue;
     }
-    
+
+    public int TripD(Location currentLocation){
+        int sTripD = 0;
+        //switch statement that calls the specific shortest trip method based on selected optimization
+        switch(optimization){
+            case "None":
+                sTripD = 0;
+                break;
+            case "NearestNeighbor":
+                NearestNeighbor nearestOpt = new NearestNeighbor();
+                sTripD = nearestOpt.shortestTripDistance(currentLocation);
+                break;
+            case "TwoOpt":
+                Opt2 twoOpt = new Opt2();
+                sTripD = twoOpt.shortestTripDistance(currentLocation);
+                break;
+            case "ThreeOpt":
+                Opt3 threeOpt = new Opt3();
+                sTripD = threeOpt.shortestTripDistance(currentLocation);
+                break;
+            default:
+                sTripD = 0;
+                break;
+        }
+        return sTripD;
+    }
+
     public void createItinerary(){
         //switch statement that calls the specific shortest trip method based on selected optimization
         switch(optimization){
@@ -261,16 +288,17 @@ public class Hub {
     
     //loops through results and finds the shortest distance
     //then returns the starting location that corresponds to this distance
-    public Location findStartLocation(List<Future<Integer>> results){
+    public Location findStartLocation(List<Future<Integer>> results)
+            throws InterruptedException, ExecutionException {
         int minVal = Integer.MAX_VALUE;
         int minIndex = -1;
         for(int i = 0; i < results.size(); i++){
-            if(results.get(i) < minVal){
-                minVal = results.get(i);
+            if(results.get(i).get() < minVal){
+                minVal = results.get(i).get();
                 minIndex = i;
             }
         }
-        return this.selectedLocations.get(i);
+        return this.selectedLocations.get(minIndex);
     }
 
     public void storeColumnHeaders(String firstLine){
