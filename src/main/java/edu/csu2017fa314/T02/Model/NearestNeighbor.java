@@ -61,6 +61,7 @@ public class NearestNeighbor extends Hub {
                     tripDistance += dis.getGcd();
                 }
             }
+            System.out.println("Trip Distance: " + tripDistance + " for " + startLocation);
         return tripDistance;
     }
     

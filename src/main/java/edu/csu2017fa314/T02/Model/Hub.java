@@ -174,7 +174,17 @@ public class Hub {
                 }
             }
         }
-        createItinerary();
+        try{
+            createCallables();
+        } catch(InterruptedException ie){
+            System.out.println("InterruptedException: " + ie);
+            System.exit(1);
+        }
+        catch(ExecutionException ee){
+            System.out.println("InterruptedException: " + ee);
+            System.exit(1);
+        }
+        //createItinerary();
     }
 
     //deals with extra characters added with ampersands
