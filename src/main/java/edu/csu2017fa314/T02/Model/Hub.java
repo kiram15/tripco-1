@@ -125,25 +125,28 @@ public class Hub {
                                 + "as airports_Name, airports.latitude as airports_Latitude, "
                                 + "airports.longitude as airports_Longitude, airports.elevation as "
                                 + "airports_Elevation, airports.continent as airports_Continent, "
-                                + "airports.iso_country as airports_Iso_country, airports.iso_region "
-                                + "as airports_Iso_region, airports.municipality as airports_Municipality,"
-                                + " airports.scheduled_service as airports_Scheduled_service, "
-                                + "airports.gps_code as airports_Gps_code, airports.iata_code as "
+                                + "airports.iso_country as airports_Iso_country, airports."
+                                + "iso_region as airports_Iso_region, airports.municipality "
+                                + "as airports_Municipality, airports.scheduled_service as "
+                                + "airports_Scheduled_service, airports.gps_code as "
+                                + "airports_Gps_code, airports.iata_code as "
                                 + "airports_Iata_code, airports.local_code as airports_Local_code, "
-                                + "airports.home_link as airports_Home_link, airports.wikipedia_link as "
-                                + "airports_Wikipedia_link, airports.keywords as airports_Keywords, "
+                                + "airports.home_link as airports_Home_link, airports_"
+                                + "Wikipedia_link, airports.keywords as airports_Keywords, "
                                 + "regions.id as regions_ID, regions.code "
-                                + "as regions_Code, regions.local_code as regions_Local_code, regions.name as "
-                                + "regions_Name, regions.continent as regions_Continent, regions.iso_country"
+                                + "as regions_Code, regions.local_code as regions_Local_code,"
+                                + " regions.name as regions_Name, regions.continent"
+                                + " as regions_Continent, regions.iso_country"
                                 + " as regions_Iso_country, regions.wikipedia_link as "
                                 + "regions_Wikipedia_link, regions.keywords as regions_Keywords, "
                                 + "countries.id as countries_ID, countries.code as countries_Code, "
                                 + "countries.name as countries_Name, countries.continent as "
-                                + "countries_Continent, countries.wikipedia_link as countries_Wikipedia_link,"
-                                + " countries.keywords as countries_Keywords, "
-                                + "continents.id as continents_ID, continents.name as continents_Name,"
-                                + " continents.code as continents_Code, continents.wikipedia_link as "
-                                + "continents_Wikipedia_link "
+                                + "countries_Continent, countries.wikipedia_link as "
+                                + "countries_Wikipedia_link, countries.keywords as "
+                                + "countries_Keywords, continents.id as continents_ID"
+                                + ", continents.name as continents_Name,"
+                                + " continents.code as continents_Code, continents."
+                                + "wikipedia_link as continents_Wikipedia_link "
                                 + "from continents "
                                 + "inner join countries on countries.continent = continents.code "
                                 + "inner join regions on regions.iso_country = countries.code "
@@ -151,26 +154,30 @@ public class Hub {
                                 + "where "
                                 + "airports.id like '%" + searchFor + "%' or airports.code like '%"
                                 + searchFor + "%' or airports.type like '%" + searchFor + "%' or "
-                                + "airports.name like '%" + searchFor + "%' or airports.latitude like '%"
-                                + searchFor + "%' or airports.longitude like '%" + searchFor
-                                + "%' or airports.elevation like '%" + searchFor + "%' or "
-                                + "airports.continent like '%" + searchFor + "%' or airports.iso_country"
+                                + "airports.name like '%" + searchFor + "%' or airports.latitude "
+                                + "like '%" + searchFor + "%' or airports.longitude like '%"
+                                + searchFor + "%' or airports.elevation like '%"
+                                + searchFor + "%' or " + "airports.continent like '%"
+                                + searchFor + "%' or airports.iso_country"
                                 + " like '%" + searchFor + "%' or airports.iso_region like '%"
-                                + searchFor + "%' or airports.municipality like '%" + searchFor + "%' or "
-                                + "airports.scheduled_service like '%" + searchFor + "%' or airports.gps_code"
-                                + " like '%" + searchFor + "%' or airports.iata_code like '%"
-                                + searchFor + "%' or airports.local_code like '%" + searchFor
+                                + searchFor + "%' or airports.municipality like '%" + searchFor
+                                + "%' or " + "airports.scheduled_service like '%" + searchFor
+                                + "%' or airports.gps_code" + " like '%" + searchFor
+                                + "%' or airports.iata_code like '%" + searchFor
+                                + "%' or airports.local_code like '%" + searchFor
                                 + "%' or airports.home_link like '%" + searchFor + "%' or airports."
-                                + "wikipedia_link like '%" + searchFor + "%' or airports.keywords like '%"
-                                + searchFor + "%' or regions.id like '%" + searchFor + "%' or "
+                                + "wikipedia_link like '%" + searchFor + "%' or airports."
+                                + "keywords like '%" + searchFor
+                                + "%' or regions.id like '%" + searchFor + "%' or "
                                 + "regions.code like '%" + searchFor + "%' or regions.local_code "
                                 + "like '%" + searchFor + "%' or regions.name like '%" + searchFor
                                 + "%' or regions.continent like '%" + searchFor + "%' or "
                                 + "regions.iso_country like '%" + searchFor + "%' or regions."
                                 + "wikipedia_link like '%" + searchFor + "%' or regions.keywords "
                                 + "like '%" + searchFor + "%' or countries.id like '%" + searchFor
-                                + "%' or countries.code like '%" + searchFor + "%' or countries.name like '%"
-                                + searchFor + "%' or countries.continent like '%" + searchFor
+                                + "%' or countries.code like '%" + searchFor
+                                + "%' or countries.name like '%" + searchFor
+                                + "%' or countries.continent like '%" + searchFor
                                 + "%' or countries.wikipedia_link like '%" + searchFor
                                 + "%' or countries.keywords like '%" + searchFor + "%' or "
                                 + "continents.id like '%" + searchFor + "%' or continents.name like '%"
