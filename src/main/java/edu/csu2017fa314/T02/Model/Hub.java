@@ -26,7 +26,10 @@ public class Hub {
     boolean miles;
     String optimization;
 
-    //creates a hub object that stores itinerary, and shortest trips
+    /** The hub object stores the selected trips and locations, as well as
+    * the selected optimizations and unit selection, to proved the correct
+    * itinerary given the variable provided
+    */
     public Hub(){
         this.columns = new LinkedHashMap<String, Integer>();
         this.reverseC = new LinkedHashMap<Integer, String>();
@@ -38,8 +41,9 @@ public class Hub {
         this.optimization = "";
     }
 
-    //creates a hub object that stores itinerary, and shortest trips,
-    //with passed in optimization choice
+    /** creates a hub object that stores itinerary, and shortest trips,
+    * with passed in optimization choice
+    */
     public Hub(String optimization){
         this.columns = new LinkedHashMap<String, Integer>();
         this.reverseC = new LinkedHashMap<Integer, String>();
@@ -88,9 +92,10 @@ public class Hub {
 
     public void clearFinalLocations(){ finalLocations.clear(); }
 
-    //searches the data base for the keyword searchingFor, unless upload
-    //is flagged as true, which causes searchingFor to be treated as a
-    //complete query
+    /** searches the data base for the keyword searchingFor, unless upload
+    * is flagged as true, which causes searchingFor to be treated as a
+    * complete query
+    */
     public void searchDatabase(String username, String password, String searchingFor, boolean upload){
         searchedLocations.clear();
         shortestItinerary.clear();
@@ -158,7 +163,9 @@ public class Hub {
         }
     }
 
-    //creates the itinerary given the list of selectedLocations
+    /** converts the desired selected locations into the array list specified
+    *
+    */
     public void finalLocationsFromWeb(ArrayList<String> desiredLocations){
         selectedLocations.clear();
         //go through each element in the desiredLocations array list and grab the name
@@ -184,7 +191,9 @@ public class Hub {
         createItinerary();
     }
 
-    //deals with extra characters added with ampersands
+    /** Deals with special characters that cause problems with the
+    * searching and selection in uploads
+    */
     private boolean equalsWithoutAmp(String name, String l){
         int index = name.indexOf('&');
 
@@ -199,7 +208,7 @@ public class Hub {
         }
     }
 
-    /*
+    /**
     * creates itinerary list order based on the optimization global
     */
     public void createItinerary(){
@@ -227,8 +236,8 @@ public class Hub {
         }
     }
 
-    /*
-    *stores the info about each airport in the location lists
+    /**
+    * stores the info about each airport in the location lists
     */
     public void storeColumnHeaders(String firstLine){
         String s = firstLine.toLowerCase();
@@ -256,7 +265,7 @@ public class Hub {
         }
     }
 
-    /*
+    /**
     * splits up rows to add to the selected locations
     */
     public void parseRow(String row){
@@ -289,8 +298,8 @@ public class Hub {
         selectedLocations.add(location);
     }
 
-    /*
-    *converts string latitude or longitude (s) to double
+    /**
+    * converts string latitude or longitude (s) to double
     */
     public double latLonConvert(String s) {
         String sCopy = s;
@@ -345,7 +354,7 @@ public class Hub {
         }
     }
 
-    /*
+    /**
     * performs the swap method for 2opt and 3opt
     */
     public void optSwap(ArrayList<Location> traveledTo, int i1, int k) { // swap in place
@@ -380,7 +389,7 @@ public class Hub {
         return GCDS;
     }
 
-    /**transforms an arrayList of location objects into an arrayList of distance objects using the
+    /** transforms an arrayList of location objects into an arrayList of distance objects using the
     * location objects in the order they are passed in
     */
     public ArrayList<Distance> locationsToDistances(ArrayList<Location> locations) {
@@ -398,7 +407,7 @@ public class Hub {
     }
 
     /** Draws the lines on the google map as an svg overlay
-    *
+    *   adds to the actual map
     */
     public ArrayList<gMap> drawSVG(){
         double firstLocationLat = 0.0;
