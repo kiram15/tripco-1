@@ -181,7 +181,7 @@ public class Hub {
             System.exit(1);
         }
         catch(ExecutionException ee){
-            System.out.println("InterruptedException: " + ee);
+            System.out.println("ExecutionException: " + ee);
             System.exit(1);
         }
         //createItinerary();
@@ -202,6 +202,7 @@ public class Hub {
     }
 
     public void createCallables() throws InterruptedException, ExecutionException {
+        System.out.println("begining of createCallables");
         //Create thread pool
         ExecutorService pool = Executors.newFixedThreadPool(5);
         
@@ -215,6 +216,7 @@ public class Hub {
         for(int i = 0; i < this.selectedLocations.size(); i++){
             callables.add(singleTripDistance(this.selectedLocations.get(i)));
         }
+        System.out.println("successfully added selectedLocations to callables: " + callables);
         
         //get the distance of the shortest Trip from each starting location 
         results = pool.invokeAll(callables);
@@ -224,6 +226,7 @@ public class Hub {
         Location startLocation = findStartLocation(results);
         
         //rebuild the trip using the startLocation
+        createItinerary();
     }
     
     private Callable<Integer> singleTripDistance(Location currentLocation){
@@ -231,6 +234,7 @@ public class Hub {
             @Override
             public Integer call() throws Exception{
                 //this will call the optimizaton method that returns the distance of the single trip
+                System.out.println("inside call method");
                 return TripD(currentLocation);
             }
         };
@@ -260,6 +264,7 @@ public class Hub {
                 sTripD = 0;
                 break;
         }
+        System.out.println("got a sTripD result: " + sTripD);
         return sTripD;
     }
 

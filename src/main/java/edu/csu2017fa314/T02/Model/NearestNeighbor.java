@@ -10,6 +10,7 @@ public class NearestNeighbor extends Hub {
     public int shortestTripDistance(Location startLocation){
         //Adjacency matrix that holds all gcds
         Object[][] gcds = calcAllGcds(selectedLocations);
+        System.out.println("gcds: " + gcds);
 
         //row is the current row in the adjancency matrix where the current location is
         int row = 0;
@@ -33,6 +34,7 @@ public class NearestNeighbor extends Hub {
                 }
             }
             traveledTo.add(currentLocation);
+            System.out.println("adds current location to traveled to");
             if (traveledTo.size() == selectedLocations.size()) {
                 break;
             }
@@ -47,6 +49,7 @@ public class NearestNeighbor extends Hub {
             }
             currentLocation = shortestDis.getEndID();
             tripDistance += shortestDis.getGcd();
+            System.out.println("currentLocation is set to shortestDist and tripDistance is updated");
         }
 
             //add the distance back to the original city
