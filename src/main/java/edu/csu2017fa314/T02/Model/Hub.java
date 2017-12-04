@@ -1,21 +1,13 @@
 package edu.csu2017fa314.T02.Model;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.lang.Math;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.io.InputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.ExecutionException;
@@ -189,7 +181,6 @@ public class Hub {
     private boolean equalsWithoutAmp(String name, String l){
         int index = name.indexOf('&');
 
-
         String subName = name.substring(index + 5);
         String subL = l.substring(index + 1);
 
@@ -212,7 +203,7 @@ public class Hub {
         
         //for every distance, add a singleTripDistance object
         for(int i = 0; i < this.selectedLocations.size(); i++){
-            callables.add(singleTripDistance());
+            callables.add(singleTripDistance(this.selectedLocations.get(i)));
         }
         
         //get the distance of the shortest Trip from each starting location 
@@ -228,7 +219,7 @@ public class Hub {
     private Callable<Integer> singleTripDistance(Location currentLocation){
         Callable<Integer> returnValue = new Callable<Integer>(){
             @Override
-            public Integer call(){
+            public Integer call() throws Exception{
                 //this will call the optimizaton method that returns the distance of the single trip
                 return TripD(currentLocation);
             }
