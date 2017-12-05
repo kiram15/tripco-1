@@ -121,7 +121,9 @@ public class Opt2 extends Hub {
         return shortestItinerary;
     }
 
-    //determines all the possible areas that 2opt could improve in a given arraylist of locations
+    /** determines all the possible areas that 2opt could improve
+    * in a given arraylist of locations
+    */
     public void checkImprovement2(ArrayList<Location> traveled) {
         boolean improvement = true;
         //while there is still possible improvements to be made

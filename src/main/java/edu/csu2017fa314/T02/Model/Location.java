@@ -10,8 +10,9 @@ public class Location {
     private double lon;
     private LinkedHashMap<String, String> info;
 
-    //creates a location object that consists of a latitude, longitude,
-    //name, and map of extra info require
+    /**creates a location object that consists of a latitude, longitude,
+    *name, and map of extra info require
+    */
   public Location(String name, double Lat, double Lon, LinkedHashMap<String, String> info) {
       this.name = name;
       this.lat = Lat;
@@ -34,19 +35,6 @@ public class Location {
   public double getLongitude() {
 	  return this.lon;
   }
-  //
-  // public String getCode() {
-  //     return this.info.get(airports_code);
-  // }
-
-//  public LinkedHashMap<String, String> getInfoMap(){
-//      return this.info;
-//  }
-
-//  //returns value associated with key in the info Map
-//  public String getOtherInfo(String key){
-//      return this.info.get(key);
-//  }
 
   public void setLon(double lon){
       this.lon = lon;
@@ -70,12 +58,5 @@ public class Location {
             return false;
         }
     }
-
-
-//    public boolean equals(Location l) {
-//      if (this.name.equals(l.name) && (this.lat == l.lat) && (this.lon == l.lon)) { return true; }
-//      else { return false; }
-//  }
-
 
 }

@@ -9,6 +9,7 @@ import edu.csu2017fa314.T02.Model.Location;
 
 /**
  * Created by sswensen on 10/1/17.
+ * Modified by emcintos
  */
 
 public class ServerQueryResponse {
