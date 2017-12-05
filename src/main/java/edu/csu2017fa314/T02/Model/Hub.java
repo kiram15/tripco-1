@@ -104,7 +104,7 @@ public class Hub {
         searchFor = searchFor.toLowerCase();
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
-        //String myUrl = "jdbc:mysql://localhost/cs314"; use if tunneling
+        //String myUrl = "jdbc:mysql://localhost/cs314"; use if tunneling 
         try { // connect to the database
             Class.forName(myDriver);
             Connection conn = DriverManager.getConnection(myUrl, username, password);
