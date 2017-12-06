@@ -20,7 +20,6 @@ export default class App extends React.Component {
         }
     };
 
-
 render() {
     let pairs = this.state.allPairs;
     let ps = pairs.map((pp) => {

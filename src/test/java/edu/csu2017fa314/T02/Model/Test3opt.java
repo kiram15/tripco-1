@@ -43,8 +43,9 @@ public class Test3opt {
         h0.parseRow("maddic, maddi, loveland, 40.0, -92.0, 10");      //E
         h0.parseRow("jamesp, james, godrics hollow, 37.0, -95.0, 10");//F
         Location dd1 = new Location("emerson", 40.0, -88.0, null);
-        h0.createItinerary(dd1);
-        Opt3 o3 = new Opt3();
+        Object[][] gcds = h0.calcAllGcds(h0.selectedLocations);
+        h0.createItinerary(gcds, dd1);
+        Opt3 o3 = new Opt3(gcds);
         o3.buildShortestTrip(h0.selectedLocations, dd1);
 
         ArrayList<Distance> check1 = fillShortTrip3Opt();
@@ -98,7 +99,7 @@ public class Test3opt {
         checkOne.add(ee);
         checkOne.add(ff);
 
-        Opt3 o3 = new Opt3();
+        Opt3 o3 = new Opt3(h0.calcAllGcds(h0.selectedLocations));
         ArrayList<Location> after3opt = o3.checkImprovement3(checkOne);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
@@ -122,7 +123,7 @@ public class Test3opt {
         checkTwo.add(dd);
         checkTwo.add(ff);
 
-        Opt3 o3 = new Opt3();
+        Opt3 o3 = new Opt3(h0.calcAllGcds(h0.selectedLocations));
         ArrayList<Location> after3opt = o3.checkImprovement3(checkTwo);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
@@ -146,7 +147,7 @@ public class Test3opt {
         checkThree.add(bb);
         checkThree.add(ff);
 
-        Opt3 o3 = new Opt3();
+        Opt3 o3 = new Opt3(h0.calcAllGcds(h0.selectedLocations));
         ArrayList<Location> after3opt = o3.checkImprovement3(checkThree);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
@@ -170,7 +171,7 @@ public class Test3opt {
         checkFour.add(dd);
         checkFour.add(ff);
 
-        Opt3 o3 = new Opt3();
+        Opt3 o3 = new Opt3(h0.calcAllGcds(h0.selectedLocations));
         ArrayList<Location> after3opt = o3.checkImprovement3(checkFour);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
@@ -194,7 +195,7 @@ public class Test3opt {
         checkFive.add(bb);
         checkFive.add(ff);
 
-        Opt3 o3 = new Opt3();
+        Opt3 o3 = new Opt3(h0.calcAllGcds(h0.selectedLocations));
         ArrayList<Location> after3opt = o3.checkImprovement3(checkFive);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
@@ -218,7 +219,7 @@ public class Test3opt {
         checkSix.add(cc);
         checkSix.add(ff);
 
-        Opt3 o3 = new Opt3();
+        Opt3 o3 = new Opt3(h0.calcAllGcds(h0.selectedLocations));
         ArrayList<Location> after3opt = o3.checkImprovement3(checkSix);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }
@@ -242,7 +243,7 @@ public class Test3opt {
         checkSeven.add(cc);
         checkSeven.add(ff);
 
-        Opt3 o3 = new Opt3();
+        Opt3 o3 = new Opt3(h0.calcAllGcds(h0.selectedLocations));
         ArrayList<Location> after3opt = o3.checkImprovement3(checkSeven);
         assertEquals(optimalShortTrip3Opt(), after3opt);
     }

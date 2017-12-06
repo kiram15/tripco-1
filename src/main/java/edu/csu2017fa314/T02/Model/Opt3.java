@@ -5,12 +5,18 @@ import java.util.LinkedHashMap;
 
 public class Opt3 extends Hub {
 
+    private Object[][] gcds;
+
+    public Opt3(Object[][] gcds){
+        this.gcds = gcds;
+    }
+
     /** takes the selected location and start location
      * calculates the trip distance with that starting location and returns it
      */
     public int shortestTripDistance(ArrayList<Location> selectedLocations, Location startLocation){
         //Adjacency matrix that holds all gcds
-        Object[][] gcds = calcAllGcds(selectedLocations);
+        //Object[][] gcds = calcAllGcds(selectedLocations);
 
         //row is the current row in the adjancency matrix where the current location is
         int row = 0;
@@ -81,7 +87,7 @@ public class Opt3 extends Hub {
     public ArrayList<Distance> buildShortestTrip(
             ArrayList<Location> selectedLocations, Location startLocation) {
         //Adjacency matrix that holds all gcds
-        Object[][] gcds = calcAllGcds(selectedLocations);
+        //Object[][] gcds = calcAllGcds(selectedLocations);
         //row is the current row in the adjancency matrix where the current location is
         int row = 0;
         //Create a huge distance to use for inital comparison
