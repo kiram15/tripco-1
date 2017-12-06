@@ -29,13 +29,6 @@ import static spark.Spark.post;
      private String password = "";
      private static Hub h = new Hub();
 
-     //test main method
-     public static void main(String[] args) {
-         //Hub test = h;
-         //Server s = new Server(this.user, this.password, test);
-         //s.serve();
-     }
-
      //server ctor
      public Server(String user, String pass, Hub h){
          this.user = user;

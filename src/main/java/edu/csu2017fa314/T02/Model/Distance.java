@@ -5,6 +5,9 @@ public class Distance implements Comparable<Distance>{
   private Location endID;
   private int gcd;
 
+  /** creates a distance object that stores two locations
+  * and calculates the distance between them
+  */
   public Distance(Location startID, Location endID, boolean miles){
       this.startID = startID;
       this.endID = endID;

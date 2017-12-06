@@ -14,6 +14,9 @@ public class Test3opt {
     private ArrayList<Distance> shortTrip;
     private boolean miles = true;
 
+    /** Executes before the tests run
+    * so that they're all set up
+    */
     @Before
     public void setUp() throws Exception {
         mm = new Model();
