@@ -71,8 +71,9 @@ public class Distance
       if(startName.equals(otherStartName) && endName.equals(otherEndName)){
           return true;
       }
-      else
+      else {
           return false;
+      }
   }
 
     @Override
@@ -80,11 +81,13 @@ public class Distance
         return this.gcd - other.gcd;
     }
 
-    //prints out the properties of the distance object
+    /** Distance object toString method
+     * @return the string containing the distance information
+     */
     public String toString(){
-        return "Distance{" +
-                "StartId= '" + startId.toString() + '\'' +
-                ", EndId= '" + endId.toString() + '\'' +
-                ", GCD= '" + gcd + '}';
+        return "Distance{"
+                + "StartId= '" + startId.toString() + '\''
+                + ", EndId= '" + endId.toString() + '\''
+                + ", GCD= '" + gcd + '}';
     }
 }
