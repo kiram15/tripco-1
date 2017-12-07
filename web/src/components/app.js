@@ -264,7 +264,7 @@ async browseFile(file) {
             if (parsed.response === "query" || parsed.response === "upload") {
                 this.setState({
                     queryResults: parsed.trip,
-                    currentQuery : this.state.currentQuery + 'a'
+                    currentQuery : this.state.currentQuery
                 });
                 console.log("Set Query Results");
                 console.log("Query: ", this.state.currentQuery);

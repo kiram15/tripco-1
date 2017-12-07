@@ -162,8 +162,10 @@ render() {
 }
 
 keyUp(event) {
+
+
     if (event.which === 13) { // Waiting for enter to be pressed. Enter is key 13: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
-        this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization); // Call fetch and pass whatever text is in the input box
+        //this.props.fetch("query", this.state.input, this.state.unit, this.state.optimization); // Call fetch and pass whatever text is in the input box
 
     } else {
         this.setState({
@@ -171,6 +173,7 @@ keyUp(event) {
         });
 
     }
+    // event.preventDefault();
 }
 
 handleSubmit(event) {
