@@ -105,7 +105,7 @@ public class Hub {
         searchFor = searchFor.toLowerCase();
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
-        //String myUrl = "jdbc:mysql://localhost/cs314"; use if tunneling 
+        //String myUrl = "jdbc:mysql://localhost/cs314"; use if tunneling
         try { // connect to the database
             Class.forName(myDriver);
             Connection conn = DriverManager.getConnection(myUrl, username, password);
@@ -197,6 +197,7 @@ public class Hub {
                     } else {
                         allTblsSearchQ = searchFor;
                     }
+
                     ResultSet allTblsSearchRs = st.executeQuery(allTblsSearchQ);
                     try { //parse matched rows
                         while (allTblsSearchRs.next()) { //for each row
@@ -204,7 +205,8 @@ public class Hub {
                             //traverse row by incrementing columns and storing in a string
                             for (int i = 1; i <= columns.size(); i++) {
                                 String rowCol = allTblsSearchRs.getString(i);
-                                rowCol = rowCol + ",";
+                                rowCol = rowCol + ",~";
+                                System.out.println("ROCOL: " + rowCol);
                                 matchedRow += rowCol;
                                 if(upload && i == 18){
                                     break;
@@ -285,7 +287,7 @@ public class Hub {
 
         //List to store all of the callables from singleTripDistance
         List<Callable<Integer>> callables = new ArrayList<>();
-        
+
         //creates the OG GCD array based on the current selectedLocations
         Object[][] gcds = calcAllGcds(selectedLocations);
 
@@ -359,7 +361,7 @@ public class Hub {
         }
         return this.selectedLocations.get(minIndex);
     }
-    
+
     /** fills shortestItinerary based on shortest startLocation and opt
      */
     public void createItinerary(Object[][] gcds, Location startLocation){
@@ -421,7 +423,8 @@ public class Hub {
     */
     public void parseRow(String row){
         row = row.toLowerCase();
-        String[] props = row.split(",");
+        String[] props = row.split(",~");
+
         LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
         String objectName = "";
         String objectLatitude = "";

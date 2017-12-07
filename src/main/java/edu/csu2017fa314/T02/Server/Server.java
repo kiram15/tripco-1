@@ -103,12 +103,12 @@ import static spark.Spark.post;
      private Object serveUpload(ArrayList<String> locations, boolean miles, String optimization){
          System.out.println("Serving Upload: " + locations);
 
-         String queryString = "SELECT * FROM airports WHERE ";
+         String queryString = "select * from airports where ";
          for(int i = 0; i < locations.size(); ++i){
              if (i == locations.size() - 1) {
-                  queryString += "code LIKE '%" + locations.get(i) + "%';";
+                  queryString += "airports.code = '" + locations.get(i) + "';";
               } else {
-                  queryString += "code LIKE '%" + locations.get(i) + "%' OR ";
+                  queryString += "airports.code = '" + locations.get(i) + "' or ";
               }
          }
 

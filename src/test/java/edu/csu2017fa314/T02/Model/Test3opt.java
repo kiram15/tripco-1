@@ -35,13 +35,14 @@ public class Test3opt {
         // The shorterTrip method does not return anything,
         // but does set the value of hub's shortestItinerary
         Hub h0 = new Hub("ThreeOpt");
-        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
-        h0.parseRow("kiram15,kira,fort collins, 34.0, -92.0, 10");    //A
-        h0.parseRow("alnolte,amber,denver, 34.0, -88, 10");           //B
-        h0.parseRow("nkacirek,nicole,boulder, 37.0, -85.0, 10");      //C
-        h0.parseRow("emictosh,emerson,littleton, 40.0, -88.0, 10");   //D
-        h0.parseRow("maddic, maddi, loveland, 40.0, -92.0, 10");      //E
-        h0.parseRow("jamesp, james, godrics hollow, 37.0, -95.0, 10");//F
+        h0.storeColumnHeaders("id,airports_name,city,airports_latitude,"
+                                + "airports_longitude,elevation");
+        h0.parseRow("kiram15,~kira,~fort collins,~34.0,~-92.0,~10");    //A
+        h0.parseRow("alnolte,~amber,~denver,~34.0,~-88,~10");           //B
+        h0.parseRow("nkacirek,~nicole,~boulder,~37.0,~-85.0,~10");      //C
+        h0.parseRow("emictosh,~emerson,~littleton,~40.0,~-88.0,~10");   //D
+        h0.parseRow("maddic,~maddi,~loveland,~40.0,~-92.0,~10");      //E
+        h0.parseRow("jamesp,~james,~godrics hollow,~37.0,~-95.0,~10");//F
         Location dd1 = new Location("emerson", 40.0, -88.0, null);
         Object[][] gcds = h0.calcAllGcds(h0.selectedLocations);
         h0.createItinerary(gcds, dd1);
