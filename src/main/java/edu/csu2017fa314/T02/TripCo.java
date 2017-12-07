@@ -14,7 +14,9 @@ public class TripCo {
       return name;
    }
 
-   //returns the message global
+   /**
+    * returns the message global
+    */
    public String getMessage() {
       if (name == "") {
          return "Hello!";
@@ -35,11 +37,11 @@ public class TripCo {
       System.out.println("Welcome to TripCo");
 
       //make a hub object
-      Hub h = new Hub();
+      Hub hub = new Hub();
 
       //serve!
-      Server s = new Server(args[0], args[1], h);
-      s.serve();
+      Server server = new Server(args[0], args[1], hub);
+      server.serve();
 
    }
 }
