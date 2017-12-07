@@ -104,7 +104,7 @@ public class Hub {
         searchFor = searchFor.toLowerCase();
         String myDriver = "com.mysql.jdbc.Driver"; // add dependencies in pom.xml
         String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
-        //String myUrl = "jdbc:mysql://localhost/cs314"; use if tunneling 
+        //String myUrl = "jdbc:mysql://localhost/cs314"; use if tunneling
         try { // connect to the database
             Class.forName(myDriver);
             Connection conn = DriverManager.getConnection(myUrl, username, password);
@@ -195,19 +195,26 @@ public class Hub {
                     } else {
                         allTblsSearchQ = searchFor;
                     }
+
                     ResultSet allTblsSearchRs = st.executeQuery(allTblsSearchQ);
+                    //allTblsSearchRs.last();
+
+                    //System.out.println("\nResultSet length: " + allTblsSearchRs.getRow() + "\n\n");
+                    //allTblsSearchRs.first();
                     try { //parse matched rows
                         while (allTblsSearchRs.next()) { //for each row
                             String matchedRow = "";
                             //traverse row by incrementing columns and storing in a string
                             for (int i = 1; i <= columns.size(); i++) {
                                 String rowCol = allTblsSearchRs.getString(i);
-                                rowCol = rowCol + ",";
+                                rowCol = rowCol + ",~";
+                                System.out.println("ROCOL: " + rowCol);
                                 matchedRow += rowCol;
                                 if(upload && i == 18){
                                     break;
                                 }
                             }
+                            System.out.println("b4 Parse: " + matchedRow + "\n");
                             parseRow(matchedRow);
                         }
                     } finally {
@@ -283,7 +290,7 @@ public class Hub {
 
         //List to store all of the callables from singleTripDistance
         List<Callable<Integer>> callables = new ArrayList<>();
-        
+
         //creates the OG GCD array based on the current selectedLocations
         Object[][] gcds = calcAllGcds(selectedLocations);
 
@@ -357,7 +364,7 @@ public class Hub {
         }
         return this.selectedLocations.get(minIndex);
     }
-    
+
     /** fills shortestItinerary based on shortest startLocation and opt
      */
     public void createItinerary(Object[][] gcds, Location startLocation){
@@ -389,7 +396,7 @@ public class Hub {
     */
     public void storeColumnHeaders(String firstLine){
         String ss = firstLine.toLowerCase();
-        String[] infoArray = ss.split(",");
+        String[] infoArray = ss.split(",~");
         for (int i = 0; i < infoArray.length; i++) {
             String infoString = infoArray[i];
             // associating column titles with column num, putting it in map
@@ -419,7 +426,12 @@ public class Hub {
     */
     public void parseRow(String row){
         row = row.toLowerCase();
-        String[] props = row.split(",");
+        System.out.println("\n in Parse!: " + row + "\n");
+        String[] props = row.split(",~");
+        for(int i = 0; i < props.length; ++i){
+            System.out.println("index: " + i + ": " + props[i]);
+        }
+
         LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
         String objectName = "";
         String objectLatitude = "";
@@ -436,6 +448,8 @@ public class Hub {
                 info.put(reverseC.get(i), props[i]);
             }
         }
+
+        System.out.println("\n INFO!!: " + info + "\n");
 
         double doubleLat = latLonConvert(objectLatitude);
         double doubleLon = latLonConvert(objectLongitude);

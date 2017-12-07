@@ -34,11 +34,11 @@ public class TestNearest {
         //The shorterTrip method does not return anything, but does set the value
         //of hub's shortestItinerary
         Hub h0 = new Hub("NearestNeighbor");
-        h0.storeColumnHeaders("id,airports_Name,city,airports_Latitude,airports_Longitude,elevation,");
-        h0.parseRow("kiram15,kira,fort collins, 45.0, 45.0, 10");
-        h0.parseRow("alnolte,amber,denver, 22.5, 135.0, 10");
-        h0.parseRow("nkacirek,nicole,boulder, 85.0, 175.0, 10");
-        h0.parseRow("emictosh,emerson,littleton, 25.0, 90.0, 10");
+        h0.storeColumnHeaders("id,~airports_name,~city,~airports_latitude,~airports_longitude,~elevation~");
+        h0.parseRow("kiram15,~kira,~fort collins,~45.0,~45.0,~10");
+        h0.parseRow("alnolte,~amber,~denver,~22.5,~135.0,~10");
+        h0.parseRow("nkacirek,~nicole,~boulder,~85.0,~175.0,~10");
+        h0.parseRow("emictosh,~emerson,~littleton,~25.0,~90.0,~10");
         Location n0 = new Location("kira", 45.0, 45.0, null);
         h0.createItinerary(h0.calcAllGcds(h0.selectedLocations), n0);
         NearestNeighbor nn = new NearestNeighbor();
