@@ -332,12 +332,12 @@ selectAll(source) {
 removeSelectedLocations(source) {
     var parentDiv = document.getElementById("searchResult");
     var locations = parentDiv.getElementsByTagName("input");
-    var tempSLIndex = this.state.selectedLocations.length;
     for (var i = 0; i < locations.length; i++) {
-        //do something with the checked location - add to selected locations array??
-        if (locations[i].checked && (this.state.selectedLocations.includes(locations[i].value) === true)) {
-            this.state.selectedLocations.splice(tempSLIndex, 1);
-            tempSLIndex++;
+        //do something with the checked location - remove the checked ones from selected locations
+        if (locations[i].checked) {
+            var removeIndex = this.state.selectedLocations.indexOf(locations[i].value);
+            console.log("removeIndex", removeIndex);
+            this.state.selectedLocations.splice(removeIndex, 1);
         }
     }
     console.log("selectedLocations:", this.state.selectedLocations);
