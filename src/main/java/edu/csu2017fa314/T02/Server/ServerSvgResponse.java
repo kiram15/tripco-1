@@ -6,7 +6,9 @@ public class ServerSvgResponse {
     private int width;
     private int height;
 
-    //creates a response for an SVG query
+    /**
+     * creates a response for an SVG query
+     */
     public ServerSvgResponse(int width, int height, String contents) {
         this.contents = contents;
         this.width = width;
@@ -17,9 +19,9 @@ public class ServerSvgResponse {
 
     @Override
     public String toString() {
-        return "ServerResponse{" +
-                "response='" + response + '\'' +
-                ", contents=" + contents +
-                '}';
+        return "ServerResponse{"
+                + "response='" + response + '\''
+                + ", contents=" + contents
+                + '}';
     }
 }
