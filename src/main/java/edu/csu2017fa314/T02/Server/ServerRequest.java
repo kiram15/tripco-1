@@ -59,11 +59,11 @@ import java.util.ArrayList;
 
      @Override
      public String toString() {
-         return "Request{" +
-                 "request='" + request + '\'' +
-                 ", description='" + description + '\'' +
-                 ", unit='" + unit + '\'' +
-                 ", optSelection='" + optSelection + '\'' +
-                 '}';
+         return "Request{"
+                 + "request='" + request + '\''
+                 + ", description='" + description + '\''
+                 + ", unit='" + unit + '\''
+                 + ", optSelection='" + optSelection + '\''
+                 + '}';
      }
  }
