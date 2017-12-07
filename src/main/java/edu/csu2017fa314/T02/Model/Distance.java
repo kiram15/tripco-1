@@ -50,19 +50,19 @@ public class Distance
               Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dlam)), 2));
       double x0 =
               (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dlam));
-      double dTheta = Math.atan2(y0, x0);
-      double dist = dTheta * r0;
+      double dtheta = Math.atan2(y0, x0);
+      double dist = dtheta * r0;
       int gcd = (int) Math.round(dist);
       return gcd;
   }
 
   @Override
-  public boolean equals(Object o){
-      if(!(o instanceof Distance)){
+  public boolean equals(Object obj){
+      if(!(obj instanceof Distance)){
           return false;
       }
 
-      Distance other = (Distance) o;
+      Distance other = (Distance) obj;
       String startName = startId.getName();
       String endName = endId.getName();
       String otherStartName = other.startId.getName();
