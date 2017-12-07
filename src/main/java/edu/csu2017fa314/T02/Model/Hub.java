@@ -88,7 +88,8 @@ public class Hub {
         this.optimization = opt;
     }
 
-    public void clearFinalLocations(){ finalLocations.clear(); }
+    public void clearFinalLocations(){ finalLocations.clear();
+    }
 
 
     /** searches the data base for the keyword searchingFor, unless upload
@@ -122,7 +123,8 @@ public class Hub {
                             + "regions_Continent, regions_Iso_country, regions_Wikipedia_link, "
                             + "regions_Keywords, countries_ID, countries_Code, countries_Name, "
                             + "countries_Continent, countries_Wikipedia_link, countries_Keywords, "
-                            + "continents_ID, continents_Name, continents_Code, continents_Wikipedia_link";
+                            + "continents_ID, continents_Name, continents_Code, "
+                            + "continents_Wikipedia_link";
                     storeColumnHeaders(colHeaders);
                     String allTblsSearchQ = "";
 
