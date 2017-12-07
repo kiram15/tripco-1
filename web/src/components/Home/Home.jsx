@@ -89,7 +89,8 @@ render() {
 
   <button type="button" onClick={this.updateSelectedLocations.bind(this)}>Select</button>
   <button type="button" onClick={this.selectAll.bind(this)}>Select All</button>
-  <button type="button" onClick={this.clearAll.bind(this)}>Clear All</button>
+    <button type="button" onClick={this.removeSelectedLocations.bind(this)}>Remove</button>
+  <button type="button" onClick={this.clearAll.bind(this)}>Remove All</button>
   <p></p>
 
   <p className="w3-myFont">Selected Locations</p>
@@ -329,6 +330,28 @@ selectAll(source) {
     checkboxes[i].checked = true;
   }
   this.updateSelectedLocations(this);
+}
+
+removeSelectedLocations(source) {
+    var parentDiv = document.getElementById("searchResult");
+    var locations = parentDiv.getElementsByTagName("input");
+    for (var i = 0; i < locations.length; i++) {
+        //do something with the checked location - remove the checked ones from selected locations
+        if (locations[i].checked) {
+            var removeIndex = this.state.selectedLocations.indexOf(locations[i].value);
+            console.log("removeIndex", removeIndex);
+            this.state.selectedLocations.splice(removeIndex, 1);
+        }
+    }
+    console.log("selectedLocations:", this.state.selectedLocations);
+    document.getElementById("checkedLocations").innerHTML = "";
+    var wrapper = document.getElementById("checkedLocations");
+    for (var i = 0; i < (this.state.selectedLocations.length); i++) {
+        var selected = document.createElement("div");
+        var textNode = document.createTextNode(this.state.selectedLocations[i]);
+        selected.appendChild(textNode);
+        wrapper.appendChild(selected);
+    }
 }
 
 clearAll(source) {
