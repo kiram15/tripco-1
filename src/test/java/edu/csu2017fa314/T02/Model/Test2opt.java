@@ -34,7 +34,7 @@ public class Test2opt {
         //tests shorterTrip by making a call to storeColumnHeaders
         // and parseRow which then calls the shorter trip method.
         // The shorterTrip method does not return anything,
-        // but does set the valu of hub's shortestItinerary
+        // but does set the valu of hub's shortestItinerary 
         Hub h0 = new Hub("TwoOpt");
         h0.storeColumnHeaders("id,airports_name,city,airports_latitude,
                                 airports_longitude,elevation~");
