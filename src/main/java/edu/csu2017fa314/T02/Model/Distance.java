@@ -12,7 +12,7 @@ public class Distance
   public Distance(Location startId, Location endId, boolean miles){
       this.startId = startId;
       this.endId = endId;
-      this.gcd = computeGCD(startId, endId, miles);
+      this.gcd = computeGcd(startId, endId, miles);
   }
 
   public Location getStartId(){
@@ -30,7 +30,7 @@ public class Distance
   /*
   * computes the distance between the two locations in the distance object
   */
-  public int computeGCD(Location loc1, Location loc2, boolean miles) {
+  public int computeGcd(Location loc1, Location loc2, boolean miles) {
 
       double lat1 = loc1.getLatitude();
       double lon1 = loc1.getLongitude();

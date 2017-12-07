@@ -80,11 +80,11 @@ public class TestModel {
     @Test
     public void testDiagonalGCD() {
         Distance d = new Distance(L1, L2, miles);
-        assertEquals(466, d.computeGCD(L1, L2, miles));
+        assertEquals(466, d.computeGcd(L1, L2, miles));
         L1.setLat(41);
         L2.setLat(37);
         Distance d2 = new Distance(L1, L2, miles);
-        assertEquals(466, d.computeGCD(L1, L2, miles));
+        assertEquals(466, d.computeGcd(L1, L2, miles));
     }
 
     @Test
@@ -94,9 +94,9 @@ public class TestModel {
         L1.setLat(37);
         L1.setLon(-102);
         Distance d = new Distance(L1, L2, miles);
-        assertEquals(276, d.computeGCD(L1, L2, miles));
+        assertEquals(276, d.computeGcd(L1, L2, miles));
         miles = false;
-        assertEquals(445, d.computeGCD(L1, L2, miles));
+        assertEquals(445, d.computeGcd(L1, L2, miles));
     }
 
     @Test
@@ -106,19 +106,19 @@ public class TestModel {
         L1.setLon(-102);
         L2.setLon(-109);
         Distance d = new Distance(L1, L2, miles);
-        assertEquals(386, d.computeGCD(L1, L2, miles));
+        assertEquals(386, d.computeGcd(L1, L2, miles));
     }
 
     @Test
     public void testSameLocationGCD() {
         Distance d = new Distance(L1, L1, miles);
-        assertEquals(0, d.computeGCD(L1, L1, miles));
+        assertEquals(0, d.computeGcd(L1, L1, miles));
     }
 
     @Test
     public void testReverseGCD() {
         Distance d = new Distance(L1, L2, miles);
-        assertEquals(d.computeGCD(L1, L2, miles), d.computeGCD(L2, L1, miles));
+        assertEquals(d.computeGcd(L1, L2, miles), d.computeGcd(L2, L1, miles));
     }
 
     // ----------------- Test Lat/Lon Decimal Convert ----------------
