@@ -275,7 +275,7 @@ public class Opt3 extends Hub {
         Distance i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
         Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
 
-        int I1toJ = j-(i+1); //num items between i+1 and j
+        int i1toJ = j-(i+1); //num items between i+1 and j
 
         // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
         // distance than the proposed change (i, k) (j+1, i+1) (j, k+1)
@@ -284,7 +284,7 @@ public class Opt3 extends Hub {
 
         if (delta < 0) { //improvement?
             super.optSwap(traveled, i+1, k); //reverse j+1 through k
-            super.optSwap(traveled, k-I1toJ, k);
+            super.optSwap(traveled, k-i1toJ, k);
             improvement = true;
         }
         return improvement;
@@ -302,7 +302,7 @@ public class Opt3 extends Hub {
         Distance jk = new Distance(traveled.get(j), traveled.get(k), miles);
         Distance i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
 
-        int J1toK = k-(j+1); //num items between j+1 and k
+        int j1toK = k-(j+1); //num items between j+1 and k
 
         // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
         // distance than the proposed change (i, j+1) (k, j) (i+1, k+1)
@@ -311,7 +311,7 @@ public class Opt3 extends Hub {
 
         if (delta < 0) { //improvement?
             super.optSwap(traveled, i+1, k); //reverse elements from i+1 through j
-            super.optSwap(traveled, i+1, (i+1) + J1toK);
+            super.optSwap(traveled, i+1, (i+1) + j1toK);
             improvement = true;
         }
         return improvement;
@@ -328,8 +328,8 @@ public class Opt3 extends Hub {
         Distance i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
         Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
 
-        int I1toJ = j-(i+1); //num items between i+1 and j
-        int J1toK = k-(j+1); //num items between j+1 and k
+        int i1toJ = j-(i+1); //num items between i+1 and j
+        int j1toK = k-(j+1); //num items between j+1 and k
 
         // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
         // distance than the proposed change (i, j+1) (k, i+1) (j, k+1)
@@ -338,8 +338,8 @@ public class Opt3 extends Hub {
 
         if (delta < 0) { //improvement?
             super.optSwap(traveled, i+1, k);
-            super.optSwap(traveled, i+1, (i+1) + J1toK);
-            super.optSwap(traveled, k-I1toJ, k);
+            super.optSwap(traveled, i+1, (i+1) + j1toK);
+            super.optSwap(traveled, k-i1toJ, k);
             improvement = true;
         }
         return improvement;
