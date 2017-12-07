@@ -148,60 +148,51 @@ public class TestModel {
 
     // ------------------------- Test drawSVG ----------------------------
 
+    private Hub hub = new Hub();
 
     @Test
-    public void testDrawSVG() {
+    public void testDrawSVG0() {
         LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
-        info1.put("extra1", "info1");
-        info1.put("extra2", "info2");
+        info1.put("extra1", "info1"); info1.put("extra2", "info2");
         LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
-        info2.put("extra1", "info1");
-        info2.put("extra2", "info2");
-        Hub hub = new Hub();
-        Location startL = new Location("denver", 70, 99.255556, info1);
-        Location endL = new Location("denver2", 80, 100, info2);
-        final Distance da = new Distance(startL, endL, miles);
-        Location startL1 = new Location("denver", -70, -99.255556, info1);
-        Location endL1 = new Location("denver2", 80, 100, info2);
-        final Distance da1 = new Distance(startL1, endL1, miles);
-        Location startL2 = new Location("denver", 70, 99.255556, info1);
-        Location endL2 = new Location("denver2", -80, -100, info2);
-        final Distance da2 = new Distance(startL2, endL2, miles);
-        Location startL3 = new Location("denver", -70, 99.255556, info1);
-        Location endL3 = new Location("denver2", 80, -100, info2);
-        final Distance da3 = new Distance(startL3, endL3, miles);
+        info2.put("extra1", "info1"); info2.put("extra2", "info2");
         Location startL4 = new Location("denver", 0, 0, info1);
         Location endL4 = new Location("denver2", 0, 0, info2);
         final Distance da4 = new Distance(startL4, endL4, miles);
-        Location startL5 = new Location("california", 36.77, -199.41, info1);
-        Location endL5 = new Location("australia", -25.28, 133.775, info2);
-        final Distance da5 = new Distance(startL5, endL5, miles);
         ArrayList<gMap> dSVG;
-
         //empty shortestItinerary
         dSVG = hub.drawSVG();
         assertEquals(0, dSVG.size());
-
         hub.shortestItinerary.add(da4);
         dSVG = hub.drawSVG();
         assertNotEquals(0, dSVG.size());
         gMap gm1 = new gMap(0.0,0.0);
         boolean match = false;
         for(gMap a : dSVG){
-            double gmLon = a.lon;
-            double gmLat = a.lat;
+            double gmLon = a.lon; double gmLat = a.lat;
             if(gm1.lon == gmLon && gm1.lat == gmLat){
                 match = true;
                 break;
             }
         }
         assertTrue(match);
+    }
 
+    @Test
+    public void testDrawSVG1() {
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1", "info1"); info1.put("extra2", "info2");
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1", "info1"); info2.put("extra2", "info2");
+        Location startL = new Location("denver", 70, 99.255556, info1);
+        Location endL = new Location("denver2", 80, 100, info2);
+        final Distance da = new Distance(startL, endL, miles);
+        ArrayList<gMap> dSVG;
         hub.shortestItinerary.add(da);
         dSVG = hub.drawSVG();
         assertNotEquals(0, dSVG.size());
         gMap gm2 = new gMap(70.0, 99.255556);
-        match = false;
+        boolean match = false;
         for(gMap a : dSVG){
             double gmLon = a.lon;
             double gmLat = a.lat;
@@ -211,12 +202,23 @@ public class TestModel {
             }
         }
         assertTrue(match);
+    }
 
+    @Test
+    public void testDrawSVG2() {
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1", "info1"); info1.put("extra2", "info2");
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1", "info1"); info2.put("extra2", "info2");
+        Location startL1 = new Location("denver", -70, -99.255556, info1);
+        Location endL1 = new Location("denver2", 80, 100, info2);
+        final Distance da1 = new Distance(startL1, endL1, miles);
+        ArrayList<gMap> dSVG;
         hub.shortestItinerary.add(da1);
         dSVG = hub.drawSVG();
         assertNotEquals(0, dSVG.size());
         gMap gm3 = new gMap(-70.0, -99.255556);
-        match = false;
+        boolean match = false;
         for(gMap a : dSVG){
             double gmLon = a.lon;
             double gmLat = a.lat;
@@ -226,12 +228,23 @@ public class TestModel {
             }
         }
         assertTrue(match);
+    }
 
+    @Test
+    public void testDrawSVG3() {
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1", "info1"); info1.put("extra2", "info2");
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1", "info1"); info2.put("extra2", "info2");
+        Location startL2 = new Location("denver", 70, 99.255556, info1);
+        Location endL2 = new Location("denver2", -80, -100, info2);
+        final Distance da2 = new Distance(startL2, endL2, miles);
+        ArrayList<gMap> dSVG;
         hub.shortestItinerary.add(da2);
         dSVG = hub.drawSVG();
         assertNotEquals(0, dSVG.size());
         gMap gm4 = new gMap(-80.0, -100.0);
-        match = false;
+        boolean match = false;
         for(gMap a : dSVG){
             double gmLon = a.lon;
             double gmLat = a.lat;
@@ -241,12 +254,23 @@ public class TestModel {
             }
         }
         assertTrue(match);
+    }
 
+    @Test
+    public void testDrawSVG4() {
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1", "info1"); info1.put("extra2", "info2");
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1", "info1"); info2.put("extra2", "info2");
+        Location startL3 = new Location("denver", -70, 99.255556, info1);
+        Location endL3 = new Location("denver2", 80, -100, info2);
+        final Distance da3 = new Distance(startL3, endL3, miles);
+        ArrayList<gMap> dSVG;
         hub.shortestItinerary.add(da3);
         dSVG = hub.drawSVG();
         assertNotEquals(0, dSVG.size());
         gMap gm5 = new gMap(-70.0, 99.255556);
-        match = false;
+        boolean match = false;
         for(gMap a : dSVG){
             double gmLon = a.lon;
             double gmLat = a.lat;
@@ -256,12 +280,23 @@ public class TestModel {
             }
         }
         assertTrue(match);
+    }
 
+    @Test
+    public void testDrawSVG5() {
+        LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
+        info1.put("extra1", "info1"); info1.put("extra2", "info2");
+        LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
+        info2.put("extra1", "info1"); info2.put("extra2", "info2");
+        Location startL5 = new Location("california", 36.77, -199.41, info1);
+        Location endL5 = new Location("australia", -25.28, 133.775, info2);
+        final Distance da5 = new Distance(startL5, endL5, miles);
+        ArrayList<gMap> dSVG;
         hub.shortestItinerary.add(da5);
         dSVG = hub.drawSVG();
         assertNotEquals(0, dSVG.size());
         gMap gm6 = new gMap(-25.28, 133.775);
-        match = false;
+        boolean match = false;
         for(gMap a : dSVG){
             double gmLon = a.lon;
             double gmLat = a.lat;
