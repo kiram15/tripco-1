@@ -30,9 +30,9 @@ public class ServerPlanResponse {
 
     @Override
     public String toString() {
-        return "ServerResponse{" +
-                "response='" + response + '\'' +
-                ", locations=" + trip +
-                '}';
+        return "ServerResponse{"
+                + "response='" + response + '\''
+                + ", locations=" + trip
+                + '}';
     }
 }

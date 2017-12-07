@@ -16,7 +16,10 @@ public class ServerQueryResponse {
     private String response = "query";
     private ArrayList<Location> trip;
 
-    //creates a respose for a query
+    /**creates a respose for a query
+     *
+     * @param trip array list of locations returned searchDatabase
+     */
     public ServerQueryResponse(ArrayList<Location> trip) {
 
         this.trip = trip;
@@ -25,9 +28,9 @@ public class ServerQueryResponse {
 
     @Override
     public String toString() {
-        return "ServerResponse{" +
-                "response='" + response + '\'' +
-                ", locations=" + trip +
-                '}';
+        return "ServerResponse{"
+                + "response='" + response + '\''
+                + ", locations=" + trip
+                + '}';
     }
 }

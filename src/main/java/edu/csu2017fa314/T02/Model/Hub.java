@@ -88,7 +88,8 @@ public class Hub {
         this.optimization = opt;
     }
 
-    public void clearFinalLocations(){ finalLocations.clear(); }
+    public void clearFinalLocations(){ finalLocations.clear();
+    }
 
 
     /** searches the data base for the keyword searchingFor, unless upload
@@ -122,7 +123,8 @@ public class Hub {
                             + "regions_Continent, regions_Iso_country, regions_Wikipedia_link, "
                             + "regions_Keywords, countries_ID, countries_Code, countries_Name, "
                             + "countries_Continent, countries_Wikipedia_link, countries_Keywords, "
-                            + "continents_ID, continents_Name, continents_Code, continents_Wikipedia_link";
+                            + "continents_ID, continents_Name, continents_Code, "
+                            + "continents_Wikipedia_link";
                     storeColumnHeaders(colHeaders);
                     String allTblsSearchQ = "";
 
@@ -566,18 +568,20 @@ public class Hub {
         if(shortestItinerary.size() > 0) {
             for (Distance d : shortestItinerary) {
                 if (first) {
-                    firstLocationLat = d.getStartID().getLatitude();
-                    firstLocationLon = d.getStartID().getLongitude();
+                    firstLocationLat = d.getStartId().getLatitude();
+                    firstLocationLon = d.getStartId().getLongitude();
                     first = false;
                 }
-                double startLat = d.getStartID().getLatitude();
-                double startLon = d.getStartID().getLongitude();
+                double startLat = d.getStartId().getLatitude();
+                double startLon = d.getStartId().getLongitude();
                 gMap gm = new gMap(startLat, startLon);
                 finalGMap.add(gm);
             }
 
-            double lastEndLat = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndID().getLatitude();
-            double lastEndLon = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndID().getLongitude();
+            double lastEndLat =
+                    (shortestItinerary.get(shortestItinerary.size() - 1)).getEndId().getLatitude();
+            double lastEndLon =
+                    (shortestItinerary.get(shortestItinerary.size() - 1)).getEndId().getLongitude();
             gMap gmLast = new gMap(lastEndLat, lastEndLon);
             finalGMap.add(gmLast);
             gMap gmFirst = new gMap(firstLocationLat, firstLocationLon);

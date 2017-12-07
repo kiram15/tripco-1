@@ -13,13 +13,13 @@ public class Location {
     /**creates a location object that consists of a latitude, longitude,
     *name, and map of extra info require
     */
-  public Location(String name, double Lat, double Lon, LinkedHashMap<String, String> info) {
+  public Location(String name, double lat, double lon, LinkedHashMap<String, String> info) {
       this.name = name;
-      this.lat = Lat;
-      this.lon = Lon;
+      this.lat = lat;
+      this.lon = lon;
       if(info != null){
-          info.put("Latitude", Double.toString(Lat));
-          info.put("Longitude", Double.toString(Lon));
+          info.put("Latitude", Double.toString(lat));
+          info.put("Longitude", Double.toString(lon));
       }
       this.info = info;
   }
@@ -44,15 +44,22 @@ public class Location {
       this.lat = lat;
   }
 
+  /** Distance object toString method
+   * @return the string containing the distance information
+   */
   public String toString() {
-	    return "Name: '" + this.name + "', Latitude: '" + this.lat + "', Longitude: '" + this.lon;
+	    return "Name: '" + this.name
+                + "', Latitude: '"
+                + this.lat + "', Longitude: '"
+                + this.lon;
   }
 
   @Override
   public boolean equals(Object object) {
-        if(object instanceof Location &&
-                ((Location)object).getName().equals(this.name) && ((Location)object).getLatitude() == (this.lat) &&
-                ((Location)object).getLongitude() == (this.lon)) {
+        if(object instanceof Location
+                && ((Location)object).getName().equals(this.name)
+                && ((Location)object).getLatitude() == (this.lat)
+                && ((Location)object).getLongitude() == (this.lon)) {
                     return true;
         } else {
             return false;

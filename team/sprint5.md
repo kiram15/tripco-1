@@ -59,6 +59,8 @@ Date | Tasks done now | Tasks done next | Impediments | Coverage | Smells | Dupl
 11/29 | #378 #353 #368 #374 #250 #349 #254 #217 | #342 #370 #375 #191 | Nicole is a busy bee | *72* | *33* | *6* | *18.3* | Feeling good
 11/30 | #375 #342 #382 | #191 #372 #370 #369 | Nicole's sorority stuff, studying for finals | *72* | *20* | *2* | *9.1* | Feeling lit
 12/4 | #235 #372 #369 #191 #72 #276 | #390 #370 #371 #392 | final projects/exams | *70* | *20* | *0* | *6.8* | Good
+12/6 | #273 #390 #96 #399 #401 | #397 #370 #402 #371 | final projects/exams | *68* | *11* | *0* | *7.3* | Good
+
 
 
 ## Review
