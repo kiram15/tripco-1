@@ -578,8 +578,10 @@ public class Hub {
                 finalGMap.add(gm);
             }
 
-            double lastEndLat = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndId().getLatitude();
-            double lastEndLon = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndId().getLongitude();
+            double lastEndLat =
+                    (shortestItinerary.get(shortestItinerary.size() - 1)).getEndId().getLatitude();
+            double lastEndLon =
+                    (shortestItinerary.get(shortestItinerary.size() - 1)).getEndId().getLongitude();
             gMap gmLast = new gMap(lastEndLat, lastEndLon);
             finalGMap.add(gmLast);
             gMap gmFirst = new gMap(firstLocationLat, firstLocationLon);

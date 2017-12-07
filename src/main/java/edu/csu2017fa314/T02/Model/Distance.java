@@ -27,9 +27,9 @@ public class Distance
       return this.gcd;
   }
 
-  /*
-  * computes the distance between the two locations in the distance object
-  */
+  /**
+   * computes the distance between the two locations in the distance object
+   */
   public int computeGcd(Location loc1, Location loc2, boolean miles) {
 
       double lat1 = loc1.getLatitude();
@@ -46,8 +46,9 @@ public class Distance
       double phi2 = Math.toRadians(lat2);
       double lam2 = Math.toRadians(lon2);
       double dlam = Math.abs(lam1 - lam2);
-      double y0 = Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dlam)), 2) +
-              Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dlam)), 2));
+      double y0 = Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dlam)), 2)
+              + Math.pow((Math.cos(phi1) * Math.sin(phi2)
+              - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dlam)), 2));
       double x0 =
               (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dlam));
       double dtheta = Math.atan2(y0, x0);

@@ -112,7 +112,8 @@ public class Opt3 extends Hub {
             Distance shortestDis = hugeDistance;
             for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
                 Distance dis = (Distance) gcds[row][i];
-                if (!traveledToFinal.contains(dis.getEndId()) && (dis.getGcd() < shortestDis.getGcd())) {
+                if (!traveledToFinal.contains(dis.getEndId())
+                        && (dis.getGcd() < shortestDis.getGcd())) {
                     shortestDis = dis;
                 }
             }

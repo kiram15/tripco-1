@@ -44,6 +44,9 @@ public class Location {
       this.lat = lat;
   }
 
+  /** Distance object toString method
+   * @return the string containing the distance information
+   */
   public String toString() {
 	    return "Name: '" + this.name
                 + "', Latitude: '"
