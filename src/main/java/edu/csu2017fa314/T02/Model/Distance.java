@@ -37,19 +37,19 @@ public class Distance
       double lat2 = loc2.getLatitude();
       double lon2 = loc2.getLongitude();
 
-      double r = 0.0;
+      double r0 = 0.0;
       if(miles){
-        r = 3958.7613; //radius of earth in miles
-      }else{ r = 6371.0088; } //radius of earth in km
+        r0 = 3958.7613; //radius of earth in miles
+      }else{ r0 = 6371.0088; } //radius of earth in km
       double phi1 = Math.toRadians(lat1);
       double lam1 = Math.toRadians(lon1);
       double phi2 = Math.toRadians(lat2);
       double lam2 = Math.toRadians(lon2);
-      double dLam = Math.abs(lam1 - lam2);
-      double y = Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dLam)), 2) + Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dLam)), 2));
-      double x = (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dLam));
+      double dlam = Math.abs(lam1 - lam2);
+      double y = Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dlam)), 2) + Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dlam)), 2));
+      double x = (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dlam));
       double dTheta = Math.atan2(y, x);
-      double dist = dTheta * r;
+      double dist = dTheta * r0;
       int gcd = (int) Math.round(dist);
       return gcd;
   }
