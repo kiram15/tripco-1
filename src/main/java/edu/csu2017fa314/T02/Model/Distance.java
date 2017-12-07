@@ -46,9 +46,11 @@ public class Distance
       double phi2 = Math.toRadians(lat2);
       double lam2 = Math.toRadians(lon2);
       double dlam = Math.abs(lam1 - lam2);
-      double y = Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dlam)), 2) + Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dlam)), 2));
-      double x = (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dlam));
-      double dTheta = Math.atan2(y, x);
+      double y0 = Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dlam)), 2) +
+              Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dlam)), 2));
+      double x0 =
+              (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dlam));
+      double dTheta = Math.atan2(y0, x0);
       double dist = dTheta * r0;
       int gcd = (int) Math.round(dist);
       return gcd;
