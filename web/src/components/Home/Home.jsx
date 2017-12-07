@@ -89,7 +89,7 @@ render() {
 
   <button type="button" onClick={this.updateSelectedLocations.bind(this)}>Select</button>
   <button type="button" onClick={this.selectAll.bind(this)}>Select All</button>
-    <button type="button" onClick={this.clearAll.bind(this)}>Remove</button>
+    <button type="button" onClick={this.removeSelectedLocations.bind(this)}>Remove</button>
   <button type="button" onClick={this.clearAll.bind(this)}>Remove All</button>
   <p></p>
 
@@ -305,7 +305,7 @@ updateSelectedLocations(event) {
     for (var i = 0; i < locations.length; i++) {
         //do something with the checked location - add to selected locations array??
         if (locations[i].checked && (this.state.selectedLocations.includes(locations[i].value) === false)) {
-            this.state.selectedLocations[tempSLIndex] = locations[i].value;
+            this.state.selectedLocations.splice(tempSLIndex, 1);
             tempSLIndex++;
         }
     }
@@ -327,6 +327,28 @@ selectAll(source) {
     checkboxes[i].checked = true;
   }
   this.updateSelectedLocations(this);
+}
+
+removeSelectedLocations(source) {
+    var parentDiv = document.getElementById("searchResult");
+    var locations = parentDiv.getElementsByTagName("input");
+    var tempSLIndex = this.state.selectedLocations.length;
+    for (var i = 0; i < locations.length; i++) {
+        //do something with the checked location - add to selected locations array??
+        if (locations[i].checked && (this.state.selectedLocations.includes(locations[i].value) === false)) {
+            this.state.selectedLocations[tempSLIndex] = "";
+            tempSLIndex++;
+        }
+    }
+    console.log("selectedLocations:", this.state.selectedLocations);
+    document.getElementById("checkedLocations").innerHTML = "";
+    var wrapper = document.getElementById("checkedLocations");
+    for (var i = 0; i < (this.state.selectedLocations.length); i++) {
+        var selected = document.createElement("div");
+        var textNode = document.createTextNode(this.state.selectedLocations[i]);
+        selected.appendChild(textNode);
+        wrapper.appendChild(selected);
+    }
 }
 
 clearAll(source) {
