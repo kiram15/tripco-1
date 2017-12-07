@@ -144,9 +144,6 @@ startEndInfo(file) {
 }
 
 async selectColumns(file) {
-
-
-
     var options = ["Airport ID", "Latitude", "Longitude", "Airport Code", "Type",
                     "Elevation", "Municipality", "Airport Website",
                     "Airport Wikipedia", "Country", "Continent", "Region",
@@ -264,7 +261,7 @@ async browseFile(file) {
             if (parsed.response === "query" || parsed.response === "upload") {
                 this.setState({
                     queryResults: parsed.trip,
-                    currentQuery : this.state.currentQuery
+                    currentQuery : this.state.currentQuery + 'a'
                 });
                 console.log("Set Query Results");
                 console.log("Query: ", this.state.currentQuery);
