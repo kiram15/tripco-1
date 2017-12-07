@@ -530,8 +530,8 @@ public class Hub {
             for (int j = 0; j < selectedLocations.size(); j++) {
                 //for all the Distances in the row
                 Location startId = selectedLocations.get(i);
-                Location endId = selectedLocations.get(j);
-                Distance dis = new Distance(startId, endId, miles);
+                Location EndId = selectedLocations.get(j);
+                Distance dis = new Distance(startId, EndId, miles);
                 gcds[i][j+1] = dis; //j+1 because of the Location in the first column
             }
         }
@@ -566,18 +566,18 @@ public class Hub {
         if(shortestItinerary.size() > 0) {
             for (Distance d : shortestItinerary) {
                 if (first) {
-                    firstLocationLat = d.getStartID().getLatitude();
-                    firstLocationLon = d.getStartID().getLongitude();
+                    firstLocationLat = d.getStartId().getLatitude();
+                    firstLocationLon = d.getStartId().getLongitude();
                     first = false;
                 }
-                double startLat = d.getStartID().getLatitude();
-                double startLon = d.getStartID().getLongitude();
+                double startLat = d.getStartId().getLatitude();
+                double startLon = d.getStartId().getLongitude();
                 gMap gm = new gMap(startLat, startLon);
                 finalGMap.add(gm);
             }
 
-            double lastEndLat = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndID().getLatitude();
-            double lastEndLon = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndID().getLongitude();
+            double lastEndLat = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndId().getLatitude();
+            double lastEndLon = (shortestItinerary.get(shortestItinerary.size() - 1)).getEndId().getLongitude();
             gMap gmLast = new gMap(lastEndLat, lastEndLon);
             finalGMap.add(gmLast);
             gMap gmFirst = new gMap(firstLocationLat, firstLocationLon);

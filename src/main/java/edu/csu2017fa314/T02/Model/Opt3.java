@@ -48,11 +48,11 @@ public class Opt3 extends Hub {
             //because we aren't including initial location
             for (int i = 1; i < gcds[0].length; i++) {
                 Distance dis = (Distance) gcds[row][i];
-                if (!traveledTo.contains(dis.getEndID()) && (dis.getGcd() < shortestDis.getGcd())) {
+                if (!traveledTo.contains(dis.getEndId()) && (dis.getGcd() < shortestDis.getGcd())) {
                     shortestDis = dis;
                 }
             }
-            currentLocation = shortestDis.getEndID();
+            currentLocation = shortestDis.getEndId();
         }
 
         //add the distance back to the original city
@@ -112,11 +112,11 @@ public class Opt3 extends Hub {
             Distance shortestDis = hugeDistance;
             for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
                 Distance dis = (Distance) gcds[row][i];
-                if (!traveledToFinal.contains(dis.getEndID()) && (dis.getGcd() < shortestDis.getGcd())) {
+                if (!traveledToFinal.contains(dis.getEndId()) && (dis.getGcd() < shortestDis.getGcd())) {
                     shortestDis = dis;
                 }
             }
-            currentLocation = shortestDis.getEndID();
+            currentLocation = shortestDis.getEndId();
         }
         //apply 3opt
         checkImprovement3(traveledToFinal);

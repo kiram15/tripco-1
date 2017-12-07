@@ -43,11 +43,11 @@ public class NearestNeighbor extends Hub {
             //because we aren't including initial location
             for (int i = 1; i < gcds[0].length; i++) {
                 Distance dis = (Distance) gcds[row][i];
-                if (!traveledTo.contains(dis.getEndID()) && (dis.getGcd() < shortestDis.getGcd())) {
+                if (!traveledTo.contains(dis.getEndId()) && (dis.getGcd() < shortestDis.getGcd())) {
                     shortestDis = dis;
                 }
             }
-            currentLocation = shortestDis.getEndID();
+            currentLocation = shortestDis.getEndId();
             tripDistance += shortestDis.getGcd();
         }
 
@@ -98,11 +98,11 @@ public class NearestNeighbor extends Hub {
             Distance shortestDis = hugeDistance;
             for (int i = 1; i < gcds[0].length; i++) { //because we aren't including first Location
                 Distance dis = (Distance) gcds[row][i];
-                if (!traveledToFinal.contains(dis.getEndID()) && (dis.getGcd() < shortestDis.getGcd())) {
+                if (!traveledToFinal.contains(dis.getEndId()) && (dis.getGcd() < shortestDis.getGcd())) {
                     shortestDis = dis;
                 }
             }
-            currentLocation = shortestDis.getEndID();
+            currentLocation = shortestDis.getEndId();
         }
         //convert traveledToFinal location array to a distance array
         //System.out.println("IT IS: " + locationsToDistances(traveledToFinal));

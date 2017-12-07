@@ -1,25 +1,26 @@
 package edu.csu2017fa314.T02.Model;
-public class Distance implements Comparable<Distance>{
+public class Distance
+        implements Comparable<Distance>{
 
-  private Location startID;
-  private Location endID;
+  private Location startId;
+  private Location endId;
   private int gcd;
 
   /** creates a distance object that stores two locations
   * and calculates the distance between them
   */
-  public Distance(Location startID, Location endID, boolean miles){
-      this.startID = startID;
-      this.endID = endID;
-      this.gcd = computeGCD(startID, endID, miles);
+  public Distance(Location startId, Location endId, boolean miles){
+      this.startId = startId;
+      this.endId = endId;
+      this.gcd = computeGCD(startId, endId, miles);
   }
 
-  public Location getStartID(){
-      return this.startID;
+  public Location getStartId(){
+      return this.startId;
   }
 
-  public Location getEndID(){
-      return this.endID;
+  public Location getEndId(){
+      return this.endId;
   }
 
   public int getGcd(){
@@ -60,10 +61,10 @@ public class Distance implements Comparable<Distance>{
       }
 
       Distance other = (Distance) o;
-      String startName = startID.getName();
-      String endName = endID.getName();
-      String otherStartName = other.startID.getName();
-      String otherEndName = other.endID.getName();
+      String startName = startId.getName();
+      String endName = endId.getName();
+      String otherStartName = other.startId.getName();
+      String otherEndName = other.endId.getName();
 
       if(startName.equals(otherStartName) && endName.equals(otherEndName)){
           return true;
@@ -80,8 +81,8 @@ public class Distance implements Comparable<Distance>{
     //prints out the properties of the distance object
     public String toString(){
         return "Distance{" +
-                "StartID= '" + startID.toString() + '\'' +
-                ", EndID= '" + endID.toString() + '\'' +
+                "StartId= '" + startId.toString() + '\'' +
+                ", EndId= '" + endId.toString() + '\'' +
                 ", GCD= '" + gcd + '}';
     }
 }

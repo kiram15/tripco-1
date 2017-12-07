@@ -61,8 +61,8 @@ public class TestModel {
         L1 = new Location("test1", 37, -102, null);
         L2 = new Location("test2", 41, -109, null);
         Distance D1 = new Distance(L1, L2, miles);
-        String finalString = "Distance{StartID= 'Name: 'test1', Latitude: '37.0', Longitude: '-102.0', " +
-                "EndID= 'Name: 'test2', Latitude: '41.0', Longitude: '-109.0', GCD= '466}";
+        String finalString = "Distance{StartId= 'Name: 'test1', Latitude: '37.0', Longitude: '-102.0', " +
+                "EndId= 'Name: 'test2', Latitude: '41.0', Longitude: '-109.0', GCD= '466}";
         String testString = D1.toString();
         assertTrue(finalString.equals(testString));
     }
