@@ -388,42 +388,27 @@ public class TestModel {
     @Test
     public void testCreateItinerary(){
         LinkedHashMap<String, String> info1 = new LinkedHashMap<>();
-        info1.put("extra1", "info1");
-        info1.put("extra2", "info2");
+        info1.put("extra1", "info1"); info1.put("extra2", "info2");
         LinkedHashMap<String, String> info2 = new LinkedHashMap<>();
-        info2.put("extra1", "info1");
-        info2.put("extra2", "info2");
+        info2.put("extra1", "info1"); info2.put("extra2", "info2");
         Location startL = new Location("Denver", 70, 99.255556, info1);
         Location endL = new Location("New Hampshire", 80, 100, info2);
         Hub hC = new Hub();
-        hC.selectedLocations.add(startL);
-        hC.selectedLocations.add(endL);
-        hC.finalLocations.add(startL);
-        hC.finalLocations.add(endL);
-
+        hC.selectedLocations.add(startL); hC.selectedLocations.add(endL); hC.finalLocations.add(startL); hC.finalLocations.add(endL);
         Object[][] gcds = hC.calcAllGcds(hC.selectedLocations);
-        hC.optimization = "None";
-        hC.createItinerary(gcds, startL);
+        hC.optimization = "None"; hC.createItinerary(gcds, startL);
         assertFalse(hC.shortestItinerary.isEmpty());
-
         hC.shortestItinerary.clear();
-        hC.optimization = "NearestNeighbor";
-        hC.createItinerary(gcds, startL);
+        hC.optimization = "NearestNeighbor"; hC.createItinerary(gcds, startL);
         assertFalse(hC.shortestItinerary.isEmpty());
-
         hC.shortestItinerary.clear();
-        hC.optimization = "TwoOpt";
-        hC.createItinerary(gcds, startL);
+        hC.optimization = "TwoOpt"; hC.createItinerary(gcds, startL);
         assertFalse(hC.shortestItinerary.isEmpty());
-
         hC.shortestItinerary.clear();
-        hC.optimization = "ThreeOpt";
-        hC.createItinerary(gcds, startL);
+        hC.optimization = "ThreeOpt"; hC.createItinerary(gcds, startL);
         assertFalse(hC.shortestItinerary.isEmpty());
-
         hC.shortestItinerary.clear();
-        hC.optimization = "DefaultChoice";
-        hC.createItinerary(gcds, startL);
+        hC.optimization = "DefaultChoice"; hC.createItinerary(gcds, startL);
         assertFalse(hC.shortestItinerary.isEmpty());
     }
 }
