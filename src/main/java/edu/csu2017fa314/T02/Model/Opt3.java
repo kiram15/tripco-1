@@ -156,7 +156,7 @@ public class Opt3 extends Hub {
 
                         // SWAP 5 - reverse j+1 through k, then swap segments
                         improvement = swap5(i, j, k, traveled, improvement);
-
+//
                         // SWAP 6 - reverse elements from i+1 through j, then swap segments
                         improvement = swap6(i, j, k, traveled, improvement);
 
@@ -275,14 +275,16 @@ public class Opt3 extends Hub {
         Distance i1j1 = new Distance(traveled.get(i+1), traveled.get(j+1), miles);
         Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
 
+        int I1toJ = j-(i+1); //num items between i+1 and j
+
         // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
         // distance than the proposed change (i, k) (j+1, i+1) (j, k+1)
         double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
                 + ik.getGcd() + i1j1.getGcd() + jk1.getGcd();
 
         if (delta < 0) { //improvement?
-            super.optSwap(traveled, j + 1, k); //reverse j+1 through k
-            replaceSegment(i + 1, j + 1, k, traveled); // swap segment 1 and 2
+            super.optSwap(traveled, i+1, k); //reverse j+1 through k
+            super.optSwap(traveled, k-I1toJ, k);
             improvement = true;
         }
         return improvement;
@@ -300,14 +302,16 @@ public class Opt3 extends Hub {
         Distance jk = new Distance(traveled.get(j), traveled.get(k), miles);
         Distance i1k1 = new Distance(traveled.get(i+1), traveled.get(k+1), miles);
 
+        int J1toK = k-(j+1); //num items between j+1 and k
+
         // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
         // distance than the proposed change (i, j+1) (k, j) (i+1, k+1)
         double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
                 + ij1.getGcd() + jk.getGcd() + i1k1.getGcd();
 
         if (delta < 0) { //improvement?
-            super.optSwap(traveled, i+1, j); //reverse elements from i+1 through j
-            replaceSegment(i + 1, j + 1, k, traveled); //swap two middle groups
+            super.optSwap(traveled, i+1, k); //reverse elements from i+1 through j
+            super.optSwap(traveled, i+1, (i+1) + J1toK);
             improvement = true;
         }
         return improvement;
@@ -324,29 +328,20 @@ public class Opt3 extends Hub {
         Distance i1k = new Distance(traveled.get(i+1), traveled.get(k), miles);
         Distance jk1 = new Distance(traveled.get(j), traveled.get(k+1), miles);
 
+        int I1toJ = j-(i+1); //num items between i+1 and j
+        int J1toK = k-(j+1); //num items between j+1 and k
+
         // delta tests if the current state (i, i+1) (j, j+1) (k, k+1) is a greater
         // distance than the proposed change (i, j+1) (k, i+1) (j, k+1)
         double delta = -ii1.getGcd() - jj1.getGcd() - kk1.getGcd()
                 + ij1.getGcd() + i1k.getGcd() + jk1.getGcd();
 
         if (delta < 0) { //improvement?
-            replaceSegment(i + 1, j + 1, k, traveled);
+            super.optSwap(traveled, i+1, k);
+            super.optSwap(traveled, i+1, (i+1) + J1toK);
+            super.optSwap(traveled, k-I1toJ, k);
             improvement = true;
         }
         return improvement;
-    }
-
-    // replaceSegment takes all of the elements from the first segment (i+1 through j)
-    // and swaps it with the second segment k through j+1
-    public void replaceSegment(int i1, int j1, int k, ArrayList<Location> traveled) {
-        ArrayList <Location> list2 = new ArrayList<Location>();
-        for(int x = k; x >= j1; x--) { //for all the elements from j+1 to k
-            list2.add(traveled.remove(x)); //remove them from the original list in backwards order
-        }
-        for (int i = 0; i < list2.size(); i++) {
-            traveled.add(i1, list2.get(i)); // add them back to this list at the i+1 index
-        }
-        //(i, i+1) (j, j+1) (k, k+1) BEFORE
-        //(i,j+1) (k, i+1) (j, k+1) AFTER
     }
 }
