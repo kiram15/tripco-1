@@ -3,7 +3,7 @@ public class Model
 {
    private int[] numbers;
 
-   public Model () 
+   public Model()
    {
       numbers = new int[] {0, 1, 2, 3, 4, 5};
    }
