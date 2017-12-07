@@ -161,14 +161,14 @@ async browseFile(file) {
     let runTotal = 0;
 
     for (let i = 0; i < Object.values (file).length; i++) {
-        let start = file[i].startID.name; //get start from file i
-        let end = file[i].endID.name; //get end from file i
+        let start = file[i].startId.name; //get start from file i
+        let end = file[i].endId.name; //get end from file i
         let dist = file[i].gcd;
         runTotal = runTotal + dist;
 
-        var updatedStart = JSON.stringify(file[i].startID.info);
+        var updatedStart = JSON.stringify(file[i].startId.info);
         updatedStart = this.startEndInfo(updatedStart);
-        var updatedEnd = JSON.stringify(file[i].endID.info);
+        var updatedEnd = JSON.stringify(file[i].endId.info);
         updatedEnd = this.startEndInfo(updatedEnd);
 
         let p = { //create object with start, end, and dist variable
