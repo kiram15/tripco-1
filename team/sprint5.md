@@ -60,8 +60,7 @@ Date | Tasks done now | Tasks done next | Impediments | Coverage | Smells | Dupl
 11/30 | #375 #342 #382 | #191 #372 #370 #369 | Nicole's sorority stuff, studying for finals | *72* | *20* | *2* | *9.1* | Feeling lit
 12/4 | #235 #372 #369 #191 #72 #276 | #390 #370 #371 #392 | final projects/exams | *70* | *20* | *0* | *6.8* | Good
 12/6 | #273 #390 #96 #399 #401 | #397 #370 #402 #371 | final projects/exams | *68* | *11* | *0* | *7.3* | Good
-
-
+12/7 | #397 #402 #415 #411 #410 #362 #363 #371 | None! | finals | *68* | *3* | *0* | *0.7* | Good 
 
 ## Review
 
