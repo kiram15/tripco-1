@@ -335,7 +335,7 @@ removeSelectedLocations(source) {
     var tempSLIndex = this.state.selectedLocations.length;
     for (var i = 0; i < locations.length; i++) {
         //do something with the checked location - add to selected locations array??
-        if (locations[i].checked && (this.state.selectedLocations.includes(locations[i].value) === false)) {
+        if (locations[i].checked && (this.state.selectedLocations.includes(locations[i].value) === true)) {
             this.state.selectedLocations.splice(tempSLIndex, 1);
             tempSLIndex++;
         }
