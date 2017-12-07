@@ -197,10 +197,6 @@ public class Hub {
                     }
 
                     ResultSet allTblsSearchRs = st.executeQuery(allTblsSearchQ);
-                    //allTblsSearchRs.last();
-
-                    //System.out.println("\nResultSet length: " + allTblsSearchRs.getRow() + "\n\n");
-                    //allTblsSearchRs.first();
                     try { //parse matched rows
                         while (allTblsSearchRs.next()) { //for each row
                             String matchedRow = "";
@@ -214,7 +210,6 @@ public class Hub {
                                     break;
                                 }
                             }
-                            System.out.println("b4 Parse: " + matchedRow + "\n");
                             parseRow(matchedRow);
                         }
                     } finally {
@@ -396,7 +391,7 @@ public class Hub {
     */
     public void storeColumnHeaders(String firstLine){
         String ss = firstLine.toLowerCase();
-        String[] infoArray = ss.split(",~");
+        String[] infoArray = ss.split(",");
         for (int i = 0; i < infoArray.length; i++) {
             String infoString = infoArray[i];
             // associating column titles with column num, putting it in map
@@ -426,11 +421,7 @@ public class Hub {
     */
     public void parseRow(String row){
         row = row.toLowerCase();
-        System.out.println("\n in Parse!: " + row + "\n");
         String[] props = row.split(",~");
-        for(int i = 0; i < props.length; ++i){
-            System.out.println("index: " + i + ": " + props[i]);
-        }
 
         LinkedHashMap<String, String> info = new LinkedHashMap<String, String>();
         String objectName = "";
@@ -448,8 +439,6 @@ public class Hub {
                 info.put(reverseC.get(i), props[i]);
             }
         }
-
-        System.out.println("\n INFO!!: " + info + "\n");
 
         double doubleLat = latLonConvert(objectLatitude);
         double doubleLon = latLonConvert(objectLongitude);

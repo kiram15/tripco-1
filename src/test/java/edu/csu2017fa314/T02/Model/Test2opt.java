@@ -36,11 +36,11 @@ public class Test2opt {
         // The shorterTrip method does not return anything,
         // but does set the valu of hub's shortestItinerary
         Hub h0 = new Hub("TwoOpt");
-        h0.storeColumnHeaders("id~airports_name~city~airports_latitude~airports_longitude~elevation~");
-        h0.parseRow("kiram15~kira~fort collins~40.0~50.0~10");
-        h0.parseRow("alnolte~amber~denver~60.0~70.5~10");
-        h0.parseRow("nkacirek~nicole~boulder~100.0~60.0~10");
-        h0.parseRow("emictosh~emerson~littleton~45.0~55.0~10");
+        h0.storeColumnHeaders("id,airports_name,city,airports_latitude,airports_longitude,elevation~");
+        h0.parseRow("kiram15,~kira,~fort collins,~40.0,~50.0,~10");
+        h0.parseRow("alnolte,~amber,~denver,~60.0,~70.5,~10");
+        h0.parseRow("nkacirek,~nicole,~boulder,~100.0,~60.0,~10");
+        h0.parseRow("emictosh,~emerson,~littleton,~45.0,~55.0,~10");
         Location n1 = new Location("amber", 60.0, 70.5, null);
         h0.createItinerary(h0.calcAllGcds(h0.selectedLocations), n1);
         Opt2 o2 = new Opt2();
