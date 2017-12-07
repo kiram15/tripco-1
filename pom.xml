@@ -12,7 +12,7 @@
     <groupId>edu.csu2017fa314.T02</groupId>
     <artifactId>T02</artifactId>
     <packaging>jar</packaging>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
     <name>T02</name>
     <url>https://github.com/csu2017fa314/T02/</url>
     <build>
