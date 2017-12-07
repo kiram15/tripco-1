@@ -532,8 +532,8 @@ public class Hub {
             for (int j = 0; j < selectedLocations.size(); j++) {
                 //for all the Distances in the row
                 Location startId = selectedLocations.get(i);
-                Location EndId = selectedLocations.get(j);
-                Distance dis = new Distance(startId, EndId, miles);
+                Location endId = selectedLocations.get(j);
+                Distance dis = new Distance(startId, endId, miles);
                 gcds[i][j+1] = dis; //j+1 because of the Location in the first column
             }
         }
