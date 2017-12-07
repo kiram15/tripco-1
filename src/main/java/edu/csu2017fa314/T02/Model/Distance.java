@@ -1,75 +1,80 @@
 package edu.csu2017fa314.T02.Model;
-public class Distance implements Comparable<Distance>{
+public class Distance
+        implements Comparable<Distance>{
 
-  private Location startID;
-  private Location endID;
+  private Location startId;
+  private Location endId;
   private int gcd;
 
   /** creates a distance object that stores two locations
   * and calculates the distance between them
   */
-  public Distance(Location startID, Location endID, boolean miles){
-      this.startID = startID;
-      this.endID = endID;
-      this.gcd = computeGCD(startID, endID, miles);
+  public Distance(Location startId, Location endId, boolean miles){
+      this.startId = startId;
+      this.endId = endId;
+      this.gcd = computeGcd(startId, endId, miles);
   }
 
-  public Location getStartID(){
-      return this.startID;
+  public Location getStartId(){
+      return this.startId;
   }
 
-  public Location getEndID(){
-      return this.endID;
+  public Location getEndId(){
+      return this.endId;
   }
 
   public int getGcd(){
       return this.gcd;
   }
 
-  /*
-  * computes the distance between the two locations in the distance object
-  */
-  public int computeGCD(Location loc1, Location loc2, boolean miles) {
+  /**
+   * computes the distance between the two locations in the distance object
+   */
+  public int computeGcd(Location loc1, Location loc2, boolean miles) {
 
       double lat1 = loc1.getLatitude();
       double lon1 = loc1.getLongitude();
       double lat2 = loc2.getLatitude();
       double lon2 = loc2.getLongitude();
 
-      double r = 0.0;
+      double r0 = 0.0;
       if(miles){
-        r = 3958.7613; //radius of earth in miles
-      }else{ r = 6371.0088; } //radius of earth in km
+        r0 = 3958.7613; //radius of earth in miles
+      }else{ r0 = 6371.0088; } //radius of earth in km
       double phi1 = Math.toRadians(lat1);
       double lam1 = Math.toRadians(lon1);
       double phi2 = Math.toRadians(lat2);
       double lam2 = Math.toRadians(lon2);
-      double dLam = Math.abs(lam1 - lam2);
-      double y = Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dLam)), 2) + Math.pow((Math.cos(phi1) * Math.sin(phi2) - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dLam)), 2));
-      double x = (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dLam));
-      double dTheta = Math.atan2(y, x);
-      double dist = dTheta * r;
+      double dlam = Math.abs(lam1 - lam2);
+      double y0 = Math.sqrt(Math.pow((Math.cos(phi2) * Math.sin(dlam)), 2)
+              + Math.pow((Math.cos(phi1) * Math.sin(phi2)
+              - Math.sin(phi1) * Math.cos(phi2) * Math.cos(dlam)), 2));
+      double x0 =
+              (Math.sin(phi1) * Math.sin(phi2) + Math.cos(phi1) * Math.cos(phi2) * Math.cos(dlam));
+      double dtheta = Math.atan2(y0, x0);
+      double dist = dtheta * r0;
       int gcd = (int) Math.round(dist);
       return gcd;
   }
 
   @Override
-  public boolean equals(Object o){
-      if(!(o instanceof Distance)){
+  public boolean equals(Object obj){
+      if(!(obj instanceof Distance)){
           return false;
       }
 
-      Distance other = (Distance) o;
-      String startName = startID.getName();
-      String endName = endID.getName();
-      String otherStartName = other.startID.getName();
-      String otherEndName = other.endID.getName();
+      Distance other = (Distance) obj;
+      String startName = startId.getName();
+      String endName = endId.getName();
+      String otherStartName = other.startId.getName();
+      String otherEndName = other.endId.getName();
 
       if(startName.equals(otherStartName) && endName.equals(otherEndName)){
           return true;
       }
-      else
+      else {
           return false;
+      }
   }
 
     @Override
@@ -77,11 +82,13 @@ public class Distance implements Comparable<Distance>{
         return this.gcd - other.gcd;
     }
 
-    //prints out the properties of the distance object
+    /** Distance object toString method
+     * @return the string containing the distance information
+     */
     public String toString(){
-        return "Distance{" +
-                "StartID= '" + startID.toString() + '\'' +
-                ", EndID= '" + endID.toString() + '\'' +
-                ", GCD= '" + gcd + '}';
+        return "Distance{"
+                + "StartId= '" + startId.toString() + '\''
+                + ", EndId= '" + endId.toString() + '\''
+                + ", GCD= '" + gcd + '}';
     }
 }
