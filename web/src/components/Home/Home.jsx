@@ -305,7 +305,7 @@ updateSelectedLocations(event) {
     for (var i = 0; i < locations.length; i++) {
         //do something with the checked location - add to selected locations array??
         if (locations[i].checked && (this.state.selectedLocations.includes(locations[i].value) === false)) {
-            this.state.selectedLocations.splice(tempSLIndex, 1);
+            this.state.selectedLocations[tempSLIndex] = locations[i].value;
             tempSLIndex++;
         }
     }
@@ -336,7 +336,7 @@ removeSelectedLocations(source) {
     for (var i = 0; i < locations.length; i++) {
         //do something with the checked location - add to selected locations array??
         if (locations[i].checked && (this.state.selectedLocations.includes(locations[i].value) === false)) {
-            this.state.selectedLocations[tempSLIndex] = "";
+            this.state.selectedLocations.splice(tempSLIndex, 1);
             tempSLIndex++;
         }
     }
