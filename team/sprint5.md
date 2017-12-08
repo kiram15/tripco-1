@@ -66,25 +66,35 @@ Date | Tasks done now | Tasks done next | Impediments | Coverage | Smells | Dupl
 
 #### Completed user stories (epics) in Sprint Backlog 
 * *user story*:  *comments*
-* 
+* Test Coverage; We upgraded our test coverage
+* Clean Code; We improved our tech debt ratio
+* Fast Response; We added threads to our optimization functionality
+* Online map with pan/zoom; We added a map that had the zoom and pan functionality
 
 #### Incomplete user stories / epics in Sprint Backlog 
 * *user story*: *Explanation...*
-*
+* Mobile Experience; We did not have time to get to this Epic
+* Continuous Delivery; The Product Owner never gave us specificationss
 
 #### What went well
 * *something*
-*
+* We planned well
+* Never felt stressed
+* Spread work out well
+* Didn't have carried over tech debt
+* Fixded small details
+* Utilized other groups
 
 #### Problems encountered and resolutions
 * *something*
-*
+* 3-opt being slow - added threads, took out extraneous methods
+* Busy weeks - the team picked up slack
 
 ## Retrospective
 
 Topic | Teamwork | Process | Tools
 :--- | :--- | :--- | :---
-What we will change this time |  |  | 
-What we did well |  |  | 
-What we need to work on |  |  |
-What we will change next time |  |  | 
+What we will change this time | Get more familiar with all code | finish large issues quickly | improve code climate, SQL
+What we did well | got more familiar with all of our code | finished larger issues quicker | KILLED code climate
+What we need to work on | Asking if someone needs help | More logicically organize backlog to minimize merge conflicts | React.js, Code Climate
+What we will change next time | try to ask for help earlier | organize backlog better | more research on react
